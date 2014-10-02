@@ -1,0 +1,253 @@
+/*
+    Document   : app/styles/_mixins．scss
+    Created on : 2014-07-01 09:57 PM
+    Author     : brunoQuintela
+    Description: http://zerosixthree.se/8-sass-mixins-you-must-have-in-your-toolbox/
+    Purpose of the stylesheet follows.
+    To change this template use Tools | Templates.
+*/
+
+
+
+/*
+ * Force GPU rendering
+ */
+
+%force-gpu
+{
+	-webkit-transform: translate3d(0,0,0);
+}
+
+/*
+ * absolute centering
+ */
+
+%absolute-center {
+  position:absolute;
+  top:0px;
+  bottom:0px;
+  left:0px;
+  right:0px;
+  margin:auto;
+}
+
+/*
+ * Usage
+.absoluteCenterDiv {
+  @extend %absoluteCenter;
+}*/
+
+/*
+ * Set a rem font size with pixel fallback
+ */
+
+@function calculateRem($size) {
+  $remSize: $size / 16px;
+  @return $remSize * 1rem;
+}
+
+@mixin font-size($size) {
+  font-size: $size;
+  font-size: calculateRem($size);
+}
+
+/*Usage
+p {
+  @include font-size(14px)
+}
+Output
+p {
+  font-size: 14px; //Will be overridden if browser supports rem
+  font-size: 0.8rem;
+}*/
+
+/*
+ * BREAKPOINTS 
+ */
+
+@mixin bp-large {
+  @media only screen and (max-width: 60em) {
+    @content;
+  }
+}
+
+@mixin bp-medium {
+  @media only screen and (max-width: 40em) {
+    @content;
+  }
+}
+
+@mixin bp-small {
+  @media only screen and (max-width: 30em) {
+    @content;
+  }
+}
+
+/*
+ Usage
+.sidebar {
+  width: 60%
+  float: left;
+  margin: 0 2% 0 0;
+  @include bp-small {
+    width: 100%;
+    float: none;
+    margin: 0;
+  }
+}
+Output
+.sidebar {
+  width: 60%
+  float: left;
+  margin: 0 2% 0 0;
+  @media only screen and (max-width: 30){
+    .sidebar{width: 100%; float: none; margin: 0;}
+  }
+} */
+
+
+/*
+ * SVG background images with PNG and retina fallback
+ * */
+
+$image-path: '../img' !default;
+$fallback-extension: 'png' !default;
+$retina-suffix: '@2x';
+@mixin background-image($name, $size:false){
+    background-image: url(#{$image-path}/#{$name}.svg);
+    @if($size){
+        background-size: $size;
+    }
+    .no-svg &{
+        background-image: url(#{$image-path}/#{$name}.#{$fallback-extension});
+
+        @media only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+          background-image: url(#{$image-path}/#{$name}#{$retina-suffix}.#{$fallback-extension});
+        }
+    }
+}
+
+/* Usage
+body {
+  @include background-image('pattern');
+}*/
+
+
+/*
+ * Animations and keyframes
+ * */
+
+@mixin keyframes($animation-name) {
+  @-webkit-keyframes $animation-name {
+    @content;
+  }
+  @-moz-keyframes $animation-name {
+    @content;
+  }  
+  @-ms-keyframes $animation-name {
+    @content;
+  }
+  @-o-keyframes $animation-name {
+    @content;
+  }  
+  @keyframes $animation-name {
+    @content;
+  }
+}
+
+@mixin animation($str) {
+  -webkit-animation-fill-mode:forwards; /*Chrome 16+, Safari 4+*/
+  -moz-animation-fill-mode:forwards; /*FF 5+*/
+  -o-animation-fill-mode:forwards; /*Not implemented yet*/
+  -ms-animation-fill-mode:forwards; /*IE 10+*/
+  animation-fill-mode:forwards; /*when the spec is finished*/
+  -webkit-animation: #{$str};
+  -moz-animation: #{$str};
+  -ms-animation: #{$str};
+  -o-animation: #{$str};
+  animation: #{$str};      
+}
+
+@mixin transition($str) {
+  -webkit-transition: #{$str};
+  -moz-transition: #{$str};
+  -ms-transition: #{$str};
+  -o-transition: #{$str};
+  transition: #{$str};      
+}
+
+/* usage 
+
+@include keyframes(slide-down) {
+  0% { opacity: 1; }
+  90% { opacity: 0; }
+}
+
+.element {
+  width: 100px;
+  height: 100px;
+  background: black;
+  @include animation('slide-down 5s 3');
+}
+*/
+
+/*
+ * Cross browser opacity
+ * */
+
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  $opacity-ie: $opacity * 100;
+  filter: alpha(opacity=$opacity-ie); //IE8
+}
+
+/* Usage
+.faded-text {
+  @include opacity(0.8);
+}
+*/
+
+
+/*
+ * Clearfix
+ */ 
+
+%clearfix {
+  *zoom: 1;
+  &:before, &:after {
+    content: " ";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+/*Usage
+.container-with-floated-children {
+  @extend %clearfix;
+}*/
+
+/*
+ * Visually hide an element
+ */
+
+%visuallyhidden {
+  margin: -1px;
+  padding: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip: rect(0, 0, 0, 0);
+  position: absolute;
+}
+
+/*
+ * Usage
+ * 
+ * .visually-hidden-class {
+      @extend %visuallyhidden;
+    }
+  <b class="visually-hidden-class">Open the navigation</b>
+
+*/

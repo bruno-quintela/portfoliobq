@@ -1,0 +1,34 @@
+/*
+    Document   : app/styles/_typography．scss
+    Created on : 2014-07-01 10:40 PM
+    Author     : brunoQuintela
+    Description: typography styling goes here
+    Purpose of the stylesheet follows.
+    To change this template use Tools | Templates.
+*/
+
+@font-face {
+	font-family: 'Lato', sans-serif;
+}
+
+%body-font
+{
+    font-family: lato;
+  	text-rendering: optimizeLegibility;
+  
+    %name-font {
+     text-transform: uppercase;
+      font-size: 70px;
+      font-weight: 100;
+  }
+
+  %surname-font {
+     text-transform: uppercase;
+     font-size: 70px;
+     font-weight: 700;
+  }
+  
+}
+
+
+
