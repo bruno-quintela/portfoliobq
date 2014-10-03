@@ -21,17 +21,27 @@
         }
     };
     this.World = {
-        settings:{
+        settings: {
             statsEnabled: true,
-            guiEnabled: true,
-            antialias: false,
+            guiEnabled: true
+        },
+        config: {
+            color: [0, 128, 255],
+            antialias: true,
             alpha: true,
-            speed: 0.8,
-            explode: function() {}
-        }
+            speed1: 0.0141,
+            level: 0.75,
+            var1: 0.35,
+            var2: 0,
+            speed2: 0.09,
+            random: function() {}
+        },
+        fpsStats: {},
+        gpuStats: {},
         scenes: [],
+        renderer: null,
+        camera: null,
         lights: [],
-        renderer: obj,
         init: function() {},
         addStats: function(),
         addGui: function()
@@ -46,6 +56,7 @@
 var Page = function() {
     this.system = {
         isTouch: Modernizr.touch,
+        supportsWEBGL: true,
         // init System
         init: function() {
             this.browser.init();
@@ -100,15 +111,20 @@ var Page = function() {
     };
     // 3D World
     this.World = {
+        settings: {
+            statsEnabled: true,
+            guiEnabled: true
+        },
         config: {
             color: [0, 128, 255],
             antialias: true,
             alpha: true,
-            speed1: 0.0141,
             level: 0.75,
-            var1: 0.35,
-            var2: 0,
-            speed2: 0.09,
+            cameraX: 0.01,
+            cameraY: 0.01,
+            cameraZ: 1.0,
+            rotateX: 0.0141,
+            rotateY: 0.09,
             random: function() {}
         },
         fpsStats: {},
@@ -117,13 +133,9 @@ var Page = function() {
         renderer: null,
         camera: null,
         lights: [],
-        settings: {
-            statsEnabled: true,
-            guiEnabled: true
-        },
         // init World
         init: function() {
-            var that = this;
+            var self = this;
             //if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
             this.addStats();
             this.addGui();
@@ -142,23 +154,39 @@ var Page = function() {
             });
             var cube = new THREE.Mesh(geometry, material);
             scene.add(cube);
-            camera.position.z = 5;
+            
+            
+           
+            
+            
+            
+            
+            
+            /*var controls = new THREE.OrbitControls(camera);
+            
+            controls.addEventListener( 'change', render );*/
+            
             var render = function() {
-                requestAnimationFrame(render);
-                cube.rotation.x += that.config.speed1;
-                cube.rotation.y += that.config.speed2;
-                that.renderer.render(scene, camera);
-                that.fpsStats.update(that.renderer);
-                that.gpuStats.update(that.renderer);
+                self.fpsStats.update(self.renderer);
+                self.gpuStats.update(self.renderer);
+                self.renderer.render(scene, camera);
             };
-            render();
+            
+            var animate = function() {
+                requestAnimationFrame(animate);
+                
+                camera.position.x = self.config.cameraX * 10;
+                camera.position.y = self.config.cameraY * 10;
+                camera.position.z = self.config.cameraZ * 10;
+                cube.rotation.x += self.config.rotateX;
+                cube.rotation.y += self.config.rotateY;
+                //controls.update();
+                render();
+            };
+            
+            animate();
+            
         },
-        /*render: function(scene, camera, cube) {
-            requestAnimationFrame(this.render(scene, camera, cube));
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
-            this.renderer.render(scene, camera, cube);
-        },*/
         addGui: function() {
             if(this.settings.guiEnabled) {
                 var GUI = new dat.GUI();
@@ -166,10 +194,11 @@ var Page = function() {
                 GUI.add(this.config, 'antialias').listen();
                 GUI.add(this.config, 'alpha').listen();
                 GUI.add(this.config, 'level', 0, 1).listen();
-                GUI.add(this.config, 'var1', 0, 1).listen();
-                GUI.add(this.config, 'var2', 0, 1).listen();
-                GUI.add(this.config, 'speed1', 0, 0.2).listen();
-                GUI.add(this.config, 'speed2', 0, 0.2).listen();
+                GUI.add(this.config, 'cameraX', -1, 1).listen();
+                GUI.add(this.config, 'cameraY', -1, 1).listen();
+                GUI.add(this.config, 'cameraZ', -1, 1).listen();
+                GUI.add(this.config, 'rotateX', 0, 0.2).listen();
+                GUI.add(this.config, 'rotateY', 0, 0.2).listen();
                 GUI.add(this.config, 'random');
             }
         },
