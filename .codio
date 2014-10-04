@@ -1,0 +1,15 @@
+{
+// Configure your Run and Preview buttons here.
+
+// Run button configuration
+  "commands": {
+        "serve --force": "grunt serve --force",
+        "serve": "grunt serve",
+    	"build": "grunt"
+  },
+
+// Preview button configuration
+  "preview": {
+        "preview": "http://{{domain}}:9000/"
+  }
+}

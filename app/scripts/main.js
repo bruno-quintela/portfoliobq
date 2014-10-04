@@ -130,10 +130,10 @@ var Page = function() {
         transitionParams: {
             'useTexture': true,
             'transition': 0.5,
-            'transitionSpeed': 2.0,
-            'texture': 5,
-            'loopTexture': true,
-            'animateTransition': true,
+            'transitionSpeed': 1.0,
+            'texture': 1,
+            'loopTexture': false,
+            'animateTransition': false,
             'textureThreshold': 0.3
         },
         fpsStats: {},
@@ -156,10 +156,12 @@ var Page = function() {
             });
             this.renderer.setSize(window.innerWidth, window.innerHeight);
             this.renderer.setClearColor(0x000000, 0);
+            this.renderer.sortObjects = false;
             /***********************/
             this.SceneA = function() {
                 this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
                 this.camera.position.z = 5;
+                this.camera.position.x = 1.5;
                 var geometry = new THREE.BoxGeometry(2, 2, 2);
                 var material = new THREE.MeshBasicMaterial({
                     color: 0x00ff00
@@ -167,6 +169,8 @@ var Page = function() {
                 // Setup scene
                 this.scene = new THREE.Scene();
                 this.scene.add(new THREE.AmbientLight(0x555555));
+                
+                this.scene.nameTemp = 'scene1';
 
                 var cube = new THREE.Mesh(geometry, material);
                 this.scene.add(cube);
@@ -179,7 +183,7 @@ var Page = function() {
                 this.fbo = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, renderTargetParameters);
                 this.render = function(delta, rtt) {
 
-                    //self.renderer.setClearColor(0x000000, 0);
+                    
                     if(rtt) {
                         self.renderer.render(this.scene, this.camera, this.fbo, true);
                     } else {
@@ -190,6 +194,7 @@ var Page = function() {
             this.SceneB = function() {
                 this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
                 this.camera.position.z = 5;
+                this.camera.position.x = -1.5;
                 var geometry = new THREE.BoxGeometry(2, 2, 2);
                 var material = new THREE.MeshBasicMaterial({
                     color: 0x00fffff
@@ -197,6 +202,7 @@ var Page = function() {
                 // Setup scene
                 this.scene = new THREE.Scene();
                 this.scene.add(new THREE.AmbientLight(0xfff000));
+                this.scene.nameTemp = 'scene2';
 
                 var cube = new THREE.Mesh(geometry, material);
                 this.scene.add(cube);
@@ -206,10 +212,9 @@ var Page = function() {
                     format: THREE.RGBFormat,
                     stencilBuffer: false
                 };
+               
                 this.fbo = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, renderTargetParameters);
                 this.render = function(delta, rtt) {
-
-                    //self.renderer.setClearColor(0x000000, 0);
                     if(rtt) {
                         self.renderer.render(this.scene, this.camera, this.fbo, true);
                     } else {
@@ -248,12 +253,13 @@ var Page = function() {
                         },
                         tMixTexture: {
                             type: 't',
-                            value: this.textures[0]
+                            value: this.textures[2]
                         }
                     },
                     vertexShader: ['varying vec2 vUv;', 'void main() {', 'vUv = vec2( uv.x, uv.y );', 'gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );', '}'].join('\n'),
                     fragmentShader: ['uniform float mixRatio;', 'uniform sampler2D tDiffuse1;', 'uniform sampler2D tDiffuse2;', 'uniform sampler2D tMixTexture;', 'uniform int useTexture;', 'uniform float threshold;', 'varying vec2 vUv;', 'void main() {', 'vec4 texel1 = texture2D( tDiffuse1, vUv );', 'vec4 texel2 = texture2D( tDiffuse2, vUv );', 'if (useTexture==1) {', 'vec4 transitionTexel = texture2D( tMixTexture, vUv );', 'float r = mixRatio * (1.0 + threshold * 2.0) - threshold;', 'float mixf=clamp((transitionTexel.r - r)*(1.0/threshold), 0.0, 1.0);', 'gl_FragColor = mix( texel1, texel2, mixf );', '} else {', 'gl_FragColor = mix( texel2, texel1, mixRatio );', '}', '}'].join('\n')
                 });
+                
                 var quadgeometry = new THREE.PlaneGeometry(window.innerWidth, window.innerHeight);
                 this.quad = new THREE.Mesh(quadgeometry, this.quadmaterial);
                 this.scene.add(this.quad);
@@ -274,7 +280,8 @@ var Page = function() {
                 };
                 this.render = function(delta) {
                     // Transition animation
-                    if(self.transitionParams.animateTransition) {
+                    self.renderer.setClearColor(0x000000, 0);
+                    /*if(self.transitionParams.animateTransition) {
                         var t = (1 + Math.sin(self.transitionParams.transitionSpeed * self.clock.getElapsedTime() / Math.PI)) / 2;
                         self.transitionParams.transition = THREE.Math.smoothstep(t, 0.3, 0.7);
                         // Change the current alpha texture after each transition
@@ -287,7 +294,7 @@ var Page = function() {
                         } else {
                             this.needChange = true;
                         }
-                    }
+                    }*/
                     this.quadmaterial.uniforms.mixRatio.value = self.transitionParams.transition;
                     // Prevent render both scenes when it's not necessary
                     if(self.transitionParams.transition === 0) {
@@ -305,14 +312,14 @@ var Page = function() {
             
             var SceneA = new this.SceneA();
             var SceneB = new this.SceneB();
-            var Transition = new this.Transition(SceneA, SceneB);
+            this.SceneTransition = new this.Transition(SceneA, SceneB);
             
             /*****************************/
 
             var render = function() {
                 self.fpsStats.update(self.renderer);
                 self.gpuStats.update(self.renderer);
-                Transition.render(self.clock.getDelta());
+                self.SceneTransition.render(self.clock.getDelta());
             };
             var animate = function() {
                 requestAnimationFrame(animate);
@@ -321,7 +328,9 @@ var Page = function() {
             animate();
         },
         addGui: function() {
+            var self = this;
             if(this.settings.guiEnabled) {
+                // World GUI params
                 var GUI = new dat.GUI();
                 GUI.addColor(this.configParams, 'color').listen();
                 GUI.add(this.configParams, 'antialias').listen();
@@ -333,12 +342,14 @@ var Page = function() {
                 GUI.add(this.configParams, 'rotateX', 0, 0.2).listen();
                 GUI.add(this.configParams, 'rotateY', 0, 0.2).listen();
                 GUI.add(this.configParams, 'random');
+                
+                // Transition GUI params
                 var guiTransition = new dat.GUI();
                 guiTransition.add(this.transitionParams, 'useTexture').onChange(function(value) {
-                    //this.transition.useTexture(value);
+                    self.SceneTransition.useTexture(value);
                 });
                 guiTransition.add(this.transitionParams, 'loopTexture');
-                /*gui.add(transitionParams, 'texture', {
+                guiTransition.add(this.transitionParams, 'texture', {
                     Perlin: 0,
                     Squares: 1,
                     Cells: 2,
@@ -346,10 +357,10 @@ var Page = function() {
                     Gradient: 4,
                     Radial: 5
                 }).onChange(function(value) {
-                    transition.setTexture(value);
-                }).listen();*/
+                    self.SceneTransition.setTexture(value);
+                }).listen();
                 guiTransition.add(this.transitionParams, 'textureThreshold', 0, 1, 0.01).onChange(function(value) {
-                    //transition.setTextureThreshold(value);
+                    self.SceneTransition.setTextureThreshold(value);
                 });
                 guiTransition.add(this.transitionParams, 'animateTransition');
                 guiTransition.add(this.transitionParams, 'transition', 0, 1, 0.01).listen();
