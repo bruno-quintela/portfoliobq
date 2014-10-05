@@ -50,9 +50,6 @@
     this.$logo = $('.name');
     
 };*/
-/**
- * Page
- **/
 var Page = function() {
     this.system = {
         isTouch: Modernizr.touch,
@@ -109,8 +106,8 @@ var Page = function() {
             }]
         }
     };
-    // 3D World
-    this.World = {
+    this.world = {
+        clock: new THREE.Clock(),
         settings: {
             statsEnabled: true,
             guiEnabled: true
@@ -136,19 +133,71 @@ var Page = function() {
             'animateTransition': false,
             'textureThreshold': 0.3
         },
+        container: {},
+        renderer: {},
         fpsStats: {},
         gpuStats: {},
-        scenes: [],
-        renderer: null,
-        camera: null,
-        lights: [],
-        // init World
+        addGUI: function() {
+            var self = this;
+            if(this.settings.guiEnabled) {
+                // World GUI params
+                var GUI = new dat.GUI();
+                GUI.addColor(this.configParams, 'color').listen();
+                GUI.add(this.configParams, 'antialias').listen();
+                GUI.add(this.configParams, 'alpha').listen();
+                GUI.add(this.configParams, 'level', 0, 1).listen();
+                GUI.add(this.configParams, 'cameraX', -1, 1).listen();
+                GUI.add(this.configParams, 'cameraY', -1, 1).listen();
+                GUI.add(this.configParams, 'cameraZ', -1, 1).listen();
+                GUI.add(this.configParams, 'rotateX', 0, 0.2).listen();
+                GUI.add(this.configParams, 'rotateY', 0, 0.2).listen();
+                GUI.add(this.configParams, 'random');
+                // Transition GUI params
+                var guiTransition = new dat.GUI();
+                guiTransition.add(this.transitionParams, 'useTexture').onChange(function(value) {
+                    self.transition.useTexture(value);
+                });
+                guiTransition.add(this.transitionParams, 'loopTexture');
+                guiTransition.add(this.transitionParams, 'texture', {
+                    Perlin: 0,
+                    Squares: 1,
+                    Cells: 2,
+                    Distort: 3,
+                    Gradient: 4,
+                    Radial: 5
+                }).onChange(function(value) {
+                    self.transition.setTexture(value);
+                }).listen();
+                guiTransition.add(this.transitionParams, 'textureThreshold', 0, 1, 0.01).onChange(function(value) {
+                    self.transition.setTextureThreshold(value);
+                });
+                guiTransition.add(this.transitionParams, 'animateTransition');
+                guiTransition.add(this.transitionParams, 'transition', 0, 1, 0.01).listen();
+                guiTransition.add(this.transitionParams, 'transitionSpeed', 0.5, 5, 0.01);
+            }
+        },
+        addStats: function() {
+            if(this.settings.statsEnabled) {
+                //add Threejs stats FPS
+                this.fpsStats = new Stats();
+                this.fpsStats.setMode(0); // 0: fps, 1: ms
+                this.fpsStats.domElement.style.position = 'absolute';
+                this.fpsStats.domElement.style.left = '0px';
+                this.fpsStats.domElement.style.top = '0px';
+                document.body.appendChild(this.fpsStats.domElement);
+                //add threex.renderstats WEBGL render
+                this.gpuStats = new THREEx.RendererStats();
+                this.gpuStats.domElement.style.position = 'absolute';
+                this.gpuStats.domElement.style.left = '0px';
+                this.gpuStats.domElement.style.bottom = '0px';
+                document.body.appendChild(this.gpuStats.domElement);
+            }
+        },
         init: function() {
             var self = this;
-            //if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-            this.clock = new THREE.Clock();
+            this.addGUI();
             this.addStats();
-            this.addGui();
+            
             this.renderer = new THREE.WebGLRenderer({
                 canvas: threejsCanvas,
                 antialias: this.configParams.antialias,
@@ -156,54 +205,22 @@ var Page = function() {
             });
             this.renderer.setSize(window.innerWidth, window.innerHeight);
             this.renderer.setClearColor(0x000000, 0);
-            this.renderer.sortObjects = false;
-            /***********************/
-            this.SceneA = function() {
+            
+            /******************************************************/
+            this.Scene = function(matColor) {
                 this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
                 this.camera.position.z = 5;
-                this.camera.position.x = 1.5;
-                var geometry = new THREE.BoxGeometry(2, 2, 2);
-                var material = new THREE.MeshBasicMaterial({
-                    color: 0x00ff00
-                });
                 // Setup scene
                 this.scene = new THREE.Scene();
                 this.scene.add(new THREE.AmbientLight(0x555555));
-                
-                this.scene.nameTemp = 'scene1';
-
-                var cube = new THREE.Mesh(geometry, material);
-                this.scene.add(cube);
-                var renderTargetParameters = {
-                    minFilter: THREE.LinearFilter,
-                    magFilter: THREE.LinearFilter,
-                    format: THREE.RGBFormat,
-                    stencilBuffer: false
-                };
-                this.fbo = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, renderTargetParameters);
-                this.render = function(delta, rtt) {
-
-                    
-                    if(rtt) {
-                        self.renderer.render(this.scene, this.camera, this.fbo, true);
-                    } else {
-                        self.renderer.render(this.scene, this.camera);
-                    }
-                };
-            };
-            this.SceneB = function() {
-                this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                this.camera.position.z = 5;
-                this.camera.position.x = -1.5;
+                var light = new THREE.SpotLight(0xffffff, 1.5);
+                light.position.set(0, 500, 2000);
+                this.scene.add(light);
+                this.rotationSpeed = new THREE.Vector3(0, 0.2, 0.1);
                 var geometry = new THREE.BoxGeometry(2, 2, 2);
                 var material = new THREE.MeshBasicMaterial({
-                    color: 0x00fffff
+                    color: matColor
                 });
-                // Setup scene
-                this.scene = new THREE.Scene();
-                this.scene.add(new THREE.AmbientLight(0xfff000));
-                this.scene.nameTemp = 'scene2';
-
                 var cube = new THREE.Mesh(geometry, material);
                 this.scene.add(cube);
                 var renderTargetParameters = {
@@ -212,9 +229,11 @@ var Page = function() {
                     format: THREE.RGBFormat,
                     stencilBuffer: false
                 };
-               
                 this.fbo = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, renderTargetParameters);
                 this.render = function(delta, rtt) {
+                    cube.rotation.x += delta * this.rotationSpeed.x;
+                    cube.rotation.y += delta * this.rotationSpeed.y;
+                    cube.rotation.z += delta * this.rotationSpeed.z;
                     if(rtt) {
                         self.renderer.render(this.scene, this.camera, this.fbo, true);
                     } else {
@@ -253,13 +272,12 @@ var Page = function() {
                         },
                         tMixTexture: {
                             type: 't',
-                            value: this.textures[2]
+                            value: this.textures[0]
                         }
                     },
                     vertexShader: ['varying vec2 vUv;', 'void main() {', 'vUv = vec2( uv.x, uv.y );', 'gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );', '}'].join('\n'),
                     fragmentShader: ['uniform float mixRatio;', 'uniform sampler2D tDiffuse1;', 'uniform sampler2D tDiffuse2;', 'uniform sampler2D tMixTexture;', 'uniform int useTexture;', 'uniform float threshold;', 'varying vec2 vUv;', 'void main() {', 'vec4 texel1 = texture2D( tDiffuse1, vUv );', 'vec4 texel2 = texture2D( tDiffuse2, vUv );', 'if (useTexture==1) {', 'vec4 transitionTexel = texture2D( tMixTexture, vUv );', 'float r = mixRatio * (1.0 + threshold * 2.0) - threshold;', 'float mixf=clamp((transitionTexel.r - r)*(1.0/threshold), 0.0, 1.0);', 'gl_FragColor = mix( texel1, texel2, mixf );', '} else {', 'gl_FragColor = mix( texel2, texel1, mixRatio );', '}', '}'].join('\n')
                 });
-                
                 var quadgeometry = new THREE.PlaneGeometry(window.innerWidth, window.innerHeight);
                 this.quad = new THREE.Mesh(quadgeometry, this.quadmaterial);
                 this.scene.add(this.quad);
@@ -280,21 +298,6 @@ var Page = function() {
                 };
                 this.render = function(delta) {
                     // Transition animation
-                    self.renderer.setClearColor(0x000000, 0);
-                    /*if(self.transitionParams.animateTransition) {
-                        var t = (1 + Math.sin(self.transitionParams.transitionSpeed * self.clock.getElapsedTime() / Math.PI)) / 2;
-                        self.transitionParams.transition = THREE.Math.smoothstep(t, 0.3, 0.7);
-                        // Change the current alpha texture after each transition
-                        if(self.transitionParams.loopTexture && (self.transitionParams.transition === 0 || self.transitionParams.transition === 1)) {
-                            if(this.needChange) {
-                                self.transitionParams.texture = (self.transitionParams.texture + 1) % this.textures.length;
-                                this.quadmaterial.uniforms.tMixTexture.value = this.textures[self.transitionParams.texture];
-                                this.needChange = false;
-                            }
-                        } else {
-                            this.needChange = true;
-                        }
-                    }*/
                     this.quadmaterial.uniforms.mixRatio.value = self.transitionParams.transition;
                     // Prevent render both scenes when it's not necessary
                     if(self.transitionParams.transition === 0) {
@@ -309,95 +312,35 @@ var Page = function() {
                     }
                 };
             };
-            
-            var SceneA = new this.SceneA();
-            var SceneB = new this.SceneB();
-            this.SceneTransition = new this.Transition(SceneA, SceneB);
-            
-            /*****************************/
-
-            var render = function() {
-                self.fpsStats.update(self.renderer);
-                self.gpuStats.update(self.renderer);
-                self.SceneTransition.render(self.clock.getDelta());
-            };
+            /*********************************************************/
+            this.SceneA = new this.Scene(0xff0000);
+            this.SceneB = new this.Scene(0x00ffff);
+            this.transition = new this.Transition(this.SceneA, this.SceneB);
             var animate = function() {
                 requestAnimationFrame(animate);
                 render();
             };
+            var render = function() {
+                self.fpsStats.update(self.renderer);
+                self.gpuStats.update(self.renderer);
+                self.transition.render(self.clock.getDelta());
+            };
             animate();
-        },
-        addGui: function() {
-            var self = this;
-            if(this.settings.guiEnabled) {
-                // World GUI params
-                var GUI = new dat.GUI();
-                GUI.addColor(this.configParams, 'color').listen();
-                GUI.add(this.configParams, 'antialias').listen();
-                GUI.add(this.configParams, 'alpha').listen();
-                GUI.add(this.configParams, 'level', 0, 1).listen();
-                GUI.add(this.configParams, 'cameraX', -1, 1).listen();
-                GUI.add(this.configParams, 'cameraY', -1, 1).listen();
-                GUI.add(this.configParams, 'cameraZ', -1, 1).listen();
-                GUI.add(this.configParams, 'rotateX', 0, 0.2).listen();
-                GUI.add(this.configParams, 'rotateY', 0, 0.2).listen();
-                GUI.add(this.configParams, 'random');
-                
-                // Transition GUI params
-                var guiTransition = new dat.GUI();
-                guiTransition.add(this.transitionParams, 'useTexture').onChange(function(value) {
-                    self.SceneTransition.useTexture(value);
-                });
-                guiTransition.add(this.transitionParams, 'loopTexture');
-                guiTransition.add(this.transitionParams, 'texture', {
-                    Perlin: 0,
-                    Squares: 1,
-                    Cells: 2,
-                    Distort: 3,
-                    Gradient: 4,
-                    Radial: 5
-                }).onChange(function(value) {
-                    self.SceneTransition.setTexture(value);
-                }).listen();
-                guiTransition.add(this.transitionParams, 'textureThreshold', 0, 1, 0.01).onChange(function(value) {
-                    self.SceneTransition.setTextureThreshold(value);
-                });
-                guiTransition.add(this.transitionParams, 'animateTransition');
-                guiTransition.add(this.transitionParams, 'transition', 0, 1, 0.01).listen();
-                guiTransition.add(this.transitionParams, 'transitionSpeed', 0.5, 5, 0.01);
-            }
-        },
-        addStats: function() {
-            if(this.settings.statsEnabled) {
-                //add Threejs stats FPS
-                this.fpsStats = new Stats();
-                this.fpsStats.setMode(0); // 0: fps, 1: ms
-                this.fpsStats.domElement.style.position = 'absolute';
-                this.fpsStats.domElement.style.left = '0px';
-                this.fpsStats.domElement.style.top = '0px';
-                document.body.appendChild(this.fpsStats.domElement);
-                //add threex.renderstats WEBGL render
-                this.gpuStats = new THREEx.RendererStats();
-                this.gpuStats.domElement.style.position = 'absolute';
-                this.gpuStats.domElement.style.left = '0px';
-                this.gpuStats.domElement.style.bottom = '0px';
-                document.body.appendChild(this.gpuStats.domElement);
-            }
         }
     };
 };
+
+/********************************************************/
 /**
  * Page Init
  **/
 Page.prototype.init = function() {
     this.system.init();
-    this.World.init();
+    this.world.init();
     console.log('Page init completed');
 };
 /**
  * On Ready Init Page Prototype
  **/
 var myPage = new Page();
-$(function() {
-    myPage.init();
-});
+myPage.init();
