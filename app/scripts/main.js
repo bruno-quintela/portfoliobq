@@ -127,11 +127,20 @@ var Page = function() {
         transitionParams: {
             'useTexture': true,
             'transition': 0.5,
-            'transitionSpeed': 1.0,
-            'texture': 1,
+            'transitionSpeed': 3.0,
+            'texture': 3,
             'loopTexture': false,
-            'animateTransition': false,
-            'textureThreshold': 0.3
+            'animateTransition': true,
+            'textureThreshold': 0.3,
+            'A->B':function() {
+                /*var t=(1+Math.sin(this.transitionSpeed*self.clock.getElapsedTime()/Math.PI))/2;
+                this.transition=THREE.Math.smoothstep(t,0.1,0.9);*/
+            },
+            'B->A':function() {
+                /*var clock = new THREE.Clock();
+                var t=(1+Math.sin(this.transitionSpeed*self.clock.getElapsedTime()/Math.PI))/2;
+                this.transition=THREE.Math.smoothstep(t,0.9,0.1);*/
+            }
         },
         container: {},
         renderer: {},
@@ -174,6 +183,8 @@ var Page = function() {
                 guiTransition.add(this.transitionParams, 'animateTransition');
                 guiTransition.add(this.transitionParams, 'transition', 0, 1, 0.01).listen();
                 guiTransition.add(this.transitionParams, 'transitionSpeed', 0.5, 5, 0.01);
+                guiTransition.add(this.transitionParams, 'A->B');
+                guiTransition.add(this.transitionParams, 'B->A');
             }
         },
         addStats: function() {
@@ -213,10 +224,8 @@ var Page = function() {
                 // Setup scene
                 this.scene = new THREE.Scene();
                 this.scene.add(new THREE.AmbientLight(0x555555));
-                var light = new THREE.SpotLight(0xffffff, 1.5);
-                light.position.set(0, 500, 2000);
-                this.scene.add(light);
-                this.rotationSpeed = new THREE.Vector3(0, 0.2, 0.1);
+
+                this.rotationSpeed = new THREE.Vector3(0, 0.002, 0.001);
                 var geometry = new THREE.BoxGeometry(2, 2, 2);
                 var material = new THREE.MeshBasicMaterial({
                     color: matColor
@@ -226,14 +235,14 @@ var Page = function() {
                 var renderTargetParameters = {
                     minFilter: THREE.LinearFilter,
                     magFilter: THREE.LinearFilter,
-                    format: THREE.RGBFormat,
+                    format: THREE.RGBAFormat,
                     stencilBuffer: false
                 };
                 this.fbo = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, renderTargetParameters);
-                this.render = function(delta, rtt) {
-                    cube.rotation.x += delta * this.rotationSpeed.x;
-                    cube.rotation.y += delta * this.rotationSpeed.y;
-                    cube.rotation.z += delta * this.rotationSpeed.z;
+                this.render = function(rtt) {
+                    cube.rotation.x += this.rotationSpeed.x;
+                    cube.rotation.y += this.rotationSpeed.y;
+                    cube.rotation.z += this.rotationSpeed.z;
                     if(rtt) {
                         self.renderer.render(this.scene, this.camera, this.fbo, true);
                     } else {
@@ -286,7 +295,7 @@ var Page = function() {
                 this.sceneB = sceneB;
                 this.quadmaterial.uniforms.tDiffuse1.value = sceneA.fbo;
                 this.quadmaterial.uniforms.tDiffuse2.value = sceneB.fbo;
-                this.needChange = false;
+                this.needChange = true;
                 this.setTextureThreshold = function(value) {
                     this.quadmaterial.uniforms.threshold.value = value;
                 };
@@ -298,12 +307,33 @@ var Page = function() {
                 };
                 this.render = function(delta) {
                     // Transition animation
+                    if (self.transitionParams.animateTransition)
+                    {
+                        var t=(1+Math.sin(self.transitionParams.transitionSpeed*self.clock.getElapsedTime()/Math.PI))/2;
+                        self.transitionParams.transition=THREE.Math.smoothstep(t,0.1,0.9);
+
+                        // Change the current alpha texture after each transition
+                        /*if (self.transitionParams.loopTexture && (self.transitionParams.transition==0 || self.transitionParams.transition==1))
+                        {
+                            if (this.needChange)
+                            {
+                                transitionParams.texture=(transitionParams.texture+1)%this.textures.length;
+                                this.quadmaterial.uniforms.tMixTexture.value = this.textures[transitionParams.texture];
+                                this.needChange=false;
+                            }
+                        }	
+                        else
+                        {
+                            this.needChange=true;
+                        }*/
+
+                    }
                     this.quadmaterial.uniforms.mixRatio.value = self.transitionParams.transition;
                     // Prevent render both scenes when it's not necessary
                     if(self.transitionParams.transition === 0) {
-                        this.sceneB.render(delta, false);
+                        this.sceneB.render(false);
                     } else if(self.transitionParams.transition === 1) {
-                        this.sceneA.render(delta, false);
+                        this.sceneA.render(false);
                     } else {
                         // When 0<transition<1 render transition between two scenes
                         this.sceneA.render(delta, true);
@@ -314,7 +344,7 @@ var Page = function() {
             };
             /*********************************************************/
             this.SceneA = new this.Scene(0xff0000);
-            this.SceneB = new this.Scene(0x00ffff);
+            this.SceneB = new this.Scene(0x0000ff);
             this.transition = new this.Transition(this.SceneA, this.SceneB);
             var animate = function() {
                 requestAnimationFrame(animate);
