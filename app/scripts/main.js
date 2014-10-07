@@ -107,7 +107,6 @@ var Page = function() {
         }
     };
     this.world = {
-        clock: new THREE.Clock(),
         settings: {
             statsEnabled: true,
             guiEnabled: true
@@ -125,21 +124,32 @@ var Page = function() {
             random: function() {}
         },
         transitionParams: {
+            'clock': new THREE.Clock(false),
             'useTexture': true,
-            'transition': 0.5,
+            'transitionMixRatio': 0,
             'transitionSpeed': 3.0,
             'texture': 3,
             'loopTexture': false,
             'animateTransition': true,
             'textureThreshold': 0.3,
+            'currentScene':'A', // A/B/T
             'A->B':function() {
-                /*var t=(1+Math.sin(this.transitionSpeed*self.clock.getElapsedTime()/Math.PI))/2;
-                this.transition=THREE.Math.smoothstep(t,0.1,0.9);*/
+                var self = this;
+                this.currentScene = 'T';
+                this.clock.start();
+                setTimeout(function(){
+                    self.currentScene = 'B';
+                    self.clock.stop();
+                }, 1000);
             },
             'B->A':function() {
-                /*var clock = new THREE.Clock();
-                var t=(1+Math.sin(this.transitionSpeed*self.clock.getElapsedTime()/Math.PI))/2;
-                this.transition=THREE.Math.smoothstep(t,0.9,0.1);*/
+                var self = this;
+                this.currentScene = 'T';
+                this.clock.start();
+                setTimeout(function(){
+                    self.currentScene = 'A';
+                    self.clock.stop();
+                }, 1000);
             }
         },
         container: {},
@@ -163,6 +173,7 @@ var Page = function() {
                 GUI.add(this.configParams, 'random');
                 // Transition GUI params
                 var guiTransition = new dat.GUI();
+                guiTransition.add(this.transitionParams, 'currentScene').listen();
                 guiTransition.add(this.transitionParams, 'useTexture').onChange(function(value) {
                     self.transition.useTexture(value);
                 });
@@ -181,7 +192,7 @@ var Page = function() {
                     self.transition.setTextureThreshold(value);
                 });
                 guiTransition.add(this.transitionParams, 'animateTransition');
-                guiTransition.add(this.transitionParams, 'transition', 0, 1, 0.01).listen();
+                guiTransition.add(this.transitionParams, 'transitionMixRatio', 0, 1, 0.01).listen();
                 guiTransition.add(this.transitionParams, 'transitionSpeed', 0.5, 5, 0.01);
                 guiTransition.add(this.transitionParams, 'A->B');
                 guiTransition.add(this.transitionParams, 'B->A');
@@ -217,7 +228,9 @@ var Page = function() {
             this.renderer.setSize(window.innerWidth, window.innerHeight);
             this.renderer.setClearColor(0x000000, 0);
             
-            /******************************************************/
+            /**
+             * Scene
+             **/
             this.Scene = function(matColor) {
                 this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
                 this.camera.position.z = 5;
@@ -226,7 +239,7 @@ var Page = function() {
                 this.scene.add(new THREE.AmbientLight(0x555555));
 
                 this.rotationSpeed = new THREE.Vector3(0, 0.002, 0.001);
-                var geometry = new THREE.BoxGeometry(2, 2, 2);
+                var geometry = new THREE.BoxGeometry(3, 3, 3);
                 var material = new THREE.MeshBasicMaterial({
                     color: matColor
                 });
@@ -250,6 +263,10 @@ var Page = function() {
                     }
                 };
             };
+            
+            /**
+             * Transition
+             **/
             this.Transition = function(sceneA, sceneB) {
                 this.scene = new THREE.Scene();
                 this.cameraOrtho = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -10, 10);
@@ -305,39 +322,37 @@ var Page = function() {
                 this.setTexture = function(i) {
                     this.quadmaterial.uniforms.tMixTexture.value = this.textures[i];
                 };
-                this.render = function(delta) {
+                this.render = function() {
                     // Transition animation
                     if (self.transitionParams.animateTransition)
                     {
-                        var t=(1+Math.sin(self.transitionParams.transitionSpeed*self.clock.getElapsedTime()/Math.PI))/2;
-                        self.transitionParams.transition=THREE.Math.smoothstep(t,0.1,0.9);
-
-                        // Change the current alpha texture after each transition
-                        /*if (self.transitionParams.loopTexture && (self.transitionParams.transition==0 || self.transitionParams.transition==1))
-                        {
-                            if (this.needChange)
-                            {
-                                transitionParams.texture=(transitionParams.texture+1)%this.textures.length;
-                                this.quadmaterial.uniforms.tMixTexture.value = this.textures[transitionParams.texture];
-                                this.needChange=false;
-                            }
-                        }	
-                        else
-                        {
-                            this.needChange=true;
-                        }*/
+                        //calculate delta interval based on clock elapsed time [0..1]
+                        self.transitionParams.transitionMixRatio=(1+Math.sin(self.transitionParams.transitionSpeed*self.transitionParams.clock.getElapsedTime()/Math.PI))/2;
+                        console.log(self.transitionParams.clock.getElapsedTime());
+                        //console.log(timeDelta);
+                        
+                        console.log(self.transitionParams.transitionMixRatio);
+                        console.log(self.transitionParams.clock.getDelta());
 
                     }
-                    this.quadmaterial.uniforms.mixRatio.value = self.transitionParams.transition;
+                    // set framebuffer object mix ratio [0..1]
+                    this.quadmaterial.uniforms.mixRatio.value = self.transitionParams.transitionMixRatio;
+                    
                     // Prevent render both scenes when it's not necessary
-                    if(self.transitionParams.transition === 0) {
+                    //Render only scene A
+                    if(self.transitionParams.currentScene === 'A') {
                         this.sceneB.render(false);
-                    } else if(self.transitionParams.transition === 1) {
+                    }
+                    //Render only scene B
+                    else if(self.transitionParams.currentScene === 'B') {
                         this.sceneA.render(false);
-                    } else {
+                    }
+                    // render both scenes and transition frame buffer object
+                    else if(self.transitionParams.currentScene === 'T')
+                    {
                         // When 0<transition<1 render transition between two scenes
-                        this.sceneA.render(delta, true);
-                        this.sceneB.render(delta, true);
+                        this.sceneA.render(true);
+                        this.sceneB.render(true);
                         self.renderer.render(this.scene, this.cameraOrtho, null, true);
                     }
                 };
@@ -353,7 +368,7 @@ var Page = function() {
             var render = function() {
                 self.fpsStats.update(self.renderer);
                 self.gpuStats.update(self.renderer);
-                self.transition.render(self.clock.getDelta());
+                self.transition.render();
             };
             animate();
         }
