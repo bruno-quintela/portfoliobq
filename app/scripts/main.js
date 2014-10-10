@@ -6,6 +6,7 @@
 /*global dat:false */
 /*global requestAnimationFrame:false */
 /*global threejsCanvas:false */
+/*global TWEEN:false */
 /* How to remove DOM element after animation/transition */
 /*$('#someSelector').bind('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function(){ ... });*/
 /*$('#someSelector').bind('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function(){ ... });*/
@@ -107,6 +108,9 @@ var Page = function() {
         }
     };
     this.world = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+        dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: true,
             guiEnabled: true
@@ -125,31 +129,39 @@ var Page = function() {
         },
         transitionParams: {
             'clock': new THREE.Clock(false),
-            'useTexture': true,
             'transitionMixRatio': 0,
-            'transitionSpeed': 3.0,
-            'texture': 3,
-            'loopTexture': false,
-            'animateTransition': true,
+            'texture': 2,
             'textureThreshold': 0.3,
-            'currentScene':'A', // A/B/T
-            'A->B':function() {
+            'currentScene': 'A', // A/B/T
+            'A->B': function() {
                 var self = this;
-                this.currentScene = 'T';
-                this.clock.start();
-                setTimeout(function(){
-                    self.currentScene = 'B';
-                    self.clock.stop();
-                }, 1000);
+                this.transitionMixRatio = 0;
+                var update = function() {
+                    self.transitionMixRatio = current.x;
+                };
+                var current = {
+                    x: 0
+                };
+                // remove previous tweens if needed
+                var tweenHead = new TWEEN.Tween(current).to({
+                    x: 1
+                }, 2000).onUpdate(update);
+                tweenHead.start();
             },
-            'B->A':function() {
+            'B->A': function() {
                 var self = this;
-                this.currentScene = 'T';
-                this.clock.start();
-                setTimeout(function(){
-                    self.currentScene = 'A';
-                    self.clock.stop();
-                }, 1000);
+                this.transitionMixRatio = 1;
+                var update = function() {
+                    self.transitionMixRatio = current.x;
+                };
+                var current = {
+                    x: 1
+                };
+                // remove previous tweens if needed
+                var tweenBack = new TWEEN.Tween(current).to({
+                    x: 0
+                }, 2000).onUpdate(update);
+                tweenBack.start();
             }
         },
         container: {},
@@ -174,10 +186,6 @@ var Page = function() {
                 // Transition GUI params
                 var guiTransition = new dat.GUI();
                 guiTransition.add(this.transitionParams, 'currentScene').listen();
-                guiTransition.add(this.transitionParams, 'useTexture').onChange(function(value) {
-                    self.transition.useTexture(value);
-                });
-                guiTransition.add(this.transitionParams, 'loopTexture');
                 guiTransition.add(this.transitionParams, 'texture', {
                     Perlin: 0,
                     Squares: 1,
@@ -191,9 +199,7 @@ var Page = function() {
                 guiTransition.add(this.transitionParams, 'textureThreshold', 0, 1, 0.01).onChange(function(value) {
                     self.transition.setTextureThreshold(value);
                 });
-                guiTransition.add(this.transitionParams, 'animateTransition');
                 guiTransition.add(this.transitionParams, 'transitionMixRatio', 0, 1, 0.01).listen();
-                guiTransition.add(this.transitionParams, 'transitionSpeed', 0.5, 5, 0.01);
                 guiTransition.add(this.transitionParams, 'A->B');
                 guiTransition.add(this.transitionParams, 'B->A');
             }
@@ -219,51 +225,94 @@ var Page = function() {
             var self = this;
             this.addGUI();
             this.addStats();
-            
             this.renderer = new THREE.WebGLRenderer({
                 canvas: threejsCanvas,
                 antialias: this.configParams.antialias,
                 alpha: this.configParams.alpha
             });
-            this.renderer.setSize(window.innerWidth, window.innerHeight);
+            this.renderer.setSize(this.width, this.height);
             this.renderer.setClearColor(0x000000, 0);
-            
             /**
              * Scene
              **/
             this.Scene = function(matColor) {
-                this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
                 this.camera.position.z = 5;
                 // Setup scene
                 this.scene = new THREE.Scene();
-                this.scene.add(new THREE.AmbientLight(0x555555));
-
                 this.rotationSpeed = new THREE.Vector3(0, 0.002, 0.001);
-                var geometry = new THREE.BoxGeometry(3, 3, 3);
+                var geometry = new THREE.BoxGeometry(2, 2, 2);
                 var material = new THREE.MeshBasicMaterial({
                     color: matColor
                 });
                 var cube = new THREE.Mesh(geometry, material);
                 this.scene.add(cube);
-                var renderTargetParameters = {
+                /******* postprocessing ************************/
+                /*var renderModel = new THREE.RenderPass(this.scene, this.camera);
+                var shaderBleach = THREE.BleachBypassShader;
+                var shaderSepia = THREE.SepiaShader;
+                var shaderVignette = THREE.VignetteShader;
+                var shaderCopy = THREE.CopyShader;
+                var effectBleach = new THREE.ShaderPass(shaderBleach);
+                var effectSepia = new THREE.ShaderPass(shaderSepia);
+                var effectVignette = new THREE.ShaderPass(shaderVignette);
+                var effectCopy = new THREE.ShaderPass(shaderCopy);
+                effectBleach.uniforms.opacity.value = 0.95;
+                effectSepia.uniforms.amount.value = 0.9;
+                effectVignette.uniforms.offset.value = 0.95;
+                effectVignette.uniforms.darkness.value = 1.6;
+                var effectBloom = new THREE.BloomPass(0.5);
+                var effectFilm = new THREE.FilmPass(0.35, 0.025, 648, false);
+                var effectFilmBW = new THREE.FilmPass(0.35, 0.5, 2048, true);
+                var effectDotScreen = new THREE.DotScreenPass(new THREE.Vector2(0, 0), 0.5, 0.8);
+                var effectHBlur = new THREE.ShaderPass(THREE.HorizontalBlurShader);
+                var effectVBlur = new THREE.ShaderPass(THREE.VerticalBlurShader);
+                effectHBlur.uniforms.h.value = 2 / (self.width / 2);
+                effectVBlur.uniforms.v.value = 2 / (self.height / 2);
+                var effectColorify1 = new THREE.ShaderPass(THREE.ColorifyShader);
+                var effectColorify2 = new THREE.ShaderPass(THREE.ColorifyShader);
+                effectColorify1.uniforms.color.value.setRGB(1, 0.8, 0.8);
+                effectColorify2.uniforms.color.value.setRGB(1, 0.75, 0.5);*/
+                
+                var rtParameters = {
                     minFilter: THREE.LinearFilter,
                     magFilter: THREE.LinearFilter,
                     format: THREE.RGBAFormat,
                     stencilBuffer: false
                 };
-                this.fbo = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, renderTargetParameters);
+                this.composer = new THREE.EffectComposer(self.renderer, new THREE.WebGLRenderTarget(self.width, self.height, rtParameters));
+                this.composer.addPass(new THREE.RenderPass(this.scene, this.camera));
+                // FFXA antialiasing postprocessing
+               /* var fxaa = new THREE.ShaderPass(THREE.FXAAShader);
+                fxaa.uniforms.resolution.value = new THREE.Vector2( 1 / self.width, 1 / self.height );
+                fxaa.renderToScreen = true;
+                this.composer.addPass(fxaa);*/
+                // Technicolor postprocessing
+                /*var technicolor = new THREE.ShaderPass(THREE.Technicolor3Shader);
+                technicolor.renderToScreen = true;
+                this.composer.addPass(technicolor);*/
+                var rgbShift = new THREE.ShaderPass(THREE.RGBShiftShader);
+                rgbShift.uniforms.amount.value = 0.01;
+                rgbShift.renderToScreen = true;
+                this.composer.addPass(rgbShift);
+                // glitch pass
+                /*var glitchPass = new THREE.GlitchPass();
+                glitchPass.renderToScreen = false;
+                self.composer.addPass(glitchPass);*/
+                /*****************************************/
+                this.fbo = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, rtParameters);
                 this.render = function(rtt) {
                     cube.rotation.x += this.rotationSpeed.x;
                     cube.rotation.y += this.rotationSpeed.y;
                     cube.rotation.z += this.rotationSpeed.z;
                     if(rtt) {
-                        self.renderer.render(this.scene, this.camera, this.fbo, true);
+                        self.renderer.render(this.scene, this.camera, this.fbo, false);
                     } else {
-                        self.renderer.render(this.scene, this.camera);
+                        //self.renderer.render(this.scene, this.camera);
+                        this.composer.render();
                     }
                 };
             };
-            
             /**
              * Transition
              **/
@@ -298,7 +347,7 @@ var Page = function() {
                         },
                         tMixTexture: {
                             type: 't',
-                            value: this.textures[0]
+                            value: this.textures[1]
                         }
                     },
                     vertexShader: ['varying vec2 vUv;', 'void main() {', 'vUv = vec2( uv.x, uv.y );', 'gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );', '}'].join('\n'),
@@ -322,44 +371,50 @@ var Page = function() {
                 this.setTexture = function(i) {
                     this.quadmaterial.uniforms.tMixTexture.value = this.textures[i];
                 };
+                var rtParameters = {
+                    minFilter: THREE.LinearFilter,
+                    magFilter: THREE.LinearFilter,
+                    format: THREE.RGBAFormat,
+                    stencilBuffer: false
+                };
+                this.composer = new THREE.EffectComposer(self.renderer, new THREE.WebGLRenderTarget(self.width, self.height, rtParameters));
+                this.composer.addPass(new THREE.RenderPass(this.scene, this.cameraOrtho));
+                var rgbShift = new THREE.ShaderPass(THREE.RGBShiftShader);
+                rgbShift.uniforms.amount.value = 0.01;
+                rgbShift.renderToScreen = true;
+                this.composer.addPass(rgbShift);
+                
                 this.render = function() {
                     // Transition animation
-                    if (self.transitionParams.animateTransition)
-                    {
-                        //calculate delta interval based on clock elapsed time [0..1]
-                        self.transitionParams.transitionMixRatio=(1+Math.sin(self.transitionParams.transitionSpeed*self.transitionParams.clock.getElapsedTime()/Math.PI))/2;
-                        console.log(self.transitionParams.clock.getElapsedTime());
-                        //console.log(timeDelta);
-                        
-                        console.log(self.transitionParams.transitionMixRatio);
-                        console.log(self.transitionParams.clock.getDelta());
-
-                    }
-                    // set framebuffer object mix ratio [0..1]
+                    //console.log('mixRatio:' + self.transitionParams.transitionMixRatio);
+                    // Set framebuffer object mix ratio [0..1]
                     this.quadmaterial.uniforms.mixRatio.value = self.transitionParams.transitionMixRatio;
-                    
                     // Prevent render both scenes when it's not necessary
-                    //Render only scene A
-                    if(self.transitionParams.currentScene === 'A') {
+                    // Render only scene A
+                    if(self.transitionParams.transitionMixRatio === 0) {
+                        self.transitionParams.currentScene = 'A';
                         this.sceneB.render(false);
                     }
-                    //Render only scene B
-                    else if(self.transitionParams.currentScene === 'B') {
+                    // Render only scene B
+                    else if(self.transitionParams.transitionMixRatio === 1) {
+                        self.transitionParams.currentScene = 'B';
                         this.sceneA.render(false);
                     }
-                    // render both scenes and transition frame buffer object
-                    else if(self.transitionParams.currentScene === 'T')
-                    {
+                    // Render both scenes and transition frame buffer object
+                    else {
                         // When 0<transition<1 render transition between two scenes
+                        self.transitionParams.currentScene = 'Transition';
                         this.sceneA.render(true);
                         this.sceneB.render(true);
-                        self.renderer.render(this.scene, this.cameraOrtho, null, true);
+                        this.composer.render();
+                        //self.renderer.render(this.scene, this.cameraOrtho, null, true);
                     }
                 };
             };
             /*********************************************************/
-            this.SceneA = new this.Scene(0xff0000);
-            this.SceneB = new this.Scene(0x0000ff);
+            this.transitionParams.clock.elapsedTime = 0;
+            this.SceneA = new this.Scene(0xffffff);
+            this.SceneB = new this.Scene(0x000000);
             this.transition = new this.Transition(this.SceneA, this.SceneB);
             var animate = function() {
                 requestAnimationFrame(animate);
@@ -368,13 +423,14 @@ var Page = function() {
             var render = function() {
                 self.fpsStats.update(self.renderer);
                 self.gpuStats.update(self.renderer);
+                // update the tweens from TWEEN library
+                TWEEN.update();
                 self.transition.render();
             };
             animate();
         }
     };
 };
-
 /********************************************************/
 /**
  * Page Init
