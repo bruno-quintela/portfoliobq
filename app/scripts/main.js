@@ -231,24 +231,58 @@ var Page = function() {
                 alpha: this.configParams.alpha
             });
             this.renderer.setSize(this.width, this.height);
-            this.renderer.setClearColor(0x000000, 0);
+            this.renderer.setClearColor(0xffffff, 0);
             /**
              * Scene
              **/
             this.Scene = function(matColor) {
-                this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
-                this.camera.position.z = 5;
-                // Setup scene
-                this.scene = new THREE.Scene();
-                this.rotationSpeed = new THREE.Vector3(0, 0.002, 0.001);
-                var geometry = new THREE.BoxGeometry(2, 2, 2);
-                var material = new THREE.MeshBasicMaterial({
-                    color: matColor
+                //
+                this.cameraOrtho = new THREE.OrthographicCamera(-self.width / 2, self.width / 2, self.height / 2, -self.height / 2, -10000, 10000);
+                this.cameraOrtho.position.z = 100;
+                this.cameraPerspective = new THREE.PerspectiveCamera(50, self.width / self.height, 1, 10000);
+                this.cameraPerspective.position.z = 900;
+                //
+                this.sceneModel = new THREE.Scene();
+                this.sceneBG = new THREE.Scene();
+                //
+                var directionalLight = new THREE.DirectionalLight(0xffffff);
+                directionalLight.position.set(0, -0.1, 1).normalize();
+                this.sceneModel.add(directionalLight);
+                var loader = new THREE.JSONLoader(true);
+                //document.body.appendChild(loader.statusDomElement);
+                var selfSceneModel = this.sceneModel;
+                loader.load('scripts/vendor/threejs/obj/leeperrysmith/LeePerrySmith.js', function(geometry) {
+                    self.createMesh(geometry, selfSceneModel, 100);
                 });
-                var cube = new THREE.Mesh(geometry, material);
-                this.scene.add(cube);
-                /******* postprocessing ************************/
-                /*var renderModel = new THREE.RenderPass(this.scene, this.camera);
+                //
+                var materialColor = new THREE.MeshBasicMaterial({
+                    map: THREE.ImageUtils.loadTexture('scripts/vendor/threejs/obj/leeperrysmith/pz.jpg'),
+                    depthTest: false
+                });
+                var quadBG = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), materialColor);
+                quadBG.position.z = -500;
+                quadBG.scale.set(self.width, self.height, 1);
+                this.sceneBG.add(quadBG);
+                //
+                var sceneMask = new THREE.Scene();
+                var quadMask = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({
+                    color: 0xffaa00
+                }));
+                quadMask.position.z = -300;
+                quadMask.scale.set(self.width / 2, self.height / 2, 1);
+                sceneMask.add(quadMask);
+                //
+                self.renderer = new THREE.WebGLRenderer({
+                    canvas: threejsCanvas,
+                    antialias: false
+                });
+                self.renderer.setSize(self.width, self.height);
+                self.renderer.setClearColor(0x000000, 1);
+                self.renderer.autoClear = false;
+                //
+                self.renderer.gammaInput = true;
+                self.renderer.gammaOutput = true;
+                //
                 var shaderBleach = THREE.BleachBypassShader;
                 var shaderSepia = THREE.SepiaShader;
                 var shaderVignette = THREE.VignetteShader;
@@ -272,44 +306,57 @@ var Page = function() {
                 var effectColorify1 = new THREE.ShaderPass(THREE.ColorifyShader);
                 var effectColorify2 = new THREE.ShaderPass(THREE.ColorifyShader);
                 effectColorify1.uniforms.color.value.setRGB(1, 0.8, 0.8);
-                effectColorify2.uniforms.color.value.setRGB(1, 0.75, 0.5);*/
-                
+                effectColorify2.uniforms.color.value.setRGB(1, 0.75, 0.5);
+                var clearMask = new THREE.ClearMaskPass();
+                var renderMask = new THREE.MaskPass(this.sceneModel, this.cameraPerspective);
+                var renderMaskInverse = new THREE.MaskPass(this.sceneModel, this.cameraPerspective);
+                renderMaskInverse.inverse = true;
+                //effectFilm.renderToScreen = true;
+                //effectFilmBW.renderToScreen = true;
+                //effectDotScreen.renderToScreen = true;
+                //effectBleach.renderToScreen = true;
+                effectVignette.renderToScreen = true;
+                //effectCopy.renderToScreen = true;
+                //
                 var rtParameters = {
                     minFilter: THREE.LinearFilter,
                     magFilter: THREE.LinearFilter,
-                    format: THREE.RGBAFormat,
-                    stencilBuffer: false
+                    format: THREE.RGBFormat,
+                    stencilBuffer: true
                 };
-                this.composer = new THREE.EffectComposer(self.renderer, new THREE.WebGLRenderTarget(self.width, self.height, rtParameters));
-                this.composer.addPass(new THREE.RenderPass(this.scene, this.camera));
-                // FFXA antialiasing postprocessing
-               /* var fxaa = new THREE.ShaderPass(THREE.FXAAShader);
-                fxaa.uniforms.resolution.value = new THREE.Vector2( 1 / self.width, 1 / self.height );
-                fxaa.renderToScreen = true;
-                this.composer.addPass(fxaa);*/
-                // Technicolor postprocessing
-                /*var technicolor = new THREE.ShaderPass(THREE.Technicolor3Shader);
-                technicolor.renderToScreen = true;
-                this.composer.addPass(technicolor);*/
-                var rgbShift = new THREE.ShaderPass(THREE.RGBShiftShader);
-                rgbShift.uniforms.amount.value = 0.01;
-                rgbShift.renderToScreen = true;
-                this.composer.addPass(rgbShift);
-                // glitch pass
-                /*var glitchPass = new THREE.GlitchPass();
-                glitchPass.renderToScreen = false;
-                self.composer.addPass(glitchPass);*/
+                var rtWidth = self.width / 2;
+                var rtHeight = self.height / 2;
+                //
+                var renderBackground = new THREE.RenderPass(this.sceneBG, this.cameraOrtho);
+                var renderModel = new THREE.RenderPass(this.sceneModel, this.cameraPerspective);
+                renderModel.clear = false;
+                this.composerScene = new THREE.EffectComposer(self.renderer, new THREE.WebGLRenderTarget(rtWidth * 2, rtHeight * 2, rtParameters));
+                this.composerScene.addPass(renderBackground);
+                this.composerScene.addPass(renderModel);
+                this.composerScene.addPass(renderMaskInverse);
+                this.composerScene.addPass(effectHBlur);
+                this.composerScene.addPass(effectVBlur);
+                this.composerScene.addPass(clearMask);
+                //
+                var renderScene = new THREE.TexturePass(this.composerScene.renderTarget2);
+                //
+                this.composer1 = new THREE.EffectComposer(self.renderer, new THREE.WebGLRenderTarget(rtWidth, rtHeight, rtParameters));
+                this.composer1.addPass(renderScene);
+                this.composer1.addPass( renderMask );
+                this.composer1.addPass(effectFilmBW);
+                this.composer1.addPass( clearMask );
+                this.composer1.addPass(effectVignette);
                 /*****************************************/
                 this.fbo = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, rtParameters);
                 this.render = function(rtt) {
-                    cube.rotation.x += this.rotationSpeed.x;
-                    cube.rotation.y += this.rotationSpeed.y;
-                    cube.rotation.z += this.rotationSpeed.z;
                     if(rtt) {
                         self.renderer.render(this.scene, this.camera, this.fbo, false);
                     } else {
                         //self.renderer.render(this.scene, this.camera);
-                        this.composer.render();
+                        //this.composer.render();
+                        self.renderer.clear();
+                        this.composerScene.render(0.01);
+                        this.composer1.render(0.01);
                     }
                 };
             };
@@ -379,11 +426,13 @@ var Page = function() {
                 };
                 this.composer = new THREE.EffectComposer(self.renderer, new THREE.WebGLRenderTarget(self.width, self.height, rtParameters));
                 this.composer.addPass(new THREE.RenderPass(this.scene, this.cameraOrtho));
-                var rgbShift = new THREE.ShaderPass(THREE.RGBShiftShader);
-                rgbShift.uniforms.amount.value = 0.01;
-                rgbShift.renderToScreen = true;
-                this.composer.addPass(rgbShift);
-                
+                var effect = new THREE.ShaderPass(THREE.DotScreenShader);
+                effect.uniforms.scale.value = 4;
+                this.composer.addPass(effect);
+                var effect1 = new THREE.ShaderPass(THREE.RGBShiftShader);
+                effect1.uniforms.amount.value = 0.0015;
+                effect1.renderToScreen = true;
+                this.composer.addPass(effect1);
                 this.render = function() {
                     // Transition animation
                     //console.log('mixRatio:' + self.transitionParams.transitionMixRatio);
@@ -411,12 +460,46 @@ var Page = function() {
                     }
                 };
             };
+            this.createMesh = function(geometry, scene, scale) {
+                geometry.computeTangents();
+                var ambient = 0x444444,
+                    diffuse = 0x999999,
+                    specular = 0x080808,
+                    shininess = 20;
+                var shader = THREE.ShaderLib["normalmap"];
+                var uniforms = THREE.UniformsUtils.clone(shader.uniforms);
+                uniforms["tNormal"].value = THREE.ImageUtils.loadTexture("scripts/vendor/threejs/obj/leeperrysmith/Infinite-Level_02_Tangent_SmoothUV.jpg");
+                uniforms["uNormalScale"].value.set(0.75, 0.75);
+                uniforms["tDiffuse"].value = THREE.ImageUtils.loadTexture("scripts/vendor/threejs/obj/leeperrysmith/Map-COL.jpg");
+                uniforms["enableAO"].value = false;
+                uniforms["enableDiffuse"].value = true;
+                uniforms["diffuse"].value.setHex(diffuse);
+                uniforms["specular"].value.setHex(specular);
+                uniforms["ambient"].value.setHex(ambient);
+                uniforms["shininess"].value = shininess;
+                uniforms["diffuse"].value.convertGammaToLinear();
+                uniforms["specular"].value.convertGammaToLinear();
+                uniforms["ambient"].value.convertGammaToLinear();
+                var parameters = {
+                    fragmentShader: shader.fragmentShader,
+                    vertexShader: shader.vertexShader,
+                    uniforms: uniforms,
+                    lights: true
+                };
+                var mat2 = new THREE.ShaderMaterial(parameters);
+                self.mesh = new THREE.Mesh(geometry, mat2);
+                self.mesh.position.set(0, -50, 0);
+                self.mesh.scale.set(scale, scale, scale);
+                scene.add(self.mesh);
+                //loader.statusDomElement.style.display = "none";
+            };
             /*********************************************************/
-            this.transitionParams.clock.elapsedTime = 0;
-            this.SceneA = new this.Scene(0xffffff);
-            this.SceneB = new this.Scene(0x000000);
+            this.SceneA = new this.Scene(0x000fff);
+            this.SceneB = new this.Scene(0xfff000);
             this.transition = new this.Transition(this.SceneA, this.SceneB);
             var animate = function() {
+                var time = Date.now() * 0.0004;
+				if ( self.mesh ) self.mesh.rotation.y = -time;
                 requestAnimationFrame(animate);
                 render();
             };
