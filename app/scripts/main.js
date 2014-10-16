@@ -115,24 +115,20 @@ var Page = function() {
             statsEnabled: true,
             guiEnabled: true
         },
-        configParams: {
-            color: [0, 128, 255],
+        renderParams: {
             antialias: true,
-            alpha: true,
-            level: 0.75,
-            cameraX: 0.01,
-            cameraY: 0.01,
-            cameraZ: 1.0,
-            rotateX: 0.0141,
-            rotateY: 0.09,
-            random: function() {}
-        },
-        postProcessingParams: {
-            rgbshiftDelta: 0.001,
+            alpha: false,
             bloomStrengh: 1,
-            bloomKernelSize: 25,
-            bloomSigma: 4.0,
-            bloomResolution: 256
+            sampleDistance: 0.94,
+            enableRGBShift: true,
+            enableFXAA: true,
+            enableFocus: false,
+            enableBloom: true,
+            enableFilm: true,
+            enableTiltShift: true,
+            tiltBlur: 3.5,
+            enableVignette: true,
+            disableEffects: false
         },
         transitionParams: {
             'clock': new THREE.Clock(false),
@@ -178,26 +174,47 @@ var Page = function() {
         addGUI: function() {
             var self = this;
             if(this.settings.guiEnabled) {
-                // World GUI params
-                var guiWorld = new dat.GUI();
-                guiWorld.addColor(this.configParams, 'color').listen();
-                guiWorld.add(this.configParams, 'antialias').listen();
-                guiWorld.add(this.configParams, 'alpha').listen();
-                guiWorld.add(this.configParams, 'level', 0, 1).listen();
-                guiWorld.add(this.configParams, 'cameraX', -1, 1).listen();
-                guiWorld.add(this.configParams, 'cameraY', -1, 1).listen();
-                guiWorld.add(this.configParams, 'cameraZ', -1, 1).listen();
-                guiWorld.add(this.configParams, 'rotateX', 0, 0.2).listen();
-                guiWorld.add(this.configParams, 'rotateY', 0, 0.2).listen();
-                // Post Processing GUI params
-                var guiPostprocessing = new dat.GUI();
-                guiPostprocessing.add(this.postProcessingParams, 'rgbshiftDelta', 0, 1, 0.001).onChange(function(value) {
-                    self.SceneB.composer.passes[1].uniforms.amount.value = value;
+                // Renderer & Post Processing GUI params
+                var guiRender = new dat.GUI();
+                guiRender.add(this.renderParams, 'antialias').onChange(function() {
+                    self.renderer.antialias;
                 });
-                guiPostprocessing.add(this.postProcessingParams, 'bloomStrengh', 0, 10, 0.01).onChange(function(value) {
-                    self.SceneB.composer.passes[2].copyUniforms.opacity.value = value;
+                guiRender.add(this.renderParams, 'alpha').onChange(function() {
+                    self.renderer.alpha;
                 });
-
+                guiRender.add(this.renderParams, 'enableRGBShift').onChange(function() {
+                    self.refreshPostProcessing();
+                });
+                guiRender.add(this.renderParams, 'enableFXAA').onChange(function() {
+                    self.refreshPostProcessing();
+                });
+                guiRender.add(this.renderParams, 'enableBloom').onChange(function() {
+                    self.refreshPostProcessing();
+                });
+                guiRender.add(this.renderParams, 'bloomStrengh', 0, 10, 0.01).onChange(function(value) {
+                    //self.SceneB.composer.passes[2].copyUniforms.opacity.value = value;
+                });
+                guiRender.add(this.renderParams, 'enableFocus').onChange(function() {
+                    self.refreshPostProcessing();
+                });
+                guiRender.add(this.renderParams, 'sampleDistance', 0.0, 10.0).listen().onChange(function() {
+                    self.refreshPostProcessing();
+                });
+                guiRender.add(this.renderParams, 'enableFilm').onChange(function() {
+                    self.refreshPostProcessing();
+                });
+                guiRender.add(this.renderParams, 'enableTiltShift').onChange(function() {
+                    self.refreshPostProcessing();
+                });
+                guiRender.add(this.renderParams, 'tiltBlur', 0.0, 10.0).listen().onChange(function() {
+                    self.refreshPostProcessing();
+                });
+                guiRender.add(this.renderParams, 'enableVignette').onChange(function() {
+                    self.refreshPostProcessing();
+                });
+                guiRender.add(this.renderParams, 'disableEffects').onChange(function() {
+                    self.refreshPostProcessing();
+                });
                 // Transition GUI params
                 var guiTransition = new dat.GUI();
                 guiTransition.add(this.transitionParams, 'currentScene').listen();
@@ -242,16 +259,96 @@ var Page = function() {
             this.addStats();
             this.renderer = new THREE.WebGLRenderer({
                 canvas: threejsCanvas,
-                antialias: this.configParams.antialias,
-                alpha: this.configParams.alpha
+                antialias: this.renderParams.antialias,
+                alpha: this.renderParams.alpha
             });
             this.renderer.setSize(this.width, this.height);
-            this.renderer.setClearColor(0x000000, 0);
+            this.renderer.setClearColor(0xF5ECCE, 0);
             this.renderer.autoClear = false;
             /**
              * Scene
              **/
             this.Scene = function(matColor) {
+                /*
+                 * toggleEffects()
+                 */
+                this.toggleEffects = function() {
+                    this.composer = new THREE.EffectComposer(self.renderer);
+                    var renderModel = new THREE.RenderPass(this.scene, this.camera);
+                    this.composer.addPass(renderModel);
+                    if(self.renderParams.enableFXAA) {
+                        var effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
+                        effectFXAA.uniforms.resolution.value.set(1 / self.width, 1 / self.height);
+                        this.composer.addPass(effectFXAA);
+                    }
+                    if(self.renderParams.enableFocus) {
+                        this.effectFocus = new THREE.ShaderPass(THREE.FocusShader);
+                        this.effectFocus.uniforms.screenWidth.value = window.innerWidth;
+                        this.effectFocus.uniforms.screenHeight.value = window.innerHeight;
+                        this.effectFocus.uniforms.sampleDistance.value = 0.5;
+                        this.effectFocus.uniforms.waveFactor.value = 0.00100;
+                        this.composer.addPass(this.effectFocus);
+                    }
+                    if(self.renderParams.enableFilm) {
+                        var effectFilm = new THREE.FilmPass(0.1, 0, 448, false);
+                        this.composer.addPass(effectFilm);
+                    }
+                    if(self.renderParams.enableBloom) {
+                        var effectBloom = new THREE.BloomPass(0.3);
+                        this.composer.addPass(effectBloom);
+                    }
+                    if(self.renderParams.enableRGBShift) {
+                        var rgbShift = new THREE.ShaderPass(THREE.RGBShiftShader);
+                        rgbShift.uniforms.amount.value = 0.001;
+                        this.composer.addPass(rgbShift);
+                    }
+                    if(self.renderParams.enableTiltShift) {
+                        this.hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
+                        this.vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
+                        var bluriness = 5;
+                        this.hblur.uniforms.h.value = bluriness / self.width;
+                        this.vblur.uniforms.v.value = bluriness / self.height;
+                        this.hblur.uniforms.r.value = this.vblur.uniforms.r.value = 0.5;
+                        this.composer.addPass(this.hblur);
+                        this.composer.addPass(this.vblur);
+                    }
+                    if(self.renderParams.enableVignette) {
+                        this.vignettePass = new THREE.ShaderPass(THREE.VignetteShader);
+                        this.vignettePass.uniforms.darkness.value = 1.2;
+                        this.vignettePass.uniforms.offset.value = 1;
+                        this.composer.addPass(this.vignettePass);
+                    }
+                    var copyPass = new THREE.ShaderPass(THREE.CopyShader);
+                    this.composer.addPass(copyPass);
+                    copyPass.renderToScreen = true;
+                };
+                /*
+                 * MatChanger
+                 */
+                this.matChanger = function() {
+                    for(var e in self.renderParams) {
+                        if(this.effectFocus && e in this.effectFocus.uniforms) {
+                            this.effectFocus.uniforms[e].value = self.renderParams[e];
+                        } else if(this.vblur && e === 'tiltBlur') {
+                            var bluriness = self.renderParams[e];
+                            this.hblur.uniforms.h.value = bluriness / self.width;
+                            this.vblur.uniforms.v.value = bluriness / self.height;
+                            this.hblur.uniforms.r.value = this.vblur.uniforms.r.value = 0.5;
+                        }
+                    }
+                };
+                /*
+                 * Scene Postprocessing init
+                 */
+                this.initPostprocessing = function() {
+                    //Create Shader Passes
+                    var renderModel = new THREE.RenderPass(this.scene, this.camera);
+                    var copyPass = new THREE.ShaderPass(THREE.CopyShader);
+                    this.composer = new THREE.EffectComposer(self.renderer);
+                    this.composer.addPass(renderModel);
+                    this.composer.addPass(copyPass);
+                    copyPass.renderToScreen = true;
+                };
                 this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
                 this.camera.position.z = 5;
                 // Setup scene
@@ -271,29 +368,8 @@ var Page = function() {
                 });
                 var cube = new THREE.Mesh(geometry, material);
                 this.scene.add(cube);
-                //PostProcessing Effects
-                var renderPass = new THREE.RenderPass(this.scene, this.camera);
-                //var effectBloom = new THREE.BloomPass(1.35, 60, 12);
-                var effectBloom = new THREE.BloomPass(self.postProcessingParams.bloomStrengh, self.postProcessingParams.bloomKernelSize, self.postProcessingParams.bloomSigma, self.postProcessingParams.bloomResolution);
-                effectBloom.renderTargetX.format = THREE.RGBAFormat;
-                effectBloom.renderTargetY.format = THREE.RGBAFormat;
-                var rgbShift = new THREE.ShaderPass(THREE.RGBShiftShader);
-                rgbShift.uniforms.amount.value = self.postProcessingParams.rgbshiftDelta;
-                var copyPass = new THREE.ShaderPass(THREE.CopyShader);
-                copyPass.renderToScreen = true;
-                var renderTargetParams = {
-                    minFilter: THREE.LinearFilter,
-                    magFilter: THREE.LinearFilter,
-                    format: THREE.RGBAFormat,
-                    stencilBuffer: true
-                };
-                this.rt = new THREE.WebGLRenderTarget(self.width, self.height, renderTargetParams);
-                this.composer = new THREE.EffectComposer(self.renderer, this.rt);
-                this.composer.addPass(renderPass);
-                this.composer.addPass(rgbShift);
-                this.composer.addPass(effectBloom);
-                this.composer.addPass(copyPass);
-                this.fbo = new THREE.WebGLRenderTarget(self.width, self.height, this.rt);
+                this.matChanger();
+                this.toggleEffects();
                 this.render = function(rtt) {
                     cube.rotation.x += this.rotationSpeed.x;
                     cube.rotation.y += this.rotationSpeed.y;
@@ -365,11 +441,11 @@ var Page = function() {
                     this.quadmaterial.uniforms.tMixTexture.value = this.textures[i];
                 };
                 var renderPass = new THREE.RenderPass(this.scene, this.cameraOrtho);
-                var effectBloom = new THREE.BloomPass(self.postProcessingParams.bloomStrengh, self.postProcessingParams.bloomKernelSize, self.postProcessingParams.bloomSigma, self.postProcessingParams.bloomResolution);
+                var effectBloom = new THREE.BloomPass(self.renderParams.bloomStrengh, self.renderParams.bloomKernelSize, self.renderParams.bloomSigma, self.renderParams.bloomResolution);
                 effectBloom.renderTargetX.format = THREE.RGBAFormat;
                 effectBloom.renderTargetY.format = THREE.RGBAFormat;
                 var rgbShift = new THREE.ShaderPass(THREE.RGBShiftShader);
-                rgbShift.uniforms.amount.value = self.postProcessingParams.rgbshiftDelta;
+                rgbShift.uniforms.amount.value = self.renderParams.rgbshiftDelta;
                 var copyPass = new THREE.ShaderPass(THREE.CopyShader);
                 copyPass.renderToScreen = true;
                 var renderTargetParams = {
@@ -414,8 +490,14 @@ var Page = function() {
             /*********************************************************/
             this.transitionParams.clock.elapsedTime = 0;
             this.SceneA = new this.Scene(0x000000);
-            this.SceneB = new this.Scene(0xffffff);
+            this.SceneB = new this.Scene(0x000000);
             this.transition = new this.Transition(this.SceneA, this.SceneB);
+            this.refreshPostProcessing = function() {
+                this.SceneA.toggleEffects();
+                this.SceneB.toggleEffects();
+                this.SceneA.matChanger();
+                this.SceneB.matChanger();
+            };
             var animate = function() {
                 requestAnimationFrame(animate);
                 render();
