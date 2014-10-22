@@ -118,11 +118,11 @@ var Page = function() {
         renderParams: {
             antialias: true,
             alpha: false,
-            bloomStrengh: 1,
-            sampleDistance: 0.94,
+            enableGlitch: false,
             enableRGBShift: true,
             enableFXAA: true,
             enableBloom: true,
+            bloomStrengh: 0.3,
             enableFilm: true,
             enableTiltShift: true,
             tiltBlur: 3.5,
@@ -181,6 +181,9 @@ var Page = function() {
                 guiRender.add(this.renderParams, 'alpha').onChange(function() {
                     //self.renderer.alpha;
                 });
+                guiRender.add(this.renderParams, 'enableGlitch').onChange(function() {
+                    self.refreshPostProcessing();
+                });
                 guiRender.add(this.renderParams, 'enableRGBShift').onChange(function() {
                     self.refreshPostProcessing();
                 });
@@ -191,9 +194,6 @@ var Page = function() {
                     self.refreshPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'bloomStrengh', 0, 10, 0.01).onChange(function(value) {
-                    //self.SceneB.composer.passes[2].copyUniforms.opacity.value = value;
-                });
-                guiRender.add(this.renderParams, 'sampleDistance', 0.0, 10.0).listen().onChange(function() {
                     self.refreshPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableFilm').onChange(function() {
@@ -270,9 +270,12 @@ var Page = function() {
                  */
                 this.toggleEffects = function() {
                     this.composer = new THREE.EffectComposer(self.renderer);
-                    
                     var renderModel = new THREE.RenderPass(this.scene, this.camera);
                     this.composer.addPass(renderModel);
+                    if(self.renderParams.enableGlitch) {
+                        var glitchPass = new THREE.GlitchPass();
+                        this.composer.addPass(glitchPass);
+                    }
                     if(self.renderParams.enableFXAA) {
                         var effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
                         effectFXAA.uniforms.resolution.value.set(1 / self.width, 1 / self.height);
@@ -283,7 +286,8 @@ var Page = function() {
                         this.composer.addPass(effectFilm);
                     }
                     if(self.renderParams.enableBloom) {
-                        var effectBloom = new THREE.BloomPass(0.3);
+                        //var effectBloom = new THREE.BloomPass(0.3);
+                        var effectBloom = new THREE.BloomPass(self.renderParams.bloomStrengh);
                         this.composer.addPass(effectBloom);
                     }
                     if(self.renderParams.enableRGBShift) {
@@ -368,6 +372,10 @@ var Page = function() {
                     this.composer = new THREE.EffectComposer(self.renderer);
                     var renderModel = new THREE.RenderPass(this.scene, this.camera);
                     this.composer.addPass(renderModel);
+                    if(self.renderParams.enableGlitch) {
+                        var glitchPass = new THREE.GlitchPass();
+                        this.composer.addPass(glitchPass);
+                    }
                     if(self.renderParams.enableFXAA) {
                         var effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
                         effectFXAA.uniforms.resolution.value.set(1 / self.width, 1 / self.height);
@@ -378,7 +386,8 @@ var Page = function() {
                         this.composer.addPass(effectFilm);
                     }
                     if(self.renderParams.enableBloom) {
-                        var effectBloom = new THREE.BloomPass(0.3);
+                        //var effectBloom = new THREE.BloomPass(0.3);
+                        var effectBloom = new THREE.BloomPass(self.renderParams.bloomStrengh);
                         this.composer.addPass(effectBloom);
                     }
                     if(self.renderParams.enableRGBShift) {
