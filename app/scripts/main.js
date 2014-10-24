@@ -1,4 +1,5 @@
 'use strict';
+// JSHint Global exceptions
 /*global THREE:false */
 /*global THREEx:false */
 /*global Modernizr:false */
@@ -51,7 +52,11 @@
     this.$logo = $('.name');
     
 };*/
-var Page = function() {
+/*
+ * Declare page Namespace
+ */
+var Page = Page || {};
+Page = function() {
     this.system = {
         isTouch: Modernizr.touch,
         supportsWEBGL: true,
@@ -136,10 +141,10 @@ var Page = function() {
             'textureThreshold': 0.3,
             'currentScene': 'A', // A/B/T
             'A->B': function() {
-                var self = this;
+                var world = this;
                 this.transitionMixRatio = 0;
                 var update = function() {
-                    self.transitionMixRatio = current.x;
+                    world.transitionMixRatio = current.x;
                 };
                 var current = {
                     x: 0
@@ -151,10 +156,10 @@ var Page = function() {
                 tweenHead.start();
             },
             'B->A': function() {
-                var self = this;
+                var world = this;
                 this.transitionMixRatio = 1;
                 var update = function() {
-                    self.transitionMixRatio = current.x;
+                    world.transitionMixRatio = current.x;
                 };
                 var current = {
                     x: 1
@@ -171,45 +176,45 @@ var Page = function() {
         fpsStats: {},
         gpuStats: {},
         addGUI: function() {
-            var self = this;
+            var world = this;
             if(this.settings.guiEnabled) {
                 // Renderer & Post Processing GUI params
                 var guiRender = new dat.GUI();
                 guiRender.add(this.renderParams, 'antialias').onChange(function() {
-                    //self.renderer.antialias;
+                    //world.renderer.antialias;
                 });
                 guiRender.add(this.renderParams, 'alpha').onChange(function() {
-                    //self.renderer.alpha;
+                    //world.renderer.alpha;
                 });
                 guiRender.add(this.renderParams, 'enableGlitch').onChange(function() {
-                    self.refreshPostProcessing();
+                    world.addPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableRGBShift').onChange(function() {
-                    self.refreshPostProcessing();
+                    world.addPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableFXAA').onChange(function() {
-                    self.refreshPostProcessing();
+                    world.addPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableBloom').onChange(function() {
-                    self.refreshPostProcessing();
+                    world.addPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'bloomStrengh', 0, 10, 0.01).onChange(function(value) {
-                    self.refreshPostProcessing();
+                    world.addPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableFilm').onChange(function() {
-                    self.refreshPostProcessing();
+                    world.addPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableTiltShift').onChange(function() {
-                    self.refreshPostProcessing();
+                    world.addPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'tiltBlur', 0.0, 10.0).listen().onChange(function() {
-                    self.refreshPostProcessing();
+                    world.addPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableVignette').onChange(function() {
-                    self.refreshPostProcessing();
+                    world.addPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'disableEffects').onChange(function() {
-                    self.refreshPostProcessing();
+                    world.addPostProcessing();
                 });
                 // Transition GUI params
                 var guiTransition = new dat.GUI();
@@ -222,10 +227,10 @@ var Page = function() {
                     Gradient: 4,
                     Radial: 5
                 }).onChange(function(value) {
-                    self.transition.setTexture(value);
+                    world.transition.setTexture(value);
                 }).listen();
                 guiTransition.add(this.transitionParams, 'textureThreshold', 0, 1, 0.01).onChange(function(value) {
-                    self.transition.setTextureThreshold(value);
+                    world.transition.setTextureThreshold(value);
                 });
                 guiTransition.add(this.transitionParams, 'transitionMixRatio', 0, 1, 0.01).listen();
                 guiTransition.add(this.transitionParams, 'A->B');
@@ -250,7 +255,7 @@ var Page = function() {
             }
         },
         init: function() {
-            var self = this;
+            var world = this;
             this.addGUI();
             this.addStats();
             this.renderer = new THREE.WebGLRenderer({
@@ -265,73 +270,9 @@ var Page = function() {
              * Scene
              **/
             this.Scene = function(matColor) {
-                /*
-                 * toggleEffects()
-                 */
-                this.toggleEffects = function() {
-                    this.composer = new THREE.EffectComposer(self.renderer);
-                    var renderModel = new THREE.RenderPass(this.scene, this.camera);
-                    this.composer.addPass(renderModel);
-                    if(self.renderParams.enableGlitch) {
-                        var glitchPass = new THREE.GlitchPass();
-                        this.composer.addPass(glitchPass);
-                    }
-                    if(self.renderParams.enableFXAA) {
-                        var effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
-                        effectFXAA.uniforms.resolution.value.set(1 / self.width, 1 / self.height);
-                        this.composer.addPass(effectFXAA);
-                    }
-                    if(self.renderParams.enableFilm) {
-                        var effectFilm = new THREE.FilmPass(0.1, 0, 448, false);
-                        this.composer.addPass(effectFilm);
-                    }
-                    if(self.renderParams.enableBloom) {
-                        //var effectBloom = new THREE.BloomPass(0.3);
-                        var effectBloom = new THREE.BloomPass(self.renderParams.bloomStrengh);
-                        this.composer.addPass(effectBloom);
-                    }
-                    if(self.renderParams.enableRGBShift) {
-                        var rgbShift = new THREE.ShaderPass(THREE.RGBShiftShader);
-                        rgbShift.uniforms.amount.value = 0.001;
-                        this.composer.addPass(rgbShift);
-                    }
-                    if(self.renderParams.enableTiltShift) {
-                        this.hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
-                        this.vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
-                        var bluriness = 5;
-                        this.hblur.uniforms.h.value = bluriness / self.width;
-                        this.vblur.uniforms.v.value = bluriness / self.height;
-                        this.hblur.uniforms.r.value = this.vblur.uniforms.r.value = 0.5;
-                        this.composer.addPass(this.hblur);
-                        this.composer.addPass(this.vblur);
-                    }
-                    if(self.renderParams.enableVignette) {
-                        this.vignettePass = new THREE.ShaderPass(THREE.VignetteShader);
-                        this.vignettePass.uniforms.darkness.value = 1.2;
-                        this.vignettePass.uniforms.offset.value = 1;
-                        this.composer.addPass(this.vignettePass);
-                    }
-                    var copyPass = new THREE.ShaderPass(THREE.CopyShader);
-                    this.composer.addPass(copyPass);
-                    copyPass.renderToScreen = true;
-                };
-                /*
-                 * MatChanger
-                 */
-                this.matChanger = function() {
-                    for(var e in self.renderParams) {
-                        if(this.vblur && e === 'tiltBlur') {
-                            var bluriness = self.renderParams[e];
-                            this.hblur.uniforms.h.value = bluriness / self.width;
-                            this.vblur.uniforms.v.value = bluriness / self.height;
-                            this.hblur.uniforms.r.value = this.vblur.uniforms.r.value = 0.5;
-                        }
-                    }
-                };
-                this.fbo = new THREE.WebGLRenderTarget(self.width, self.height);
-                this.camera = new THREE.PerspectiveCamera(75, self.width / self.height, 0.1, 100);
+                this.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
+                this.camera = new THREE.PerspectiveCamera(75, world.width / world.height, 0.1, 100);
                 this.camera.position.z = 5;
-                // Setup scene
                 this.scene = new THREE.Scene();
                 var ambientLight = new THREE.AmbientLight(0x020202);
                 this.scene.add(ambientLight);
@@ -348,14 +289,12 @@ var Page = function() {
                 });
                 var cube = new THREE.Mesh(geometry, material);
                 this.scene.add(cube);
-                this.matChanger();
-                this.toggleEffects();
                 this.render = function(rtt) {
                     cube.rotation.x += this.rotationSpeed.x;
                     cube.rotation.y += this.rotationSpeed.y;
                     cube.rotation.z += this.rotationSpeed.z;
                     if(rtt) {
-                        self.renderer.render(this.scene, this.camera, this.fbo, true);
+                        world.renderer.render(this.scene, this.camera, this.fbo, true);
                     } else {
                         this.composer.render();
                     }
@@ -365,69 +304,6 @@ var Page = function() {
              * Transition
              **/
             this.Transition = function(sceneA, sceneB) {
-                /*
-                 * toggleEffects()
-                 */
-                this.toggleEffects = function() {
-                    this.composer = new THREE.EffectComposer(self.renderer);
-                    var renderModel = new THREE.RenderPass(this.scene, this.camera);
-                    this.composer.addPass(renderModel);
-                    if(self.renderParams.enableGlitch) {
-                        var glitchPass = new THREE.GlitchPass();
-                        this.composer.addPass(glitchPass);
-                    }
-                    if(self.renderParams.enableFXAA) {
-                        var effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
-                        effectFXAA.uniforms.resolution.value.set(1 / self.width, 1 / self.height);
-                        this.composer.addPass(effectFXAA);
-                    }
-                    if(self.renderParams.enableFilm) {
-                        var effectFilm = new THREE.FilmPass(0.1, 0, 448, false);
-                        this.composer.addPass(effectFilm);
-                    }
-                    if(self.renderParams.enableBloom) {
-                        //var effectBloom = new THREE.BloomPass(0.3);
-                        var effectBloom = new THREE.BloomPass(self.renderParams.bloomStrengh);
-                        this.composer.addPass(effectBloom);
-                    }
-                    if(self.renderParams.enableRGBShift) {
-                        var rgbShift = new THREE.ShaderPass(THREE.RGBShiftShader);
-                        rgbShift.uniforms.amount.value = 0.001;
-                        this.composer.addPass(rgbShift);
-                    }
-                    if(self.renderParams.enableTiltShift) {
-                        this.hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
-                        this.vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
-                        var bluriness = 5;
-                        this.hblur.uniforms.h.value = bluriness / self.width;
-                        this.vblur.uniforms.v.value = bluriness / self.height;
-                        this.hblur.uniforms.r.value = this.vblur.uniforms.r.value = 0.5;
-                        this.composer.addPass(this.hblur);
-                        this.composer.addPass(this.vblur);
-                    }
-                    if(self.renderParams.enableVignette) {
-                        this.vignettePass = new THREE.ShaderPass(THREE.VignetteShader);
-                        this.vignettePass.uniforms.darkness.value = 1.2;
-                        this.vignettePass.uniforms.offset.value = 1;
-                        this.composer.addPass(this.vignettePass);
-                    }
-                    var copyPass = new THREE.ShaderPass(THREE.CopyShader);
-                    this.composer.addPass(copyPass);
-                    copyPass.renderToScreen = true;
-                };
-                /*
-                 * MatChanger
-                 */
-                this.matChanger = function() {
-                    for(var e in self.renderParams) {
-                        if(this.vblur && e === 'tiltBlur') {
-                            var bluriness = self.renderParams[e];
-                            this.hblur.uniforms.h.value = bluriness / self.width;
-                            this.vblur.uniforms.v.value = bluriness / self.height;
-                            this.hblur.uniforms.r.value = this.vblur.uniforms.r.value = 0.5;
-                        }
-                    }
-                };
                 this.scene = new THREE.Scene();
                 this.camera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -10, 10);
                 this.textures = [];
@@ -482,55 +358,99 @@ var Page = function() {
                 this.setTexture = function(i) {
                     this.quadmaterial.uniforms.tMixTexture.value = this.textures[i];
                 };
-                //this.matChanger();
-                this.toggleEffects();
                 this.render = function() {
                     // Set framebuffer object mix ratio [0..1]
-                    this.quadmaterial.uniforms.mixRatio.value = self.transitionParams.transitionMixRatio;
+                    this.quadmaterial.uniforms.mixRatio.value = world.transitionParams.transitionMixRatio;
                     // Prevent render both scenes when it's not necessary
                     // Render only scene A
-                    if(self.transitionParams.transitionMixRatio === 0) {
-                        self.transitionParams.currentScene = 'A';
+                    if(world.transitionParams.transitionMixRatio === 0) {
+                        world.transitionParams.currentScene = 'A';
                         this.sceneB.render(false);
                     }
                     // Render only scene B
-                    else if(self.transitionParams.transitionMixRatio === 1) {
-                        self.transitionParams.currentScene = 'B';
+                    else if(world.transitionParams.transitionMixRatio === 1) {
+                        world.transitionParams.currentScene = 'B';
                         this.sceneA.render(false);
                     }
                     // Render both scenes and transition frame buffer object
                     else {
                         // When 0<transition<1 render transition between two scenes
-                        self.transitionParams.currentScene = 'Transition';
+                        world.transitionParams.currentScene = 'Transition';
                         this.sceneA.render(true);
                         this.sceneB.render(true);
                         this.composer.render();
                     }
                 };
             };
+            this.postprocess = function() {
+                this.composer = new THREE.EffectComposer(world.renderer);
+                var renderModel = new THREE.RenderPass(this.scene, this.camera);
+                this.composer.addPass(renderModel);
+                if(world.renderParams.enableGlitch) {
+                    var glitchPass = new THREE.GlitchPass();
+                    this.composer.addPass(glitchPass);
+                }
+                if(world.renderParams.enableFXAA) {
+                    var effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
+                    effectFXAA.uniforms.resolution.value.set(1 / world.width, 1 / world.height);
+                    this.composer.addPass(effectFXAA);
+                }
+                if(world.renderParams.enableFilm) {
+                    var effectFilm = new THREE.FilmPass(0.1, 0, 448, false);
+                    this.composer.addPass(effectFilm);
+                }
+                if(world.renderParams.enableBloom) {
+                    //var effectBloom = new THREE.BloomPass(0.3);
+                    var effectBloom = new THREE.BloomPass(world.renderParams.bloomStrengh);
+                    this.composer.addPass(effectBloom);
+                }
+                if(world.renderParams.enableRGBShift) {
+                    var rgbShift = new THREE.ShaderPass(THREE.RGBShiftShader);
+                    rgbShift.uniforms.amount.value = 0.001;
+                    this.composer.addPass(rgbShift);
+                }
+                if(world.renderParams.enableTiltShift) {
+                    this.hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
+                    this.vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
+                    var bluriness = world.renderParams.tiltBlur;
+                    this.hblur.uniforms.h.value = bluriness / world.width;
+                    this.vblur.uniforms.v.value = bluriness / world.height;
+                    this.hblur.uniforms.r.value = this.vblur.uniforms.r.value = 0.5;
+                    this.composer.addPass(this.hblur);
+                    this.composer.addPass(this.vblur);
+                }
+                if(world.renderParams.enableVignette) {
+                    this.vignettePass = new THREE.ShaderPass(THREE.VignetteShader);
+                    this.vignettePass.uniforms.darkness.value = 1.2;
+                    this.vignettePass.uniforms.offset.value = 1;
+                    this.composer.addPass(this.vignettePass);
+                }
+                var copyPass = new THREE.ShaderPass(THREE.CopyShader);
+                this.composer.addPass(copyPass);
+                copyPass.renderToScreen = true;
+            };
+            this.addPostProcessing = function() {
+                this.postprocess.apply(this.SceneA);
+                this.postprocess.apply(this.SceneB);
+                this.postprocess.apply(this.transition);
+            };
             /*********************************************************/
             this.transitionParams.clock.elapsedTime = 0;
             this.SceneA = new this.Scene(0x8A0829);
             this.SceneB = new this.Scene(0x000000);
             this.transition = new this.Transition(this.SceneA, this.SceneB);
-            this.refreshPostProcessing = function() {
-                this.SceneA.toggleEffects();
-                this.SceneB.toggleEffects();
-                this.transition.toggleEffects();
-                this.SceneA.matChanger();
-                this.SceneB.matChanger();
-                this.transition.matChanger();
-            };
+            this.addPostProcessing();
+            /**/
             var animate = function() {
                 requestAnimationFrame(animate);
                 render();
             };
             var render = function() {
-                self.fpsStats.update(self.renderer);
-                self.gpuStats.update(self.renderer);
+                world.fpsStats.update(world.renderer);
+                world.gpuStats.update(world.renderer);
                 // update the tweens from TWEEN library
                 TWEEN.update();
-                self.transition.render();
+                world.transition.render();
             };
             animate();
         }
