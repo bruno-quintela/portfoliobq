@@ -321,9 +321,6 @@ Page = function() {
                     transparent: true
                 });
                 var particlesCloud = new THREE.PointCloud(geometryParticle, materialSprite);
-                particlesCloud.rotation.x = Math.random() * 1;
-                particlesCloud.rotation.y = Math.random() * 1;
-                particlesCloud.rotation.z = Math.random() * 1;
                 this.scene.add(particlesCloud);
                 /*******************************/
                 world.postprocess.apply(this);
