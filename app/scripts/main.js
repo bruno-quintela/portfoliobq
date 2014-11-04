@@ -130,9 +130,11 @@ Page = function() {
             enableBloom: true,
             bloomStrengh: 0.3,
             enableFilm: true,
+            filmStrengh: 0.3,
             enableTiltShift: true,
             tiltBlur: 3.5,
             enableVignette: true,
+            vignetteStrengh: 5,
             disableEffects: false
         },
         transitionParams: {
@@ -202,10 +204,13 @@ Page = function() {
                 guiRender.add(this.renderParams, 'enableBloom').onChange(function() {
                     world.refreshPostProcessing();
                 });
-                guiRender.add(this.renderParams, 'bloomStrengh', 0, 10, 0.01).onChange(function(value) {
+                guiRender.add(this.renderParams, 'bloomStrengh', 0, 10, 0.01).onChange(function() {
                     world.refreshPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableFilm').onChange(function() {
+                    world.refreshPostProcessing();
+                });
+                guiRender.add(this.renderParams, 'filmStrengh', 0, 1, 0.001).onChange(function() {
                     world.refreshPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableTiltShift').onChange(function() {
@@ -215,6 +220,9 @@ Page = function() {
                     world.refreshPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableVignette').onChange(function() {
+                    world.refreshPostProcessing();
+                });
+                guiRender.add(this.renderParams, 'vignetteStrengh', 0, 40, 0.1).onChange(function() {
                     world.refreshPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'disableEffects').onChange(function() {
@@ -279,16 +287,16 @@ Page = function() {
                 this.camera.position.z = 5;
                 this.scene = new THREE.Scene();
                 this.scene.fog = new THREE.FogExp2(0x000000, 0.0008);
-                var ambientLight = new THREE.AmbientLight(0x020202);
+                /*var ambientLight = new THREE.AmbientLight(0x020202);
                 this.scene.add(ambientLight);
                 var frontLight = new THREE.DirectionalLight('white', 1);
                 frontLight.position.set(0.5, 0.5, 2);
                 this.scene.add(frontLight);
                 var backLight = new THREE.DirectionalLight('white', 0.75);
                 backLight.position.set(-0.5, -0.5, -2);
-                this.scene.add(backLight);
+                this.scene.add(backLight);*/
                 this.rotationSpeed = new THREE.Vector3(0, 0.002, 0.001);
-                var geometry = new THREE.BoxGeometry(3, 3, 3);
+                var geometry = new THREE.BoxGeometry(2, 2, 2);
                 var material = new THREE.MeshBasicMaterial({
                     color: matColor
                 });
@@ -307,14 +315,14 @@ Page = function() {
                  * Add vertices sprites
                  **/
                 var geometryParticle = new THREE.Geometry();
-                var sprite1 = THREE.ImageUtils.loadTexture('../src/textures/sprites/ball.png');
+                var sprite1 = THREE.ImageUtils.loadTexture('../src/textures/sprites/black-circle-round-target-dot.png');
                 for(var i = 0; i < cubeWire.geometry.vertices.length; i++) {
                     var vector = new THREE.Vector3(cubeWire.geometry.vertices[i].x, cubeWire.geometry.vertices[i].y, cubeWire.geometry.vertices[i].z);
                     geometryParticle.vertices.push(vector);
                 }
 
                 var materialSprite =  new THREE.PointCloudMaterial({
-                    size: 0.5,
+                    size: 0.2,
                     map: sprite1,
                     //blending: THREE.AdditiveBlending,
                     depthTest: true,
@@ -446,7 +454,7 @@ Page = function() {
                     this.composer.addPass(effectFXAA);
                 }
                 if(world.renderParams.enableFilm) {
-                    var effectFilm = new THREE.FilmPass(0.25, 0, 448, false);
+                    var effectFilm = new THREE.FilmPass(world.renderParams.filmStrengh, 0, 448, false);
                     this.composer.addPass(effectFilm);
                 }
                 if(world.renderParams.enableBloom) {
@@ -470,8 +478,8 @@ Page = function() {
                 }
                 if(world.renderParams.enableVignette) {
                     this.vignettePass = new THREE.ShaderPass(THREE.VignetteShader);
-                    this.vignettePass.uniforms.darkness.value = 1.2;
-                    this.vignettePass.uniforms.offset.value = 1;
+                    this.vignettePass.uniforms.darkness.value = world.renderParams.vignetteStrengh;
+                    this.vignettePass.uniforms.offset.value = 0.3;
                     this.composer.addPass(this.vignettePass);
                 }
                 var copyPass = new THREE.ShaderPass(THREE.CopyShader);
