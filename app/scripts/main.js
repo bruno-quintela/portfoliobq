@@ -121,8 +121,10 @@ Page = function() {
             guiEnabled: true
         },
         renderParams: {
-            antialias: true,
+            antialias: false,
             alpha: false,
+            backgroundColor: [245, 236, 206],
+            enableTrackball: true,
             enableGrid: false,
             enableGlitch: false,
             enableRGBShift: true,
@@ -188,6 +190,13 @@ Page = function() {
                 });
                 guiRender.add(this.renderParams, 'alpha').onChange(function() {
                     //world.renderer.alpha;
+                });
+                guiRender.add(this.renderParams, 'enableTrackball').onChange(function() {
+                    //world.renderer.antialias;
+                });
+                guiRender.addColor(this.renderParams, 'backgroundColor').onChange(function(value) {
+                    console.log(parseInt(value));
+                    world.renderer.setClearColor( new THREE.Color(value[0]/255, value[1]/255, value[2]/255), 0 );
                 });
                 guiRender.add(this.renderParams, 'enableGrid').onChange(function() {
                     world.refreshPostProcessing();
@@ -276,7 +285,7 @@ Page = function() {
                 alpha: this.renderParams.alpha
             });
             this.renderer.setSize(this.width, this.height);
-            this.renderer.setClearColor(0xF5ECCE, 0);
+            this.renderer.setClearColor(new THREE.Color(world.renderParams.backgroundColor[0]/255, world.renderParams.backgroundColor[1]/255, world.renderParams.backgroundColor[2]/255), 0);
             this.renderer.autoClear = false;
             /**
              * Scene
@@ -286,12 +295,30 @@ Page = function() {
                 this.camera = new THREE.PerspectiveCamera(75, world.width / world.height, 0.1, 100);
                 this.camera.position.z = 5;
                 this.scene = new THREE.Scene();
-                this.scene.fog = new THREE.FogExp2(0x000000, 0.0008);
+                if(world.renderParams.enableTrackball)
+                {
+                    this.controls = new THREE.TrackballControls( this.camera, world.renderer.domElement );
+                    this.controls.rotateSpeed = 1.0;
+                    this.controls.zoomSpeed = 1.2;
+                    this.controls.panSpeed = 0.8;
+                    this.controls.noZoom = false;
+                    this.controls.noPan = false;
+                    this.controls.staticMoving = true;
+                    this.controls.dynamicDampingFactor = 0.3;
+                    this.controls.keys = [ 65, 83, 68 ];
+                    //this.controls.addEventListener( 'change', this.render );
+                }
+                
+                //this.scene.fog = new THREE.FogExp2(0x000000, 0.0008);
+
+                /**
+                 * Set 3 point light system
+                 **
                 /*var ambientLight = new THREE.AmbientLight(0x020202);
                 this.scene.add(ambientLight);
-                var frontLight = new THREE.DirectionalLight('white', 1);
-                frontLight.position.set(0.5, 0.5, 2);
-                this.scene.add(frontLight);
+                var keyLight = new THREE.DirectionalLight('white', 1);
+                keyLight.position.set(0.5, 0.5, 2);
+                this.scene.add(keyLight);
                 var backLight = new THREE.DirectionalLight('white', 0.75);
                 backLight.position.set(-0.5, -0.5, -2);
                 this.scene.add(backLight);*/
@@ -346,6 +373,10 @@ Page = function() {
                         world.renderer.render(this.scene, this.camera, this.fbo, true);
                     } else {
                         world.renderer.clear();
+                        if(world.renderParams.enableTrackball)
+                        {
+                            this.controls.update();
+                        }
                         this.composer.render(0.01);
                     }
                 };
