@@ -196,7 +196,7 @@ Page = function() {
                 });
                 guiRender.addColor(this.renderParams, 'backgroundColor').onChange(function(value) {
                     console.log(parseInt(value));
-                    world.renderer.setClearColor( new THREE.Color(value[0]/255, value[1]/255, value[2]/255), 0 );
+                    world.renderer.setClearColor(new THREE.Color(value[0] / 255, value[1] / 255, value[2] / 255), 0);
                 });
                 guiRender.add(this.renderParams, 'enableGrid').onChange(function() {
                     world.refreshPostProcessing();
@@ -285,7 +285,7 @@ Page = function() {
                 alpha: this.renderParams.alpha
             });
             this.renderer.setSize(this.width, this.height);
-            this.renderer.setClearColor(new THREE.Color(world.renderParams.backgroundColor[0]/255, world.renderParams.backgroundColor[1]/255, world.renderParams.backgroundColor[2]/255), 0);
+            this.renderer.setClearColor(new THREE.Color(world.renderParams.backgroundColor[0] / 255, world.renderParams.backgroundColor[1] / 255, world.renderParams.backgroundColor[2] / 255), 0);
             this.renderer.autoClear = false;
             /**
              * Scene
@@ -295,22 +295,53 @@ Page = function() {
                 this.camera = new THREE.PerspectiveCamera(75, world.width / world.height, 0.1, 100);
                 this.camera.position.z = 5;
                 this.scene = new THREE.Scene();
-                if(world.renderParams.enableTrackball)
-                {
-                    this.controls = new THREE.TrackballControls( this.camera, world.renderer.domElement );
-                    this.controls.rotateSpeed = 1.0;
-                    this.controls.zoomSpeed = 1.2;
-                    this.controls.panSpeed = 0.8;
-                    this.controls.noZoom = false;
-                    this.controls.noPan = false;
-                    this.controls.staticMoving = true;
-                    this.controls.dynamicDampingFactor = 0.3;
-                    this.controls.keys = [ 65, 83, 68 ];
-                    //this.controls.addEventListener( 'change', this.render );
-                }
                 
+                var addWireframe = function(scene, geometry,scaleFactor) {
+                    var materialTransparent = new THREE.MeshBasicMaterial({
+                        transparent: true,
+                        opacity: 0
+                    });
+                    var meshWire = new THREE.Mesh(geometry, materialTransparent);
+                    meshWire.scale.set(scaleFactor, scaleFactor, scaleFactor);
+                    scene.add(meshWire);
+                    var edgeHelper = new THREE.EdgesHelper(meshWire, 0x000000);
+                    edgeHelper.material.linewidth = 2;
+                    scene.add(edgeHelper);
+                    return meshWire;
+                };
+                var addPointCloud = function(scene, geometry,scaleFactor) {
+                    var geometryParticle = new THREE.Geometry();
+                    var sprite1 = THREE.ImageUtils.loadTexture('../src/textures/sprites/black-circle-round-target-dot.png');
+                    
+                    for(var i = 0; i < geometry.vertices.length; i++) {
+                        var vector = new THREE.Vector3(geometry.vertices[i].x * scaleFactor, geometry.vertices[i].y * scaleFactor, geometry.vertices[i].z * scaleFactor);
+                        geometryParticle.vertices.push(vector);
+                    }
+                    var materialSprite = new THREE.PointCloudMaterial({
+                        size: 2.5,
+                        map: sprite1,
+                        //blending: THREE.AdditiveBlending,
+                        depthTest: true,
+                        transparent: true
+                    });
+                    var particlesCloud = new THREE.PointCloud(geometryParticle, materialSprite);
+                    scene.add(particlesCloud);
+                    return particlesCloud;
+                };
+                
+                if(world.renderParams.enableTrackball) {
+                    this.trackball = new THREE.TrackballControls(this.camera, world.renderer.domElement);
+                    this.trackball.rotateSpeed = 1.0;
+                    this.trackball.zoomSpeed = 1.2;
+                    this.trackball.panSpeed = 0.8;
+                    this.trackball.noZoom = false;
+                    this.trackball.noPan = false;
+                    this.trackball.staticMoving = true;
+                    this.trackball.dynamicDampingFactor = 0.3;
+                    this.trackball.keys = [65, 83, 68];
+                    //this.trackball.addEventListener( 'change', this.render );
+                }
                 //this.scene.fog = new THREE.FogExp2(0x000000, 0.0008);
-
                 /**
                  * Set 3 point light system
                  **
@@ -329,57 +360,43 @@ Page = function() {
                 });
                 var cube = new THREE.Mesh(geometry, material);
                 this.scene.add(cube);
-                var materialTransparent = new THREE.MeshBasicMaterial({
-                    transparent: true,
-                    opacity: 0
-                });
-                var cubeWire = new THREE.Mesh(new THREE.BoxGeometry(3.5, 3.5, 3.5), materialTransparent);
-                this.scene.add(cubeWire);
-                var egh = new THREE.EdgesHelper(cubeWire, 0x000000);
-                egh.material.linewidth = 2;
-                this.scene.add(egh);
+                
+                var meshWire = addWireframe(this.scene, geometry, 1.5);
+                var meshWire2 = addWireframe(this.scene, geometry, 3);
+                var pointCloud = addPointCloud(this.scene, geometry, 1.5);
+                var pointCloud2 = addPointCloud(this.scene, geometry, 1);
                 /**
                  * Add vertices sprites
                  **/
-                var geometryParticle = new THREE.Geometry();
-                var sprite1 = THREE.ImageUtils.loadTexture('../src/textures/sprites/black-circle-round-target-dot.png');
-                for(var i = 0; i < cubeWire.geometry.vertices.length; i++) {
-                    var vector = new THREE.Vector3(cubeWire.geometry.vertices[i].x, cubeWire.geometry.vertices[i].y, cubeWire.geometry.vertices[i].z);
-                    geometryParticle.vertices.push(vector);
-                }
-
-                var materialSprite =  new THREE.PointCloudMaterial({
-                    size: 0.2,
-                    map: sprite1,
-                    //blending: THREE.AdditiveBlending,
-                    depthTest: true,
-                    transparent: true
-                });
-                var particlesCloud = new THREE.PointCloud(geometryParticle, materialSprite);
-                this.scene.add(particlesCloud);
                 /*******************************/
                 world.postprocess.apply(this);
                 this.render = function(rtt) {
                     cube.rotation.x += this.rotationSpeed.x;
                     cube.rotation.y += this.rotationSpeed.y;
                     cube.rotation.z += this.rotationSpeed.z;
-                    cubeWire.rotation.x += this.rotationSpeed.x;
-                    cubeWire.rotation.y += this.rotationSpeed.y;
-                    cubeWire.rotation.z += this.rotationSpeed.z;
-                    particlesCloud.rotation.x += this.rotationSpeed.x;
-                    particlesCloud.rotation.y += this.rotationSpeed.y;
-                    particlesCloud.rotation.z += this.rotationSpeed.z;
+                    meshWire.rotation.x += this.rotationSpeed.x;
+                    meshWire.rotation.y += this.rotationSpeed.y;
+                    meshWire.rotation.z += this.rotationSpeed.z;
+                    meshWire2.rotation.x += this.rotationSpeed.x;
+                    meshWire2.rotation.y += this.rotationSpeed.y;
+                    meshWire2.rotation.z += this.rotationSpeed.z;
+                    pointCloud.rotation.x += this.rotationSpeed.x;
+                    pointCloud.rotation.y += this.rotationSpeed.y;
+                    pointCloud.rotation.z += this.rotationSpeed.z;
+                    pointCloud2.rotation.x += this.rotationSpeed.x;
+                    pointCloud2.rotation.y += this.rotationSpeed.y;
+                    pointCloud2.rotation.z += this.rotationSpeed.z;
                     if(rtt) {
                         world.renderer.render(this.scene, this.camera, this.fbo, true);
                     } else {
                         world.renderer.clear();
-                        if(world.renderParams.enableTrackball)
-                        {
-                            this.controls.update();
+                        if(world.renderParams.enableTrackball) {
+                            this.trackball.update();
                         }
                         this.composer.render(0.01);
                     }
                 };
+                this.addPointCloud = function() {};
             };
             /**
              * Transition
@@ -425,8 +442,6 @@ Page = function() {
                 this.quad = new THREE.Mesh(quadgeometry, this.quadmaterial);
                 this.scene.add(this.quad);
                 // Link both scenes and their FBOs
-                this.sceneA = sceneA;
-                this.sceneB = sceneB;
                 this.quadmaterial.uniforms.tDiffuse1.value = sceneA.fbo;
                 this.quadmaterial.uniforms.tDiffuse2.value = sceneB.fbo;
                 this.needChange = true;
@@ -447,25 +462,25 @@ Page = function() {
                     // Render only scene A
                     if(world.transitionParams.transitionMixRatio === 0) {
                         world.transitionParams.currentScene = 'A';
-                        this.sceneB.render(false);
+                        sceneB.render(false);
                     }
                     // Render only scene B
                     else if(world.transitionParams.transitionMixRatio === 1) {
                         world.transitionParams.currentScene = 'B';
-                        this.sceneA.render(false);
+                        sceneA.render(false);
                     }
                     // Render both scenes and transition frame buffer object
                     else {
                         // When 0<transition<1 render transition between two scenes
                         world.transitionParams.currentScene = 'Transition';
-                        this.sceneA.render(true);
-                        this.sceneB.render(true);
+                        sceneA.render(true);
+                        sceneB.render(true);
                         this.composer.render(0.01);
                     }
                 };
             };
             /**
-             * PostProcessing Effects
+             * Add Composer PostProcessing Effects
              **/
             this.postprocess = function() {
                 this.composer = new THREE.EffectComposer(world.renderer);
@@ -498,31 +513,40 @@ Page = function() {
                     this.composer.addPass(rgbShift);
                 }
                 if(world.renderParams.enableTiltShift) {
-                    this.hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
-                    this.vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
+                    var hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
+                    var vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
                     var bluriness = world.renderParams.tiltBlur;
-                    this.hblur.uniforms.h.value = bluriness / world.width;
-                    this.vblur.uniforms.v.value = bluriness / world.height;
-                    this.hblur.uniforms.r.value = this.vblur.uniforms.r.value = 0.5;
-                    this.composer.addPass(this.hblur);
-                    this.composer.addPass(this.vblur);
+                    hblur.uniforms.h.value = bluriness / world.width;
+                    vblur.uniforms.v.value = bluriness / world.height;
+                    hblur.uniforms.r.value = vblur.uniforms.r.value = 0.5;
+                    this.composer.addPass(hblur);
+                    this.composer.addPass(vblur);
                 }
                 if(world.renderParams.enableVignette) {
-                    this.vignettePass = new THREE.ShaderPass(THREE.VignetteShader);
-                    this.vignettePass.uniforms.darkness.value = world.renderParams.vignetteStrengh;
-                    this.vignettePass.uniforms.offset.value = 0.3;
-                    this.composer.addPass(this.vignettePass);
+                    var vignettePass = new THREE.ShaderPass(THREE.VignetteShader);
+                    vignettePass.uniforms.darkness.value = world.renderParams.vignetteStrengh;
+                    vignettePass.uniforms.offset.value = 0.3;
+                    this.composer.addPass(vignettePass);
                 }
                 var copyPass = new THREE.ShaderPass(THREE.CopyShader);
                 this.composer.addPass(copyPass);
                 copyPass.renderToScreen = true;
             };
+            /**
+             * refresh postpross when gui is changed
+             **/
             this.refreshPostProcessing = function() {
                 this.postprocess.apply(this.SceneA);
                 this.postprocess.apply(this.SceneB);
                 this.postprocess.apply(this.transition);
             };
-            /*********************************************************/
+        },
+        /**
+         * Everything is instantiated, lets start de engine!!!
+         **/
+        start: function() {
+            var world = this;
+            this.init();
             this.transitionParams.clock.elapsedTime = 0;
             this.SceneA = new this.Scene(0x8A0829);
             this.SceneB = new this.Scene(0x000000);
@@ -549,7 +573,7 @@ Page = function() {
  **/
 Page.prototype.init = function() {
     this.system.init();
-    this.world.init();
+    this.world.start();
     console.log('Page init completed');
 };
 /**
