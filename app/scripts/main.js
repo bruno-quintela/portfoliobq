@@ -55,8 +55,10 @@
 /*
  * Declare page Namespace
  */
-var Page = Page || {};
-Page = function() {
+var ENGINE = ENGINE || {
+    author: 'Bruno Quintela 2014'
+};
+ENGINE = function() {
     this.system = {
         isTouch: Modernizr.touch,
         supportsWEBGL: true,
@@ -121,7 +123,7 @@ Page = function() {
             guiEnabled: true
         },
         renderParams: {
-            antialias: false,
+            antialias: true,
             alpha: false,
             backgroundColor: [245, 236, 206],
             enableTrackball: true,
@@ -185,21 +187,27 @@ Page = function() {
             if(this.settings.guiEnabled) {
                 // Renderer & Post Processing GUI params
                 var guiRender = new dat.GUI();
-                guiRender.add(this.renderParams, 'antialias').onChange(function() {
-                    //world.renderer.antialias;
-                });
-                guiRender.add(this.renderParams, 'alpha').onChange(function() {
-                    //world.renderer.alpha;
-                });
-                guiRender.add(this.renderParams, 'enableTrackball').onChange(function() {
-                    //world.renderer.antialias;
-                });
                 guiRender.addColor(this.renderParams, 'backgroundColor').onChange(function(value) {
-                    console.log(parseInt(value));
+
                     world.renderer.setClearColor(new THREE.Color(value[0] / 255, value[1] / 255, value[2] / 255), 0);
                 });
-                guiRender.add(this.renderParams, 'enableGrid').onChange(function() {
-                    world.refreshPostProcessing();
+                guiRender.add(this.renderParams, 'enableTrackball');
+                guiRender.add(this.renderParams, 'enableGrid').onChange(function(value) {
+                    console.log(value);
+                    if(!document.getElementById('gridContainer')) {
+                        var gridContainer = document.createElement('div');
+                        gridContainer.setAttribute('id', 'gridContainer');
+                        gridContainer.setAttribute('class', 'grid-container');
+                        var verticalGrid = document.createElement('div');
+                        verticalGrid.setAttribute('class', 'vertical-grid');
+                        var horizontalGrid = document.createElement('div');
+                        horizontalGrid.setAttribute('class', 'horizontal-grid');
+                        gridContainer.appendChild(verticalGrid);
+                        gridContainer.appendChild(horizontalGrid);
+                        document.body.appendChild(gridContainer);
+                    } else {
+                        document.getElementById('gridContainer').style.display = value ? 'block' : 'none';
+                    }
                 });
                 guiRender.add(this.renderParams, 'enableGlitch').onChange(function() {
                     world.refreshPostProcessing();
@@ -291,12 +299,13 @@ Page = function() {
              * Scene
              **/
             this.Scene = function(matColor) {
-                this.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
+                
+                this.scene = new THREE.Scene();
                 this.camera = new THREE.PerspectiveCamera(75, world.width / world.height, 0.1, 100);
                 this.camera.position.z = 5;
-                this.scene = new THREE.Scene();
-                
-                var addWireframe = function(scene, geometry,scaleFactor) {
+                // frame buffer object
+                this.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
+                var addWireframe = function(scene, geometry, scaleFactor) {
                     var materialTransparent = new THREE.MeshBasicMaterial({
                         transparent: true,
                         opacity: 0
@@ -309,16 +318,15 @@ Page = function() {
                     scene.add(edgeHelper);
                     return meshWire;
                 };
-                var addPointCloud = function(scene, geometry,scaleFactor) {
+                var addPointCloud = function(scene, geometry, scaleFactor) {
                     var geometryParticle = new THREE.Geometry();
                     var sprite1 = THREE.ImageUtils.loadTexture('../src/textures/sprites/black-circle-round-target-dot.png');
-                    
                     for(var i = 0; i < geometry.vertices.length; i++) {
                         var vector = new THREE.Vector3(geometry.vertices[i].x * scaleFactor, geometry.vertices[i].y * scaleFactor, geometry.vertices[i].z * scaleFactor);
                         geometryParticle.vertices.push(vector);
                     }
                     var materialSprite = new THREE.PointCloudMaterial({
-                        size: 2.5,
+                        size: 1.5,
                         map: sprite1,
                         //blending: THREE.AdditiveBlending,
                         depthTest: true,
@@ -328,7 +336,6 @@ Page = function() {
                     scene.add(particlesCloud);
                     return particlesCloud;
                 };
-                
                 if(world.renderParams.enableTrackball) {
                     this.trackball = new THREE.TrackballControls(this.camera, world.renderer.domElement);
                     this.trackball.rotateSpeed = 1.0;
@@ -341,6 +348,7 @@ Page = function() {
                     this.trackball.keys = [65, 83, 68];
                     //this.trackball.addEventListener( 'change', this.render );
                 }
+                
                 //this.scene.fog = new THREE.FogExp2(0x000000, 0.0008);
                 /**
                  * Set 3 point light system
@@ -354,17 +362,17 @@ Page = function() {
                 backLight.position.set(-0.5, -0.5, -2);
                 this.scene.add(backLight);*/
                 this.rotationSpeed = new THREE.Vector3(0, 0.002, 0.001);
+                
                 var geometry = new THREE.BoxGeometry(2, 2, 2);
                 var material = new THREE.MeshBasicMaterial({
                     color: matColor
                 });
                 var cube = new THREE.Mesh(geometry, material);
                 this.scene.add(cube);
-                
                 var meshWire = addWireframe(this.scene, geometry, 1.5);
                 var meshWire2 = addWireframe(this.scene, geometry, 3);
-                var pointCloud = addPointCloud(this.scene, geometry, 1.5);
-                var pointCloud2 = addPointCloud(this.scene, geometry, 1);
+                var pointCloud = addPointCloud(this.scene, geometry, 1);
+                //var pointCloud2 = addPointCloud(this.scene, geometry, 3);
                 /**
                  * Add vertices sprites
                  **/
@@ -383,9 +391,9 @@ Page = function() {
                     pointCloud.rotation.x += this.rotationSpeed.x;
                     pointCloud.rotation.y += this.rotationSpeed.y;
                     pointCloud.rotation.z += this.rotationSpeed.z;
-                    pointCloud2.rotation.x += this.rotationSpeed.x;
+                    /*pointCloud2.rotation.x += this.rotationSpeed.x;
                     pointCloud2.rotation.y += this.rotationSpeed.y;
-                    pointCloud2.rotation.z += this.rotationSpeed.z;
+                    pointCloud2.rotation.z += this.rotationSpeed.z;*/
                     if(rtt) {
                         world.renderer.render(this.scene, this.camera, this.fbo, true);
                     } else {
@@ -396,14 +404,13 @@ Page = function() {
                         this.composer.render(0.01);
                     }
                 };
-                this.addPointCloud = function() {};
             };
             /**
              * Transition
              **/
             this.Transition = function(sceneA, sceneB) {
                 this.scene = new THREE.Scene();
-                this.camera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -10, 10);
+                this.camera = new THREE.OrthographicCamera(world.width / -2, world.width / 2, world.height / 2, world.height / -2, -10, 10);
                 this.textures = [];
                 for(var i = 0; i < 6; i++) {
                     this.textures[i] = new THREE.ImageUtils.loadTexture('../src/textures/transitions/transition' + (i + 1) + '.png');
@@ -486,10 +493,6 @@ Page = function() {
                 this.composer = new THREE.EffectComposer(world.renderer);
                 var renderModel = new THREE.RenderPass(this.scene, this.camera);
                 this.composer.addPass(renderModel);
-                /*if(world.renderParams.enableGrid) {
-                    var gridPass = new THREE.GridPass();
-                    this.composer.addPass(gridPass);
-                }*/
                 if(world.renderParams.enableGlitch) {
                     var glitchPass = new THREE.GlitchPass();
                     this.composer.addPass(glitchPass);
@@ -540,6 +543,31 @@ Page = function() {
                 this.postprocess.apply(this.SceneB);
                 this.postprocess.apply(this.transition);
             };
+            /**
+             * Onwindow resize world handler event
+             **/
+            this.onWindowResize = function() {
+                world.width = window.innerWidth;
+                world.height = window.innerHeight;
+                world.SceneA.camera.aspect = world.width / world.height;
+                world.SceneA.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
+                world.SceneA.camera.updateProjectionMatrix();
+                world.SceneB.camera.aspect = world.width / world.height;
+                world.SceneB.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
+                world.SceneB.camera.updateProjectionMatrix();
+                world.transition.quadmaterial.uniforms.tDiffuse1.value = world.SceneA.fbo;
+                world.transition.quadmaterial.uniforms.tDiffuse2.value =  world.SceneB.fbo;
+                /*world.transition.camera.left = - world.width/2;
+				world.transition.camera.right = world.width/2;
+				world.transition.camera.top = world.height/2;
+				world.transition.camera.bottom = -world.height/2;
+				world.transition.camera.updateProjectionMatrix();
+                world.transition.composer.setSize(world.width,world.height);
+                world.transition.quad.scale.set( world.width, world.height, 1 );*/
+                world.renderer.setSize(world.width, world.height);
+                world.refreshPostProcessing();
+                console.log('resized');
+            };
         },
         /**
          * Everything is instantiated, lets start de engine!!!
@@ -564,6 +592,15 @@ Page = function() {
                 world.transition.render();
             };
             animate();
+            // on window resize "stop" handler
+            var refresh;
+            window.onresize = function() {
+                clearTimeout(refresh);
+                refresh = setTimeout(function() {
+                    world.onWindowResize();
+                }, 100);
+            };
+            //window.addEventListener('resize', world.onWindowResize, false);
         }
     };
 };
@@ -571,13 +608,13 @@ Page = function() {
 /**
  * Page Init
  **/
-Page.prototype.init = function() {
+ENGINE.prototype.init = function() {
     this.system.init();
     this.world.start();
     console.log('Page init completed');
 };
 /**
- * On Ready Init Page Prototype
+ * On Ready Init Page Prototype TODO
  **/
-var myPage = new Page();
-myPage.init();
+var myPortfolio = new ENGINE();
+myPortfolio.init();
