@@ -53,7 +53,7 @@
     
 };*/
 /*
- * Declare page Namespace
+ * Declare Namespace
  */
 var ENGINE = ENGINE || {
     author: 'Bruno Quintela 2014'
@@ -188,7 +188,6 @@ ENGINE = function() {
                 // Renderer & Post Processing GUI params
                 var guiRender = new dat.GUI();
                 guiRender.addColor(this.renderParams, 'backgroundColor').onChange(function(value) {
-
                     world.renderer.setClearColor(new THREE.Color(value[0] / 255, value[1] / 255, value[2] / 255), 0);
                 });
                 guiRender.add(this.renderParams, 'enableTrackball');
@@ -298,14 +297,16 @@ ENGINE = function() {
             /**
              * Scene
              **/
-            this.Scene = function(matColor) {
-                
+            this.Scene = function() {
                 this.scene = new THREE.Scene();
                 this.camera = new THREE.PerspectiveCamera(75, world.width / world.height, 0.1, 100);
                 this.camera.position.z = 5;
                 // frame buffer object
                 this.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
-                var addWireframe = function(scene, geometry, scaleFactor) {
+                /**
+                 * Add wireframe clone of geometry to scene
+                 **/
+                var addWireframe = function(scene, geometry, color, thickness, scaleFactor) {
                     var materialTransparent = new THREE.MeshBasicMaterial({
                         transparent: true,
                         opacity: 0
@@ -313,28 +314,119 @@ ENGINE = function() {
                     var meshWire = new THREE.Mesh(geometry, materialTransparent);
                     meshWire.scale.set(scaleFactor, scaleFactor, scaleFactor);
                     scene.add(meshWire);
-                    var edgeHelper = new THREE.EdgesHelper(meshWire, 0x000000);
-                    edgeHelper.material.linewidth = 2;
+                    var edgeHelper = new THREE.EdgesHelper(meshWire, color);
+                    edgeHelper.material.linewidth = thickness;
                     scene.add(edgeHelper);
                     return meshWire;
                 };
-                var addPointCloud = function(scene, geometry, scaleFactor) {
+                /**
+                 * Add vertices sprites to scene
+                 **/
+                var addPointCloud = function(scene, geometry, spritePath, spriteSize, scaleFactor) {
                     var geometryParticle = new THREE.Geometry();
-                    var sprite1 = THREE.ImageUtils.loadTexture('../src/textures/sprites/black-circle-round-target-dot.png');
+                    var sprite1 = THREE.ImageUtils.loadTexture(spritePath);
                     for(var i = 0; i < geometry.vertices.length; i++) {
                         var vector = new THREE.Vector3(geometry.vertices[i].x * scaleFactor, geometry.vertices[i].y * scaleFactor, geometry.vertices[i].z * scaleFactor);
                         geometryParticle.vertices.push(vector);
                     }
                     var materialSprite = new THREE.PointCloudMaterial({
-                        size: 1.5,
+                        size: spriteSize,
                         map: sprite1,
-                        //blending: THREE.AdditiveBlending,
+                        blending: THREE.NormalBlending,
                         depthTest: true,
                         transparent: true
                     });
                     var particlesCloud = new THREE.PointCloud(geometryParticle, materialSprite);
                     scene.add(particlesCloud);
                     return particlesCloud;
+                };
+                /**
+                 * Set 3 point light system
+                 **/
+                var addLights = function(scene) {
+                    var ambientLight = new THREE.AmbientLight(0x020202);
+                    scene.add(ambientLight);
+                    var keyLight = new THREE.DirectionalLight('white', 5);
+                    keyLight.position.set(1.5, 1.5, 2);
+                    scene.add(keyLight);
+                    var backLight = new THREE.DirectionalLight('white', 3);
+                    backLight.position.set(-1.5, -1.5, -2);
+                    scene.add(backLight);
+                };
+                /**
+                 * Import collada(.dae) object and corresponding UVmap into scene
+                 **/
+                var importCollada = function(set, filePathCollada, filePathUV) {
+                    // load collada assets
+                    var loader = new THREE.ColladaLoader();
+                    loader.options.convertUpAxis = false;
+                    loader.load(filePathCollada, function(collada) {
+                        collada.scene.traverse(function(child) {
+                            if(child instanceof THREE.Object3D) {
+                                if(child.name === 'Icosphere') {
+                                    var mesh = child.children[0];
+                                    var reflectionImg = THREE.ImageUtils.loadTextureCube([filePathUV]);
+                                    reflectionImg.format = THREE.RGBFormat;
+                                    var refractionImg = new THREE.CubeTexture(reflectionImg.image, new THREE.CubeRefractionMapping());
+                                    refractionImg.format = THREE.RGBFormat;
+                                    /*mesh.material = new THREE.MeshLambertMaterial({
+                                        color: 0xffffff,
+                                        ambient: 0xaaaaaa,
+                                        envMap: reflectionImg
+                                    });*/
+                                    /*mesh.material = new THREE.MeshLambertMaterial({
+                                        color: 0xffee00,
+                                        ambient: 0x996600,
+                                        envMap: refractionImg,
+                                        refractionRatio: 0.95
+                                    });*/
+                                    /*mesh.material = new THREE.MeshLambertMaterial({
+                                        color: 0xff6600,
+                                        ambient: 0x993300,
+                                        envMap: reflectionImg,
+                                        combine: THREE.MixOperation,
+                                        reflectivity: 0.9
+                                    });*/
+                                    var maxAnisotropy = world.renderer.getMaxAnisotropy();
+                                    var texture = THREE.ImageUtils.loadTexture(filePathUV);
+                                    mesh.material = new THREE.MeshPhongMaterial({
+                                        color: 0x000000
+                                        //map: texture
+                                    });
+                                    texture.anisotropy = maxAnisotropy;
+                                    set.scene.add(mesh);
+                                    set.lowpoly = mesh;
+                                    set.polyWire = addWireframe(set.scene, mesh.geometry, 0xffffff, 1, 1.02);
+                                    set.polyWire2 = addWireframe(set.scene, mesh.geometry, 0x000000, 1, 1.3);
+                                    //set.pointCloud = addPointCloud(set.scene, mesh.geometry, '../src/textures/sprites/black-circle-round-target-dot.png', 0.1, 1.3);
+                                }
+                            }
+                        });
+                        set.rotationSpeed = new THREE.Vector3(0, 0.002, 0.001);
+                        set.render = function(rtt) {
+                            set.lowpoly.rotation.x += set.rotationSpeed.x;
+                            set.lowpoly.rotation.y += set.rotationSpeed.y;
+                            set.lowpoly.rotation.z += set.rotationSpeed.z;
+                            set.polyWire.rotation.x += set.rotationSpeed.x;
+                            set.polyWire.rotation.y += set.rotationSpeed.y;
+                            set.polyWire.rotation.z += set.rotationSpeed.z;
+                            set.polyWire2.rotation.x += set.rotationSpeed.x;
+                            set.polyWire2.rotation.y += set.rotationSpeed.y;
+                            set.polyWire2.rotation.z += set.rotationSpeed.z;
+                            /*set.pointCloud.rotation.x += set.rotationSpeed.x;
+                            set.pointCloud.rotation.y += set.rotationSpeed.y;
+                            set.pointCloud.rotation.z += set.rotationSpeed.z;*/
+                            if(rtt) {
+                                world.renderer.render(this.scene, this.camera, this.fbo, true);
+                            } else {
+                                world.renderer.clear();
+                                if(world.renderParams.enableTrackball) {
+                                    set.trackball.update();
+                                }
+                                set.composer.render(0.01);
+                            }
+                        };
+                    });
                 };
                 if(world.renderParams.enableTrackball) {
                     this.trackball = new THREE.TrackballControls(this.camera, world.renderer.domElement);
@@ -348,22 +440,8 @@ ENGINE = function() {
                     this.trackball.keys = [65, 83, 68];
                     //this.trackball.addEventListener( 'change', this.render );
                 }
-                
                 //this.scene.fog = new THREE.FogExp2(0x000000, 0.0008);
-                /**
-                 * Set 3 point light system
-                 **
-                /*var ambientLight = new THREE.AmbientLight(0x020202);
-                this.scene.add(ambientLight);
-                var keyLight = new THREE.DirectionalLight('white', 1);
-                keyLight.position.set(0.5, 0.5, 2);
-                this.scene.add(keyLight);
-                var backLight = new THREE.DirectionalLight('white', 0.75);
-                backLight.position.set(-0.5, -0.5, -2);
-                this.scene.add(backLight);*/
-                this.rotationSpeed = new THREE.Vector3(0, 0.002, 0.001);
-                
-                var geometry = new THREE.BoxGeometry(2, 2, 2);
+                /* var geometry = new THREE.BoxGeometry(2, 2, 2);
                 var material = new THREE.MeshBasicMaterial({
                     color: matColor
                 });
@@ -371,29 +449,13 @@ ENGINE = function() {
                 this.scene.add(cube);
                 var meshWire = addWireframe(this.scene, geometry, 1.5);
                 var meshWire2 = addWireframe(this.scene, geometry, 3);
-                var pointCloud = addPointCloud(this.scene, geometry, 1);
+                var pointCloud = addPointCloud(this.scene, geometry, 1)*/
                 //var pointCloud2 = addPointCloud(this.scene, geometry, 3);
-                /**
-                 * Add vertices sprites
-                 **/
+                addLights(this.scene);
+                importCollada(this, '../src/collada/lowpoly.dae', '../src/textures/UVmaps/UVmap.png');
                 /*******************************/
                 world.postprocess.apply(this);
                 this.render = function(rtt) {
-                    cube.rotation.x += this.rotationSpeed.x;
-                    cube.rotation.y += this.rotationSpeed.y;
-                    cube.rotation.z += this.rotationSpeed.z;
-                    meshWire.rotation.x += this.rotationSpeed.x;
-                    meshWire.rotation.y += this.rotationSpeed.y;
-                    meshWire.rotation.z += this.rotationSpeed.z;
-                    meshWire2.rotation.x += this.rotationSpeed.x;
-                    meshWire2.rotation.y += this.rotationSpeed.y;
-                    meshWire2.rotation.z += this.rotationSpeed.z;
-                    pointCloud.rotation.x += this.rotationSpeed.x;
-                    pointCloud.rotation.y += this.rotationSpeed.y;
-                    pointCloud.rotation.z += this.rotationSpeed.z;
-                    /*pointCloud2.rotation.x += this.rotationSpeed.x;
-                    pointCloud2.rotation.y += this.rotationSpeed.y;
-                    pointCloud2.rotation.z += this.rotationSpeed.z;*/
                     if(rtt) {
                         world.renderer.render(this.scene, this.camera, this.fbo, true);
                     } else {
@@ -544,7 +606,7 @@ ENGINE = function() {
                 this.postprocess.apply(this.transition);
             };
             /**
-             * Onwindow resize world handler event
+             * On window resize world handler event
              **/
             this.onWindowResize = function() {
                 world.width = window.innerWidth;
@@ -555,15 +617,9 @@ ENGINE = function() {
                 world.SceneB.camera.aspect = world.width / world.height;
                 world.SceneB.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
                 world.SceneB.camera.updateProjectionMatrix();
+                //TODO: check if some problem exist in the following code
                 world.transition.quadmaterial.uniforms.tDiffuse1.value = world.SceneA.fbo;
-                world.transition.quadmaterial.uniforms.tDiffuse2.value =  world.SceneB.fbo;
-                /*world.transition.camera.left = - world.width/2;
-				world.transition.camera.right = world.width/2;
-				world.transition.camera.top = world.height/2;
-				world.transition.camera.bottom = -world.height/2;
-				world.transition.camera.updateProjectionMatrix();
-                world.transition.composer.setSize(world.width,world.height);
-                world.transition.quad.scale.set( world.width, world.height, 1 );*/
+                world.transition.quadmaterial.uniforms.tDiffuse2.value = world.SceneB.fbo;
                 world.renderer.setSize(world.width, world.height);
                 world.refreshPostProcessing();
                 console.log('resized');
@@ -576,8 +632,8 @@ ENGINE = function() {
             var world = this;
             this.init();
             this.transitionParams.clock.elapsedTime = 0;
-            this.SceneA = new this.Scene(0x8A0829);
-            this.SceneB = new this.Scene(0x000000);
+            this.SceneA = new this.Scene();
+            this.SceneB = new this.Scene();
             this.transition = new this.Transition(this.SceneA, this.SceneB);
             /**/
             var animate = function() {
@@ -592,7 +648,7 @@ ENGINE = function() {
                 world.transition.render();
             };
             animate();
-            // on window resize "stop" handler
+            // on window resize handler (100ms timeout to fire)
             var refresh;
             window.onresize = function() {
                 clearTimeout(refresh);
