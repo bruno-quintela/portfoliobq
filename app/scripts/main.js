@@ -232,7 +232,7 @@ ENGINE = function() {
                 guiRender.add(this.renderParams, 'enableTiltShift').onChange(function() {
                     world.refreshPostProcessing();
                 });
-                guiRender.add(this.renderParams, 'tiltBlur', 0.0, 10.0).listen().onChange(function() {
+                guiRender.add(this.renderParams, 'tiltBlur', 0.0, 20.0).listen().onChange(function() {
                     world.refreshPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableVignette').onChange(function() {
@@ -346,10 +346,10 @@ ENGINE = function() {
                 var addLights = function(scene) {
                     var ambientLight = new THREE.AmbientLight(0x020202);
                     scene.add(ambientLight);
-                    var keyLight = new THREE.DirectionalLight('white', 5);
+                    var keyLight = new THREE.DirectionalLight('white', 3);
                     keyLight.position.set(1.5, 1.5, 2);
                     scene.add(keyLight);
-                    var backLight = new THREE.DirectionalLight('white', 3);
+                    var backLight = new THREE.DirectionalLight('white', 1);
                     backLight.position.set(-1.5, -1.5, -2);
                     scene.add(backLight);
                 };
@@ -389,11 +389,27 @@ ENGINE = function() {
                                     });*/
                                     var maxAnisotropy = world.renderer.getMaxAnisotropy();
                                     var texture = THREE.ImageUtils.loadTexture(filePathUV);
-                                    mesh.material = new THREE.MeshPhongMaterial({
+                                    texture.anisotropy = maxAnisotropy;
+                                    /*mesh.material = new THREE.MeshPhongMaterial({
                                         color: 0x000000
                                         //map: texture
+                                    });*/
+                                    
+                                    var mapHeight = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/evolution.png');
+                                    mapHeight.anisotropy = maxAnisotropy;
+                                    //mapHeight.repeat.set(0.998, 0.998);
+                                    //mapHeight.offset.set(0.001, 0.001);
+                                    mapHeight.wrapS = mapHeight.wrapT = THREE.RepeatWrapping;
+                                    mapHeight.format = THREE.RGBFormat;
+                                    mesh.material = new THREE.MeshPhongMaterial({
+                                        ambient: 0xffffff,
+                                        color: 0x000000,
+                                        specular: 0x333333,
+                                        shininess: 15,
+                                        bumpMap: mapHeight,
+                                        bumpScale: 20,
+                                        metal: true
                                     });
-                                    texture.anisotropy = maxAnisotropy;
                                     set.scene.add(mesh);
                                     set.lowpoly = mesh;
                                     set.polyWire = addWireframe(set.scene, mesh.geometry, 0xffffff, 1, 1.02);
