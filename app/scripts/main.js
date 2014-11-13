@@ -128,18 +128,34 @@ ENGINE = function() {
             backgroundColor: [245, 236, 206],
             enableTrackball: true,
             enableGrid: false,
+            glitchType: 2,
             enableGlitch: false,
             enableRGBShift: true,
             enableFXAA: true,
-            enableBloom: true,
+            enableBloom: false,
             bloomStrengh: 0.3,
             enableFilm: true,
             filmStrengh: 0.3,
             enableTiltShift: true,
-            tiltBlur: 3.5,
+            tiltBlur: 9.5,
             enableVignette: true,
             vignetteStrengh: 5,
             disableEffects: false
+        },
+        lightsParams: {
+            fillLightEnable: true,
+            fillLightIntensity: 0.1,
+            fillLightCastShadow: false,
+            fillLightShadowIntensity: 0.15,
+            keyLightEnable: true,
+            keyLightIntensity: 2,
+            keyLightCastShadow: false,
+            keyLightShadowIntensity: 0.15,
+            backLightEnable: true,
+            backLightIntensity: 1,
+            backLightCastShadow: false,
+            backLightShadowIntensity: 0.15,
+            shininess: 1
         },
         transitionParams: {
             'clock': new THREE.Clock(false),
@@ -208,36 +224,50 @@ ENGINE = function() {
                         document.getElementById('gridContainer').style.display = value ? 'block' : 'none';
                     }
                 });
-                guiRender.add(this.renderParams, 'enableGlitch').onChange(function() {
+                guiRender.add(this.renderParams, 'glitchType', {
+                    smooth: 0,
+                    medium: 1,
+                    strong: 2
+                });
+                guiRender.add(this.renderParams, 'enableGlitch').onChange(function(value) {
+                    if(value) {
+                        world.renderParams.enableFXAA = false;
+                        world.renderParams.enableRGBShift = false;
+                        world.renderParams.enableTiltShift = false;
+                    } else {
+                        world.renderParams.enableFXAA = true;
+                        world.renderParams.enableRGBShift = true;
+                        world.renderParams.enableTiltShift = true;
+                    }
                     world.refreshPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableRGBShift').onChange(function() {
                     world.refreshPostProcessing();
-                });
+                }).listen();
                 guiRender.add(this.renderParams, 'enableFXAA').onChange(function() {
                     world.refreshPostProcessing();
-                });
+                }).listen();
                 guiRender.add(this.renderParams, 'enableBloom').onChange(function() {
                     world.refreshPostProcessing();
-                });
+                }).listen();
                 guiRender.add(this.renderParams, 'bloomStrengh', 0, 10, 0.01).onChange(function() {
                     world.refreshPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableFilm').onChange(function() {
                     world.refreshPostProcessing();
-                });
+                }).listen();
                 guiRender.add(this.renderParams, 'filmStrengh', 0, 1, 0.001).onChange(function() {
                     world.refreshPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableTiltShift').onChange(function() {
                     world.refreshPostProcessing();
-                });
+                }).listen();
                 guiRender.add(this.renderParams, 'tiltBlur', 0.0, 20.0).listen().onChange(function() {
                     world.refreshPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableVignette').onChange(function() {
                     world.refreshPostProcessing();
-                });
+                }).listen();
                 guiRender.add(this.renderParams, 'vignetteStrengh', 0, 40, 0.1).onChange(function() {
                     world.refreshPostProcessing();
                 });
@@ -256,13 +286,96 @@ ENGINE = function() {
                     Radial: 5
                 }).onChange(function(value) {
                     world.transition.setTexture(value);
-                }).listen();
+                });
                 guiTransition.add(this.transitionParams, 'textureThreshold', 0, 1, 0.01).onChange(function(value) {
                     world.transition.setTextureThreshold(value);
                 });
                 guiTransition.add(this.transitionParams, 'transitionMixRatio', 0, 1, 0.01).listen();
                 guiTransition.add(this.transitionParams, 'A->B');
                 guiTransition.add(this.transitionParams, 'B->A');
+                /**
+                 *  Lights GUI params
+                 **/
+                var guiLights = new dat.GUI();
+                guiLights.add(this.lightsParams, 'fillLightEnable').onChange(function(value) {
+                    if(world.SceneA.scene.children[0] instanceof THREE.DirectionalLight) {
+                        world.SceneA.scene.children[0].visible = value;
+                        world.SceneB.scene.children[0].visible = value;
+                    }
+                });
+                guiLights.add(this.lightsParams, 'fillLightIntensity', 0, 50, 0.01).onChange(function(value) {
+                    if(world.SceneA.scene.children[0] instanceof THREE.DirectionalLight) {
+                        world.SceneA.scene.children[0].intensity = value;
+                        world.SceneB.scene.children[0].intensity = value;
+                    }
+                });
+                guiLights.add(this.lightsParams, 'fillLightCastShadow').onChange(function(value) {
+                    if(world.SceneA.scene.children[0] instanceof THREE.DirectionalLight) {
+                        world.SceneA.scene.children[0].castShadow = value;
+                        world.SceneB.scene.children[0].castShadow = value;
+                    }
+                });
+                guiLights.add(this.lightsParams, 'fillLightShadowIntensity', 0, 10, 0.01).onChange(function(value) {
+                    if(world.SceneA.scene.children[0] instanceof THREE.DirectionalLight) {
+                        world.SceneA.scene.children[0].shadowDarkness = value;
+                        world.SceneB.scene.children[0].shadowDarkness = value;
+                    }
+                });
+                guiLights.add(this.lightsParams, 'keyLightEnable').onChange(function(value) {
+                    if(world.SceneA.scene.children[1] instanceof THREE.DirectionalLight) {
+                        world.SceneA.scene.children[1].visible = value;
+                        world.SceneB.scene.children[1].visible = value;
+                    }
+                });
+                guiLights.add(this.lightsParams, 'keyLightIntensity', 0, 50, 0.01).onChange(function(value) {
+                    if(world.SceneA.scene.children[1] instanceof THREE.DirectionalLight) {
+                        world.SceneA.scene.children[1].intensity = value;
+                        world.SceneB.scene.children[1].intensity = value;
+                    }
+                });
+                guiLights.add(this.lightsParams, 'keyLightCastShadow').onChange(function(value) {
+                    if(world.SceneA.scene.children[1] instanceof THREE.DirectionalLight) {
+                        world.SceneA.scene.children[1].castShadow = value;
+                        world.SceneB.scene.children[1].castShadow = value;
+                    }
+                });
+                guiLights.add(this.lightsParams, 'keyLightShadowIntensity', 0, 10, 0.01).onChange(function(value) {
+                    if(world.SceneA.scene.children[1] instanceof THREE.DirectionalLight) {
+                        world.SceneA.scene.children[1].shadowDarkness = value;
+                        world.SceneB.scene.children[1].shadowDarkness = value;
+                    }
+                });
+                guiLights.add(this.lightsParams, 'backLightEnable').onChange(function(value) {
+                    if(world.SceneA.scene.children[2] instanceof THREE.DirectionalLight) {
+                        world.SceneA.scene.children[2].visible = value;
+                        world.SceneB.scene.children[2].visible = value;
+                    }
+                });
+                guiLights.add(this.lightsParams, 'backLightIntensity', 0, 50, 0.01).onChange(function(value) {
+                    if(world.SceneA.scene.children[2] instanceof THREE.DirectionalLight) {
+                        world.SceneA.scene.children[2].intensity = value;
+                        world.SceneB.scene.children[2].intensity = value;
+                    }
+                });
+                guiLights.add(this.lightsParams, 'backLightCastShadow').onChange(function(value) {
+                    if(world.SceneA.scene.children[2] instanceof THREE.DirectionalLight) {
+                        world.SceneA.scene.children[2].castShadow = value;
+                        world.SceneB.scene.children[2].castShadow = value;
+                    }
+                });
+                guiLights.add(this.lightsParams, 'backLightShadowIntensity', 0, 10, 0.01).onChange(function(value) {
+                    if(world.SceneA.scene.children[2] instanceof THREE.DirectionalLight) {
+                        world.SceneA.scene.children[2].shadowDarkness = value;
+                        world.SceneB.scene.children[2].shadowDarkness = value;
+                    }
+                });
+                guiLights.add(this.lightsParams, 'shininess', 0, 1000, 0.01).onChange(function(value) {
+                    if(world.SceneA.scene.children[3] instanceof THREE.Mesh) {
+                        world.SceneA.scene.children[3].material.shininess = value;
+                        world.SceneB.scene.children[3].material.shininess = value;
+                    }
+                });
+                guiLights.close();
             }
         },
         addStats: function() {
@@ -344,14 +457,27 @@ ENGINE = function() {
                  * Set 3 point light system
                  **/
                 var addLights = function(scene) {
-                    var ambientLight = new THREE.AmbientLight(0x020202);
-                    scene.add(ambientLight);
-                    var keyLight = new THREE.DirectionalLight('white', 3);
-                    keyLight.position.set(1.5, 1.5, 2);
-                    scene.add(keyLight);
-                    var backLight = new THREE.DirectionalLight('white', 1);
-                    backLight.position.set(-1.5, -1.5, -2);
-                    scene.add(backLight);
+                    if(world.lightsParams.fillLightEnable) {
+                        var fillLight = new THREE.DirectionalLight('white', world.lightsParams.fillLightIntensity);
+                        fillLight.position.set(0, 0, 5);
+                        fillLight.castShadow = world.lightsParams.fillLightCastShadow;
+                        fillLight.shadowDarkness = world.lightsParams.fillLightShadowIntensity;
+                        scene.add(fillLight);
+                    }
+                    if(world.lightsParams.keyLightEnable) {
+                        var keyLight = new THREE.DirectionalLight('white', world.lightsParams.keyLightIntensity);
+                        keyLight.position.set(3.5, 3.5, 2);
+                        keyLight.castShadow = world.lightsParams.keyLightCastShadow;
+                        keyLight.shadowDarkness = world.lightsParams.keyLightShadowIntensity;
+                        scene.add(keyLight);
+                    }
+                    if(world.lightsParams.backLightEnable) {
+                        var backLight = new THREE.DirectionalLight('white', world.lightsParams.backLightIntensity);
+                        backLight.position.set(-3.5, -3.5, 2);
+                        backLight.castShadow = world.lightsParams.backLightCastShadow;
+                        backLight.shadowDarkness = world.lightsParams.backLightShadowIntensity;
+                        scene.add(backLight);
+                    }
                 };
                 /**
                  * Import collada(.dae) object and corresponding UVmap into scene
@@ -365,11 +491,11 @@ ENGINE = function() {
                             if(child instanceof THREE.Object3D) {
                                 if(child.name === 'Icosphere') {
                                     var mesh = child.children[0];
-                                    var reflectionImg = THREE.ImageUtils.loadTextureCube([filePathUV]);
+                                    /*var reflectionImg = THREE.ImageUtils.loadTextureCube([filePathUV]);
                                     reflectionImg.format = THREE.RGBFormat;
                                     var refractionImg = new THREE.CubeTexture(reflectionImg.image, new THREE.CubeRefractionMapping());
                                     refractionImg.format = THREE.RGBFormat;
-                                    /*mesh.material = new THREE.MeshLambertMaterial({
+                                    mesh.material = new THREE.MeshLambertMaterial({
                                         color: 0xffffff,
                                         ambient: 0xaaaaaa,
                                         envMap: reflectionImg
@@ -394,7 +520,6 @@ ENGINE = function() {
                                         color: 0x000000
                                         //map: texture
                                     });*/
-                                    
                                     var mapHeight = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/evolution.png');
                                     mapHeight.anisotropy = maxAnisotropy;
                                     //mapHeight.repeat.set(0.998, 0.998);
@@ -405,16 +530,17 @@ ENGINE = function() {
                                         ambient: 0xffffff,
                                         color: 0x000000,
                                         specular: 0x333333,
-                                        shininess: 15,
-                                        bumpMap: mapHeight,
-                                        bumpScale: 20,
+                                        shininess: 10,
+                                        //bumpMap: mapHeight,
+                                        //bumpScale: 20,
                                         metal: true
                                     });
+                                    mesh.castShadow = true;
                                     set.scene.add(mesh);
                                     set.lowpoly = mesh;
                                     set.polyWire = addWireframe(set.scene, mesh.geometry, 0xffffff, 1, 1.02);
-                                    set.polyWire2 = addWireframe(set.scene, mesh.geometry, 0x000000, 1, 1.3);
-                                    //set.pointCloud = addPointCloud(set.scene, mesh.geometry, '../src/textures/sprites/black-circle-round-target-dot.png', 0.1, 1.3);
+                                    set.polyWire2 = addWireframe(set.scene, mesh.geometry, 0x000000, 1, 1.1);
+                                    set.pointCloud = addPointCloud(set.scene, mesh.geometry, '../src/textures/sprites/black-circle-round-target-dot.png', 0.05, 1.1);
                                 }
                             }
                         });
@@ -429,9 +555,9 @@ ENGINE = function() {
                             set.polyWire2.rotation.x += set.rotationSpeed.x;
                             set.polyWire2.rotation.y += set.rotationSpeed.y;
                             set.polyWire2.rotation.z += set.rotationSpeed.z;
-                            /*set.pointCloud.rotation.x += set.rotationSpeed.x;
+                            set.pointCloud.rotation.x += set.rotationSpeed.x;
                             set.pointCloud.rotation.y += set.rotationSpeed.y;
-                            set.pointCloud.rotation.z += set.rotationSpeed.z;*/
+                            set.pointCloud.rotation.z += set.rotationSpeed.z;
                             if(rtt) {
                                 world.renderer.render(this.scene, this.camera, this.fbo, true);
                             } else {
@@ -571,43 +697,45 @@ ENGINE = function() {
                 this.composer = new THREE.EffectComposer(world.renderer);
                 var renderModel = new THREE.RenderPass(this.scene, this.camera);
                 this.composer.addPass(renderModel);
-                if(world.renderParams.enableGlitch) {
-                    var glitchPass = new THREE.GlitchPass();
-                    this.composer.addPass(glitchPass);
-                }
-                if(world.renderParams.enableFXAA) {
-                    var effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
-                    effectFXAA.uniforms.resolution.value.set(1 / world.width, 1 / world.height);
-                    this.composer.addPass(effectFXAA);
-                }
-                if(world.renderParams.enableFilm) {
-                    var effectFilm = new THREE.FilmPass(world.renderParams.filmStrengh, 0, 448, false);
-                    this.composer.addPass(effectFilm);
-                }
-                if(world.renderParams.enableBloom) {
-                    var effectBloom = new THREE.BloomPass(world.renderParams.bloomStrengh);
-                    this.composer.addPass(effectBloom);
-                }
-                if(world.renderParams.enableRGBShift) {
-                    var rgbShift = new THREE.ShaderPass(THREE.RGBShiftShader);
-                    rgbShift.uniforms.amount.value = 0.001;
-                    this.composer.addPass(rgbShift);
-                }
-                if(world.renderParams.enableTiltShift) {
-                    var hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
-                    var vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
-                    var bluriness = world.renderParams.tiltBlur;
-                    hblur.uniforms.h.value = bluriness / world.width;
-                    vblur.uniforms.v.value = bluriness / world.height;
-                    hblur.uniforms.r.value = vblur.uniforms.r.value = 0.5;
-                    this.composer.addPass(hblur);
-                    this.composer.addPass(vblur);
-                }
-                if(world.renderParams.enableVignette) {
-                    var vignettePass = new THREE.ShaderPass(THREE.VignetteShader);
-                    vignettePass.uniforms.darkness.value = world.renderParams.vignetteStrengh;
-                    vignettePass.uniforms.offset.value = 0.3;
-                    this.composer.addPass(vignettePass);
+                if(!world.renderParams.disableEffects) {
+                    if(world.renderParams.enableGlitch) {
+                        var glitchPass = new THREE.GlitchPass(world.renderParams.glitchType);
+                        this.composer.addPass(glitchPass);
+                    }
+                    if(world.renderParams.enableFXAA) {
+                        var effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
+                        effectFXAA.uniforms.resolution.value.set(1 / world.width, 1 / world.height);
+                        this.composer.addPass(effectFXAA);
+                    }
+                    if(world.renderParams.enableFilm) {
+                        var effectFilm = new THREE.FilmPass(world.renderParams.filmStrengh, 0, 448, false);
+                        this.composer.addPass(effectFilm);
+                    }
+                    if(world.renderParams.enableBloom) {
+                        var effectBloom = new THREE.BloomPass(world.renderParams.bloomStrengh);
+                        this.composer.addPass(effectBloom);
+                    }
+                    if(world.renderParams.enableRGBShift) {
+                        var rgbShift = new THREE.ShaderPass(THREE.RGBShiftShader);
+                        rgbShift.uniforms.amount.value = 0.001;
+                        this.composer.addPass(rgbShift);
+                    }
+                    if(world.renderParams.enableTiltShift) {
+                        var hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
+                        var vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
+                        var bluriness = world.renderParams.tiltBlur;
+                        hblur.uniforms.h.value = bluriness / world.width;
+                        vblur.uniforms.v.value = bluriness / world.height;
+                        hblur.uniforms.r.value = vblur.uniforms.r.value = 0.5;
+                        this.composer.addPass(hblur);
+                        this.composer.addPass(vblur);
+                    }
+                    if(world.renderParams.enableVignette) {
+                        var vignettePass = new THREE.ShaderPass(THREE.VignetteShader);
+                        vignettePass.uniforms.darkness.value = world.renderParams.vignetteStrengh;
+                        vignettePass.uniforms.offset.value = 0.3;
+                        this.composer.addPass(vignettePass);
+                    }
                 }
                 var copyPass = new THREE.ShaderPass(THREE.CopyShader);
                 this.composer.addPass(copyPass);

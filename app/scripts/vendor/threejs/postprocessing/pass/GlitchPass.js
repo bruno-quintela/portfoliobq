@@ -1,17 +1,18 @@
 /**
  
  */
-THREE.GlitchPass = function(dt_size) {
+THREE.GlitchPass = function(type) {
     if(THREE.DigitalGlitch === undefined) console.error("THREE.GlitchPass relies on THREE.DigitalGlitch");
     var shader = THREE.DigitalGlitch;
     this.uniforms = THREE.UniformsUtils.clone(shader.uniforms);
-    if(dt_size == undefined) dt_size = 64;
+    var dt_size = 64;
     this.uniforms["tDisp"].value = this.generateHeightmap(dt_size);
     this.material = new THREE.ShaderMaterial({
         uniforms: this.uniforms,
         vertexShader: shader.vertexShader,
         fragmentShader: shader.fragmentShader
     });
+    this.type = parseInt(type);
     this.enabled = true;
     this.renderToScreen = false;
     this.needsSwap = true;
@@ -26,12 +27,32 @@ THREE.GlitchPass.prototype = {
         this.uniforms['seed'].value = Math.random(); //default seeding
         this.uniforms['byp'].value = 0;
         if(this.enabled == true) {
-            this.uniforms['amount'].value = Math.random() / 90;
-            this.uniforms['angle'].value = THREE.Math.randFloat(-Math.PI, Math.PI);
-            this.uniforms['distortion_x'].value = THREE.Math.randFloat(0, 1);
-            this.uniforms['distortion_y'].value = THREE.Math.randFloat(0, 1);
-            this.uniforms['seed_x'].value = THREE.Math.randFloat(-0.3, 0.3);
-            this.uniforms['seed_y'].value = THREE.Math.randFloat(-0.3, 0.3);
+            switch(this.type) {
+                case 0:
+                    this.uniforms['amount'].value = Math.random() / 500;
+                    this.uniforms['angle'].value = THREE.Math.randFloat(-Math.PI, Math.PI);
+                    this.uniforms['distortion_x'].value = THREE.Math.randFloat(0, 0.01);
+                    this.uniforms['distortion_y'].value = THREE.Math.randFloat(0, 0.01);
+                    this.uniforms['seed_x'].value = THREE.Math.randFloat(-0.03, 0.03);
+                    this.uniforms['seed_y'].value = THREE.Math.randFloat(-0.03, 0.03);
+                    break;
+                case 1:
+                    this.uniforms['amount'].value = Math.random() / 200;
+                    this.uniforms['angle'].value = THREE.Math.randFloat(-Math.PI, Math.PI);
+                    this.uniforms['distortion_x'].value = THREE.Math.randFloat(0, 0.1);
+                    this.uniforms['distortion_y'].value = THREE.Math.randFloat(0, 0.1);
+                    this.uniforms['seed_x'].value = THREE.Math.randFloat(-0.1, 0.1);
+                    this.uniforms['seed_y'].value = THREE.Math.randFloat(-0.1, 0.1);
+                    break;
+                case 2:
+                    this.uniforms['amount'].value = Math.random() / 90;
+                    this.uniforms['angle'].value = THREE.Math.randFloat(-Math.PI, Math.PI);
+                    this.uniforms['distortion_x'].value = THREE.Math.randFloat(0, 1);
+                    this.uniforms['distortion_y'].value = THREE.Math.randFloat(0, 1);
+                    this.uniforms['seed_x'].value = THREE.Math.randFloat(-0.3, 0.3);
+                    this.uniforms['seed_y'].value = THREE.Math.randFloat(-0.3, 0.3);
+                    break;
+            }
         }
         this.quad.material = this.material;
         if(this.renderToScreen) {
