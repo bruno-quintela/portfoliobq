@@ -56,7 +56,8 @@
  * Declare Namespace
  */
 var ENGINE = ENGINE || {
-    author: 'Bruno Quintela 2014'
+    author: 'Bruno Quintela',
+    date: '2014'
 };
 ENGINE = function() {
     this.system = {
@@ -125,10 +126,10 @@ ENGINE = function() {
         renderParams: {
             antialias: true,
             alpha: false,
-            backgroundColor: [245, 236, 206],
+            backgroundColor: [255, 255, 255],
             enableTrackball: true,
             enableGrid: false,
-            glitchType: 2,
+            glitchType: 0,
             enableGlitch: false,
             enableRGBShift: true,
             enableFXAA: true,
@@ -155,30 +156,63 @@ ENGINE = function() {
             backLightIntensity: 1,
             backLightCastShadow: false,
             backLightShadowIntensity: 0.15,
-            shininess: 1
+            shininess: 10
         },
         transitionParams: {
-            'clock': new THREE.Clock(false),
-            'transitionMixRatio': 0,
-            'texture': 2,
-            'textureThreshold': 0.3,
-            'currentScene': 'A', // A/B/T
-            'A->B': function() {
-                var world = this;
+            clock: new THREE.Clock(false),
+            transitionMixRatio: 0,
+            texture: 2,
+            textureThreshold: 0.0,
+            currentScene: 'A', // A/B/T
+            AtoB: function() {
+                var transitionParams = this;
                 this.transitionMixRatio = 0;
                 var update = function() {
-                    world.transitionMixRatio = current.x;
+                    transitionParams.transitionMixRatio = current.x;
                 };
                 var current = {
                     x: 0
                 };
                 // remove previous tweens if needed
-                var tweenHead = new TWEEN.Tween(current).to({
+                var tweenAtoB = new TWEEN.Tween(current).to({
                     x: 1
                 }, 2000).onUpdate(update);
-                tweenHead.start();
+                tweenAtoB.start();
             },
-            'B->A': function() {
+            BtoA: function() {
+                var transitionParams = this;
+                this.transitionMixRatio = 1;
+                var update = function() {
+                    transitionParams.transitionMixRatio = current.x;
+                };
+                var current = {
+                    x: 1
+                };
+                // remove previous tweens if needed
+                var tweenBtoA = new TWEEN.Tween(current).to({
+                    x: 0
+                }, 2000).onUpdate(update);
+                tweenBtoA.start();
+            },
+            transitionTime: 1,
+            tweenVertex: function() {
+                var geometryPoly = myPortfolio.world.SceneA.lowpoly.geometry;
+                var geometryCloud = myPortfolio.world.SceneA.pointCloud.geometry;
+                var update = function() {
+                    geometryPoly.verticesNeedUpdate = true;
+                    geometryCloud.verticesNeedUpdate = true;
+                    geometryCloud.vertices = geometryPoly.vertices;
+                };
+                for(var i = 0; i < geometryPoly.vertices.length; i++) {
+                    var tweenVertex = new TWEEN.Tween(geometryPoly.vertices[i]).to({
+                        x: myPortfolio.world.SceneA.morphTarget.vertices[i].x,
+                        y: myPortfolio.world.SceneA.morphTarget.vertices[i].y,
+                        z: myPortfolio.world.SceneA.morphTarget.vertices[i].z
+                    }, 2000).onUpdate(update);
+                    tweenVertex.delay(i*10).easing(TWEEN.Easing.Elastic.Out).start();
+                }
+            },
+            tweenVertices: function() {
                 var world = this;
                 this.transitionMixRatio = 1;
                 var update = function() {
@@ -208,7 +242,7 @@ ENGINE = function() {
                 });
                 guiRender.add(this.renderParams, 'enableTrackball');
                 guiRender.add(this.renderParams, 'enableGrid').onChange(function(value) {
-                    console.log(value);
+                    //add compositing 3rd rule grid
                     if(!document.getElementById('gridContainer')) {
                         var gridContainer = document.createElement('div');
                         gridContainer.setAttribute('id', 'gridContainer');
@@ -233,11 +267,9 @@ ENGINE = function() {
                     if(value) {
                         world.renderParams.enableFXAA = false;
                         world.renderParams.enableRGBShift = false;
-                        world.renderParams.enableTiltShift = false;
                     } else {
                         world.renderParams.enableFXAA = true;
                         world.renderParams.enableRGBShift = true;
-                        world.renderParams.enableTiltShift = true;
                     }
                     world.refreshPostProcessing();
                 });
@@ -274,7 +306,9 @@ ENGINE = function() {
                 guiRender.add(this.renderParams, 'disableEffects').onChange(function() {
                     world.refreshPostProcessing();
                 });
-                // Transition GUI params
+                /**
+                 * GUI Tween Motions test
+                 **/
                 var guiTransition = new dat.GUI();
                 guiTransition.add(this.transitionParams, 'currentScene').listen();
                 guiTransition.add(this.transitionParams, 'texture', {
@@ -291,8 +325,11 @@ ENGINE = function() {
                     world.transition.setTextureThreshold(value);
                 });
                 guiTransition.add(this.transitionParams, 'transitionMixRatio', 0, 1, 0.01).listen();
-                guiTransition.add(this.transitionParams, 'A->B');
-                guiTransition.add(this.transitionParams, 'B->A');
+                guiTransition.add(this.transitionParams, 'AtoB');
+                guiTransition.add(this.transitionParams, 'BtoA');
+                guiTransition.add(this.transitionParams, 'transitionTime', 0, 11, 0.01);
+                guiTransition.add(this.transitionParams, 'tweenVertex');
+                guiTransition.add(this.transitionParams, 'tweenVertices');
                 /**
                  *  Lights GUI params
                  **/
@@ -369,7 +406,7 @@ ENGINE = function() {
                         world.SceneB.scene.children[2].shadowDarkness = value;
                     }
                 });
-                guiLights.add(this.lightsParams, 'shininess', 0, 1000, 0.01).onChange(function(value) {
+                guiLights.add(this.lightsParams, 'shininess', 0, 500, 0.01).onChange(function(value) {
                     if(world.SceneA.scene.children[3] instanceof THREE.Mesh) {
                         world.SceneA.scene.children[3].material.shininess = value;
                         world.SceneB.scene.children[3].material.shininess = value;
@@ -420,26 +457,26 @@ ENGINE = function() {
                  * Add wireframe clone of geometry to scene
                  **/
                 var addWireframe = function(scene, geometry, color, thickness, scaleFactor) {
-                    var materialTransparent = new THREE.MeshBasicMaterial({
-                        transparent: true,
-                        opacity: 0
+                    var material = new THREE.MeshBasicMaterial({
+                        color: color,
+                        transparent: false,
+                        opacity: 1,
+                        wireframeLinewidth: thickness,
+                        wireframe: true
                     });
-                    var meshWire = new THREE.Mesh(geometry, materialTransparent);
+                    var meshWire = new THREE.Mesh(geometry, material);
                     meshWire.scale.set(scaleFactor, scaleFactor, scaleFactor);
                     scene.add(meshWire);
-                    var edgeHelper = new THREE.EdgesHelper(meshWire, color);
-                    edgeHelper.material.linewidth = thickness;
-                    scene.add(edgeHelper);
                     return meshWire;
                 };
                 /**
                  * Add vertices sprites to scene
                  **/
                 var addPointCloud = function(scene, geometry, spritePath, spriteSize, scaleFactor) {
-                    var geometryParticle = new THREE.Geometry();
                     var sprite1 = THREE.ImageUtils.loadTexture(spritePath);
+                    var geometryParticle = new THREE.Geometry();
                     for(var i = 0; i < geometry.vertices.length; i++) {
-                        var vector = new THREE.Vector3(geometry.vertices[i].x * scaleFactor, geometry.vertices[i].y * scaleFactor, geometry.vertices[i].z * scaleFactor);
+                        var vector = new THREE.Vector3(geometry.vertices[i].x, geometry.vertices[i].y, geometry.vertices[i].z);
                         geometryParticle.vertices.push(vector);
                     }
                     var materialSprite = new THREE.PointCloudMaterial({
@@ -449,7 +486,9 @@ ENGINE = function() {
                         depthTest: true,
                         transparent: true
                     });
+                    
                     var particlesCloud = new THREE.PointCloud(geometryParticle, materialSprite);
+                    particlesCloud.scale.set(scaleFactor, scaleFactor, scaleFactor);
                     scene.add(particlesCloud);
                     return particlesCloud;
                 };
@@ -491,56 +530,23 @@ ENGINE = function() {
                             if(child instanceof THREE.Object3D) {
                                 if(child.name === 'Icosphere') {
                                     var mesh = child.children[0];
-                                    /*var reflectionImg = THREE.ImageUtils.loadTextureCube([filePathUV]);
-                                    reflectionImg.format = THREE.RGBFormat;
-                                    var refractionImg = new THREE.CubeTexture(reflectionImg.image, new THREE.CubeRefractionMapping());
-                                    refractionImg.format = THREE.RGBFormat;
-                                    mesh.material = new THREE.MeshLambertMaterial({
-                                        color: 0xffffff,
-                                        ambient: 0xaaaaaa,
-                                        envMap: reflectionImg
-                                    });*/
-                                    /*mesh.material = new THREE.MeshLambertMaterial({
-                                        color: 0xffee00,
-                                        ambient: 0x996600,
-                                        envMap: refractionImg,
-                                        refractionRatio: 0.95
-                                    });*/
-                                    /*mesh.material = new THREE.MeshLambertMaterial({
-                                        color: 0xff6600,
-                                        ambient: 0x993300,
-                                        envMap: reflectionImg,
-                                        combine: THREE.MixOperation,
-                                        reflectivity: 0.9
-                                    });*/
-                                    var maxAnisotropy = world.renderer.getMaxAnisotropy();
-                                    var texture = THREE.ImageUtils.loadTexture(filePathUV);
-                                    texture.anisotropy = maxAnisotropy;
-                                    /*mesh.material = new THREE.MeshPhongMaterial({
-                                        color: 0x000000
-                                        //map: texture
-                                    });*/
-                                    var mapHeight = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/evolution.png');
-                                    mapHeight.anisotropy = maxAnisotropy;
-                                    //mapHeight.repeat.set(0.998, 0.998);
-                                    //mapHeight.offset.set(0.001, 0.001);
-                                    mapHeight.wrapS = mapHeight.wrapT = THREE.RepeatWrapping;
-                                    mapHeight.format = THREE.RGBFormat;
+                                    //var maxAnisotropy = world.renderer.getMaxAnisotropy();
+                                    //var texture = THREE.ImageUtils.loadTexture(filePathUV);
+                                    //texture.anisotropy = maxAnisotropy;
                                     mesh.material = new THREE.MeshPhongMaterial({
                                         ambient: 0xffffff,
                                         color: 0x000000,
                                         specular: 0x333333,
-                                        shininess: 10,
-                                        //bumpMap: mapHeight,
-                                        //bumpScale: 20,
+                                        shininess: world.lightsParams.shininess,
                                         metal: true
                                     });
-                                    mesh.castShadow = true;
+                                    //mesh.receiveShadow = true;
+                                    //mesh.castShadow = true;
+                                    //mesh.scale.set(2,2,2);
                                     set.scene.add(mesh);
                                     set.lowpoly = mesh;
                                     set.polyWire = addWireframe(set.scene, mesh.geometry, 0xffffff, 1, 1.02);
-                                    set.polyWire2 = addWireframe(set.scene, mesh.geometry, 0x000000, 1, 1.1);
-                                    set.pointCloud = addPointCloud(set.scene, mesh.geometry, '../src/textures/sprites/black-circle-round-target-dot.png', 0.05, 1.1);
+                                    set.pointCloud = addPointCloud(set.scene, mesh.geometry, '../src/textures/sprites/WhiteDot.svg', 0.03, 1.02);
                                 }
                             }
                         });
@@ -552,9 +558,6 @@ ENGINE = function() {
                             set.polyWire.rotation.x += set.rotationSpeed.x;
                             set.polyWire.rotation.y += set.rotationSpeed.y;
                             set.polyWire.rotation.z += set.rotationSpeed.z;
-                            set.polyWire2.rotation.x += set.rotationSpeed.x;
-                            set.polyWire2.rotation.y += set.rotationSpeed.y;
-                            set.polyWire2.rotation.z += set.rotationSpeed.z;
                             set.pointCloud.rotation.x += set.rotationSpeed.x;
                             set.pointCloud.rotation.y += set.rotationSpeed.y;
                             set.pointCloud.rotation.z += set.rotationSpeed.z;
@@ -570,6 +573,16 @@ ENGINE = function() {
                         };
                     });
                 };
+                /**
+                 * Import JSON threejs exported from blender
+                 **/
+                var importJSON = function(set, filePathJSON, filePathUV) {
+                    var loader = new THREE.JSONLoader();
+                    loader.load(filePathJSON, function(geometry, materials) {
+                        set.morphTarget = geometry;
+                    });
+                };
+
                 if(world.renderParams.enableTrackball) {
                     this.trackball = new THREE.TrackballControls(this.camera, world.renderer.domElement);
                     this.trackball.rotateSpeed = 1.0;
@@ -580,21 +593,11 @@ ENGINE = function() {
                     this.trackball.staticMoving = true;
                     this.trackball.dynamicDampingFactor = 0.3;
                     this.trackball.keys = [65, 83, 68];
-                    //this.trackball.addEventListener( 'change', this.render );
                 }
                 //this.scene.fog = new THREE.FogExp2(0x000000, 0.0008);
-                /* var geometry = new THREE.BoxGeometry(2, 2, 2);
-                var material = new THREE.MeshBasicMaterial({
-                    color: matColor
-                });
-                var cube = new THREE.Mesh(geometry, material);
-                this.scene.add(cube);
-                var meshWire = addWireframe(this.scene, geometry, 1.5);
-                var meshWire2 = addWireframe(this.scene, geometry, 3);
-                var pointCloud = addPointCloud(this.scene, geometry, 1)*/
-                //var pointCloud2 = addPointCloud(this.scene, geometry, 3);
                 addLights(this.scene);
                 importCollada(this, '../src/collada/lowpoly.dae', '../src/textures/UVmaps/UVmap.png');
+                importJSON(this, '../src/json/lowpoly4.json', '../src/textures/UVmaps/UVmap.png');
                 /*******************************/
                 world.postprocess.apply(this);
                 this.render = function(rtt) {
