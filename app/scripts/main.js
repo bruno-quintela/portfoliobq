@@ -57,6 +57,7 @@
  */
 var ENGINE = ENGINE || {
     author: 'Bruno Quintela',
+    description: 'Portfolio',
     date: '2014'
 };
 ENGINE = function() {
@@ -176,7 +177,7 @@ ENGINE = function() {
                 // remove previous tweens if needed
                 var tweenAtoB = new TWEEN.Tween(current).to({
                     x: 1
-                }, 2000).onUpdate(update);
+                }, transitionParams.transitionTime*1000).onUpdate(update);
                 tweenAtoB.start();
             },
             BtoA: function() {
@@ -191,7 +192,7 @@ ENGINE = function() {
                 // remove previous tweens if needed
                 var tweenBtoA = new TWEEN.Tween(current).to({
                     x: 0
-                }, 2000).onUpdate(update);
+                }, transitionParams.transitionTime*1000).onUpdate(update);
                 tweenBtoA.start();
             },
             transitionTime: 1,
@@ -209,7 +210,7 @@ ENGINE = function() {
                         y: myPortfolio.world.SceneA.morphTarget.vertices[i].y,
                         z: myPortfolio.world.SceneA.morphTarget.vertices[i].z
                     }, 2000).onUpdate(update);
-                    tweenVertex.delay(i*10).easing(TWEEN.Easing.Elastic.Out).start();
+                    tweenVertex.delay(i * 10).easing(TWEEN.Easing.Elastic.Out).start();
                 }
             },
             tweenVertices: function() {
@@ -486,7 +487,6 @@ ENGINE = function() {
                         depthTest: true,
                         transparent: true
                     });
-                    
                     var particlesCloud = new THREE.PointCloud(geometryParticle, materialSprite);
                     particlesCloud.scale.set(scaleFactor, scaleFactor, scaleFactor);
                     scene.add(particlesCloud);
@@ -528,7 +528,7 @@ ENGINE = function() {
                     loader.load(filePathCollada, function(collada) {
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
-                                if(child.name === 'Icosphere') {
+                                if(child.name === 'Icosphere_000') {
                                     var mesh = child.children[0];
                                     //var maxAnisotropy = world.renderer.getMaxAnisotropy();
                                     //var texture = THREE.ImageUtils.loadTexture(filePathUV);
@@ -540,14 +540,26 @@ ENGINE = function() {
                                         shininess: world.lightsParams.shininess,
                                         metal: true
                                     });
-                                    //mesh.receiveShadow = true;
-                                    //mesh.castShadow = true;
-                                    //mesh.scale.set(2,2,2);
+                                    mesh.material = new THREE.ShaderMaterial({
+                                    uniforms: {
+                                        tMatCap: {
+                                            type: 't',
+                                            value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap2.jpg')
+                                        },
+                                    },
+                                    vertexShader: document.getElementById('sem2-vs').textContent,
+                                    fragmentShader: document.getElementById('sem2-fs').textContent,
+                                    shading: THREE.SmoothShading
+                                });
+                                    mesh.scale.set(2,2,2);
+                                    /*var modifier = new THREE.SubdivisionModifier( 2 );
+	                                modifier.modify( mesh.geometry );*/
                                     set.scene.add(mesh);
                                     set.lowpoly = mesh;
-                                    set.polyWire = addWireframe(set.scene, mesh.geometry, 0xffffff, 1, 1.02);
-                                    set.pointCloud = addPointCloud(set.scene, mesh.geometry, '../src/textures/sprites/WhiteDot.svg', 0.03, 1.02);
+                                    set.polyWire = addWireframe(set.scene, mesh.geometry, 0x000000, 1, 2.05);
+                                    set.pointCloud = addPointCloud(set.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 0.1, 2.05);
                                 }
+                                
                             }
                         });
                         set.rotationSpeed = new THREE.Vector3(0, 0.002, 0.001);
@@ -582,7 +594,6 @@ ENGINE = function() {
                         set.morphTarget = geometry;
                     });
                 };
-
                 if(world.renderParams.enableTrackball) {
                     this.trackball = new THREE.TrackballControls(this.camera, world.renderer.domElement);
                     this.trackball.rotateSpeed = 1.0;
@@ -595,9 +606,9 @@ ENGINE = function() {
                     this.trackball.keys = [65, 83, 68];
                 }
                 //this.scene.fog = new THREE.FogExp2(0x000000, 0.0008);
-                addLights(this.scene);
-                importCollada(this, '../src/collada/lowpoly.dae', '../src/textures/UVmaps/UVmap.png');
-                importJSON(this, '../src/json/lowpoly4.json', '../src/textures/UVmaps/UVmap.png');
+                //addLights(this.scene);
+                importCollada(this, '../src/collada/bw.dae', '../src/textures/UVmaps/UVmap.png');
+                importJSON(this, '../src/json/lego.json', '../src/textures/UVmaps/UVmap.png');
                 /*******************************/
                 world.postprocess.apply(this);
                 this.render = function(rtt) {

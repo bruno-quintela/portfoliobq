@@ -1,102 +1,158 @@
 <!doctype html>
 <html class="no-js">
-    <head>
-        <meta charset="utf-8">
-        <title>workspace</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
-        <link rel="shortcut icon" href="/favicon.ico">
-        <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-        <!-- build:css styles/vendor.css -->
-        <!-- bower:css -->
-        <link rel="stylesheet" href="../bower_components/normalize-css/normalize.css" />
-        <!-- endbower -->
-        <!-- endbuild -->
-        <!-- build:css(.tmp) styles/main.css -->
-        <link rel="stylesheet" href="styles/main.css">
-        <!-- endbuild -->
-    
-        <!-- build:js scripts/vendor/modernizr.js -->
-        <script src="../bower_components/modernizr/modernizr.js"></script>
-        <!-- endbuild -->
 
-    </head>
-    <body>
-        <!--[if lt IE 10]>
+<head>
+    <meta charset="utf-8">
+    <title>workspace</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="../bower_components/normalize-css/normalize.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+
+    <!-- build:js scripts/vendor/modernizr.js -->
+    <script src="../bower_components/modernizr/modernizr.js"></script>
+    <!-- endbuild -->
+
+</head>
+
+<body>
+    <!--[if lt IE 10]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-      
 
-        <!-- build:js scripts/vendor.js -->
-        <!-- bower:js -->
-        <script src="../bower_components/jquery/dist/jquery.js"></script>
-        <script src="../bower_components/velocity/velocity.js"></script>
-        <script src="../bower_components/threejs/build/three.js"></script>
-        <script src="../bower_components/threejs-stats/Stats.js"></script>
-        <script src="../bower_components/threex.rendererstats/threex.rendererstats.js"></script>
-        <script src="../bower_components/dat-gui/build/dat.gui.js"></script>
-        <!-- endbower -->
-        <!-- endbuild -->
-        <!-- Vendor Libs -->
-        <script src="scripts/polyfills.js"></script>
-        <script src="scripts/vendor/tweenjs/tween.min.js"></script>
-        <!-- SHADERS -->
-        <script src="scripts/vendor/threejs/shaders/BleachBypassShader.js"></script>
-		<script src="scripts/vendor/threejs/shaders/ColorifyShader.js"></script>
-		<script src="scripts/vendor/threejs/shaders/ConvolutionShader.js"></script>
-		<script src="scripts/vendor/threejs/shaders/CopyShader.js"></script>
-		<script src="scripts/vendor/threejs/shaders/DotScreenShader.js"></script>
-		<script src="scripts/vendor/threejs/shaders/FilmShader.js"></script>
-		<script src="scripts/vendor/threejs/shaders/HorizontalBlurShader.js"></script>
-		<script src="scripts/vendor/threejs/shaders/SepiaShader.js"></script>
-		<script src="scripts/vendor/threejs/shaders/VerticalBlurShader.js"></script>
-		<script src="scripts/vendor/threejs/shaders/VignetteShader.js"></script>
-        <script src="scripts/vendor/threejs/shaders/RGBShiftShader.js"></script>
-        <script src="scripts/vendor/threejs/shaders/FXAAShader.js"></script>
-        <script src="scripts/vendor/threejs/shaders/Technicolor3Shader.js"></script>
-        <script src="scripts/vendor/threejs/shaders/ShaderGodRays.js"></script>
-        <script src="scripts/vendor/threejs/shaders/HorizontalTiltShiftShader.js"></script>
-        <script src="scripts/vendor/threejs/shaders/VerticalTiltShiftShader.js"></script>
-        <script src="scripts/vendor/threejs/shaders/DigitalGlitch.js"></script>
-        
-        <!-- RENDER PASSES -->
-		<script src="scripts/vendor/threejs/postprocessing/EffectComposer.js"></script>
-		<script src="scripts/vendor/threejs/postprocessing/pass/RenderPass.js"></script>
-		<script src="scripts/vendor/threejs/postprocessing/pass/BloomPass.js"></script>
-		<script src="scripts/vendor/threejs/postprocessing/pass/FilmPass.js"></script>
-		<script src="scripts/vendor/threejs/postprocessing/pass/DotScreenPass.js"></script>
-		<script src="scripts/vendor/threejs/postprocessing/pass/TexturePass.js"></script>
-		<script src="scripts/vendor/threejs/postprocessing/pass/ShaderPass.js"></script>
-		<script src="scripts/vendor/threejs/postprocessing/pass/MaskPass.js"></script>
-        <script src="scripts/vendor/threejs/postprocessing/pass/GlitchPass.js"></script>
-        
-        <!-- SCENE CONTROLS -->
-        <script src="scripts/vendor/threejs/controls/TrackballControls.js"></script>
-        
-        <!-- IMPORT COLLADA INTO THREEJS -->
-        <script src="scripts/vendor/threejs/loader/ColladaLoader.js"></script>
-        
-        
 
-        <div class="body-bg">
-          <canvas id="threejsCanvas" class="threejs-canvas"></canvas>
-        </div>
-       
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/velocity/velocity.js"></script>
+    <script src="../bower_components/threejs/build/three.js"></script>
+    <script src="../bower_components/threejs-stats/Stats.js"></script>
+    <script src="../bower_components/threex.rendererstats/threex.rendererstats.js"></script>
+    <script src="../bower_components/dat-gui/build/dat.gui.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- Vendor Libs -->
+    <script src="scripts/polyfills.js"></script>
+    <script src="scripts/vendor/tweenjs/tween.min.js"></script>
+    <!-- SHADERS -->
+    <script src="scripts/vendor/threejs/shaders/BleachBypassShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/ColorifyShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/ConvolutionShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/CopyShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/DotScreenShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/FilmShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/HorizontalBlurShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/SepiaShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/VerticalBlurShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/VignetteShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/RGBShiftShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/FXAAShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/Technicolor3Shader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/ShaderGodRays.js"></script>
+    <script src="scripts/vendor/threejs/shaders/HorizontalTiltShiftShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/VerticalTiltShiftShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/DigitalGlitch.js"></script>
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X');ga('send','pageview');
-        </script>
+    <!-- RENDER PASSES -->
+    <script src="scripts/vendor/threejs/postprocessing/EffectComposer.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/RenderPass.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/BloomPass.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/FilmPass.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/DotScreenPass.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/TexturePass.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/ShaderPass.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/MaskPass.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/GlitchPass.js"></script>
 
-        <!-- build:js({app,.tmp}) scripts/main.js -->
-        <script src="scripts/main.js"></script>
-        <!-- endbuild -->
+    <!-- SCENE CONTROLS -->
+    <script src="scripts/vendor/threejs/controls/TrackballControls.js"></script>
+
+    <!-- IMPORT COLLADA INTO THREEJS -->
+    <script src="scripts/vendor/threejs/loader/ColladaLoader.js"></script>
+     <!-- IMPORT SUBDIVISION MODIFIER  -->
+    <script src="scripts/vendor/threejs/modifier/subdivisionModifier.js"></script>
+
+
+
+    <div class="body-bg">
+        <canvas id="threejsCanvas" class="threejs-canvas"></canvas>
+    </div>
+
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <script>
+        (function(b, o, i, l, e, r) {
+            b.GoogleAnalyticsObject = l;
+            b[l] || (b[l] = function() {
+                (b[l].q = b[l].q || []).push(arguments)
+            });
+            b[l].l = +new Date;
+            e = o.createElement(i);
+            r = o.getElementsByTagName(i)[0];
+            e.src = '//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e, r)
+        }(window, document, 'script', 'ga'));
+        ga('create', 'UA-XXXXX-X');
+        ga('send', 'pageview');
+    </script>
+
+    <script type="x-shader/x-vertex" id="sem-vs">
+        varying vec2 vN;
+        void main() {
+            vec3 e = normalize(vec3(modelViewMatrix * vec4(position, 1.0)));
+            vec3 n = normalize(normalMatrix * normal);
+            vec3 r = reflect(e, n);
+            float m = 2. * sqrt(pow(r.x, 2.) + pow(r.y, 2.) + pow(r.z + 1., 2.));
+            vN = r.xy / m + .5;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
+        }
+    </script>
+
+    <script type="x-shader/x-vertex" id="sem-fs">
+        uniform sampler2D tMatCap;
+        varying vec2 vN;
+        void main() {
+            vec3 base = texture2D(tMatCap, vN).rgb;
+            gl_FragColor = vec4(base, 1.);
+        }
+    </script>
+
+    <script type="x-shader/x-vertex" id="sem2-vs">
+        varying vec3 e;
+        varying vec3 n;
+        void main() {
+            e = normalize(vec3(modelViewMatrix * vec4(position, 1.0)));
+            n = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
+        }
+    </script>
+
+    <script type="x-shader/x-vertex" id="sem2-fs">
+        uniform sampler2D tMatCap;
+        varying vec3 e;
+        varying vec3 n;
+        void main() {
+            vec3 r = reflect(e, n);
+            //r = e - 2. * dot( n, e ) * n;
+            float m = 2. * sqrt(pow(r.x, 2.) + pow(r.y, 2.) + pow(r.z + 1., 2.));
+            vec2 vN = r.xy / m + .5;
+            vec3 base = texture2D(tMatCap, vN).rgb;
+            gl_FragColor = vec4(base, 1.);
+        }
+    </script>
+    <!-- build:js({app,.tmp}) scripts/main.js -->
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
 </body>
+
 </html>
