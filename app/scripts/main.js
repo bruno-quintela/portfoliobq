@@ -1,5 +1,6 @@
 'use strict';
 // JSHint Global exceptions
+/* jshint strict: true */
 /*global THREE:false */
 /*global THREEx:false */
 /*global Modernizr:false */
@@ -163,28 +164,34 @@ ENGINE = function() {
         transitionParams: {
             clock: new THREE.Clock(false),
             autoRotation: true,
-            transitionMixRatio: 0,
+            transitionMixRatio: 1,
             texture: 2,
             textureThreshold: 0.0,
-            currentScene: 'A', // A/B/T
-            AtoB: function() {
+            CurrentLayer: 'A',
+            toLayerA: function() {
                 var transitionParams = this;
                 this.transitionMixRatio = 0;
+                myPortfolio.world.NextLayer = myPortfolio.world.LayerA;
+                myPortfolio.world.transition = new myPortfolio.world.Transition(myPortfolio.world.CurrentLayer, myPortfolio.world.NextLayer);
+                myPortfolio.world.CurrentLayer = myPortfolio.world.LayerA;
                 var update = function() {
                     transitionParams.transitionMixRatio = current.x;
                 };
                 var current = {
-                    x: 0
+                    x: 1
                 };
                 // remove previous tweens if needed
-                var tweenAtoB = new TWEEN.Tween(current).to({
-                    x: 1
+                var tweenLayerTransition = new TWEEN.Tween(current).to({
+                    x: 0
                 }, transitionParams.transitionTime * 1000).onUpdate(update);
-                tweenAtoB.start();
+                tweenLayerTransition.start();
             },
-            BtoA: function() {
+            toLayerB: function() {
                 var transitionParams = this;
-                this.transitionMixRatio = 1;
+                this.transitionMixRatio = 0;
+                myPortfolio.world.NextLayer = myPortfolio.world.LayerB;
+                myPortfolio.world.transition = new myPortfolio.world.Transition(myPortfolio.world.CurrentLayer, myPortfolio.world.NextLayer);
+                myPortfolio.world.CurrentLayer = myPortfolio.world.LayerB;
                 var update = function() {
                     transitionParams.transitionMixRatio = current.x;
                 };
@@ -192,18 +199,17 @@ ENGINE = function() {
                     x: 1
                 };
                 // remove previous tweens if needed
-                var tweenBtoA = new TWEEN.Tween(current).to({
+                var tweenLayerTransition = new TWEEN.Tween(current).to({
                     x: 0
                 }, transitionParams.transitionTime * 1000).onUpdate(update);
-                tweenBtoA.start();
+                tweenLayerTransition.start();
             },
-            BtoC: function() {
+            toLayerC: function() {
                 var transitionParams = this;
-                this.transitionMixRatio = 1;
-                
-                myPortfolio.world.SceneA = myPortfolio.world.SceneB;
-                myPortfolio.world.SceneB = myPortfolio.world.TempScene;
-                
+                this.transitionMixRatio = 0;
+                myPortfolio.world.NextLayer = myPortfolio.world.LayerC;
+                myPortfolio.world.transition = new myPortfolio.world.Transition(myPortfolio.world.CurrentLayer, myPortfolio.world.NextLayer);
+                myPortfolio.world.CurrentLayer = myPortfolio.world.LayerC;
                 var update = function() {
                     transitionParams.transitionMixRatio = current.x;
                 };
@@ -211,33 +217,16 @@ ENGINE = function() {
                     x: 1
                 };
                 // remove previous tweens if needed
-                var tweenBtoA = new TWEEN.Tween(current).to({
+                var tweenLayerTransition = new TWEEN.Tween(current).to({
                     x: 0
                 }, transitionParams.transitionTime * 1000).onUpdate(update);
-                tweenBtoA.start();
+                tweenLayerTransition.start();
             },
             transitionTime: 1,
             tweenVertices: function() {
-                var geometryPoly = myPortfolio.world.SceneB.lowpoly.geometry;
-                var geometryCloud = myPortfolio.world.SceneB.pointCloud.geometry;
-                var update = function() {
-                    geometryPoly.verticesNeedUpdate = true;
-                    geometryCloud.verticesNeedUpdate = true;
-                    geometryCloud.vertices = geometryPoly.vertices;
-                };
-                myPortfolio.world.SceneB.defaultTarget = geometryPoly.vertices;
-                for(var i = 0; i < geometryPoly.vertices.length; i++) {
-                    var tweenVertex = new TWEEN.Tween(geometryPoly.vertices[i]).to({
-                        x: myPortfolio.world.SceneB.morphTarget.vertices[i].x,
-                        y: myPortfolio.world.SceneB.morphTarget.vertices[i].y,
-                        z: myPortfolio.world.SceneB.morphTarget.vertices[i].z
-                    }, 2000).onUpdate(update);
-                    tweenVertex.delay(i * 10).easing(TWEEN.Easing.Elastic.Out).start();
-                }
-            },
-            tweenVerticesBack: function() {
-                var geometryPoly = myPortfolio.world.SceneB.lowpoly.geometry;
-                var geometryCloud = myPortfolio.world.SceneB.pointCloud.geometry;
+                var geometryPoly = myPortfolio.world.CurrentLayer.lowpoly.geometry;
+                var geometryCloud = myPortfolio.world.CurrentLayer.pointCloud.geometry;
+                console.info(myPortfolio.world.CurrentLayer.name);
                 var update = function() {
                     geometryPoly.verticesNeedUpdate = true;
                     geometryCloud.verticesNeedUpdate = true;
@@ -245,12 +234,20 @@ ENGINE = function() {
                 };
                 for(var i = 0; i < geometryPoly.vertices.length; i++) {
                     var tweenVertex = new TWEEN.Tween(geometryPoly.vertices[i]).to({
-                        x: myPortfolio.world.SceneB.defaultTarget.vertices[i].x,
-                        y: myPortfolio.world.SceneB.defaultTarget.vertices[i].y,
-                        z: myPortfolio.world.SceneB.defaultTarget.vertices[i].z
+                        x: myPortfolio.world.CurrentLayer.morphTarget.vertices[i].x,
+                        y: myPortfolio.world.CurrentLayer.morphTarget.vertices[i].y,
+                        z: myPortfolio.world.CurrentLayer.morphTarget.vertices[i].z
                     }, 2000).onUpdate(update);
                     tweenVertex.delay(i * 10).easing(TWEEN.Easing.Elastic.Out).start();
                 }
+            }
+        },
+        /**
+         * WEB AUDIO PARAMS
+         **/
+        audioParams: {
+            playPause: function() {
+                sample.togglePlayback();
             }
         },
         container: {},
@@ -267,8 +264,8 @@ ENGINE = function() {
                 });
                 guiRender.add(this.renderParams, 'enableAnaglyph').onChange(function(value) {
                     if(value) {
-                        myPortfolio.world.SceneA.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, 2);
-                        myPortfolio.world.SceneB.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, 2);
+                        myPortfolio.world.CurrentLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, 2);
+                        myPortfolio.world.NextLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, 2);
                     }
                 });
                 guiRender.add(this.renderParams, 'enableTrackball');
@@ -337,11 +334,12 @@ ENGINE = function() {
                 guiRender.add(this.renderParams, 'disableEffects').onChange(function() {
                     world.refreshPostProcessing();
                 });
+                //guiRender.close();
                 /**
                  * GUI Tween Motions test
                  **/
                 var guiTransition = new dat.GUI();
-                guiTransition.add(this.transitionParams, 'currentScene').listen();
+                guiTransition.add(this.transitionParams, 'CurrentLayer').listen();
                 guiTransition.add(this.transitionParams, 'autoRotation');
                 guiTransition.add(this.transitionParams, 'texture', {
                     Perlin: 0,
@@ -357,16 +355,21 @@ ENGINE = function() {
                     world.transition.setTextureThreshold(value);
                 });
                 guiTransition.add(this.transitionParams, 'transitionMixRatio', 0, 1, 0.01).listen();
-                guiTransition.add(this.transitionParams, 'AtoB');
-                guiTransition.add(this.transitionParams, 'BtoA');
-                guiTransition.add(this.transitionParams, 'BtoC');
+                guiTransition.add(this.transitionParams, 'toLayerA');
+                guiTransition.add(this.transitionParams, 'toLayerB');
+                guiTransition.add(this.transitionParams, 'toLayerC');
                 guiTransition.add(this.transitionParams, 'transitionTime', 0, 11, 0.01);
                 guiTransition.add(this.transitionParams, 'tweenVertices');
-                guiTransition.add(this.transitionParams, 'tweenVerticesBack');
+                guiTransition.close();
+                /**
+                 *  AUDIO GUI params
+                 **/
+                var guiAudio = new dat.GUI();
+                guiAudio.add(this.audioParams, 'playPause');
                 /**
                  *  Lights GUI params
                  **/
-                var guiLights = new dat.GUI();
+                /*var guiLights = new dat.GUI();
                 guiLights.add(this.lightsParams, 'fillLightEnable').onChange(function(value) {
                     if(world.SceneA.scene.children[0] instanceof THREE.DirectionalLight) {
                         world.SceneA.scene.children[0].visible = value;
@@ -409,7 +412,7 @@ ENGINE = function() {
                         world.SceneB.scene.children[3].material.shininess = value;
                     }
                 });
-                guiLights.close();
+                guiLights.close();*/
             }
         },
         addStats: function() {
@@ -444,7 +447,8 @@ ENGINE = function() {
             /**
              * Scene
              **/
-            this.Scene = function() {
+            this.Layer = function(name) {
+                this.name = name;
                 this.scene = new THREE.Scene();
                 this.camera = new THREE.PerspectiveCamera(75, world.width / world.height, 0.1, 100);
                 this.camera.position.z = 5;
@@ -515,6 +519,21 @@ ENGINE = function() {
                     return randomSphericalCloud;
                 };
                 /**
+                 * Add SkyDome Sphere
+                 **/
+                var addSkyDome = function(layer, radius, texturePath) {
+                    var skydomeTexture = THREE.ImageUtils.loadTexture(texturePath, new THREE.UVMapping(), function() {
+                        layer.skydome = new THREE.Mesh(new THREE.SphereGeometry(radius, 60, 40), new THREE.MeshBasicMaterial({
+                            map: skydomeTexture,
+                            blending: THREE.NormalBlending,
+                            depthTest: true,
+                            transparent: true
+                        }));
+                        layer.skydome.scale.x = -1;
+                        layer.scene.add(layer.skydome);
+                    });
+                };
+                /**
                  * Set 3 point light system
                  **/
                 var addLights = function(scene) {
@@ -543,7 +562,7 @@ ENGINE = function() {
                 /**
                  * Import collada(.dae) object and corresponding UVmap into scene
                  **/
-                var importCollada = function(set, filePathCollada, filePathUV) {
+                var importCollada = function(layer, filePathCollada, filePathUV) {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
@@ -568,8 +587,8 @@ ENGINE = function() {
                                     mesh.scale.set(3.5, 3.5, 3.5);
                                     /*var modifier = new THREE.SubdivisionModifier( 2 );
 	                                modifier.modify( mesh.geometry );*/
-                                    set.scene.add(mesh);
-                                    set.lowpoly = mesh;
+                                    layer.scene.add(mesh);
+                                    layer.lowpoly = mesh;
                                     //set.polyWire = addWireframe(set.scene, mesh.geometry, 0x000000, 1, 2.05);
                                     //set.pointCloud = addPointCloud(set.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 0.1, 2.05);
                                 } else if(child.name === 'Sphere_001') {
@@ -579,99 +598,88 @@ ENGINE = function() {
                                         uniforms: {
                                             tMatCap: {
                                                 type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap.jpg')
+                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/universeskydome.jpg')
                                             },
                                         },
                                         vertexShader: document.getElementById('sem-vs').textContent,
                                         fragmentShader: document.getElementById('sem-fs').textContent,
                                         shading: THREE.SmoothShading
                                     });
+                                    if(layer.name === 'LayerB') {
+                                        mesh.material = new THREE.ShaderMaterial({
+                                            uniforms: {
+                                                tMatCap: {
+                                                    type: 't',
+                                                    value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap2.jpg')
+                                                },
+                                            },
+                                            vertexShader: document.getElementById('sem-vs').textContent,
+                                            fragmentShader: document.getElementById('sem-fs').textContent,
+                                            shading: THREE.SmoothShading
+                                        });
+                                    }
+                                    if(layer.name === 'LayerC') {
+                                        mesh.material = new THREE.ShaderMaterial({
+                                            uniforms: {
+                                                tMatCap: {
+                                                    type: 't',
+                                                    value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap3.jpg')
+                                                },
+                                            },
+                                            vertexShader: document.getElementById('sem-vs').textContent,
+                                            fragmentShader: document.getElementById('sem-fs').textContent,
+                                            shading: THREE.SmoothShading
+                                        });
+                                    }
                                     mesh.scale.set(2, 2, 2);
-                                    set.scene.add(mesh);
-                                    set.lowpoly2 = mesh;
-                                    set.polyWire = addWireframe(set.scene, mesh.geometry, 0x000000, 1, 2.05);
-                                    set.pointCloud = addPointCloud(set.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 0.1, 2.05);
-                                    set.sphericalCloud = addRandomSphericalCloud(set.scene, 200, 6.5, '../src/textures/sprites/WhiteDot.svg', 0.05);
-                                    //set.sphericalCloud2 = addRandomSphericalCloud(set.scene, 200, 4, '../src/textures/sprites/WhiteDot.svg', 0.04);
+                                    layer.scene.add(mesh);
+                                    layer.lowpoly2 = mesh;
+                                    layer.polyWire = addWireframe(layer.scene, mesh.geometry, 0x000000, 1, 2.05);
+                                    layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 0.1, 2.05);
+                                    layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 2000, 3.5, '../src/textures/sprites/WhiteDot.svg', 0.05);
+                                    addSkyDome(layer, 100, '../src/textures/UVmaps/universeskydome.jpg');
+                                    addSkyDome(layer, 30, '../src/textures/UVmaps/universeskydome.jpg');
+                                    addSkyDome(layer, 10, '../src/textures/UVmaps/universeskydome.jpg');
                                 } else if(child.name === 'Floor') {}
                             }
                         });
-                        //add parallax skydome
-                        set.skydomeTexture1 = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/innerDome.png', new THREE.UVMapping(), function() {
-                            set.skydome1 = new THREE.Mesh(new THREE.SphereGeometry(30, 60, 40), new THREE.MeshBasicMaterial({
-                                map: set.skydomeTexture1,
-                                blending: THREE.NormalBlending,
-                                depthTest: true,
-                                transparent: true
-                            }));
-                            set.skydome1.scale.x = -1;
-                            set.scene.add(set.skydome1);
-                        });
-                        
-                        set.skydomeTexture2 = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/innerDome2.png', new THREE.UVMapping(), function() {
-                            set.skydome2 = new THREE.Mesh(new THREE.SphereGeometry(7, 60, 40), new THREE.MeshBasicMaterial({
-                                map: set.skydomeTexture2,
-                                blending: THREE.NormalBlending,
-                                depthTest: true,
-                                transparent: true
-                            }));
-                            set.skydome2.scale.x = -1;
-                            set.scene.add(set.skydome2);
-                        });
-                        set.skydomeTexture3 = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/skydome2.jpg', new THREE.UVMapping(), function() {
-                            set.skydome3 = new THREE.Mesh(new THREE.SphereGeometry(12, 60, 40), new THREE.MeshBasicMaterial({
-                                map: set.skydomeTexture3,
-                                blending: THREE.NormalBlending,
-                                depthTest: true,
-                                transparent: false
-                            }));
-                            set.skydome3.scale.x = -1;
-                            set.scene.add(set.skydome3);
-                        });
-                        
-                        
                         //add reflective ground
-                        /*set.cubeCamera = new THREE.CubeCamera(1, 1000, 1024);
-                        set.cubeCamera.renderTarget.minFilter = THREE.LinearMipMapLinearFilter;
-                        set.scene.add(set.cubeCamera);
-                        var materialPhongCube = new THREE.MeshBasicMaterial( { envMap: set.cubeCamera.renderTarget } );
+                        /*layer.cubeCamera = new THREE.CubeCamera(1, 1000, 1024);
+                        layer.cubeCamera.renderTarget.minFilter = THREE.LinearMipMapLinearFilter;
+                        layer.scene.add(layer.cubeCamera);
+                        var materialPhongCube = new THREE.MeshBasicMaterial( { envMap: layer.cubeCamera.renderTarget } );
                         var planeGeometry = new THREE.PlaneBufferGeometry(10, 10);
-                        set.ground = new THREE.Mesh(planeGeometry, materialPhongCube);
-                        set.ground.position.set(0, -2.2, 0);
-                        set.ground.rotation.x = -Math.PI / 2;
-                        set.ground.receiveShadow = false;
-                        set.scene.add(set.ground);
-                        set.cubeCamera.position.copy(set.ground.position);*/
-                        set.rotationSpeed = new THREE.Vector3(0, 0.002, 0.001);
+                        layer.ground = new THREE.Mesh(planeGeometry, materialPhongCube);
+                        layer.ground.position.set(0, -2.2, 0);
+                        layer.ground.rotation.x = -Math.PI / 2;
+                        layer.ground.receiveShadow = false;
+                        layer.scene.add(layer.ground);
+                        layer.cubeCamera.position.copy(set.ground.position);*/
+                        layer.rotationSpeed = new THREE.Vector3(0, 0.002, 0.001);
                         /**
                          * Anaglyph effect
                          **/
-                        set.render = function(rtt) {
+                        layer.render = function(rtt) {
                             if(world.transitionParams.autoRotation) {
-                                set.lowpoly.rotation.x += set.rotationSpeed.x;
-                                set.lowpoly.rotation.y += set.rotationSpeed.y;
-                                set.lowpoly.rotation.z += set.rotationSpeed.z;
-                                set.lowpoly2.rotation.x += set.rotationSpeed.x;
-                                set.lowpoly2.rotation.y += set.rotationSpeed.y;
-                                set.lowpoly2.rotation.z += set.rotationSpeed.z;
-                                set.polyWire.rotation.x += set.rotationSpeed.x;
-                                set.polyWire.rotation.y += set.rotationSpeed.y;
-                                set.polyWire.rotation.z += set.rotationSpeed.z;
-                                set.pointCloud.rotation.x += set.rotationSpeed.x;
-                                set.pointCloud.rotation.y += set.rotationSpeed.y;
-                                set.pointCloud.rotation.z += set.rotationSpeed.z;
-                                //set.sphericalCloud.rotation.x += set.rotationSpeed.x;
-                                set.sphericalCloud.rotation.y += set.rotationSpeed.y;
-                                //set.sphericalCloud2.rotation.y += 0.005;
-                                //set.sphericalCloud.rotation.z += set.rotationSpeed.z;
-                                //set.skydome.rotation.x -= set.rotationSpeed.x;
-                                //set.skydome1.rotation.y -= 0.004;
-                                set.skydome2.rotation.y -= 0.003;
-                                set.skydome3.rotation.y -= 0.002;
-                                //set.skydome.rotation.z -= set.rotationSpeed.z;
+                                layer.lowpoly.rotation.x += layer.rotationSpeed.x;
+                                layer.lowpoly.rotation.y += layer.rotationSpeed.y;
+                                layer.lowpoly.rotation.z += layer.rotationSpeed.z;
+                                layer.lowpoly2.rotation.x += layer.rotationSpeed.x;
+                                layer.lowpoly2.rotation.y += layer.rotationSpeed.y;
+                                layer.lowpoly2.rotation.z += layer.rotationSpeed.z;
+                                layer.polyWire.rotation.x += layer.rotationSpeed.x;
+                                layer.polyWire.rotation.y += layer.rotationSpeed.y;
+                                layer.polyWire.rotation.z += layer.rotationSpeed.z;
+                                layer.pointCloud.rotation.x += layer.rotationSpeed.x;
+                                layer.pointCloud.rotation.y += layer.rotationSpeed.y;
+                                layer.pointCloud.rotation.z += layer.rotationSpeed.z;
+                                layer.sphericalCloud.rotation.y += layer.rotationSpeed.y;
+                                layer.skydome.rotation.x -= 0.002;
+                                layer.skydome.rotation.y -= 0.004;
+                                layer.skydome.rotation.z -= 0.001;
                             }
                             if(world.renderParams.enableTrackball) {
-                                set.trackball.update();
+                                layer.trackball.update();
                             }
                             if(rtt) {
                                 //
@@ -693,10 +701,10 @@ ENGINE = function() {
                 /**
                  * Import JSON threejs exported from blender
                  **/
-                var importJSON = function(set, filePathJSON, filePathUV) {
+                var importJSON = function(layer, filePathJSON, filePathUV) {
                     var loader = new THREE.JSONLoader();
                     loader.load(filePathJSON, function(geometry, materials) {
-                        set.morphTarget = geometry;
+                        layer.morphTarget = geometry;
                     });
                 };
                 if(world.renderParams.enableTrackball) {
@@ -711,7 +719,7 @@ ENGINE = function() {
                     this.trackball.keys = [65, 83, 68];
                 }
                 //add scene fog
-                this.scene.fog = new THREE.FogExp2(0x000000, 0.06);
+                this.scene.fog = new THREE.FogExp2(0x000000, 0.03);
                 //addLights(this.scene);
                 importCollada(this, '../src/collada/test1.dae', '../src/textures/UVmaps/evolution.png');
                 importJSON(this, '../src/json/lowpoly.json', '../src/textures/UVmaps/UVmap.png');
@@ -733,7 +741,7 @@ ENGINE = function() {
             /**
              * Transition
              **/
-            this.Transition = function(sceneA, sceneB) {
+            this.Transition = function(CurrentLayer, NextLayer) {
                 this.scene = new THREE.Scene();
                 this.camera = new THREE.OrthographicCamera(world.width / -2, world.width / 2, world.height / 2, world.height / -2, -10, 10);
                 this.textures = [];
@@ -774,8 +782,8 @@ ENGINE = function() {
                 this.quad = new THREE.Mesh(quadgeometry, this.quadmaterial);
                 this.scene.add(this.quad);
                 // Link both scenes and their FBOs
-                this.quadmaterial.uniforms.tDiffuse1.value = sceneA.fbo;
-                this.quadmaterial.uniforms.tDiffuse2.value = sceneB.fbo;
+                this.quadmaterial.uniforms.tDiffuse1.value = CurrentLayer.fbo;
+                this.quadmaterial.uniforms.tDiffuse2.value = NextLayer.fbo;
                 this.needChange = true;
                 this.setTextureThreshold = function(value) {
                     this.quadmaterial.uniforms.threshold.value = value;
@@ -792,21 +800,21 @@ ENGINE = function() {
                     this.quadmaterial.uniforms.mixRatio.value = world.transitionParams.transitionMixRatio;
                     // Prevent render both scenes when it's not necessary
                     // Render only scene A
-                    if(world.transitionParams.transitionMixRatio === 0) {
-                        world.transitionParams.currentScene = 'A';
-                        sceneB.render(false);
+                    if(world.transitionParams.transitionMixRatio === 1) {
+                        world.transitionParams.CurrentLayer = CurrentLayer.name;
+                        CurrentLayer.render(false);
                     }
                     // Render only scene B
-                    else if(world.transitionParams.transitionMixRatio === 1) {
-                        world.transitionParams.currentScene = 'B';
-                        sceneA.render(false);
+                    else if(world.transitionParams.transitionMixRatio === 0) {
+                        world.transitionParams.CurrentLayer = NextLayer.name;
+                        NextLayer.render(false);
                     }
                     // Render both scenes and transition frame buffer object
                     else {
                         // When 0<transition<1 render transition between two scenes
-                        world.transitionParams.currentScene = 'Transition';
-                        sceneA.render(true);
-                        sceneB.render(true);
+                        world.transitionParams.CurrentLayer = 'Transition';
+                        CurrentLayer.render(true);
+                        NextLayer.render(true);
                         this.composer.render(0.01);
                     }
                 };
@@ -866,8 +874,8 @@ ENGINE = function() {
              * refresh postpross when gui is changed
              **/
             this.refreshPostProcessing = function() {
-                this.postprocess.apply(this.SceneA);
-                this.postprocess.apply(this.SceneB);
+                this.postprocess.apply(this.CurrentLayer);
+                this.postprocess.apply(this.NextLayer);
                 this.postprocess.apply(this.transition);
             };
             /**
@@ -876,18 +884,18 @@ ENGINE = function() {
             this.onWindowResize = function() {
                 world.width = window.innerWidth;
                 world.height = window.innerHeight;
-                world.SceneA.camera.aspect = world.width / world.height;
-                world.SceneA.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
-                world.SceneA.camera.updateProjectionMatrix();
-                world.SceneB.camera.aspect = world.width / world.height;
-                world.SceneB.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
-                world.SceneB.camera.updateProjectionMatrix();
+                world.CurrentLayer.camera.aspect = world.width / world.height;
+                world.CurrentLayer.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
+                world.CurrentLayer.camera.updateProjectionMatrix();
+                world.NextLayer.camera.aspect = world.width / world.height;
+                world.NextLayer.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
+                world.NextLayer.camera.updateProjectionMatrix();
                 if(world.renderParams.enableAnaglyph) {
-                    myPortfolio.world.SceneA.anaglyph.setSize(world.width, world.height);
-                    myPortfolio.world.SceneB.anaglyph.setSize(world.width, world.height);
+                    myPortfolio.world.CurrentLayer.anaglyph.setSize(world.width, world.height);
+                    myPortfolio.world.NextLayer.anaglyph.setSize(world.width, world.height);
                 } else {
-                    world.transition.quadmaterial.uniforms.tDiffuse1.value = world.SceneA.fbo;
-                    world.transition.quadmaterial.uniforms.tDiffuse2.value = world.SceneB.fbo;
+                    world.transition.quadmaterial.uniforms.tDiffuse1.value = world.CurrentLayer.fbo;
+                    world.transition.quadmaterial.uniforms.tDiffuse2.value = world.NextLayer.fbo;
                     world.renderer.setSize(world.width, world.height);
                     world.refreshPostProcessing();
                 }
@@ -901,10 +909,12 @@ ENGINE = function() {
             var world = this;
             this.init();
             this.transitionParams.clock.elapsedTime = 0;
-            this.SceneA = new this.Scene();
-            this.SceneB = new this.Scene();
-            this.TempScene = new this.Scene();
-            this.transition = new this.Transition(this.SceneA, this.SceneB);
+            this.LayerA = new this.Layer('LayerA');
+            this.LayerB = new this.Layer('LayerB');
+            this.LayerC = new this.Layer('LayerC');
+            this.CurrentLayer = this.LayerA;
+            this.NextLayer = this.LayerB;
+            this.transition = new this.Transition(this.CurrentLayer, this.NextLayer);
             /**/
             var animate = function() {
                 requestAnimationFrame(animate);
