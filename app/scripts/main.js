@@ -197,6 +197,25 @@ ENGINE = function() {
                 }, transitionParams.transitionTime * 1000).onUpdate(update);
                 tweenBtoA.start();
             },
+            BtoC: function() {
+                var transitionParams = this;
+                this.transitionMixRatio = 1;
+                
+                myPortfolio.world.SceneA = myPortfolio.world.SceneB;
+                myPortfolio.world.SceneB = myPortfolio.world.TempScene;
+                
+                var update = function() {
+                    transitionParams.transitionMixRatio = current.x;
+                };
+                var current = {
+                    x: 1
+                };
+                // remove previous tweens if needed
+                var tweenBtoA = new TWEEN.Tween(current).to({
+                    x: 0
+                }, transitionParams.transitionTime * 1000).onUpdate(update);
+                tweenBtoA.start();
+            },
             transitionTime: 1,
             tweenVertices: function() {
                 var geometryPoly = myPortfolio.world.SceneB.lowpoly.geometry;
@@ -340,6 +359,7 @@ ENGINE = function() {
                 guiTransition.add(this.transitionParams, 'transitionMixRatio', 0, 1, 0.01).listen();
                 guiTransition.add(this.transitionParams, 'AtoB');
                 guiTransition.add(this.transitionParams, 'BtoA');
+                guiTransition.add(this.transitionParams, 'BtoC');
                 guiTransition.add(this.transitionParams, 'transitionTime', 0, 11, 0.01);
                 guiTransition.add(this.transitionParams, 'tweenVertices');
                 guiTransition.add(this.transitionParams, 'tweenVerticesBack');
@@ -450,7 +470,7 @@ ENGINE = function() {
                  * Add vertices sprites to scene
                  **/
                 var addPointCloud = function(scene, geometry, spritePath, spriteSize, scaleFactor) {
-                    var sprite1 = THREE.ImageUtils.loadTexture(spritePath);
+                    var spriteMap = THREE.ImageUtils.loadTexture(spritePath);
                     var geometryParticle = new THREE.Geometry();
                     for(var i = 0; i < geometry.vertices.length; i++) {
                         var vector = new THREE.Vector3(geometry.vertices[i].x, geometry.vertices[i].y, geometry.vertices[i].z);
@@ -458,7 +478,7 @@ ENGINE = function() {
                     }
                     var materialSprite = new THREE.PointCloudMaterial({
                         size: spriteSize,
-                        map: sprite1,
+                        map: spriteMap,
                         blending: THREE.NormalBlending,
                         depthTest: true,
                         transparent: true
@@ -467,6 +487,32 @@ ENGINE = function() {
                     particlesCloud.scale.set(scaleFactor, scaleFactor, scaleFactor);
                     scene.add(particlesCloud);
                     return particlesCloud;
+                };
+                var addRandomSphericalCloud = function(scene, numParticles, radius, spritePath, spriteSize) {
+                    var geometryParticle = new THREE.Geometry();
+                    var spriteMap = THREE.ImageUtils.loadTexture(spritePath);
+                    for(var i = 0; i < numParticles; i++) {
+                        var vertex1 = new THREE.Vector3();
+                        vertex1.x = Math.random() * 2 - 1;
+                        vertex1.y = Math.random() * 2 - 1;
+                        vertex1.z = Math.random() * 2 - 1;
+                        vertex1.normalize();
+                        vertex1.multiplyScalar(radius);
+                        var vertex2 = vertex1.clone();
+                        vertex2.multiplyScalar(Math.random() * radius + 1);
+                        geometryParticle.vertices.push(vertex1);
+                        geometryParticle.vertices.push(vertex2);
+                    }
+                    var materialSprite = new THREE.PointCloudMaterial({
+                        size: spriteSize,
+                        map: spriteMap,
+                        blending: THREE.NormalBlending,
+                        depthTest: true,
+                        transparent: true
+                    });
+                    var randomSphericalCloud = new THREE.PointCloud(geometryParticle, materialSprite);
+                    scene.add(randomSphericalCloud);
+                    return randomSphericalCloud;
                 };
                 /**
                  * Set 3 point light system
@@ -504,6 +550,7 @@ ENGINE = function() {
                     loader.load(filePathCollada, function(collada) {
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
+                                console.info(child.name);
                                 if(child.name === 'Sphere') {
                                     var mesh = child.children[0];
                                     var maxAnisotropy = world.renderer.getMaxAnisotropy();
@@ -511,11 +558,11 @@ ENGINE = function() {
                                         uniforms: {
                                             tMatCap: {
                                                 type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap.jpg')
+                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/innerDome2.png')
                                             },
                                         },
-                                        vertexShader: document.getElementById('sem2-vs').textContent,
-                                        fragmentShader: document.getElementById('sem2-fs').textContent,
+                                        vertexShader: document.getElementById('sem-vs').textContent,
+                                        fragmentShader: document.getElementById('sem-fs').textContent,
                                         shading: THREE.SmoothShading
                                     });
                                     mesh.scale.set(3.5, 3.5, 3.5);
@@ -532,11 +579,11 @@ ENGINE = function() {
                                         uniforms: {
                                             tMatCap: {
                                                 type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap2.jpg')
+                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap.jpg')
                                             },
                                         },
-                                        vertexShader: document.getElementById('sem2-vs').textContent,
-                                        fragmentShader: document.getElementById('sem2-fs').textContent,
+                                        vertexShader: document.getElementById('sem-vs').textContent,
+                                        fragmentShader: document.getElementById('sem-fs').textContent,
                                         shading: THREE.SmoothShading
                                     });
                                     mesh.scale.set(2, 2, 2);
@@ -544,17 +591,45 @@ ENGINE = function() {
                                     set.lowpoly2 = mesh;
                                     set.polyWire = addWireframe(set.scene, mesh.geometry, 0x000000, 1, 2.05);
                                     set.pointCloud = addPointCloud(set.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 0.1, 2.05);
+                                    set.sphericalCloud = addRandomSphericalCloud(set.scene, 200, 6.5, '../src/textures/sprites/WhiteDot.svg', 0.05);
+                                    //set.sphericalCloud2 = addRandomSphericalCloud(set.scene, 200, 4, '../src/textures/sprites/WhiteDot.svg', 0.04);
                                 } else if(child.name === 'Floor') {}
                             }
                         });
-                        //add skydome
-                        set.skydomeTexture = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/skydome2.jpg', new THREE.UVMapping(), function() {
-                            set.skydome = new THREE.Mesh(new THREE.SphereGeometry(10, 60, 40), new THREE.MeshBasicMaterial({
-                                map: set.skydomeTexture
+                        //add parallax skydome
+                        set.skydomeTexture1 = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/innerDome.png', new THREE.UVMapping(), function() {
+                            set.skydome1 = new THREE.Mesh(new THREE.SphereGeometry(30, 60, 40), new THREE.MeshBasicMaterial({
+                                map: set.skydomeTexture1,
+                                blending: THREE.NormalBlending,
+                                depthTest: true,
+                                transparent: true
                             }));
-                            set.skydome.scale.x = -1;
-                            set.scene.add(set.skydome);
+                            set.skydome1.scale.x = -1;
+                            set.scene.add(set.skydome1);
                         });
+                        
+                        set.skydomeTexture2 = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/innerDome2.png', new THREE.UVMapping(), function() {
+                            set.skydome2 = new THREE.Mesh(new THREE.SphereGeometry(7, 60, 40), new THREE.MeshBasicMaterial({
+                                map: set.skydomeTexture2,
+                                blending: THREE.NormalBlending,
+                                depthTest: true,
+                                transparent: true
+                            }));
+                            set.skydome2.scale.x = -1;
+                            set.scene.add(set.skydome2);
+                        });
+                        set.skydomeTexture3 = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/skydome2.jpg', new THREE.UVMapping(), function() {
+                            set.skydome3 = new THREE.Mesh(new THREE.SphereGeometry(12, 60, 40), new THREE.MeshBasicMaterial({
+                                map: set.skydomeTexture3,
+                                blending: THREE.NormalBlending,
+                                depthTest: true,
+                                transparent: false
+                            }));
+                            set.skydome3.scale.x = -1;
+                            set.scene.add(set.skydome3);
+                        });
+                        
+                        
                         //add reflective ground
                         /*set.cubeCamera = new THREE.CubeCamera(1, 1000, 1024);
                         set.cubeCamera.renderTarget.minFilter = THREE.LinearMipMapLinearFilter;
@@ -585,8 +660,14 @@ ENGINE = function() {
                                 set.pointCloud.rotation.x += set.rotationSpeed.x;
                                 set.pointCloud.rotation.y += set.rotationSpeed.y;
                                 set.pointCloud.rotation.z += set.rotationSpeed.z;
+                                //set.sphericalCloud.rotation.x += set.rotationSpeed.x;
+                                set.sphericalCloud.rotation.y += set.rotationSpeed.y;
+                                //set.sphericalCloud2.rotation.y += 0.005;
+                                //set.sphericalCloud.rotation.z += set.rotationSpeed.z;
                                 //set.skydome.rotation.x -= set.rotationSpeed.x;
-                                set.skydome.rotation.y -= set.rotationSpeed.y;
+                                //set.skydome1.rotation.y -= 0.004;
+                                set.skydome2.rotation.y -= 0.003;
+                                set.skydome3.rotation.y -= 0.002;
                                 //set.skydome.rotation.z -= set.rotationSpeed.z;
                             }
                             if(world.renderParams.enableTrackball) {
@@ -629,7 +710,8 @@ ENGINE = function() {
                     this.trackball.dynamicDampingFactor = 0.3;
                     this.trackball.keys = [65, 83, 68];
                 }
-                //this.scene.fog = new THREE.FogExp2(0x000000, 0.0008);
+                //add scene fog
+                this.scene.fog = new THREE.FogExp2(0x000000, 0.06);
                 //addLights(this.scene);
                 importCollada(this, '../src/collada/test1.dae', '../src/textures/UVmaps/evolution.png');
                 importJSON(this, '../src/json/lowpoly.json', '../src/textures/UVmaps/UVmap.png');
@@ -821,6 +903,7 @@ ENGINE = function() {
             this.transitionParams.clock.elapsedTime = 0;
             this.SceneA = new this.Scene();
             this.SceneB = new this.Scene();
+            this.TempScene = new this.Scene();
             this.transition = new this.Transition(this.SceneA, this.SceneB);
             /**/
             var animate = function() {

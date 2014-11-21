@@ -65,7 +65,7 @@ THREE.DigitalGlitch = {
 				"float ys = floor(gl_FragCoord.y / 0.5);",
 				//based on staffantans glitch shader for unity https://github.com/staffantan/unityglitch
 				"vec4 normal = texture2D (tDisp, p*seed*seed);",
-				"if(p.y<distortion_x+col_s && p.y>distortion_x-col_s*seed) {",
+				/*"if(p.y<distortion_x+col_s && p.y>distortion_x-col_s*seed) {",
 					"if(seed_x>0.){",
 						"p.y = 1. - (p.y + distortion_y);",
 					"}",
@@ -80,7 +80,7 @@ THREE.DigitalGlitch = {
 					"else {",
 						"p.x = 1. - (p.x + distortion_x);",
 					"}",
-				"}",
+				"}",*/
 				"p.x+=normal.x*seed_x*(seed/5.);",
 				"p.y+=normal.y*seed_y*(seed/5.);",
 				//base from RGB shift shader
@@ -90,8 +90,8 @@ THREE.DigitalGlitch = {
 				"vec4 cb = texture2D(tDiffuse, p - offset);",
 				"gl_FragColor = vec4(cr.r, cga.g, cb.b, cga.a);",
 				//add noise
-				"vec4 snow = 200.*amount*vec4(rand(vec2(xs * seed,ys * seed*50.))*0.2);",
-				"gl_FragColor = gl_FragColor+ snow;",
+				//"vec4 snow = 200.*amount*vec4(rand(vec2(xs * seed,ys * seed*50.))*0.2);",
+				//"gl_FragColor = gl_FragColor+ snow;",
 			"}",
 			"else {",
 				"gl_FragColor=texture2D (tDiffuse, vUv);",

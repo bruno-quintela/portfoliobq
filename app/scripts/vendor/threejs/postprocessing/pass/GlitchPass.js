@@ -29,10 +29,10 @@ THREE.GlitchPass.prototype = {
         if(this.enabled == true) {
             switch(this.type) {
                 case 0:
-                    this.uniforms['amount'].value = Math.random() / 400;
+                    this.uniforms['amount'].value = Math.random() / 100;
                     this.uniforms['angle'].value = THREE.Math.randFloat(-Math.PI, Math.PI);
-                    this.uniforms['distortion_x'].value = THREE.Math.randFloat(0, 0.3);
-                    this.uniforms['distortion_y'].value = THREE.Math.randFloat(0, 0.3);
+                    this.uniforms['distortion_x'].value = THREE.Math.randFloat(0, 0.5);
+                    this.uniforms['distortion_y'].value = THREE.Math.randFloat(0, 0.5);
                     this.uniforms['seed_x'].value = THREE.Math.randFloat(-0.03, 0.03);
                     this.uniforms['seed_y'].value = THREE.Math.randFloat(-0.03, 0.03);
                     break;
@@ -77,4 +77,4 @@ THREE.GlitchPass.prototype = {
         texture.flipY = false;
         return texture;
     }
-};
+};5
