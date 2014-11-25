@@ -130,11 +130,13 @@ ENGINE = function() {
             alpha: false,
             backgroundColor: [255, 255, 255],
             enableAnaglyph: false,
+            focus: 2,
             enableTrackball: true,
             enableGrid: false,
             glitchType: 0,
             enableGlitch: false,
             enableRGBShift: true,
+            rgbValue: 0.002,
             enableFXAA: true,
             enableBloom: false,
             bloomStrengh: 0.3,
@@ -268,6 +270,9 @@ ENGINE = function() {
                         myPortfolio.world.NextLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, 2);
                     }
                 });
+                guiRender.add(this.renderParams, 'focus', 0, 10.1).listen().onChange(function() {
+                    myPortfolio.world.CurrentLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, world.renderParams.focus);
+                });
                 guiRender.add(this.renderParams, 'enableTrackball');
                 guiRender.add(this.renderParams, 'enableGrid').onChange(function(value) {
                     //add compositing 3rd rule grid
@@ -304,6 +309,9 @@ ENGINE = function() {
                 guiRender.add(this.renderParams, 'enableRGBShift').onChange(function() {
                     world.refreshPostProcessing();
                 }).listen();
+                guiRender.add(this.renderParams, 'rgbValue', 0, 1, 0.001).onChange(function() {
+                    world.refreshPostProcessing();
+                });
                 guiRender.add(this.renderParams, 'enableFXAA').onChange(function() {
                     world.refreshPostProcessing();
                 }).listen();
@@ -360,7 +368,7 @@ ENGINE = function() {
                 guiTransition.add(this.transitionParams, 'toLayerC');
                 guiTransition.add(this.transitionParams, 'transitionTime', 0, 11, 0.01);
                 guiTransition.add(this.transitionParams, 'tweenVertices');
-                guiTransition.close();
+                //guiTransition.close();
                 /**
                  *  AUDIO GUI params
                  **/
@@ -570,113 +578,87 @@ ENGINE = function() {
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
                                 console.info(child.name);
-                                if(child.name === 'Sphere') {
+                                if(child.name === 'Nixon_cell_072') {
                                     var mesh = child.children[0];
                                     var maxAnisotropy = world.renderer.getMaxAnisotropy();
-                                    mesh.material = new THREE.ShaderMaterial({
+                                    var mapHeight = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/uvmapnixon2.png");
+                                    mapHeight.anisotropy = maxAnisotropy;
+                                    /*mapHeight.repeat.set(0.998, 0.998);
+                                    mapHeight.offset.set(0.001, 0.001)
+                                    mapHeight.wrapS = mapHeight.wrapT = THREE.RepeatWrapping;
+                                    mapHeight.format = THREE.RGBFormat;*/
+                                    /*var material = new THREE.MeshBasicMaterial({
+                                        map: THREE.ImageUtils.loadTexture(filePathUV),
+                                        bumpMap: mapHeight,
+                                        bumpScale: 19,
+                                        metal: false
+                                    });*/
+                                    /*mesh.material = new THREE.ShaderMaterial({
                                         uniforms: {
                                             tMatCap: {
                                                 type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/innerDome2.png')
+                                                value: THREE.ImageUtils.loadTexture(filePathUV)
                                             },
                                         },
                                         vertexShader: document.getElementById('sem-vs').textContent,
                                         fragmentShader: document.getElementById('sem-fs').textContent,
                                         shading: THREE.SmoothShading
-                                    });
-                                    mesh.scale.set(3.5, 3.5, 3.5);
-                                    /*var modifier = new THREE.SubdivisionModifier( 2 );
-	                                modifier.modify( mesh.geometry );*/
+                                    });*/
+                                    mesh.material = new THREE.MeshBasicMaterial({
+                                        map: THREE.ImageUtils.loadTexture(filePathUV),
+                                        blending: THREE.NormalBlending,
+                                        depthTest: true,
+                                        //bumpMap: mapHeight,
+                                        //bumpScale: 19,
+                                        transparent: false
+                                    })
                                     layer.scene.add(mesh);
                                     layer.lowpoly = mesh;
-                                    //set.polyWire = addWireframe(set.scene, mesh.geometry, 0x000000, 1, 2.05);
-                                    //set.pointCloud = addPointCloud(set.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 0.1, 2.05);
-                                } else if(child.name === 'Sphere_001') {
+                                    //layer.polyWire = addWireframe(layer.scene, mesh.geometry, 0x000000, 1, 1.02);
+                                    //layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 0.031, 1.05);
+                                    //layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 2000, 3.5, '../src/textures/sprites/WhiteDot.svg', 0.05);
+                                    //addSkyDome(layer, 10, '../src/textures/UVmaps/skydome2.jpg');
+                                } else if(child.name === 'Ground1') {
                                     var mesh = child.children[0];
                                     var maxAnisotropy = world.renderer.getMaxAnisotropy();
                                     mesh.material = new THREE.ShaderMaterial({
                                         uniforms: {
                                             tMatCap: {
                                                 type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/universeskydome.jpg')
+                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/Neptune.png')
                                             },
                                         },
                                         vertexShader: document.getElementById('sem-vs').textContent,
                                         fragmentShader: document.getElementById('sem-fs').textContent,
                                         shading: THREE.SmoothShading
                                     });
-                                    if(layer.name === 'LayerB') {
-                                        mesh.material = new THREE.ShaderMaterial({
-                                            uniforms: {
-                                                tMatCap: {
-                                                    type: 't',
-                                                    value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap2.jpg')
-                                                },
-                                            },
-                                            vertexShader: document.getElementById('sem-vs').textContent,
-                                            fragmentShader: document.getElementById('sem-fs').textContent,
-                                            shading: THREE.SmoothShading
-                                        });
-                                    }
-                                    if(layer.name === 'LayerC') {
-                                        mesh.material = new THREE.ShaderMaterial({
-                                            uniforms: {
-                                                tMatCap: {
-                                                    type: 't',
-                                                    value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap3.jpg')
-                                                },
-                                            },
-                                            vertexShader: document.getElementById('sem-vs').textContent,
-                                            fragmentShader: document.getElementById('sem-fs').textContent,
-                                            shading: THREE.SmoothShading
-                                        });
-                                    }
-                                    mesh.scale.set(2, 2, 2);
                                     layer.scene.add(mesh);
                                     layer.lowpoly2 = mesh;
-                                    layer.polyWire = addWireframe(layer.scene, mesh.geometry, 0x000000, 1, 2.05);
-                                    layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 0.1, 2.05);
-                                    layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 2000, 3.5, '../src/textures/sprites/WhiteDot.svg', 0.05);
-                                    addSkyDome(layer, 100, '../src/textures/UVmaps/universeskydome.jpg');
-                                    addSkyDome(layer, 30, '../src/textures/UVmaps/universeskydome.jpg');
-                                    addSkyDome(layer, 10, '../src/textures/UVmaps/universeskydome.jpg');
-                                } else if(child.name === 'Floor') {}
+                                }
                             }
                         });
-                        //add reflective ground
-                        /*layer.cubeCamera = new THREE.CubeCamera(1, 1000, 1024);
-                        layer.cubeCamera.renderTarget.minFilter = THREE.LinearMipMapLinearFilter;
-                        layer.scene.add(layer.cubeCamera);
-                        var materialPhongCube = new THREE.MeshBasicMaterial( { envMap: layer.cubeCamera.renderTarget } );
-                        var planeGeometry = new THREE.PlaneBufferGeometry(10, 10);
-                        layer.ground = new THREE.Mesh(planeGeometry, materialPhongCube);
-                        layer.ground.position.set(0, -2.2, 0);
-                        layer.ground.rotation.x = -Math.PI / 2;
-                        layer.ground.receiveShadow = false;
-                        layer.scene.add(layer.ground);
-                        layer.cubeCamera.position.copy(set.ground.position);*/
                         layer.rotationSpeed = new THREE.Vector3(0, 0.002, 0.001);
                         /**
                          * Anaglyph effect
                          **/
                         layer.render = function(rtt) {
                             if(world.transitionParams.autoRotation) {
-                                layer.lowpoly.rotation.x += layer.rotationSpeed.x;
-                                layer.lowpoly.rotation.y += layer.rotationSpeed.y;
+                                //layer.lowpoly.rotation.x += layer.rotationSpeed.x;
+                                //layer.lowpoly.rotation.y += layer.rotationSpeed.y;
                                 layer.lowpoly.rotation.z += layer.rotationSpeed.z;
-                                layer.lowpoly2.rotation.x += layer.rotationSpeed.x;
+                                /*layer.lowpoly2.rotation.x += layer.rotationSpeed.x;
                                 layer.lowpoly2.rotation.y += layer.rotationSpeed.y;
-                                layer.lowpoly2.rotation.z += layer.rotationSpeed.z;
-                                layer.polyWire.rotation.x += layer.rotationSpeed.x;
+                                layer.lowpoly2.rotation.z += layer.rotationSpeed.z;*/
+                                /*layer.polyWire.rotation.x += layer.rotationSpeed.x;
                                 layer.polyWire.rotation.y += layer.rotationSpeed.y;
-                                layer.polyWire.rotation.z += layer.rotationSpeed.z;
-                                layer.pointCloud.rotation.x += layer.rotationSpeed.x;
+                                layer.polyWire.rotation.z += layer.rotationSpeed.z;*/
+                                /*layer.pointCloud.rotation.x += layer.rotationSpeed.x;
                                 layer.pointCloud.rotation.y += layer.rotationSpeed.y;
                                 layer.pointCloud.rotation.z += layer.rotationSpeed.z;
-                                layer.sphericalCloud.rotation.y += layer.rotationSpeed.y;
-                                layer.skydome.rotation.x -= 0.002;
+                                layer.sphericalCloud.rotation.y += layer.rotationSpeed.y;*/
+                                /*layer.skydome.rotation.x -= 0.002;
                                 layer.skydome.rotation.y -= 0.004;
-                                layer.skydome.rotation.z -= 0.001;
+                                layer.skydome.rotation.z -= 0.001;*/
                             }
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
@@ -721,7 +703,7 @@ ENGINE = function() {
                 //add scene fog
                 this.scene.fog = new THREE.FogExp2(0x000000, 0.03);
                 //addLights(this.scene);
-                importCollada(this, '../src/collada/test1.dae', '../src/textures/UVmaps/evolution.png');
+                importCollada(this, '../src/collada/nixon.dae', '../src/textures/UVmaps/uvmapnixon2.png');
                 importJSON(this, '../src/json/lowpoly.json', '../src/textures/UVmaps/UVmap.png');
                 /*******************************/
                 world.postprocess.apply(this);
@@ -846,7 +828,7 @@ ENGINE = function() {
                     }
                     if(world.renderParams.enableRGBShift) {
                         var rgbShift = new THREE.ShaderPass(THREE.RGBShiftShader);
-                        rgbShift.uniforms.amount.value = 0.001;
+                        rgbShift.uniforms.amount.value = world.renderParams.rgbValue;
                         this.composer.addPass(rgbShift);
                     }
                     if(world.renderParams.enableTiltShift) {
@@ -875,7 +857,6 @@ ENGINE = function() {
              **/
             this.refreshPostProcessing = function() {
                 this.postprocess.apply(this.CurrentLayer);
-                this.postprocess.apply(this.NextLayer);
                 this.postprocess.apply(this.transition);
             };
             /**
@@ -887,15 +868,10 @@ ENGINE = function() {
                 world.CurrentLayer.camera.aspect = world.width / world.height;
                 world.CurrentLayer.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
                 world.CurrentLayer.camera.updateProjectionMatrix();
-                world.NextLayer.camera.aspect = world.width / world.height;
-                world.NextLayer.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
-                world.NextLayer.camera.updateProjectionMatrix();
                 if(world.renderParams.enableAnaglyph) {
                     myPortfolio.world.CurrentLayer.anaglyph.setSize(world.width, world.height);
-                    myPortfolio.world.NextLayer.anaglyph.setSize(world.width, world.height);
                 } else {
                     world.transition.quadmaterial.uniforms.tDiffuse1.value = world.CurrentLayer.fbo;
-                    world.transition.quadmaterial.uniforms.tDiffuse2.value = world.NextLayer.fbo;
                     world.renderer.setSize(world.width, world.height);
                     world.refreshPostProcessing();
                 }
