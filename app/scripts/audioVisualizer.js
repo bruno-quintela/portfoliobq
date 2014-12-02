@@ -182,7 +182,7 @@ VisualizerSample.prototype.getFrequencyValue = function(freq) {
 }
 
 /* INITSample*/
-var sample = new VisualizerSample();
+//var sample = new VisualizerSample();
 
 // Code here will be linted with ignored by JSHint.
 /* jshint ignore:end */
