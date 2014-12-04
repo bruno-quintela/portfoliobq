@@ -129,6 +129,7 @@ ENGINE = function() {
             antialias: true,
             alpha: false,
             backgroundColor: [255, 255, 255],
+            matcap: 67,
             enableAnaglyph: false,
             focus: 2,
             enableTrackball: true,
@@ -213,11 +214,11 @@ ENGINE = function() {
                 layer.headMiddle.defaultPosition = layer.headTop.position;
                 layer.headBottom.defaultPosition = layer.headTop.position;
                 var tweenHeadTop = new TWEEN.Tween(layer.headTop.position).to(layer.headTop.defaultPosition, 1000).onUpdate(update);
-                tweenHeadTop.easing(TWEEN.Easing.Elastic.Out).start();
+                tweenHeadTop.easing(TWEEN.Easing.Quadratic.Out).start();
                 var tweenHeadMiddle = new TWEEN.Tween(layer.headMiddle.position).to(layer.headMiddle.defaultPosition, 1000).onUpdate(update);
-                tweenHeadMiddle.easing(TWEEN.Easing.Elastic.Out).start();
+                tweenHeadMiddle.easing(TWEEN.Easing.Quadratic.Out).start();
                 var tweenHeadBottom = new TWEEN.Tween(layer.headBottom.position).to(layer.headBottom.defaultPosition, 1000).onUpdate(update);
-                tweenHeadBottom.easing(TWEEN.Easing.Elastic.Out).start();
+                tweenHeadBottom.easing(TWEEN.Easing.Quadratic.Out).start();
             },
             sphereAnim: function() {
                 var layer = myPortfolio.world.LayerA;
@@ -340,6 +341,121 @@ ENGINE = function() {
                 guiRender.addColor(this.renderParams, 'backgroundColor').onChange(function(value) {
                     world.renderer.setClearColor(new THREE.Color(value[0] / 255, value[1] / 255, value[2] / 255), 0);
                 });
+                guiRender.add(this.renderParams, 'matcap', {
+                    1: 1,
+                    2: 2,
+                    3: 3,
+                    4: 4,
+                    5: 5,
+                    6: 6,
+                    7: 7,
+                    8: 8,
+                    9: 9,
+                    10: 10,
+                    11: 11,
+                    12: 12,
+                    13: 13,
+                    14: 14,
+                    15: 15,
+                    16: 16,
+                    17: 17,
+                    18: 18,
+                    19: 19,
+                    20: 20,
+                    21: 21,
+                    22: 22,
+                    23: 23,
+                    24: 24,
+                    25: 25,
+                    26: 26,
+                    27: 27,
+                    28: 28,
+                    29: 29,
+                    30: 30,
+                    31: 31,
+                    32: 32,
+                    33: 33,
+                    34: 34,
+                    35: 35,
+                    36: 36,
+                    37: 37,
+                    38: 38,
+                    39: 39,
+                    40: 40,
+                    41: 41,
+                    42: 42,
+                    43: 43,
+                    44: 44,
+                    45: 45,
+                    46: 46,
+                    47: 47,
+                    48: 48,
+                    49: 49,
+                    50: 50,
+                    51: 51,
+                    52: 52,
+                    53: 53,
+                    54: 54,
+                    55: 55,
+                    56: 56,
+                    57: 57,
+                    58: 58,
+                    59: 59,
+                    60: 60,
+                    61: 61,
+                    62: 62,
+                    63: 63,
+                    64: 64,
+                    65: 65,
+                    66: 66,
+                    67: 67,
+                    68: 68,
+                    69: 69,
+                    70: 70,
+                    71: 71,
+                    72: 72,
+                    73: 73,
+                    74: 74,
+                    75: 75,
+                    76: 76,
+                    77: 77,
+                    78: 78,
+                    79: 79
+                }).onChange(function(value) {
+                    myPortfolio.world.CurrentLayer.headTop.material = new THREE.ShaderMaterial({
+                        uniforms: {
+                            tMatCap: {
+                                type: 't',
+                                value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png')
+                            },
+                        },
+                        vertexShader: document.getElementById('sem-vs').textContent,
+                        fragmentShader: document.getElementById('sem-fs').textContent,
+                        shading: THREE.SmoothShading
+                    });
+                    myPortfolio.world.CurrentLayer.headMiddle.material = new THREE.ShaderMaterial({
+                        uniforms: {
+                            tMatCap: {
+                                type: 't',
+                                value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png')
+                            },
+                        },
+                        vertexShader: document.getElementById('sem-vs').textContent,
+                        fragmentShader: document.getElementById('sem-fs').textContent,
+                        shading: THREE.SmoothShading
+                    });
+                    myPortfolio.world.CurrentLayer.headBottom.material = new THREE.ShaderMaterial({
+                        uniforms: {
+                            tMatCap: {
+                                type: 't',
+                                value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png')
+                            },
+                        },
+                        vertexShader: document.getElementById('sem-vs').textContent,
+                        fragmentShader: document.getElementById('sem-fs').textContent,
+                        shading: THREE.SmoothShading
+                    });
+                });
                 guiRender.add(this.renderParams, 'enableAnaglyph').onChange(function(value) {
                     if(value) {
                         myPortfolio.world.CurrentLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, 2);
@@ -406,13 +522,13 @@ ENGINE = function() {
                 guiRender.add(this.renderParams, 'enableFilm').onChange(function() {
                     world.refreshPostProcessing();
                 });
-                 guiRender.add(this.renderParams, 'enableFilmBW').onChange(function() {
+                guiRender.add(this.renderParams, 'enableFilmBW').onChange(function() {
                     world.refreshPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'filmStrengh', 0, 1, 0.001).onChange(function() {
                     world.refreshPostProcessing();
                 });
-                 guiRender.add(this.renderParams, 'enableDotFilter').onChange(function() {
+                guiRender.add(this.renderParams, 'enableDotFilter').onChange(function() {
                     world.refreshPostProcessing();
                 });
                 guiRender.add(this.renderParams, 'enableTiltShift').onChange(function() {
@@ -670,7 +786,7 @@ ENGINE = function() {
                 var importCollada = function(layer, filePathCollada) {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
-                    loader.options.convertUpAxis = true;
+                    loader.options.convertUpAxis = false;
                     loader.load(filePathCollada, function(collada) {
                         var dae = collada.scene;
                         layer.scene.add(dae);
@@ -678,36 +794,6 @@ ENGINE = function() {
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
                                 console.info(child.name);
-                                if(child.name.indexOf("Icosphere") > -1) {
-                                    var mesh = child.children[0];
-                                    mesh.material = new THREE.ShaderMaterial({
-                                        uniforms: {
-                                            tMatCap: {
-                                                type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap.jpg')
-                                            },
-                                        },
-                                        vertexShader: document.getElementById('sem-vs').textContent,
-                                        fragmentShader: document.getElementById('sem-fs').textContent,
-                                        shading: THREE.SmoothShading
-                                    });
-                                    mesh.material.side = THREE.DoubleSide;
-                                    layer.spheres.push(mesh);
-                                }
-                                if(child.name === 'Icosphere_009') {
-                                    var mesh = child.children[0];
-                                    mesh.material = new THREE.ShaderMaterial({
-                                        uniforms: {
-                                            tMatCap: {
-                                                type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap.jpg')
-                                            },
-                                        },
-                                        vertexShader: document.getElementById('sem-vs').textContent,
-                                        fragmentShader: document.getElementById('sem-fs').textContent,
-                                        shading: THREE.SmoothShading
-                                    });
-                                }
                                 if(child.name === 'head_top') {
                                     var mesh = child.children[0];
                                     /*mesh.material = new THREE.MeshBasicMaterial({
@@ -721,7 +807,7 @@ ENGINE = function() {
                                         uniforms: {
                                             tMatCap: {
                                                 type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap.jpg')
+                                                value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap'+world.renderParams.matcap+'.png')
                                             },
                                         },
                                         vertexShader: document.getElementById('sem-vs').textContent,
@@ -740,7 +826,7 @@ ENGINE = function() {
                                         uniforms: {
                                             tMatCap: {
                                                 type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap.jpg')
+                                                value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap'+world.renderParams.matcap+'.png')
                                             },
                                         },
                                         vertexShader: document.getElementById('sem-vs').textContent,
@@ -755,7 +841,7 @@ ENGINE = function() {
                                         uniforms: {
                                             tMatCap: {
                                                 type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap.jpg')
+                                                value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap'+world.renderParams.matcap+'.png')
                                             },
                                         },
                                         vertexShader: document.getElementById('sem-vs').textContent,
@@ -771,7 +857,7 @@ ENGINE = function() {
                                         uniforms: {
                                             tMatCap: {
                                                 type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap2.jpg')
+                                                value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap'+world.renderParams.matcap+'.png')
                                             },
                                         },
                                         vertexShader: document.getElementById('sem-vs').textContent,
@@ -785,7 +871,7 @@ ENGINE = function() {
                                         uniforms: {
                                             tMatCap: {
                                                 type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap2.jpg')
+                                                value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap'+world.renderParams.matcap+'.png')
                                             },
                                         },
                                         vertexShader: document.getElementById('sem-vs').textContent,
@@ -799,7 +885,7 @@ ENGINE = function() {
                                         uniforms: {
                                             tMatCap: {
                                                 type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/matcap2.jpg')
+                                                value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap'+world.renderParams.matcap+'.png')
                                             },
                                         },
                                         vertexShader: document.getElementById('sem-vs').textContent,
@@ -815,12 +901,12 @@ ENGINE = function() {
                          **/
                         layer.render = function(rtt) {
                             if(world.transitionParams.autoRotation) {
-                                for(var i = 0; i < layer.spheres.length; i++) {
+                                /*for(var i = 0; i < layer.spheres.length; i++) {
                                     layer.spheres[i].rotation.x += layer.rotationSpeed.z;
-                                }
-                                layer.headTop.rotation.y += layer.rotationSpeed.z * 2;
-                                layer.headMiddle.rotation.y += layer.rotationSpeed.z * -2;
-                                layer.headBottom.rotation.y += layer.rotationSpeed.z* 2;
+                                }*/
+                                layer.headTop.rotation.x += layer.rotationSpeed.z * 2;
+                                //layer.headMiddle.rotation.y += layer.rotationSpeed.z * 2;
+                                //layer.headBottom.rotation.y += layer.rotationSpeed.z * 2;
                                 /*layer.eyeRight.rotation.y += layer.rotationSpeed.z * 5;
                                 layer.eyeLeft.rotation.y += layer.rotationSpeed.z * 5;*/
                             }
@@ -888,8 +974,8 @@ ENGINE = function() {
                 }
                 //add scene fog
                 this.scene.fog = new THREE.FogExp2(0x000000, 0.03);
-                addLights(this.scene);
-                importCollada(this, '../src/collada/websiteDraft.dae');
+                //addLights(this.scene);
+                importCollada(this, '../src/collada/websiteDraft5.dae');
                 //importJSON(this, '../src/json/websiteDraftAnimation.json');
                 /*******************************/
                 world.postprocess.apply(this);
@@ -1005,28 +1091,28 @@ ENGINE = function() {
                         this.composer.addPass(effectFXAA);
                     }
                     if(world.renderParams.enableFilm) {
-                        var effectFilm = new THREE.FilmPass(world.renderParams.filmStrengh, 0, 2048, false);
+                        var effectFilm = new THREE.FilmPass(world.renderParams.filmStrengh, 0, 0, false);
                         this.composer.addPass(effectFilm);
-                    } 
+                    }
                     if(world.renderParams.enableFilmBW) {
-                        var effectFilm = new THREE.FilmPass(world.renderParams.filmStrengh, 0.5, 2048, true);
+                        var effectFilm = new THREE.FilmPass(world.renderParams.filmStrengh, 0.2, 1024, true);
                         this.composer.addPass(effectFilm);
                     }
                     if(world.renderParams.enableSepia) {
-                        var effectSepia = new THREE.ShaderPass( THREE.SepiaShader );
+                        var effectSepia = new THREE.ShaderPass(THREE.SepiaShader);
                         this.composer.addPass(effectSepia);
-                    } 
+                    }
                     if(world.renderParams.enableColorify) {
-                        var effectColorify = new THREE.ShaderPass( THREE.ColorifyShader );
-        				effectColorify.uniforms[ 'color' ].value.setRGB( 1, 0.8, 0.8 );
+                        var effectColorify = new THREE.ShaderPass(THREE.ColorifyShader);
+                        effectColorify.uniforms['color'].value.setRGB(1, 0.8, 0.8);
                         this.composer.addPass(effectColorify);
-                    } 
+                    }
                     if(world.renderParams.enableBloom) {
                         var effectBloom = new THREE.BloomPass(world.renderParams.bloomStrengh);
                         this.composer.addPass(effectBloom);
                     }
                     if(world.renderParams.enableDotFilter) {
-                        var dotFilter = new THREE.DotScreenPass( new THREE.Vector2( 0, 0 ), 0.5, 0.8 );
+                        var dotFilter = new THREE.DotScreenPass(new THREE.Vector2(0, 0), 0.5, 0.8);
                         this.composer.addPass(dotFilter);
                     }
                     if(world.renderParams.enableRGBShift) {
