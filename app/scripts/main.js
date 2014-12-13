@@ -130,6 +130,7 @@ ENGINE = function() {
             alpha: false,
             backgroundColor: [255, 255, 255],
             matcap: 60,
+            hairTexture: 1,
             eyeTexture: 8,
             enableAnaglyph: false,
             focus: 2,
@@ -160,15 +161,15 @@ ENGINE = function() {
             fillLightEnable: true,
             fillLightIntensity: 0.1,
             fillLightCastShadow: true,
-            fillLightShadowIntensity: 0.15,
+            fillLightShadowIntensity: 0.9,
             keyLightEnable: true,
             keyLightIntensity: 1.5,
             keyLightCastShadow: true,
-            keyLightShadowIntensity: 0.15,
+            keyLightShadowIntensity: 0.9,
             backLightEnable: true,
             backLightIntensity: 1,
             backLightCastShadow: true,
-            backLightShadowIntensity: 0.15,
+            backLightShadowIntensity: 0.9,
             shininess: 10,
             rotateLights: false
         },
@@ -345,9 +346,9 @@ ENGINE = function() {
                 };
                 for(var i = 0; i < source.vertices.length; i++) {
                     var tweenVertex = new TWEEN.Tween(source.vertices[i]).to({
-                        x: target.vertices[i].x*1.2,
-                        y: target.vertices[i].y*1.2,
-                        z: target.vertices[i].z*1.2
+                        x: target.vertices[i].x * 1.2,
+                        y: target.vertices[i].y * 1.2,
+                        z: target.vertices[i].z * 1.2
                     }, 2000).onUpdate(update);
                     tweenVertex.delay(i * 10).easing(TWEEN.Easing.Elastic.Out).start();
                 }
@@ -470,16 +471,217 @@ ENGINE = function() {
                     94: 94,
                     95: 95
                 }).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.makehumanEyebrows.material = myPortfolio.world.CurrentLayer.makehumanBody.material = new THREE.ShaderMaterial({
+                    myPortfolio.world.CurrentLayer.makehumanBody.material = new THREE.ShaderMaterial({
                         uniforms: {
+                            tNormal: {
+                                type: 't',
+                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male/cb_NRM.png')
+                            },
                             tMatCap: {
                                 type: 't',
                                 value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png')
                             },
+                            time: {
+                                type: 'f',
+                                value: 0
+                            },
+                            bump: {
+                                type: 'f',
+                                value: 0
+                            },
+                            noise: {
+                                type: 'f',
+                                value: .04
+                            },
+                            repeat: {
+                                type: 'v2',
+                                value: new THREE.Vector2(1, 1)
+                            },
+                            useNormal: {
+                                type: 'f',
+                                value: 1
+                            },
+                            useRim: {
+                                type: 'f',
+                                value: 1
+                            },
+                            rimPower: {
+                                type: 'f',
+                                value: 2
+                            },
+                            useScreen: {
+                                type: 'f',
+                                value: 0
+                            },
+                            normalScale: {
+                                type: 'f',
+                                value: 0.5
+                            },
+                            normalRepeat: {
+                                type: 'f',
+                                value: 1
+                            }
                         },
-                        vertexShader: document.getElementById('sem-vs').textContent,
-                        fragmentShader: document.getElementById('sem-fs').textContent,
-                        shading: THREE.SmoothShading
+                        vertexShader: document.getElementById('vertexShader').textContent,
+                        fragmentShader: document.getElementById('fragmentShader').textContent,
+                        wrapping: THREE.ClampToEdgeWrapping,
+                        shading: THREE.SmoothShading,
+                        side: THREE.DoubleSide
+                    });
+                });
+                guiRender.add(this.renderParams, 'hairTexture', {
+                    1: 1,
+                    2: 2,
+                    3: 3,
+                    4: 4,
+                    5: 5,
+                    6: 6,
+                    7: 7,
+                    8: 8,
+                    9: 9,
+                    10: 10,
+                    11: 11,
+                    12: 12,
+                    13: 13,
+                    14: 14,
+                    15: 15,
+                    16: 16,
+                    17: 17,
+                    18: 18,
+                    19: 19,
+                    20: 20,
+                    21: 21,
+                    22: 22,
+                    23: 23,
+                    24: 24,
+                    25: 25,
+                    26: 26,
+                    27: 27,
+                    28: 28,
+                    29: 29,
+                    30: 30,
+                    31: 31,
+                    32: 32,
+                    33: 33,
+                    34: 34,
+                    35: 35,
+                    36: 36,
+                    37: 37,
+                    38: 38,
+                    39: 39,
+                    40: 40,
+                    41: 41,
+                    42: 42,
+                    43: 43,
+                    44: 44,
+                    45: 45,
+                    46: 46,
+                    47: 47,
+                    48: 48,
+                    49: 49,
+                    50: 50,
+                    51: 51,
+                    52: 52,
+                    53: 53,
+                    54: 54,
+                    55: 55,
+                    56: 56,
+                    57: 57,
+                    58: 58,
+                    59: 59,
+                    60: 60,
+                    61: 61,
+                    62: 62,
+                    63: 63,
+                    64: 64,
+                    65: 65,
+                    66: 66,
+                    67: 67,
+                    68: 68,
+                    69: 69,
+                    70: 70,
+                    71: 71,
+                    72: 72,
+                    73: 73,
+                    74: 74,
+                    75: 75,
+                    76: 76,
+                    77: 77,
+                    78: 78,
+                    79: 79,
+                    80: 80,
+                    81: 81,
+                    82: 82,
+                    83: 83,
+                    84: 84,
+                    85: 85,
+                    86: 86,
+                    87: 87,
+                    88: 88,
+                    89: 89,
+                    90: 90,
+                    91: 91,
+                    92: 92,
+                    93: 93,
+                    94: 94,
+                    95: 95
+                }).onChange(function(value) {
+                    myPortfolio.world.CurrentLayer.makehumanHair.material = new THREE.ShaderMaterial({
+                        uniforms: {
+                            tNormal: {
+                                type: 't',
+                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male/cb_NRM.png')
+                            },
+                            tMatCap: {
+                                type: 't',
+                                value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png')
+                            },
+                            time: {
+                                type: 'f',
+                                value: 0
+                            },
+                            bump: {
+                                type: 'f',
+                                value: 0
+                            },
+                            noise: {
+                                type: 'f',
+                                value: .04
+                            },
+                            repeat: {
+                                type: 'v2',
+                                value: new THREE.Vector2(1, 1)
+                            },
+                            useNormal: {
+                                type: 'f',
+                                value: 1
+                            },
+                            useRim: {
+                                type: 'f',
+                                value: 1
+                            },
+                            rimPower: {
+                                type: 'f',
+                                value: 2
+                            },
+                            useScreen: {
+                                type: 'f',
+                                value: 0
+                            },
+                            normalScale: {
+                                type: 'f',
+                                value: 0.5
+                            },
+                            normalRepeat: {
+                                type: 'f',
+                                value: 1
+                            }
+                        },
+                        vertexShader: document.getElementById('vertexShader').textContent,
+                        fragmentShader: document.getElementById('fragmentShader').textContent,
+                        wrapping: THREE.ClampToEdgeWrapping,
+                        shading: THREE.SmoothShading,
+                        side: THREE.DoubleSide
                     });
                 });
                 guiRender.add(this.renderParams, 'eyeTexture', {
@@ -813,23 +1015,50 @@ ENGINE = function() {
                 var addLights = function(scene) {
                     if(world.lightsParams.fillLightEnable) {
                         var fillLight = new THREE.DirectionalLight('white', world.lightsParams.fillLightIntensity);
-                        fillLight.position.set(0, 0, 20);
+                        fillLight.position.set(-0.5, 0, 10);
                         fillLight.castShadow = world.lightsParams.fillLightCastShadow;
                         fillLight.shadowDarkness = world.lightsParams.fillLightShadowIntensity;
+                        fillLight.shadowMapWidth = 1024 * 1;
+                        fillLight.shadowMapHeight = 1024 * 1;
+                        fillLight.shadowCameraNear = 200;
+                        fillLight.shadowCameraFar = 1500;
+                        var d = 500;
+                        fillLight.shadowCameraLeft = -d;
+                        fillLight.shadowCameraRight = d;
+                        fillLight.shadowCameraTop = d;
+                        fillLight.shadowCameraBottom = -d;
                         scene.add(fillLight);
                     }
                     if(world.lightsParams.keyLightEnable) {
                         var keyLight = new THREE.DirectionalLight('white', world.lightsParams.keyLightIntensity);
-                        keyLight.position.set(20, 20, 20);
+                        keyLight.position.set(1, 0, 0.5);
                         keyLight.castShadow = world.lightsParams.keyLightCastShadow;
                         keyLight.shadowDarkness = world.lightsParams.keyLightShadowIntensity;
+                        keyLight.shadowMapWidth = 1024 * 1;
+                        keyLight.shadowMapHeight = 1024 * 1;
+                        keyLight.shadowCameraNear = 200;
+                        keyLight.shadowCameraFar = 1500;
+                        var d = 500;
+                        keyLight.shadowCameraLeft = -d;
+                        keyLight.shadowCameraRight = d;
+                        keyLight.shadowCameraTop = d;
+                        keyLight.shadowCameraBottom = -d;
                         scene.add(keyLight);
                     }
                     if(world.lightsParams.backLightEnable) {
                         var backLight = new THREE.DirectionalLight('white', world.lightsParams.backLightIntensity);
-                        backLight.position.set(-20, -20, 20);
+                        backLight.position.set(-1, 0, 0.5);
                         backLight.castShadow = world.lightsParams.backLightCastShadow;
                         backLight.shadowDarkness = world.lightsParams.backLightShadowIntensity;
+                        backLight.shadowMapWidth = 1024 * 1;
+                        backLight.shadowMapHeight = 1024 * 1;
+                        backLight.shadowCameraNear = 200;
+                        backLight.shadowCameraFar = 1500;
+                        var d = 500;
+                        backLight.shadowCameraLeft = -d;
+                        backLight.shadowCameraRight = d;
+                        backLight.shadowCameraTop = d;
+                        backLight.shadowCameraBottom = -d;
                         scene.add(backLight);
                     }
                 };
@@ -874,7 +1103,7 @@ ENGINE = function() {
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
                                 console.info(child.name);
-                                if(child.name === 'makehuman_Body') {
+                                if(child.name === 'makehuman_Head') {
                                     var mesh = child.children[0];
                                     var modifier = new THREE.SubdivisionModifier(1);
                                     //modifier.modify(mesh.geometry);
@@ -890,19 +1119,24 @@ ENGINE = function() {
                                         fragmentShader: document.getElementById('sem-fs').textContent,
                                         shading: THREE.SmoothShading
                                     });
-                                    mesh.material.side = THREE.DoubleSide;
-                                    layer.makehumanBody = mesh;
+                                    //mesh.material.side = THREE.DoubleSide;
+                                    //mesh.receiveShadow = true;
+                                    //mesh.castShadow = true;
+                                    layer.makehumanHead = mesh;
                                     //layer.polyWire = addWireframe(layer.scene, mesh.geometry, 0x000000, 1, 1.02);
                                     //layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 0.031, 1.02);
-                                    //addCubeMap(layer,'../src/textures/UVmaps/SwedishRoyalCastle/');
-                                    layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 2500, 4, '../src/textures/sprites/WhiteDot.svg', 0.03);
+                                    addCubeMap(layer, '../src/textures/UVmaps/SwedishRoyalCastle/');
+                                    //layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 2500, 4, '../src/textures/sprites/WhiteDot.svg', 0.03);
                                     //addSkyDome(layer, 10, '../src/textures/UVmaps/background1.jpg');
-                                } else if(child.name === 'makehuman_Head') {
+                                } else if(child.name === 'makehuman_Body') {
                                     var mesh = child.children[0];
+                                    var modifier = new THREE.SubdivisionModifier(1);
+                                    //modifier.modify(mesh.geometry);
+                                    mesh.geometry.computeTangents();
                                     // common material parameters
                                     mesh.receiveShadow = true;
                                     mesh.castShadow = true;
-				                    var shininess = 20;
+                                    var shininess = 10;
                                     var normalScale = 0.5;
                                     var shader = THREE.ShaderLib["normalmap"];
                                     var uniforms = THREE.UniformsUtils.clone(shader.uniforms);
@@ -911,11 +1145,11 @@ ENGINE = function() {
                                     uniforms["enableSpecular"].value = true;
                                     uniforms["enableReflection"].value = false;
                                     uniforms["enableDisplacement"].value = false;
-                                    uniforms["tDiffuse"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/face_COLOR.png");
-                                    uniforms["tSpecular"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/face_SPEC.png");
-                                    uniforms["tNormal"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/face_NRM.png");
-                                    uniforms["tAO"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/face_OCC.png");
-                                    uniforms["tDisplacement"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/face_DISP.png");
+                                    uniforms["tDiffuse"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/cb_COLOR.png");
+                                    uniforms["tSpecular"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/cb_SPEC.png");
+                                    uniforms["tNormal"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/cb_NRM.png");
+                                    uniforms["tAO"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/cb_OCC.png");
+                                    //uniforms["tDisplacement"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/cb_DISP.png");
                                     //uniforms["uDisplacementBias"].value = -0.428408;
                                     //uniforms["uDisplacementScale"].value = 2.436143;
                                     uniforms["uNormalScale"].value.x = normalScale;
@@ -933,14 +1167,71 @@ ENGINE = function() {
                                         fog: true
                                     };
                                     var material1 = new THREE.ShaderMaterial(parameters);
-                                   
-                                    mesh.geometry.computeTangents();
+                                    var material2 = new THREE.ShaderMaterial({
+                                        uniforms: {
+                                            tNormal: {
+                                                type: 't',
+                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male/cb_NRM.png')
+                                            },
+                                            tMatCap: {
+                                                type: 't',
+                                                value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap70.png')
+                                            },
+                                            time: {
+                                                type: 'f',
+                                                value: 0
+                                            },
+                                            bump: {
+                                                type: 'f',
+                                                value: 0
+                                            },
+                                            noise: {
+                                                type: 'f',
+                                                value: .04
+                                            },
+                                            repeat: {
+                                                type: 'v2',
+                                                value: new THREE.Vector2(1, 1)
+                                            },
+                                            useNormal: {
+                                                type: 'f',
+                                                value: 1
+                                            },
+                                            useRim: {
+                                                type: 'f',
+                                                value: 1
+                                            },
+                                            rimPower: {
+                                                type: 'f',
+                                                value: 2
+                                            },
+                                            useScreen: {
+                                                type: 'f',
+                                                value: 0
+                                            },
+                                            normalScale: {
+                                                type: 'f',
+                                                value: 0.5
+                                            },
+                                            normalRepeat: {
+                                                type: 'f',
+                                                value: 1
+                                            }
+                                        },
+                                        vertexShader: document.getElementById('vertexShader').textContent,
+                                        fragmentShader: document.getElementById('fragmentShader').textContent,
+                                        wrapping: THREE.ClampToEdgeWrapping,
+                                        shading: THREE.SmoothShading
+                                    });
+                                    material2.uniforms.tMatCap.value.wrapS = material2.uniforms.tMatCap.value.wrapT = THREE.ClampToEdgeWrapping;
+                                    material2.uniforms.tNormal.value.wrapS = material2.uniforms.tNormal.value.wrapT = THREE.RepeatWrapping;
                                     mesh.material = material1;
-                                    layer.makehumanHead = mesh;
-                                    layer.makehumanHeadDefault = mesh.clone();
-                                    layer.scene.add(layer.makehumanHeadDefault);
+                                    //modifier.modify(mesh.geometry);
+                                    layer.makehumanBody = mesh;
                                 } else if(child.name === 'makehuman_HighPolyEyes') {
                                     var mesh = child.children[0];
+                                    mesh.receiveShadow = true;
+                                    mesh.castShadow = true;
                                     mesh.material = new THREE.ShaderMaterial({
                                         uniforms: {
                                             tMatCap: {
@@ -953,51 +1244,87 @@ ENGINE = function() {
                                         shading: THREE.SmoothShading
                                     });
                                     layer.makehumanEyes = mesh;
-                                } else if(child.name === 'helm') {
+                                } else if(child.name === 'makehuman_Eyebrow') {
                                     var mesh = child.children[0];
-                                    layer.eyeRight = mesh;
-                                    mesh.material = new THREE.ShaderMaterial({
-                                        uniforms: {
-                                            tMatCap: {
-                                                type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + world.renderParams.matcap + '.png')
-                                            },
-                                        },
-                                        vertexShader: document.getElementById('sem-vs').textContent,
-                                        fragmentShader: document.getElementById('sem-fs').textContent,
-                                        shading: THREE.SmoothShading
+                                    mesh.material = new THREE.MeshBasicMaterial({
+                                        map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/eyebrow012.png"),
+                                        blending: THREE.AdditiveAlpha,
+                                        depthTest: true,
+                                        transparent: true
                                     });
                                     layer.makehumanEyebrows = mesh;
-                                } else if(child.name === 'helm_ball1') {
+                                } else if(child.name === 'makehuman_Eyelashes') {
                                     var mesh = child.children[0];
-                                    layer.eyeLeft = mesh;
-                                    mesh.material = new THREE.ShaderMaterial({
-                                        uniforms: {
-                                            tMatCap: {
-                                                type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + world.renderParams.matcap + '.png')
-                                            },
-                                        },
-                                        vertexShader: document.getElementById('sem-vs').textContent,
-                                        fragmentShader: document.getElementById('sem-fs').textContent,
-                                        shading: THREE.SmoothShading
+                                    mesh.material = new THREE.MeshBasicMaterial({
+                                        map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/eyelashes01.png"),
+                                        blending: THREE.AdditiveAlpha,
+                                        depthTest: true,
+                                        transparent: true
                                     });
                                     layer.makehumanEyelashes = mesh;
-                                } else if(child.name === 'Cube') {
+                                } else if(child.name === 'makehuman_mhair01') {
                                     var mesh = child.children[0];
-                                    layer.eyeLeft = mesh;
+                                    mesh.receiveShadow = true;
+                                    mesh.castShadow = true;
+                                    mesh.geometry.computeTangents();
                                     mesh.material = new THREE.ShaderMaterial({
                                         uniforms: {
+                                            tNormal: {
+                                                type: 't',
+                                                value: THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male/cb_NRM.png')
+                                            },
                                             tMatCap: {
                                                 type: 't',
-                                                value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap60.png')
+                                                value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap70.png')
                                             },
+                                            time: {
+                                                type: 'f',
+                                                value: 0
+                                            },
+                                            bump: {
+                                                type: 'f',
+                                                value: 0
+                                            },
+                                            noise: {
+                                                type: 'f',
+                                                value: .04
+                                            },
+                                            repeat: {
+                                                type: 'v2',
+                                                value: new THREE.Vector2(1, 1)
+                                            },
+                                            useNormal: {
+                                                type: 'f',
+                                                value: 1
+                                            },
+                                            useRim: {
+                                                type: 'f',
+                                                value: 1
+                                            },
+                                            rimPower: {
+                                                type: 'f',
+                                                value: 2
+                                            },
+                                            useScreen: {
+                                                type: 'f',
+                                                value: 0
+                                            },
+                                            normalScale: {
+                                                type: 'f',
+                                                value: 0.5
+                                            },
+                                            normalRepeat: {
+                                                type: 'f',
+                                                value: 1
+                                            }
                                         },
-                                        vertexShader: document.getElementById('sem-vs').textContent,
-                                        fragmentShader: document.getElementById('sem-fs').textContent,
-                                        shading: THREE.SmoothShading
+                                        vertexShader: document.getElementById('vertexShader').textContent,
+                                        fragmentShader: document.getElementById('fragmentShader').textContent,
+                                        wrapping: THREE.ClampToEdgeWrapping,
+                                        shading: THREE.SmoothShading,
+                                        side: THREE.DoubleSide
                                     });
-                                    layer.cube = mesh;
+                                    layer.makehumanHair = mesh;
                                 }
                             }
                         });
@@ -1006,9 +1333,6 @@ ENGINE = function() {
                          * Anaglyph effect
                          **/
                         layer.render = function(rtt) {
-                            layer.cube.rotation.x += layer.rotationSpeed.x * 5;
-                            layer.cube.rotation.y += layer.rotationSpeed.y * 8;
-                            layer.cube.rotation.z += layer.rotationSpeed.z * 10;
                             if(world.motionParams.autoPanX) {
                                 layer.scene.maeposition.x += layer.rotationSpeed.x;
                             }
@@ -1027,19 +1351,20 @@ ENGINE = function() {
                                 //layer.skydome.rotation.y += layer.rotationSpeed.y;
                             }
                             if(world.motionParams.autoRotationZ) {
-                                layer.scene.rotation.z += layer.rotationSpeed.z;
+                                //layer.scene.rotation.z += layer.rotationSpeed.z;
                                 //layer.skydome.rotation.z -= layer.rotationSpeed.z;
+                                layer.makehumanBody.rotation.z += layer.rotationSpeed.z * 3;
                             }
                             if(world.lightsParams.rotateLights) {
-                                layer.scene.children[0].position.x += layer.rotationSpeed.x*100;
-                                layer.scene.children[1].position.x += layer.rotationSpeed.x*100;
-                                layer.scene.children[2].position.x += layer.rotationSpeed.x*100;
-                                layer.scene.children[0].position.y += layer.rotationSpeed.y*100;
-                                layer.scene.children[1].position.y += layer.rotationSpeed.y*100;
-                                layer.scene.children[2].position.y += layer.rotationSpeed.y*100;
-                                layer.scene.children[0].position.z += layer.rotationSpeed.z*100;
-                                layer.scene.children[1].position.z += layer.rotationSpeed.z*100;
-                                layer.scene.children[2].position.z += layer.rotationSpeed.z*100;
+                                layer.scene.children[0].position.x += layer.rotationSpeed.x * 100;
+                                layer.scene.children[1].position.x += layer.rotationSpeed.x * 100;
+                                layer.scene.children[2].position.x += layer.rotationSpeed.x * 100;
+                                layer.scene.children[0].position.y += layer.rotationSpeed.y * 100;
+                                layer.scene.children[1].position.y += layer.rotationSpeed.y * 100;
+                                layer.scene.children[2].position.y += layer.rotationSpeed.y * 100;
+                                layer.scene.children[0].position.z += layer.rotationSpeed.z * 100;
+                                layer.scene.children[1].position.z += layer.rotationSpeed.z * 100;
+                                layer.scene.children[2].position.z += layer.rotationSpeed.z * 100;
                             }
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
@@ -1170,7 +1495,7 @@ ENGINE = function() {
                 //add scene fog
                 this.scene.fog = new THREE.FogExp2(0x000000, 0.03);
                 addLights(this.scene);
-                importCollada(this, '../src/collada/female04.dae');
+                importCollada(this, '../src/collada/male03.dae');
                 //importJSON(this, '../src/json/websiteDraft6.json');
                 /*******************************/
                 world.postprocess.apply(this);
@@ -1312,7 +1637,7 @@ ENGINE = function() {
                     }
                     if(world.renderParams.bleach) {
                         var effectBleach = new THREE.ShaderPass(THREE.BleachBypassShader);
-                        effectBleach.uniforms[ "opacity" ].value = 0.95;
+                        effectBleach.uniforms["opacity"].value = 0.95;
                         this.composer.addPass(effectBleach);
                     }
                     if(world.renderParams.technicolor) {
