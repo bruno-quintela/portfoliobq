@@ -264,7 +264,27 @@ ENGINE = function() {
                 98: 98,
                 99: 99,
                 100: 100,
-                101: 101
+                101: 101,
+                102: 102,
+                103: 103,
+                104: 104,
+                105: 105,
+                106: 106,
+                107: 107,
+                108: 108,
+                109: 109,
+                110: 110,
+                111: 111,
+                112: 112,
+                113: 113,
+                114: 114,
+                115: 115,
+                116: 116,
+                117: 117,
+                118: 118,
+                119: 119,
+                120: 120,
+                121: 121
             },
             eyeballMap: {
                 1: 1,
@@ -282,7 +302,8 @@ ENGINE = function() {
                 13: 13,
                 14: 14,
                 15: 15,
-                16: 16
+                16: 16,
+                17: 17
             },
             normalMap: {
                 1: 1,
@@ -294,7 +315,15 @@ ENGINE = function() {
                 7: 7,
                 8: 8,
                 9: 9,
-                10: 10
+                10: 10,
+                11: 11,
+                12: 12,
+                13: 13,
+                14: 14,
+                15: 15,
+                16: 16,
+                17: 17,
+                18: 18
             },
             bodyTexture: 97,
             headTexture: 97,
@@ -638,7 +667,7 @@ ENGINE = function() {
                 guiMaterial.add(this.materialParams, 'noise', 0, 0.3, 0.001).onChange(function(value) {
                     myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.noise.value = value;
                 });
-                guiMaterial.add(this.materialParams, 'normalScale', 0, 5, 0.01).onChange(function(value) {
+                guiMaterial.add(this.materialParams, 'normalScale', 0, 10, 0.01).onChange(function(value) {
                     myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.normalScale.value = value;
                     myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.tNormal.value.needsUpdate = true;
                 });
@@ -677,6 +706,8 @@ ENGINE = function() {
                 guiMaterial.add(this.materialParams, 'normalSelected');
                 guiMaterial.add(this.materialParams, 'bodyNormal', this.materialParams.normalMap).onChange(function(value) {
                     myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
+                    myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.tNormal.value.needsUpdate = true;
+                    myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.tNormal.value.wrapS = material.uniforms.tNormal.value.wrapT = THREE.RepeatWrapping;
                 });
                 guiMaterial.add(this.materialParams, 'headNormal', this.materialParams.normalMap).onChange(function(value) {
                     myPortfolio.world.CurrentLayer.makehumanHead.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
@@ -856,8 +887,7 @@ ENGINE = function() {
                 vertexShader: document.getElementById('vertexShader').textContent,
                 fragmentShader: document.getElementById('fragmentShader').textContent,
                 wrapping: THREE.ClampToEdgeWrapping,
-                shading: THREE.SmoothShading,
-                side: THREE.DoubleSide
+                shading: THREE.SmoothShading
             });
             material.uniforms.tMatCap.value.wrapS = material.uniforms.tMatCap.value.wrapT = THREE.ClampToEdgeWrapping;
             material.uniforms.tNormal.value.wrapS = material.uniforms.tNormal.value.wrapT = THREE.RepeatWrapping;
@@ -1061,7 +1091,7 @@ ENGINE = function() {
                                 if(child.name === 'makehuman_Head') {
                                     var mesh = child.children[0];
                                     mesh.geometry.computeTangents();
-                                    mesh.material = mesh.material = world.normalMaterial('../src/textures/matcaps/matcap97.png', '../src/textures/UVmaps/male/cb_NRM.png', 1);
+                                    mesh.material = mesh.material = world.normalMaterial('../src/textures/matcaps/matcap97.png', '../src/textures/normalMaps/normal11.jpg', 1);
                                     layer.makehumanHead = mesh;
                                     //layer.polyWire = addWireframe(layer.scene, mesh.geometry, 0x000000, 1, 1.02);
                                     //layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 0.031, 1.02);
@@ -1070,14 +1100,52 @@ ENGINE = function() {
                                     //addSkyDome(layer, 10, '../src/textures/UVmaps/background1.jpg');
                                 } else if(child.name === 'makehuman_Body') {
                                     var mesh = child.children[0];
+                                    mesh.receiveShadow = true;
+                                    mesh.castShadow = true;
+                                    var shininess = 20;
+                                    var normalScale = 0.8;
+                                    var shader = THREE.ShaderLib["normalmap"];
+                                    var uniforms = THREE.UniformsUtils.clone(shader.uniforms);
+                                    uniforms["enableAO"].value = true;
+                                    uniforms["enableDiffuse"].value = true;
+                                    uniforms["enableSpecular"].value = true;
+                                    uniforms["enableReflection"].value = false;
+                                    uniforms["enableDisplacement"].value = false;
+                                    uniforms["tDiffuse"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male07/Head_Colour.jpg");
+                                    uniforms["tSpecular"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male07/Head_Colour_SPEC.png");
+                                    uniforms["tNormal"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male07/normal20.jpg");
+                                    uniforms["tAO"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male07/Head_Colour_AO.png");
+                                    //uniforms["tDisplacement"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/face_DISP.png");
+                                    //uniforms["uDisplacementBias"].value = -0.428408;
+                                    //uniforms["uDisplacementScale"].value = 2.436143;
+                                    uniforms["uNormalScale"].value.x = normalScale;
+                                    uniforms["uNormalScale"].value.y = normalScale;
+                                    uniforms["uNormalScale"].value.z = normalScale;
+                                    uniforms["shininess"].value = shininess;
+                                    /*uniforms["diffuse"].value.convertGammaToLinear();
+                                    uniforms["specular"].value.convertGammaToLinear();
+                                    uniforms["ambient"].value.convertGammaToLinear();*/
+                                    var parameters = {
+                                        fragmentShader: shader.fragmentShader,
+                                        vertexShader: shader.vertexShader,
+                                        uniforms: uniforms,
+                                        lights: true,
+                                        fog: true
+                                    };
+                                    var material1 = new THREE.ShaderMaterial(parameters);
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = material1;
+                                    mesh.geometry.computeTangents();
                                     mesh.geometry.verticesNeedUpdate = true;
                                     mesh.geometry.normalsNeedUpdate = true;
                                     mesh.geometry.uvsNeedUpdate = true;
                                     mesh.geometry.computeFaceNormals();
                                     mesh.geometry.computeVertexNormals();
                                     mesh.geometry.computeMorphNormals();
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.normalMaterial('../src/textures/matcaps/matcap97.png', '../src/textures/UVmaps/male/cb_NRM.png', 1);
+                                    //var modifier = new THREE.SubdivisionModifier(1);
+                                    //modifier.modify(mesh.geometry);
+                                    //mesh.material = world.normalMaterial('../src/textures/matcaps/matcap97.png', '../src/textures/UVmaps/male07/normal20.jpg', 1);
+                                    //mesh.material.uniforms.repeat.value.set(1, 1);
                                     layer.makehumanBody = mesh;
                                 } else if(child.name === 'makehuman_Hair') {
                                     var mesh = child.children[0];
@@ -1120,10 +1188,10 @@ ENGINE = function() {
                                     mesh.geometry.computeFaceNormals();
                                     mesh.geometry.computeVertexNormals();
                                     mesh.geometry.computeMorphNormals();*/
-                                    mesh.geometry.computeTangents();
+                                    //mesh.geometry.computeTangents();
                                     //var modifier = new THREE.SubdivisionModifier(1);
                                     //modifier.modify(mesh.geometry);
-                                    mesh.material = world.normalMaterial('../src/textures/matcaps/matcap14.png', '../src/textures/normalMaps/normal1.jpg', 1);
+                                    //mesh.material = world.normalMaterial('../src/textures/matcaps/matcap14.png', '../src/textures/normalMaps/normal1.jpg', 1);
                                     layer.cloth = mesh;
                                 }
                             }
@@ -1151,9 +1219,9 @@ ENGINE = function() {
                                 //layer.skydome.rotation.y += layer.rotationSpeed.y;
                             }
                             if(world.motionParams.autoRotationZ) {
-                                layer.scene.rotation.z += layer.rotationSpeed.z;
+                                //layer.scene.rotation.z += layer.rotationSpeed.z;
                                 //layer.skydome.rotation.z -= layer.rotationSpeed.z;
-                                //layer.makehumanBody.rotation.z += layer.rotationSpeed.z * 3;
+                                layer.makehumanBody.rotation.z += layer.rotationSpeed.z * 3;
                             }
                             if(world.lightsParams.rotateLights) {
                                 layer.scene.children[0].position.x += layer.rotationSpeed.x * 100;
@@ -1192,93 +1260,23 @@ ENGINE = function() {
                 var importJSON = function(layer, filePathJSON) {
                     var loader = new THREE.JSONLoader();
                     loader.load(filePathJSON, function(geometry) {
-                        var material = new THREE.ShaderMaterial({
-                            uniforms: {
-                                tMatCap: {
-                                    type: 't',
-                                    value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + world.renderParams.matcap + '.png')
-                                },
-                            },
-                            vertexShader: document.getElementById('sem-vs').textContent,
-                            fragmentShader: document.getElementById('sem-fs').textContent,
-                            shading: THREE.SmoothShading
-                        });
+                        geometry.verticesNeedUpdate = true;
+                        geometry.normalsNeedUpdate = true;
+                        geometry.uvsNeedUpdate = true;
+                        //geometry.computeCentroids();
+                        geometry.computeFaceNormals();
+                        geometry.computeVertexNormals();
+                        geometry.computeMorphNormals();
+                        geometry.computeTangents();
                         var modifier = new THREE.SubdivisionModifier(1);
-                        var smooth = geometry.clone();
-                        // mergeVertices(); is run in case of duplicated vertices
-                        smooth.mergeVertices();
-                        smooth.computeFaceNormals();
-                        smooth.computeVertexNormals();
-                        modifier.modify(smooth);
-                        layer.makehumanBody = new THREE.Mesh(smooth, material);
-                        layer.scene.add(layer.makehumanBody);
-                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.001, 0.001);
-                        /**
-                         * Anaglyph effect
-                         **/
-                        layer.render = function(rtt) {
-                            if(world.motionParams.autoRotationX) {
-                                layer.makehumanBody.rotation.x += layer.rotationSpeed.x;
-                                layer.eyeLeft.rotation.x += layer.rotationSpeed.x;
-                                layer.eyeRight.rotation.x += layer.rotationSpeed.x;
-                            }
-                            if(world.motionParams.autoRotationY) {
-                                layer.makehumanBody.rotation.y += layer.rotationSpeed.y;
-                            }
-                            if(world.motionParams.autoRotationZ) {
-                                layer.makehumanBody.rotation.z += layer.rotationSpeed.z;
-                            }
-                            if(world.renderParams.enableTrackball) {
-                                layer.trackball.update();
-                            }
-                            if(rtt) {
-                                //
-                                if(world.renderParams.enableAnaglyph) {
-                                    this.anaglyph.render(this.scene, this.camera);
-                                } else {
-                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
-                                }
-                            } else {
-                                if(world.renderParams.enableAnaglyph) {
-                                    this.anaglyph.render(this.scene, this.camera);
-                                } else {
-                                    this.composer.render(0.01);
-                                }
-                            }
-                            if(world.lightsParams.rotateLights) {
-                                layer.scene.children[0].rotation.x += layer.rotationSpeed.x;
-                                layer.scene.children[1].rotation.x += layer.rotationSpeed.x;
-                                layer.scene.children[2].rotation.x += layer.rotationSpeed.x;
-                                layer.scene.children[0].rotation.y += layer.rotationSpeed.y;
-                                layer.scene.children[1].rotation.y += layer.rotationSpeed.y;
-                                layer.scene.children[2].rotation.y += layer.rotationSpeed.y;
-                                layer.scene.children[0].rotation.z += layer.rotationSpeed.z;
-                                layer.scene.children[1].rotation.z += layer.rotationSpeed.z;
-                                layer.scene.children[2].rotation.z += layer.rotationSpeed.z;
-                            }
-                        };
-                        // create a BVH mesh
-                        /*mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials));
-                        // define materials collection
-                        material = mesh.material.materials;
-                        // enable skinning
-                        for(var i = 0; i < materials.length; i++) {
-                            var mat = materials[i];
-                            mat.skinning = true;
-                            //mat.morphTargets = true;
-                            //mat.wrapAround = true;
-                        }
+                        //modifier.modify(geometry);
+                        var material = world.normalMaterial('../src/textures/matcaps/matcap14.png', '../src/textures/normalMaps/normal1.jpg', 1);
+                        material.uniforms.repeat.value.set(1, 1);
+                        var mesh = new THREE.Mesh(geometry, material);
+                        layer.makehumanBody = mesh;
+                        mesh.useQuaternion = true;
                         layer.scene.add(mesh);
-                        layer.helper = new THREE.SkeletonHelper(mesh);
-                        layer.helper.material.linewidth = 10;
-                        layer.helper.visible = true;
-                        layer.scene.add(layer.helper);
-                        // add animation data to the animation handler
-                        //THREE.AnimationHandler.add(mesh.geometry.animations[0]);
-                        // create animation
-                        layer.animation = new THREE.Animation(mesh, mesh.geometry.animations[0]);
-                        // play the anim
-                        layer.animation.play();*/
+                        //callback(geometry);
                     });
                 };
                 if(world.renderParams.enableTrackball) {
@@ -1295,8 +1293,8 @@ ENGINE = function() {
                 //add scene fog
                 this.scene.fog = new THREE.FogExp2(0x000000, 0.03);
                 addLights(this.scene);
-                importCollada(this, '../src/collada/female06.dae');
-                //importJSON(this, '../src/json/websiteDraft6.json');
+                importCollada(this, '../src/collada/male07.dae');
+                //importJSON(this, '../src/json/LeePerrySmith.js');
                 /*******************************/
                 world.postprocess.apply(this);
                 /*this render is dummy used only until collada imports scene*/
