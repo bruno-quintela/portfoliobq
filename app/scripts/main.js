@@ -129,6 +129,7 @@ ENGINE = function() {
             antialias: true,
             alpha: false,
             backgroundColor: [255, 255, 255],
+            fog: 0.001,
             enableAnaglyph: false,
             focus: 2,
             enableTrackball: true,
@@ -147,6 +148,7 @@ ENGINE = function() {
             filmStrengh: 0.3,
             enableDotFilter: false,
             bleach: false,
+            bleachOpacity: 1,
             technicolor: false,
             enableTiltShift: true,
             tiltBlur: 9.5,
@@ -323,7 +325,9 @@ ENGINE = function() {
                 15: 15,
                 16: 16,
                 17: 17,
-                18: 18
+                18: 18,
+                19: 19,
+                20: 20
             },
             bodyTexture: 97,
             headTexture: 97,
@@ -331,6 +335,8 @@ ENGINE = function() {
             eyeTexture: 8,
             clothTexture: 8,
             lipsTexture: 8,
+            lowpolyTexture: 1,
+            lowpoly2Texture: 2,
             normalSelected: 'NormalMap selection',
             bodyNormal: 1,
             headNormal: 1,
@@ -343,15 +349,15 @@ ENGINE = function() {
             fillLightEnable: true,
             fillLightIntensity: 0.1,
             fillLightCastShadow: true,
-            fillLightShadowIntensity: 0.9,
+            fillLightShadowIntensity: 0.1,
             keyLightEnable: true,
-            keyLightIntensity: 1.5,
+            keyLightIntensity: 1,
             keyLightCastShadow: true,
-            keyLightShadowIntensity: 0.9,
+            keyLightShadowIntensity: 0.1,
             backLightEnable: true,
-            backLightIntensity: 1,
+            backLightIntensity: 0.01,
             backLightCastShadow: true,
-            backLightShadowIntensity: 0.9,
+            backLightShadowIntensity: 0.1,
             shininess: 10,
             rotateLights: false
         },
@@ -574,6 +580,9 @@ ENGINE = function() {
                 guiRender.addColor(this.renderParams, 'backgroundColor').onChange(function(value) {
                     world.renderer.setClearColor(new THREE.Color(value[0] / 255, value[1] / 255, value[2] / 255), 0);
                 });
+                guiRender.add(this.renderParams, 'fog', 0, 1, 0.001).onChange(function(value) {
+                    myPortfolio.world.CurrentLayer.scene.fog =  new THREE.FogExp2(0x000000, value);
+                });
                 guiRender.add(this.renderParams, 'enableTrackball');
                 guiRender.add(this.renderParams, 'enableGrid').onChange(function(value) {
                     //add compositing 3rd rule grid
@@ -640,6 +649,9 @@ ENGINE = function() {
                 guiRender.add(this.renderParams, 'bleach').onChange(function() {
                     world.refreshPostProcessing();
                 });
+                guiRender.add(this.renderParams, 'bleachOpacity', 0, 1, 0.01).onChange(function(value) {
+                    world.refreshPostProcessing();
+                });
                 guiRender.add(this.renderParams, 'technicolor').onChange(function() {
                     world.refreshPostProcessing();
                 });
@@ -702,6 +714,12 @@ ENGINE = function() {
                 });
                 guiMaterial.add(this.materialParams, 'eyeTexture', this.materialParams.eyeballMap).onChange(function(value) {
                     myPortfolio.world.CurrentLayer.eyes.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/eyeball' + value + '.png');
+                });
+                guiMaterial.add(this.materialParams, 'lowpolyTexture', this.materialParams.textureMap).onChange(function(value) {
+                    myPortfolio.world.CurrentLayer.lowpoly.material = world.matcapMaterial(value);
+                });
+                guiMaterial.add(this.materialParams, 'lowpoly2Texture', this.materialParams.textureMap).onChange(function(value) {
+                    myPortfolio.world.CurrentLayer.lowpoly2.material = world.matcapMaterial(value);
                 });
                 guiMaterial.add(this.materialParams, 'normalSelected');
                 guiMaterial.add(this.materialParams, 'bodyNormal', this.materialParams.normalMap).onChange(function(value) {
@@ -893,6 +911,26 @@ ENGINE = function() {
             material.uniforms.tNormal.value.wrapS = material.uniforms.tNormal.value.wrapT = THREE.RepeatWrapping;
             return material;
         },
+        matcapMaterial: function(matcap) {
+            var material = new THREE.ShaderMaterial({
+                uniforms: {
+                    tMatCap: {
+                        type: 't',
+                        value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + matcap + '.png')
+                    },
+                },
+                vertexShader: document.getElementById('sem-vs').textContent,
+                fragmentShader: document.getElementById('sem-fs').textContent,
+                shading: THREE.SmoothShading
+            });
+            return material;
+        },
+        bakedMaterial: function(texturePath) {
+            var material = new THREE.MeshLambertMaterial({
+                map: THREE.ImageUtils.loadTexture(texturePath),
+            });
+            return material;
+        },
         init: function() {
             var world = this;
             this.addGUI();
@@ -904,7 +942,17 @@ ENGINE = function() {
             });
             this.renderer.setSize(this.width, this.height);
             this.renderer.setClearColor(new THREE.Color(world.renderParams.backgroundColor[0] / 255, world.renderParams.backgroundColor[1] / 255, world.renderParams.backgroundColor[2] / 255), 0);
-            this.renderer.autoClear = false;
+            this.renderer.autoClear = true;
+            /*this.renderer.shadowMapEnabled = true;
+            this.renderer.shadowMapSoft = true;
+            this.renderer.shadowCameraNear = 0.1;
+            this.renderer.shadowCameraFar = 100;
+            this.renderer.shadowCameraFov = 50;
+            this.renderer.shadowMapBias = 0.005;
+            this.renderer.shadowMapDarkness = 0.1;
+            this.renderer.shadowMapWidth = 1024*1;
+            this.renderer.shadowMapHeight = 1024*1;
+            this.renderer.shadowMapType = THREE.PCFSoftShadowMap;*/
             /**
              * Scene
              **/
@@ -1000,14 +1048,14 @@ ENGINE = function() {
                 var addLights = function(scene) {
                     if(world.lightsParams.fillLightEnable) {
                         var fillLight = new THREE.DirectionalLight('white', world.lightsParams.fillLightIntensity);
-                        fillLight.position.set(-0.5, 0, 10);
+                        fillLight.position.set(0, 0, 20);
                         fillLight.castShadow = world.lightsParams.fillLightCastShadow;
                         fillLight.shadowDarkness = world.lightsParams.fillLightShadowIntensity;
                         fillLight.shadowMapWidth = 1024 * 1;
                         fillLight.shadowMapHeight = 1024 * 1;
-                        fillLight.shadowCameraNear = 200;
+                        fillLight.shadowCameraNear = 0.2;
                         fillLight.shadowCameraFar = 1500;
-                        var d = 500;
+                        var d = 3;
                         fillLight.shadowCameraLeft = -d;
                         fillLight.shadowCameraRight = d;
                         fillLight.shadowCameraTop = d;
@@ -1021,9 +1069,10 @@ ENGINE = function() {
                         keyLight.shadowDarkness = world.lightsParams.keyLightShadowIntensity;
                         keyLight.shadowMapWidth = 1024 * 1;
                         keyLight.shadowMapHeight = 1024 * 1;
-                        keyLight.shadowCameraNear = 200;
+                        keyLight.shadowCameraNear = 0.2;
                         keyLight.shadowCameraFar = 1500;
-                        var d = 500;
+                        keyLight.shadowBias = 0.0005;
+                        var d = 3;
                         keyLight.shadowCameraLeft = -d;
                         keyLight.shadowCameraRight = d;
                         keyLight.shadowCameraTop = d;
@@ -1037,9 +1086,10 @@ ENGINE = function() {
                         backLight.shadowDarkness = world.lightsParams.backLightShadowIntensity;
                         backLight.shadowMapWidth = 1024 * 1;
                         backLight.shadowMapHeight = 1024 * 1;
-                        backLight.shadowCameraNear = 200;
+                        backLight.shadowCameraNear = 0.2;
                         backLight.shadowCameraFar = 1500;
-                        var d = 500;
+                        backLight.shadowBias = 0.0005;
+                        var d = 3;
                         backLight.shadowCameraLeft = -d;
                         backLight.shadowCameraRight = d;
                         backLight.shadowCameraTop = d;
@@ -1102,26 +1152,26 @@ ENGINE = function() {
                                     var mesh = child.children[0];
                                     mesh.receiveShadow = true;
                                     mesh.castShadow = true;
-                                    var shininess = 20;
-                                    var normalScale = 0.8;
+                                    var shininess = 2;
+                                    var normalScale = 0.5;
                                     var shader = THREE.ShaderLib["normalmap"];
                                     var uniforms = THREE.UniformsUtils.clone(shader.uniforms);
-                                    uniforms["enableAO"].value = true;
-                                    uniforms["enableDiffuse"].value = true;
-                                    uniforms["enableSpecular"].value = true;
-                                    uniforms["enableReflection"].value = false;
-                                    uniforms["enableDisplacement"].value = false;
-                                    uniforms["tDiffuse"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male07/Head_Colour.jpg");
-                                    uniforms["tSpecular"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male07/Head_Colour_SPEC.png");
-                                    uniforms["tNormal"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male07/normal20.jpg");
-                                    uniforms["tAO"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male07/Head_Colour_AO.png");
+                                    uniforms.enableAO.value = true;
+                                    uniforms.enableDiffuse.value = true;
+                                    uniforms.enableSpecular.value = true;
+                                    uniforms.enableReflection.value = false;
+                                    uniforms.enableDisplacement.value = false;
+                                    uniforms.tDiffuse.value = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male07/Head_COLOR2.jpg');
+                                    uniforms.tSpecular.value = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male07/Head_Colour_SPEC.png');
+                                    uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male07/normal20.jpg');
+                                    uniforms.tAO.value = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male07/Head_Colour_AO.png');
                                     //uniforms["tDisplacement"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/face_DISP.png");
                                     //uniforms["uDisplacementBias"].value = -0.428408;
                                     //uniforms["uDisplacementScale"].value = 2.436143;
-                                    uniforms["uNormalScale"].value.x = normalScale;
-                                    uniforms["uNormalScale"].value.y = normalScale;
-                                    uniforms["uNormalScale"].value.z = normalScale;
-                                    uniforms["shininess"].value = shininess;
+                                    uniforms.uNormalScale.value.x = normalScale;
+                                    uniforms.uNormalScale.value.y = normalScale;
+                                    uniforms.uNormalScale.value.z = normalScale;
+                                    uniforms.shininess.value = shininess;
                                     /*uniforms["diffuse"].value.convertGammaToLinear();
                                     uniforms["specular"].value.convertGammaToLinear();
                                     uniforms["ambient"].value.convertGammaToLinear();*/
@@ -1133,8 +1183,8 @@ ENGINE = function() {
                                         fog: true
                                     };
                                     var material1 = new THREE.ShaderMaterial(parameters);
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = material1;
+                                    var material2 = world.normalMaterial('../src/textures/matcaps/matcap97.png', '../src/textures/normalMaps/normal20.jpg', 1);
+                                    mesh.material = material2;
                                     mesh.geometry.computeTangents();
                                     mesh.geometry.verticesNeedUpdate = true;
                                     mesh.geometry.normalsNeedUpdate = true;
@@ -1182,21 +1232,25 @@ ENGINE = function() {
                                     layer.makehumanEyelashes = mesh;
                                 } else if(child.name === 'cloth') {
                                     var mesh = child.children[0];
-                                    /*mesh.geometry.verticesNeedUpdate = true;
-                                    mesh.geometry.normalsNeedUpdate = true;
-                                    mesh.geometry.uvsNeedUpdate = true;
-                                    mesh.geometry.computeFaceNormals();
-                                    mesh.geometry.computeVertexNormals();
-                                    mesh.geometry.computeMorphNormals();*/
-                                    //mesh.geometry.computeTangents();
-                                    //var modifier = new THREE.SubdivisionModifier(1);
-                                    //modifier.modify(mesh.geometry);
-                                    //mesh.material = world.normalMaterial('../src/textures/matcaps/matcap14.png', '../src/textures/normalMaps/normal1.jpg', 1);
                                     layer.cloth = mesh;
+                                } else if(child.name === 'lowpoly') {
+                                    var mesh = child.children[0];
+                                    mesh.material = world.bakedMaterial('../src/textures/UVmaps/uvmapLowpoly.png');
+                                    mesh.receiveShadow = true;
+                                    mesh.castShadow = true;
+                                    layer.lowpoly = mesh;
+                                    //layer.polyWire = addWireframe(layer.scene, mesh.geometry, 0x000000, 1, 1);
+                                    //layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 1.031, 1);
+                                } else if(child.name === 'ground') {
+                                    var mesh = child.children[0];
+                                    mesh.material = world.bakedMaterial('../src/textures/UVmaps/uvmapground.png');
+                                    mesh.receiveShadow = true;
+                                    mesh.castShadow = true;
+                                    layer.ground = mesh;
                                 }
                             }
                         });
-                        layer.rotationSpeed = new THREE.Vector3(0.0005, 0.0005, 0.0005);
+                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.001, 0.001);
                         /**
                          * Anaglyph effect
                          **/
@@ -1221,18 +1275,18 @@ ENGINE = function() {
                             if(world.motionParams.autoRotationZ) {
                                 //layer.scene.rotation.z += layer.rotationSpeed.z;
                                 //layer.skydome.rotation.z -= layer.rotationSpeed.z;
-                                layer.makehumanBody.rotation.z += layer.rotationSpeed.z * 3;
+                                layer.lowpoly.rotation.z += layer.rotationSpeed.z;
                             }
                             if(world.lightsParams.rotateLights) {
-                                layer.scene.children[0].position.x += layer.rotationSpeed.x * 100;
-                                layer.scene.children[1].position.x += layer.rotationSpeed.x * 100;
-                                layer.scene.children[2].position.x += layer.rotationSpeed.x * 100;
-                                layer.scene.children[0].position.y += layer.rotationSpeed.y * 100;
-                                layer.scene.children[1].position.y += layer.rotationSpeed.y * 100;
-                                layer.scene.children[2].position.y += layer.rotationSpeed.y * 100;
-                                layer.scene.children[0].position.z += layer.rotationSpeed.z * 100;
-                                layer.scene.children[1].position.z += layer.rotationSpeed.z * 100;
-                                layer.scene.children[2].position.z += layer.rotationSpeed.z * 100;
+                                layer.scene.children[0].position.x += layer.rotationSpeed.x ;
+                                layer.scene.children[1].position.x += layer.rotationSpeed.x ;
+                                layer.scene.children[2].position.x += layer.rotationSpeed.x ;
+                                layer.scene.children[0].position.y += layer.rotationSpeed.y ;
+                                layer.scene.children[1].position.y += layer.rotationSpeed.y ;
+                                layer.scene.children[2].position.y += layer.rotationSpeed.y ;
+                                layer.scene.children[0].position.z += layer.rotationSpeed.z ;
+                                layer.scene.children[1].position.z += layer.rotationSpeed.z ;
+                                layer.scene.children[2].position.z += layer.rotationSpeed.z ;
                             }
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
@@ -1291,9 +1345,9 @@ ENGINE = function() {
                     this.trackball.keys = [65, 83, 68];
                 }
                 //add scene fog
-                this.scene.fog = new THREE.FogExp2(0x000000, 0.03);
+                this.scene.fog = new THREE.FogExp2(0x000000, 0.01);
                 addLights(this.scene);
-                importCollada(this, '../src/collada/male07.dae');
+                importCollada(this, '../src/collada/lowpoly.dae');
                 //importJSON(this, '../src/json/LeePerrySmith.js');
                 /*******************************/
                 world.postprocess.apply(this);
@@ -1418,8 +1472,8 @@ ENGINE = function() {
                         this.composer.addPass(effectFilm);
                     }
                     if(world.renderParams.enableFilmBW) {
-                        var effectFilm = new THREE.FilmPass(world.renderParams.filmStrengh, 0.2, 1024, true);
-                        this.composer.addPass(effectFilm);
+                        var effectFilmBW = new THREE.FilmPass(world.renderParams.filmStrengh, 0.2, 1024, true);
+                        this.composer.addPass(effectFilmBW);
                     }
                     if(world.renderParams.enableSepia) {
                         var effectSepia = new THREE.ShaderPass(THREE.SepiaShader);
@@ -1427,7 +1481,7 @@ ENGINE = function() {
                     }
                     if(world.renderParams.enableColorify) {
                         var effectColorify = new THREE.ShaderPass(THREE.ColorifyShader);
-                        effectColorify.uniforms['color'].value.setRGB(1, 0.8, 0.8);
+                        effectColorify.uniforms.color.value.setRGB(1, 0.8, 0.8);
                         this.composer.addPass(effectColorify);
                     }
                     if(world.renderParams.enableBloom) {
@@ -1440,7 +1494,7 @@ ENGINE = function() {
                     }
                     if(world.renderParams.bleach) {
                         var effectBleach = new THREE.ShaderPass(THREE.BleachBypassShader);
-                        effectBleach.uniforms["opacity"].value = 1.0;
+                        effectBleach.uniforms.opacity.value = world.renderParams.bleachOpacity;
                         //effectBleach.uniforms["tDiffuse"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/cb_NRM.png");
                         this.composer.addPass(effectBleach);
                     }
