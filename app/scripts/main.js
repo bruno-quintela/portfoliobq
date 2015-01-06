@@ -535,8 +535,8 @@ ENGINE = function() {
                         x: source.vertices[i].x*2,
                         y: source.vertices[i].y*2,
                         z: source.vertices[i].z*2
-                    }, 2000).onUpdate(update);
-                    tweenVertex.delay(i*5).easing(TWEEN.Easing.Quadratic.Out).start();
+                    }, 1000).onUpdate(update);
+                    tweenVertex.delay(i).easing(TWEEN.Easing.Quadratic.Out).start();
                 }
             },
             tweenVerticesBack: function() {
@@ -1277,7 +1277,7 @@ ENGINE = function() {
                                 }
                             }
                         });
-                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.001, 0.001);
+                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.001, 0.003);
                         /**
                          * Anaglyph effect
                          **/
@@ -1303,7 +1303,7 @@ ENGINE = function() {
                                 //layer.scene.rotation.z += layer.rotationSpeed.z;
                                 //layer.skydome.rotation.z -= layer.rotationSpeed.z;
                                 layer.lowpoly.rotation.x += layer.rotationSpeed.z;
-                                //layer.lowpoly2.rotation.x += layer.rotationSpeed.z;
+                                layer.lowpoly2.rotation.x += layer.rotationSpeed.z;
                             }
                             if(world.lightsParams.rotateLights) {
                                 layer.scene.children[0].position.x += layer.rotationSpeed.x ;
