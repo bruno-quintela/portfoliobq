@@ -122,7 +122,7 @@ ENGINE = function() {
         height: window.innerHeight,
         dpr: window.devicePixelRatio,
         settings: {
-            statsEnabled: false,
+            statsEnabled: true,
             guiEnabled: true
         },
         renderParams: {
@@ -337,6 +337,8 @@ ENGINE = function() {
             lipsTexture: 8,
             lowpolyTexture: 1,
             lowpoly2Texture: 1,
+            lowpoly3Texture: 1,
+            fragmentsTexture: 1,
             normalSelected: 'NormalMap selection',
             bodyNormal: 1,
             headNormal: 1,
@@ -370,6 +372,7 @@ ENGINE = function() {
             autoRotationX: false,
             autoRotationY: false,
             autoRotationZ: false,
+            animateFragments: false,
             rotateSceneX: function() {
                 var layer = myPortfolio.world.LayerA;
                 var tweenScene90 = new TWEEN.Tween(layer.scene.rotation).to({
@@ -539,7 +542,7 @@ ENGINE = function() {
                         y: source.vertices[i].y * 1.1,
                         z: source.vertices[i].z * 1.1
                     }, 1000).onUpdate(update);
-                    tweenVertex.delay(i*10).easing(TWEEN.Easing.Quadratic.Out).start();
+                    tweenVertex.delay(i * 10).easing(TWEEN.Easing.Quadratic.Out).start();
                 }
                 setTimeout(function() {
                     for(var i = 0; i < source.vertices.length; i++) {
@@ -548,16 +551,16 @@ ENGINE = function() {
                             y: source.vertices[i].y * 0.9,
                             z: source.vertices[i].z * 0.9
                         }, 1000).onUpdate(update);
-                        tweenVertex.delay(i*10).easing(TWEEN.Easing.Quadratic.Out).start();
+                        tweenVertex.delay(i * 10).easing(TWEEN.Easing.Quadratic.Out).start();
                     }
-                },500);
+                }, 500);
                 for(var i = 0; i < source2.vertices.length; i++) {
                     var tweenVertex = new TWEEN.Tween(source2.vertices[i]).to({
                         x: source2.vertices[i].x * 1.1,
                         y: source2.vertices[i].y * 1.1,
                         z: source2.vertices[i].z * 1.1
                     }, 1000).onUpdate(update2);
-                    tweenVertex.delay(i*10).easing(TWEEN.Easing.Quadratic.Out).start();
+                    tweenVertex.delay(i * 10).easing(TWEEN.Easing.Quadratic.Out).start();
                 }
                 setTimeout(function() {
                     for(var i = 0; i < source2.vertices.length; i++) {
@@ -566,9 +569,9 @@ ENGINE = function() {
                             y: source2.vertices[i].y * 0.9,
                             z: source2.vertices[i].z * 0.9
                         }, 1000).onUpdate(update2);
-                        tweenVertex.delay(i*10).easing(TWEEN.Easing.Quadratic.Out).start();
+                        tweenVertex.delay(i * 10).easing(TWEEN.Easing.Quadratic.Out).start();
                     }
-                },500);
+                }, 500);
             },
             tweenVerticesBack: function() {
                 var source = myPortfolio.world.CurrentLayer.lowpoly.geometry;
@@ -755,6 +758,14 @@ ENGINE = function() {
                 guiMaterial.add(this.materialParams, 'lowpoly2Texture', this.materialParams.textureMap).onChange(function(value) {
                     myPortfolio.world.CurrentLayer.lowpoly2.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
                 });
+                guiMaterial.add(this.materialParams, 'lowpoly3Texture', this.materialParams.textureMap).onChange(function(value) {
+                    myPortfolio.world.CurrentLayer.lowpoly3.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
+                });
+                guiMaterial.add(this.materialParams, 'fragmentsTexture', this.materialParams.textureMap).onChange(function(value) {
+                    for(var i = 0; i < myPortfolio.world.CurrentLayer.fragments.length; i++) {
+                        myPortfolio.world.CurrentLayer.fragments[i].material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
+                    }
+                });
                 guiMaterial.add(this.materialParams, 'normalSelected');
                 guiMaterial.add(this.materialParams, 'bodyNormal', this.materialParams.normalMap).onChange(function(value) {
                     myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
@@ -816,6 +827,7 @@ ENGINE = function() {
                 guiMotion.add(this.motionParams, 'autoRotationX');
                 guiMotion.add(this.motionParams, 'autoRotationY');
                 guiMotion.add(this.motionParams, 'autoRotationZ');
+                guiMotion.add(this.motionParams, 'animateFragments');
                 guiMotion.add(this.motionParams, 'rotateSceneX');
                 guiMotion.add(this.motionParams, 'rotateSceneY');
                 guiMotion.add(this.motionParams, 'rotateSceneZ');
@@ -886,6 +898,14 @@ ENGINE = function() {
                 this.gpuStats.domElement.style.bottom = '0px';
                 document.body.appendChild(this.gpuStats.domElement);
             }
+        },
+        transparentMaterial: function(matColor, matOpacity) {
+            var material = new THREE.MeshNormalMaterial({
+                color: matColor,
+                opacity: matOpacity,
+                transparent: true
+            });
+            return material;
         },
         normalMaterial: function(matcap, normalMap, useNormal) {
             var material = new THREE.ShaderMaterial({
@@ -963,9 +983,53 @@ ENGINE = function() {
             });
             return material;
         },
+        shaderMaterial: function() {
+            var shininess = 2;
+            var normalScale = 0.5;
+            var shader = THREE.ShaderLib["normalmap"];
+            var uniforms = THREE.UniformsUtils.clone(shader.uniforms);
+            uniforms.enableAO.value = true;
+            uniforms.enableDiffuse.value = true;
+            uniforms.enableSpecular.value = true;
+            uniforms.enableReflection.value = false;
+            uniforms.enableDisplacement.value = false;
+            uniforms.tDiffuse.value = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male07/Head_Colour.jpg');
+            uniforms.tSpecular.value = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male07/Head_Colour_SPEC.png');
+            uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male07/normal20.jpg');
+            uniforms.tAO.value = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male07/Head_Colour_AO.png');
+            //uniforms["tDisplacement"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/face_DISP.png");
+            //uniforms["uDisplacementBias"].value = -0.428408;
+            //uniforms["uDisplacementScale"].value = 2.436143;
+            uniforms.uNormalScale.value.x = normalScale;
+            uniforms.uNormalScale.value.y = normalScale;
+            uniforms.uNormalScale.value.z = normalScale;
+            uniforms.shininess.value = shininess;
+            /*uniforms["diffuse"].value.convertGammaToLinear();
+                                    uniforms["specular"].value.convertGammaToLinear();
+                                    uniforms["ambient"].value.convertGammaToLinear();*/
+            var parameters = {
+                fragmentShader: shader.fragmentShader,
+                vertexShader: shader.vertexShader,
+                uniforms: uniforms,
+                lights: true,
+                fog: true
+            };
+            var material = new THREE.ShaderMaterial(parameters);
+            return material;
+        },
         bakedMaterial: function(texturePath) {
             var material = new THREE.MeshLambertMaterial({
                 map: THREE.ImageUtils.loadTexture(texturePath),
+            });
+            return material;
+        },
+        wireframeMaterial: function(color, thickness) {
+            var material = new THREE.MeshBasicMaterial({
+                color: color,
+                transparent: false,
+                opacity: 1,
+                wireframeLinewidth: thickness,
+                wireframe: true
             });
             return material;
         },
@@ -994,7 +1058,7 @@ ENGINE = function() {
             /**
              * Scene
              **/
-            this.Layer = function(name,colladaPath) {
+            this.Layer = function(name, colladaPath) {
                 this.name = name;
                 this.scene = new THREE.Scene();
                 this.camera = new THREE.PerspectiveCamera(30, world.width / world.height, 0.1, 100);
@@ -1171,6 +1235,7 @@ ENGINE = function() {
                     loader.options.convertUpAxis = false;
                     loader.load(filePathCollada, function(collada) {
                         var dae = collada.scene;
+                        layer.fragments = [];
                         layer.scene.add(dae);
                         layer.spheres = [];
                         collada.scene.traverse(function(child) {
@@ -1188,53 +1253,34 @@ ENGINE = function() {
                                     //addSkyDome(layer, 10, '../src/textures/UVmaps/background1.jpg');
                                 } else if(child.name === 'makehuman_Body') {
                                     var mesh = child.children[0];
-                                    mesh.receiveShadow = true;
-                                    mesh.castShadow = true;
-                                    var shininess = 2;
-                                    var normalScale = 0.5;
-                                    var shader = THREE.ShaderLib["normalmap"];
-                                    var uniforms = THREE.UniformsUtils.clone(shader.uniforms);
-                                    uniforms.enableAO.value = true;
-                                    uniforms.enableDiffuse.value = true;
-                                    uniforms.enableSpecular.value = true;
-                                    uniforms.enableReflection.value = false;
-                                    uniforms.enableDisplacement.value = false;
-                                    uniforms.tDiffuse.value = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male07/Head_Colour.jpg');
-                                    uniforms.tSpecular.value = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male07/Head_Colour_SPEC.png');
-                                    uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male07/normal20.jpg');
-                                    uniforms.tAO.value = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/male07/Head_Colour_AO.png');
-                                    //uniforms["tDisplacement"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/face_DISP.png");
-                                    //uniforms["uDisplacementBias"].value = -0.428408;
-                                    //uniforms["uDisplacementScale"].value = 2.436143;
-                                    uniforms.uNormalScale.value.x = normalScale;
-                                    uniforms.uNormalScale.value.y = normalScale;
-                                    uniforms.uNormalScale.value.z = normalScale;
-                                    uniforms.shininess.value = shininess;
-                                    /*uniforms["diffuse"].value.convertGammaToLinear();
-                                    uniforms["specular"].value.convertGammaToLinear();
-                                    uniforms["ambient"].value.convertGammaToLinear();*/
-                                    var parameters = {
-                                        fragmentShader: shader.fragmentShader,
-                                        vertexShader: shader.vertexShader,
-                                        uniforms: uniforms,
-                                        lights: true,
-                                        fog: true
-                                    };
-                                    var material1 = new THREE.ShaderMaterial(parameters);
-                                    var material2 = world.normalMaterial('../src/textures/matcaps/matcap30.png', '../src/textures/normalMaps/normal11.jpg', 1);
-                                    mesh.material = material2;
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
                                     mesh.geometry.computeTangents();
+                                    mesh.material = world.normalMaterial('../src/textures/matcaps/matcap30.png', '../src/textures/normalMaps/normal11.jpg', 1);
+                                    /*
                                     mesh.geometry.verticesNeedUpdate = true;
                                     mesh.geometry.normalsNeedUpdate = true;
                                     mesh.geometry.uvsNeedUpdate = true;
                                     mesh.geometry.computeFaceNormals();
                                     mesh.geometry.computeVertexNormals();
-                                    mesh.geometry.computeMorphNormals();
+                                    mesh.geometry.computeMorphNormals();*/
                                     //var modifier = new THREE.SubdivisionModifier(1);
                                     //modifier.modify(mesh.geometry);
-                                    //mesh.material = world.normalMaterial('../src/textures/matcaps/matcap97.png', '../src/textures/UVmaps/male07/normal20.jpg', 1);
-                                    //mesh.material.uniforms.repeat.value.set(1, 1);
                                     layer.makehumanBody = mesh;
+                                } else if(child.name === 'leftArm') {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.normalMaterial('../src/textures/matcaps/matcap30.png', '../src/textures/normalMaps/normal11.jpg', 1);
+                                    layer.leftArm = mesh;
+                                } else if(child.name === 'rightArm') {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.normalMaterial('../src/textures/matcaps/matcap30.png', '../src/textures/normalMaps/normal11.jpg', 1);
+                                    layer.rightArm = mesh;
                                 } else if(child.name === 'makehuman_Hair') {
                                     var mesh = child.children[0];
                                     mesh.geometry.computeTangents();
@@ -1276,6 +1322,7 @@ ENGINE = function() {
                                     //mesh.geometry.computeTangents();
                                     mesh.material = world.matcapMaterial(15);
                                     //world.normalMaterial('../src/textures/matcaps/matcap15.png', '../src/textures/normalMaps/normal11.jpg', 1);
+                                    //layer.polyWire1 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     layer.lowpoly = mesh;
@@ -1285,9 +1332,33 @@ ENGINE = function() {
                                     var mesh = child.children[0];
                                     //mesh.geometry.computeTangents();
                                     mesh.material = world.matcapMaterial(15);
+                                    //layer.polyWire2 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     layer.lowpoly2 = mesh;
+                                    //layer.polyWire = addWireframe(layer.scene, mesh.geometry, 0x000000, 1, 1);
+                                    //layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 1.031, 1);
+                                } else if(child.name === 'lowpoly3') {
+                                    var mesh = child.children[0];
+                                    //mesh.geometry.computeTangents();
+                                    mesh.material = world.transparentMaterial(0xFFFFFF, 0.5);
+                                    //world.matcapMaterial(15);
+                                    //world.matcapMaterial(15);
+                                    //layer.polyWire2 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    layer.lowpoly3 = mesh;
+                                    //layer.polyWire = addWireframe(layer.scene, mesh.geometry, 0x000000, 1, 1);
+                                    //layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 1.031, 1);
+                                } else if(child.name.indexOf('cell') != -1) {
+                                    var mesh = child.children[0];
+                                    //mesh.geometry.computeTangents();
+                                    mesh.material = world.matcapMaterial(30);
+                                    //world.wireframeMaterial();
+                                    //layer.polyWire2 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    layer.fragments.push(mesh);
                                     //layer.polyWire = addWireframe(layer.scene, mesh.geometry, 0x000000, 1, 1);
                                     //layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 1.031, 1);
                                 } else if(child.name === 'background') {
@@ -1308,7 +1379,7 @@ ENGINE = function() {
                                 }
                             }
                         });
-                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.001, 0.001);
+                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.001, 0.0005);
                         /**
                          * Anaglyph effect
                          **/
@@ -1326,17 +1397,34 @@ ENGINE = function() {
                                 //layer.scene.rotation.x += layer.rotationSpeed.x;
                                 layer.lowpoly.rotation.x += layer.rotationSpeed.x;
                                 layer.lowpoly2.rotation.x += layer.rotationSpeed.x;
+                                //layer.leftArm.rotation.x -= layer.rotationSpeed.x;
+                                //layer.rightArm.rotation.z -= layer.rotationSpeed.x;
                             }
                             if(world.motionParams.autoRotationY) {
                                 layer.lowpoly.rotation.y += layer.rotationSpeed.z;
                                 layer.lowpoly2.rotation.y -= layer.rotationSpeed.z;
                                 //layer.skydome.rotation.y += layer.rotationSpeed.y;
+                                //layer.leftArm.rotation.y -= layer.rotationSpeed.x;
                             }
                             if(world.motionParams.autoRotationZ) {
                                 //layer.scene.rotation.z += layer.rotationSpeed.z;
                                 //layer.skydome.rotation.z -= layer.rotationSpeed.z;
                                 layer.lowpoly.rotation.z += layer.rotationSpeed.z;
                                 layer.lowpoly2.rotation.z -= layer.rotationSpeed.z;
+                                //layer.leftArm.rotation.z -= layer.rotationSpeed.x;
+                                //layer.lowpoly3.rotation.x -= layer.rotationSpeed.z;
+                                //layer.lowpoly3.rotation.y -= layer.rotationSpeed.z;
+                                //layer.lowpoly3.rotation.z -= layer.rotationSpeed.z;
+                            }
+                            if(world.motionParams.animateFragments) {
+                                for(var i = 0; i < layer.fragments.length; i++) {
+                                    //rotation
+                                    layer.fragments[i].rotation.x += layer.rotationSpeed.y;
+                                    layer.fragments[i].rotation.y += layer.rotationSpeed.y;
+                                    layer.fragments[i].rotation.z += layer.rotationSpeed.y;
+                                    //position
+                                    layer.fragments[i].position.y += layer.rotationSpeed.z;
+                                }
                             }
                             if(world.lightsParams.rotateLights) {
                                 layer.scene.children[0].position.x += layer.rotationSpeed.x;
@@ -1617,9 +1705,9 @@ ENGINE = function() {
             var world = this;
             this.init();
             this.transitionParams.clock.elapsedTime = 0;
-            this.LayerA = new this.Layer('LayerA', '../src/collada/male11.dae');
-            this.LayerB = new this.Layer('LayerB','../src/collada/male12.dae');
-            this.LayerC = new this.Layer('LayerC','../src/collada/male11.dae');
+            this.LayerA = new this.Layer('LayerA', '../src/collada/male13.dae');
+            this.LayerB = new this.Layer('LayerB', '../src/collada/male13.dae');
+            this.LayerC = new this.Layer('LayerC', '../src/collada/male13.dae');
             this.CurrentLayer = this.LayerA;
             this.NextLayer = this.LayerB;
             this.transition = new this.Transition(this.CurrentLayer, this.NextLayer);
