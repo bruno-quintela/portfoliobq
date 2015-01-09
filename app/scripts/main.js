@@ -129,6 +129,8 @@ ENGINE = function() {
             antialias: true,
             alpha: false,
             backgroundColor: [34, 34, 34],
+            backgroundImage: 1,
+            skydomeImage: 1,
             fog: 0.001,
             enableAnaglyph: false,
             focus: 2,
@@ -165,6 +167,17 @@ ENGINE = function() {
             useRim: false,
             rimPower: 3,
             matSelected: 'Material selection',
+            backgroundTexture: {
+                1: 1,
+                2: 2,
+                3: 3,
+                4: 4,
+                5: 5,
+                6: 6,
+                7: 7,
+                8: 8,
+                9: 9
+            },
             textureMap: {
                 1: 1,
                 2: 2,
@@ -616,6 +629,12 @@ ENGINE = function() {
                 });
                 guiRender.addColor(this.renderParams, 'backgroundColor').onChange(function(value) {
                     world.renderer.setClearColor(new THREE.Color(value[0] / 255, value[1] / 255, value[2] / 255), 0);
+                });
+                guiRender.add(this.renderParams, 'backgroundImage', this.materialParams.backgroundTexture).onChange(function(value) {
+                    myPortfolio.world.CurrentLayer.backgroundImage.material.map = THREE.ImageUtils.loadTexture('../src/textures/background/background' + value + '.jpg');
+                });
+                guiRender.add(this.renderParams, 'skydomeImage', this.materialParams.backgroundTexture).onChange(function(value) {
+                    myPortfolio.world.CurrentLayer.skydome.material.map = THREE.ImageUtils.loadTexture('../src/textures/background/background' + value + '.jpg');
                 });
                 guiRender.add(this.renderParams, 'fog', 0, 1, 0.001).onChange(function(value) {
                     myPortfolio.world.CurrentLayer.scene.fog = new THREE.FogExp2(0x000000, value);
@@ -1227,6 +1246,21 @@ ENGINE = function() {
                     layer.scene.add(mesh);
                 };
                 /**
+                 * Add Scene Background Image
+                 **/
+                var addBackgroundImage = function(scene, imagePath) {
+                    // Load the background texture
+                    var texture = THREE.ImageUtils.loadTexture(imagePath);
+                    var plane = new THREE.PlaneBufferGeometry(8, 8, 0, 0);
+                    var backgroundImage = new THREE.Mesh(plane, new THREE.MeshBasicMaterial({
+                        map: texture
+                    }));
+                    backgroundImage.position.z = -2;
+                    backgroundImage.position.y = 0;
+                    scene.add(backgroundImage);
+                    return backgroundImage;
+                };
+                /**
                  * Import collada(.dae) object and corresponding UVmap into scene
                  **/
                 var importCollada = function(layer, filePathCollada) {
@@ -1237,6 +1271,9 @@ ENGINE = function() {
                         var dae = collada.scene;
                         layer.fragments = [];
                         layer.scene.add(dae);
+                        //layer.backgroundImage = addBackgroundImage(layer.scene,'../src/textures/background/background'+world.renderParams.backgroundImage+'.jpg');
+                        addSkyDome(layer, 7, '../src/textures/background/background6.jpg');
+                        //layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 500, 6, '../src/textures/sprites/BlackDot.svg', 0.08);
                         layer.spheres = [];
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
@@ -1379,7 +1416,7 @@ ENGINE = function() {
                                 }
                             }
                         });
-                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.001, 0.0005);
+                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.0017, 0.0005);
                         /**
                          * Anaglyph effect
                          **/
@@ -1423,8 +1460,12 @@ ENGINE = function() {
                                     layer.fragments[i].rotation.y += layer.rotationSpeed.y;
                                     layer.fragments[i].rotation.z += layer.rotationSpeed.y;
                                     //position
-                                    layer.fragments[i].position.y += layer.rotationSpeed.z;
+                                    layer.fragments[i].position.y += layer.rotationSpeed.z*.7;
                                 }
+                                //layer.sphericalCloud.rotation.x += layer.rotationSpeed.y * .3;
+                                //layer.skydome.rotation.x += layer.rotationSpeed.x* .3;
+                                layer.skydome.rotation.y += layer.rotationSpeed.z;
+                                layer.skydome.rotation.z += layer.rotationSpeed.z;
                             }
                             if(world.lightsParams.rotateLights) {
                                 layer.scene.children[0].position.x += layer.rotationSpeed.x;
@@ -1705,9 +1746,9 @@ ENGINE = function() {
             var world = this;
             this.init();
             this.transitionParams.clock.elapsedTime = 0;
-            this.LayerA = new this.Layer('LayerA', '../src/collada/male13.dae');
-            this.LayerB = new this.Layer('LayerB', '../src/collada/male13.dae');
-            this.LayerC = new this.Layer('LayerC', '../src/collada/male13.dae');
+            this.LayerA = new this.Layer('LayerA', '../src/collada/male14.dae');
+            this.LayerB = new this.Layer('LayerB', '../src/collada/male14.dae');
+            this.LayerC = new this.Layer('LayerC', '../src/collada/male14.dae');
             this.CurrentLayer = this.LayerA;
             this.NextLayer = this.LayerB;
             this.transition = new this.Transition(this.CurrentLayer, this.NextLayer);
