@@ -120,14 +120,17 @@ ENGINE = function() {
     this.world = {
         width: window.innerWidth,
         height: window.innerHeight,
+        targetRotationX: 0,
+        targetRotationY: 0,
         dpr: window.devicePixelRatio,
         settings: {
-            statsEnabled: true,
+            statsEnabled: false,
             guiEnabled: true
         },
         renderParams: {
             antialias: true,
             alpha: false,
+            showStats: true,
             backgroundColor: [34, 34, 34],
             backgroundImage: 1,
             skydomeImage: 1,
@@ -135,6 +138,7 @@ ENGINE = function() {
             enableAnaglyph: false,
             focus: 2,
             enableTrackball: true,
+            enableMouseListener: false,
             enableGrid: false,
             glitchType: 0,
             enableGlitch: false,
@@ -379,13 +383,15 @@ ENGINE = function() {
             rotateLights: false
         },
         motionParams: {
+            reverseFactor: 1,
+            reverseTime: false,
             autoPanX: false,
             autoPanY: false,
             autoPanZ: false,
-            autoRotationX: false,
-            autoRotationY: false,
+            autoRotationX: true,
+            autoRotationY: true,
             autoRotationZ: false,
-            animateFragments: false,
+            animateFragments: true,
             rotateSceneX: function() {
                 var layer = myPortfolio.world.LayerA;
                 var tweenScene90 = new TWEEN.Tween(layer.scene.rotation).to({
@@ -618,10 +624,21 @@ ENGINE = function() {
             if(this.settings.guiEnabled) {
                 // Renderer & Post Processing GUI params
                 var guiRender = new dat.GUI();
+                if(world.settings.statsEnabled) {
+                    guiRender.add(this.renderParams, 'showStats').onChange(function(value) {
+                        if(value) {
+                            document.getElementById('stats').style.display = 'block';
+                            document.getElementById('gpuStats').style.display = 'block';
+                        } else {
+                            document.getElementById('stats').style.display = 'none';
+                            document.getElementById('gpuStats').style.display = 'none';
+                        }
+                    });
+                }
                 guiRender.add(this.renderParams, 'enableAnaglyph').onChange(function(value) {
                     if(value) {
                         myPortfolio.world.CurrentLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, 2);
-                        myPortfolio.world.NextLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, 2);
+                        //myPortfolio.world.NextLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, 2);
                     }
                 });
                 guiRender.add(this.renderParams, 'focus', 0, 10.1).listen().onChange(function() {
@@ -640,6 +657,20 @@ ENGINE = function() {
                     myPortfolio.world.CurrentLayer.scene.fog = new THREE.FogExp2(0x000000, value);
                 });
                 guiRender.add(this.renderParams, 'enableTrackball');
+                guiRender.add(this.renderParams, 'enableMouseListener').onChange(function(value) {
+                    function onDocumentMouseMove(event) {
+                        var mouseX = event.clientX - myPortfolio.world.width / 2;
+                        var mouseY = event.clientY - myPortfolio.world.height / 2;
+                        myPortfolio.world.targetRotationX = mouseX * 0.0001;
+                        myPortfolio.world.targetRotationY = mouseY * 0.0001;
+                    }
+                    if( !! value) {
+                        myPortfolio.world.renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
+                    } else {
+                        myPortfolio.world.renderer.domElement.removeEventListener('mousemove', onDocumentMouseMove, false);
+                    }
+                    world.refreshPostProcessing();
+                });
                 guiRender.add(this.renderParams, 'enableGrid').onChange(function(value) {
                     //add compositing 3rd rule grid
                     if(!document.getElementById('gridContainer')) {
@@ -840,6 +871,10 @@ ENGINE = function() {
                  * Motion Gui controler
                  **/
                 var guiMotion = new dat.GUI();
+                guiMotion.add(this.motionParams, 'reverseTime').onChange(function(value) {
+                    world.motionParams.reverseFactor = !!value ? -1 : 1;
+                    console.info(world.motionParams.reverseFactor);
+                });
                 guiMotion.add(this.motionParams, 'autoPanX');
                 guiMotion.add(this.motionParams, 'autoPanY');
                 guiMotion.add(this.motionParams, 'autoPanZ');
@@ -912,6 +947,7 @@ ENGINE = function() {
                 document.body.appendChild(this.fpsStats.domElement);
                 //add threex.renderstats WEBGL render
                 this.gpuStats = new THREEx.RendererStats();
+                this.gpuStats.domElement.id = 'gpuStats';
                 this.gpuStats.domElement.style.position = 'absolute';
                 this.gpuStats.domElement.style.left = '0px';
                 this.gpuStats.domElement.style.bottom = '0px';
@@ -1251,7 +1287,7 @@ ENGINE = function() {
                 var addBackgroundImage = function(scene, imagePath) {
                     // Load the background texture
                     var texture = THREE.ImageUtils.loadTexture(imagePath);
-                    var plane = new THREE.PlaneBufferGeometry(8, 8, 0, 0);
+                    var plane = new THREE.PlaneBufferGeometry(9, 9, 0, 0);
                     var backgroundImage = new THREE.Mesh(plane, new THREE.MeshBasicMaterial({
                         map: texture
                     }));
@@ -1271,8 +1307,8 @@ ENGINE = function() {
                         var dae = collada.scene;
                         layer.fragments = [];
                         layer.scene.add(dae);
-                        //layer.backgroundImage = addBackgroundImage(layer.scene,'../src/textures/background/background'+world.renderParams.backgroundImage+'.jpg');
-                        addSkyDome(layer, 7, '../src/textures/background/background6.jpg');
+                        layer.backgroundImage = addBackgroundImage(layer.scene,'../src/textures/background/background'+world.renderParams.backgroundImage+'.jpg');
+                        //addSkyDome(layer, 7, '../src/textures/background/background6.jpg');
                         //layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 500, 6, '../src/textures/sprites/BlackDot.svg', 0.08);
                         layer.spheres = [];
                         collada.scene.traverse(function(child) {
@@ -1416,38 +1452,38 @@ ENGINE = function() {
                                 }
                             }
                         });
-                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.0017, 0.0005);
+                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.0002);
                         /**
                          * Anaglyph effect
                          **/
                         layer.render = function(rtt) {
                             if(world.motionParams.autoPanX) {
-                                layer.scene.maeposition.x += layer.rotationSpeed.x;
+                                layer.scene.position.x += layer.rotationSpeed.x;
                             }
                             if(world.motionParams.autoPanY) {
-                                layer.scene.position.y += layer.rotationSpeed.y;
+                                layer.scene.position.y -= layer.rotationSpeed.y*0.1;
                             }
                             if(world.motionParams.autoPanZ) {
                                 layer.scene.position.z += layer.rotationSpeed.z;
                             }
                             if(world.motionParams.autoRotationX) {
                                 //layer.scene.rotation.x += layer.rotationSpeed.x;
-                                layer.lowpoly.rotation.x += layer.rotationSpeed.x;
-                                layer.lowpoly2.rotation.x += layer.rotationSpeed.x;
+                                layer.lowpoly.rotation.x += layer.rotationSpeed.z * world.motionParams.reverseFactor;
+                                layer.lowpoly2.rotation.x += layer.rotationSpeed.z * world.motionParams.reverseFactor;
                                 //layer.leftArm.rotation.x -= layer.rotationSpeed.x;
                                 //layer.rightArm.rotation.z -= layer.rotationSpeed.x;
                             }
                             if(world.motionParams.autoRotationY) {
-                                layer.lowpoly.rotation.y += layer.rotationSpeed.z;
-                                layer.lowpoly2.rotation.y -= layer.rotationSpeed.z;
+                                layer.lowpoly.rotation.y += layer.rotationSpeed.z * world.motionParams.reverseFactor;
+                                layer.lowpoly2.rotation.y -= layer.rotationSpeed.z * world.motionParams.reverseFactor;
                                 //layer.skydome.rotation.y += layer.rotationSpeed.y;
                                 //layer.leftArm.rotation.y -= layer.rotationSpeed.x;
                             }
                             if(world.motionParams.autoRotationZ) {
                                 //layer.scene.rotation.z += layer.rotationSpeed.z;
                                 //layer.skydome.rotation.z -= layer.rotationSpeed.z;
-                                layer.lowpoly.rotation.z += layer.rotationSpeed.z;
-                                layer.lowpoly2.rotation.z -= layer.rotationSpeed.z;
+                                layer.lowpoly.rotation.z += layer.rotationSpeed.z * world.motionParams.reverseFactor;
+                                layer.lowpoly2.rotation.z -= layer.rotationSpeed.z * world.motionParams.reverseFactor;
                                 //layer.leftArm.rotation.z -= layer.rotationSpeed.x;
                                 //layer.lowpoly3.rotation.x -= layer.rotationSpeed.z;
                                 //layer.lowpoly3.rotation.y -= layer.rotationSpeed.z;
@@ -1456,16 +1492,16 @@ ENGINE = function() {
                             if(world.motionParams.animateFragments) {
                                 for(var i = 0; i < layer.fragments.length; i++) {
                                     //rotation
-                                    layer.fragments[i].rotation.x += layer.rotationSpeed.y;
-                                    layer.fragments[i].rotation.y += layer.rotationSpeed.y;
-                                    layer.fragments[i].rotation.z += layer.rotationSpeed.y;
+                                    layer.fragments[i].rotation.x += layer.rotationSpeed.y*2;
+                                    layer.fragments[i].rotation.y += layer.rotationSpeed.y*2;
+                                    layer.fragments[i].rotation.z += layer.rotationSpeed.y*2;
                                     //position
-                                    layer.fragments[i].position.y += layer.rotationSpeed.z*.7;
+                                    layer.fragments[i].position.y += layer.rotationSpeed.y*0.5;
                                 }
                                 //layer.sphericalCloud.rotation.x += layer.rotationSpeed.y * .3;
-                                //layer.skydome.rotation.x += layer.rotationSpeed.x* .3;
-                                layer.skydome.rotation.y += layer.rotationSpeed.z;
-                                layer.skydome.rotation.z += layer.rotationSpeed.z;
+                                layer.backgroundImage.position.y -= layer.rotationSpeed.z;
+                                //layer.skydome.rotation.y += layer.rotationSpeed.z* 0.3;
+                                //layer.skydome.rotation.z += layer.rotationSpeed.z;
                             }
                             if(world.lightsParams.rotateLights) {
                                 layer.scene.children[0].position.x += layer.rotationSpeed.x;
@@ -1480,6 +1516,10 @@ ENGINE = function() {
                             }
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
+                            }
+                            if(world.renderParams.enableMouseListener) {
+                                layer.scene.rotation.y = world.targetRotationX;
+                                layer.scene.rotation.x = world.targetRotationY;
                             }
                             if(rtt) {
                                 //
@@ -1746,9 +1786,9 @@ ENGINE = function() {
             var world = this;
             this.init();
             this.transitionParams.clock.elapsedTime = 0;
-            this.LayerA = new this.Layer('LayerA', '../src/collada/male14.dae');
-            this.LayerB = new this.Layer('LayerB', '../src/collada/male14.dae');
-            this.LayerC = new this.Layer('LayerC', '../src/collada/male14.dae');
+            this.LayerA = new this.Layer('LayerA', '../src/collada/male15.dae');
+            this.LayerB = new this.Layer('LayerB', '../src/collada/male15.dae');
+            this.LayerC = new this.Layer('LayerC', '../src/collada/male15.dae');
             this.CurrentLayer = this.LayerA;
             this.NextLayer = this.LayerB;
             this.transition = new this.Transition(this.CurrentLayer, this.NextLayer);

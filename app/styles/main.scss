@@ -5,6 +5,10 @@ $grad-bg1: linear-gradient(45deg, rgba(194, 233, 221, 0.5) 1%, rgba(104, 119, 13
 $default-text-shadow: none;
 $logo-text-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
 
+html {
+	box-sizing: border-box;
+}
+
 .body-bg
 {
   position:absolute;
@@ -48,32 +52,36 @@ $logo-text-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
   border-bottom:1px dashed #000;
 }
 
-/*.logo-container
+.title1
 {
   @extend %absolute-center;
   z-index:2;
-  width:100%;
-  height:100px;
-  border: none;
+  width:300px;
+  height:720px;
+  border: 30px solid #FFF;
   text-align: center;
 }
   
 .name{
     @extend %name-font;
     @extend %force-gpu;
-    color: rgba(0,0,0,1.0);
-    text-shadow: $logo-text-shadow;
-    @include animation('loading 4s ease-in-out');
+    color: #FFF;
 }
 .surname{
     @extend %surname-font;
     @extend %force-gpu;
-    color:rgba(0,0,0,1.0);
-    text-shadow: $logo-text-shadow;
-    @include animation('loading 4s ease-in-out');
+    color: #FFF;
+}
+.skills{
+    margin-top: 40px;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 400;
+    color: #FFF;
+    letter-spacing: 5px;
 }
 
-@include keyframes(loading) 
+/*@include keyframes(loading) 
 {
     from
     {
@@ -84,8 +92,8 @@ $logo-text-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
     {
        color: rgba(0,0,0,1.0);
     }
-}*/
-
+}
+*/
 
 
 
