@@ -9,6 +9,7 @@
 /*global requestAnimationFrame:false */
 /*global threejsCanvas:false */
 /*global TWEEN:false */
+/*global classie:false */
 /* How to remove DOM element after animation/transition */
 /*$('#someSelector').bind('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function(){ ... });*/
 /*$('#someSelector').bind('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function(){ ... });*/
@@ -125,7 +126,7 @@ ENGINE = function() {
         dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: false,
-            guiEnabled: true
+            guiEnabled: false
         },
         renderParams: {
             antialias: true,
@@ -1309,7 +1310,7 @@ ENGINE = function() {
                         layer.scene.add(dae);
                         layer.backgroundImage = addBackgroundImage(layer.scene,'../src/textures/background/background'+world.renderParams.backgroundImage+'.jpg');
                         //addSkyDome(layer, 7, '../src/textures/background/background6.jpg');
-                        //layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 500, 6, '../src/textures/sprites/BlackDot.svg', 0.08);
+                        layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 300, 3, '../src/textures/sprites/WhiteDot.svg', 0.03);
                         layer.spheres = [];
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
@@ -1498,7 +1499,9 @@ ENGINE = function() {
                                     //position
                                     layer.fragments[i].position.y += layer.rotationSpeed.y*0.5;
                                 }
-                                //layer.sphericalCloud.rotation.x += layer.rotationSpeed.y * .3;
+                                layer.sphericalCloud.rotation.x -= layer.rotationSpeed.y * .2;
+                                //layer.sphericalCloud.rotation.y -= layer.rotationSpeed.y * .2;
+                                //layer.sphericalCloud.rotation.z -= layer.rotationSpeed.y * .2;
                                 layer.backgroundImage.position.y -= layer.rotationSpeed.z;
                                 //layer.skydome.rotation.y += layer.rotationSpeed.z* 0.3;
                                 //layer.skydome.rotation.z += layer.rotationSpeed.z;
@@ -1833,3 +1836,45 @@ ENGINE.prototype.init = function() {
  **/
 var myPortfolio = new ENGINE();
 myPortfolio.init();
+
+
+(function() {
+	var triggerBttn = document.getElementById( 'trigger-overlay' ),
+		overlay = document.querySelector( 'div.overlay' ),
+		closeBttn = overlay.querySelector( 'button.overlay-close' );
+		var transEndEventNames = {
+			'WebkitTransition': 'webkitTransitionEnd',
+			'MozTransition': 'transitionend',
+			'OTransition': 'oTransitionEnd',
+			'msTransition': 'MSTransitionEnd',
+			'transition': 'transitionend'
+		},
+		transEndEventName = transEndEventNames[ Modernizr.prefixed( 'transition' ) ],
+		support = { transitions : Modernizr.csstransitions };
+
+	function toggleOverlay() {
+		if( classie.has( overlay, 'open' ) ) {
+			classie.remove( overlay, 'open' );
+			classie.add( overlay, 'close' );
+			var onEndTransitionFn = function( ev ) {
+				if( support.transitions ) {
+					if( ev.propertyName !== 'visibility' ) return;
+					this.removeEventListener( transEndEventName, onEndTransitionFn );
+				}
+				classie.remove( overlay, 'close' );
+			};
+			if( support.transitions ) {
+				overlay.addEventListener( transEndEventName, onEndTransitionFn );
+			}
+			else {
+				onEndTransitionFn();
+			}
+		}
+		else if( !classie.has( overlay, 'close' ) ) {
+			classie.add( overlay, 'open' );
+		}
+	}
+
+	triggerBttn.addEventListener( 'click', toggleOverlay );
+	closeBttn.addEventListener( 'click', toggleOverlay );
+})();

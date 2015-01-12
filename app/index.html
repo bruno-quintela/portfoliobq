@@ -82,6 +82,8 @@
     <script src="scripts/vendor/threejs/loader/ColladaLoader.js"></script>
     <!-- IMPORT SUBDIVISION MODIFIER  -->
     <script src="scripts/vendor/threejs/modifier/subdivisionModifier.js"></script>
+    <!-- CLASSIE JS Plugin  -->
+    <script src="scripts/vendor/classiejs/classie.js"></script>
 
 
 
@@ -89,30 +91,34 @@
 
         <canvas id="threejsCanvas" class="threejs-canvas"></canvas>
         <canvas id="audioCanvas" class="audio-canvas"></canvas>
-        <div id="title1" class="title1">
-            <div id="name" class="name"></div>
+        <div id="title" class="title">
             <span id="surname" class="surname">Qu<br>in<br>te<br>la<br></span>
-            <div id="skills" class="skills">Frontend Developer <br> Web Designer</div>
+            <div id="skills" class="skills"> <span>Web Designer</span> 
+                <hr> <span>Frontend Developer</span>
+            </div>
+        </div>
+        <button id="trigger-overlay" class="trigger-overlay" type="button">Open Overlay</button>
+        <div class="overlay overlay-hugeinc">
+            <button type="button" class="overlay-close">Close</button>
+            <nav id="menu" class="menu">
+                <ul>
+                    <li><a href="#">Home</a>
+                    </li>
+                    <li><a href="#">Work</a>
+                    </li>
+                    <li><a href="#">About</a>
+                    </li>
+                    <li><a href="#">Contact</a>
+                    </li>
+                    <li><a href="#">Credits</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-    <script>
-        (function(b, o, i, l, e, r) {
-            b.GoogleAnalyticsObject = l;
-            b[l] || (b[l] = function() {
-                (b[l].q = b[l].q || []).push(arguments)
-            });
-            b[l].l = +new Date;
-            e = o.createElement(i);
-            r = o.getElementsByTagName(i)[0];
-            e.src = '//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e, r)
-        }(window, document, 'script', 'ga'));
-        ga('create', 'UA-XXXXX-X');
-        ga('send', 'pageview');
-    </script>
+   
     <script id="sem-vs" type="x-shader/x-vertex">
         varying vec3 e;
         varying vec3 n;
@@ -228,6 +234,22 @@
             base += noise * (.5 - random(vec3(1.), length(gl_FragCoord)));
             gl_FragColor = vec4(base, 1.);
         }
+    </script>
+     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <script>
+        (function(b, o, i, l, e, r) {
+            b.GoogleAnalyticsObject = l;
+            b[l] || (b[l] = function() {
+                (b[l].q = b[l].q || []).push(arguments)
+            });
+            b[l].l = +new Date;
+            e = o.createElement(i);
+            r = o.getElementsByTagName(i)[0];
+            e.src = '//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e, r)
+        }(window, document, 'script', 'ga'));
+        ga('create', 'UA-XXXXX-X');
+        ga('send', 'pageview');
     </script>
     <!-- build:js({app,.tmp}) scripts/main.js -->
     <script src="scripts/audioVisualizer.js"></script>
