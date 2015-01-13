@@ -126,7 +126,7 @@ ENGINE = function() {
         dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: false,
-            guiEnabled: false
+            guiEnabled: true
         },
         renderParams: {
             antialias: true,
@@ -389,8 +389,8 @@ ENGINE = function() {
             autoPanX: false,
             autoPanY: false,
             autoPanZ: false,
-            autoRotationX: true,
-            autoRotationY: true,
+            autoRotationX: false,
+            autoRotationY: false,
             autoRotationZ: false,
             animateFragments: true,
             rotateSceneX: function() {
@@ -1502,7 +1502,7 @@ ENGINE = function() {
                                 layer.sphericalCloud.rotation.x -= layer.rotationSpeed.y * .2;
                                 //layer.sphericalCloud.rotation.y -= layer.rotationSpeed.y * .2;
                                 //layer.sphericalCloud.rotation.z -= layer.rotationSpeed.y * .2;
-                                layer.backgroundImage.position.y -= layer.rotationSpeed.z;
+                                //layer.backgroundImage.position.y -= layer.rotationSpeed.z;
                                 //layer.skydome.rotation.y += layer.rotationSpeed.z* 0.3;
                                 //layer.skydome.rotation.z += layer.rotationSpeed.z;
                             }
@@ -1708,10 +1708,7 @@ ENGINE = function() {
                         var effectFilmBW = new THREE.FilmPass(world.renderParams.filmStrengh, 0.2, 1024, true);
                         this.composer.addPass(effectFilmBW);
                     }
-                    if(world.renderParams.enableSepia) {
-                        var effectSepia = new THREE.ShaderPass(THREE.SepiaShader);
-                        this.composer.addPass(effectSepia);
-                    }
+                    
                     if(world.renderParams.enableColorify) {
                         var effectColorify = new THREE.ShaderPass(THREE.ColorifyShader);
                         effectColorify.uniforms.color.value.setRGB(1, 0.8, 0.8);
@@ -1744,6 +1741,10 @@ ENGINE = function() {
                         hblur.uniforms.r.value = vblur.uniforms.r.value = 0.5;
                         this.composer.addPass(hblur);
                         this.composer.addPass(vblur);
+                    }
+                    if(world.renderParams.enableSepia) {
+                        var effectSepia = new THREE.ShaderPass(THREE.SepiaShader);
+                        this.composer.addPass(effectSepia);
                     }
                     if(world.renderParams.enableVignette) {
                         var vignettePass = new THREE.ShaderPass(THREE.VignetteShader);
@@ -1838,10 +1839,13 @@ var myPortfolio = new ENGINE();
 myPortfolio.init();
 
 
+/**
+ * Open/close menu trigger handlers
+ **/ 
 (function() {
 	var triggerBttn = document.getElementById( 'trigger-overlay' ),
 		overlay = document.querySelector( 'div.overlay' ),
-		closeBttn = overlay.querySelector( 'button.overlay-close' );
+        background = document.querySelector( 'div.title' );
 		var transEndEventNames = {
 			'WebkitTransition': 'webkitTransitionEnd',
 			'MozTransition': 'transitionend',
@@ -1855,7 +1859,10 @@ myPortfolio.init();
 	function toggleOverlay() {
 		if( classie.has( overlay, 'open' ) ) {
 			classie.remove( overlay, 'open' );
-			classie.add( overlay, 'close' );
+            classie.remove( background, 'open' );
+            var bluriness = 3.5;
+            myPortfolio.world.CurrentLayer.composer.passes[5].uniforms.h.value = bluriness / myPortfolio.world.width;
+            myPortfolio.world.CurrentLayer.composer.passes[6].uniforms.v.value = bluriness / myPortfolio.world.height;
 			var onEndTransitionFn = function( ev ) {
 				if( support.transitions ) {
 					if( ev.propertyName !== 'visibility' ) return;
@@ -1872,9 +1879,12 @@ myPortfolio.init();
 		}
 		else if( !classie.has( overlay, 'close' ) ) {
 			classie.add( overlay, 'open' );
+            classie.add( background, 'open' );
+            var bluriness = 10;
+            myPortfolio.world.CurrentLayer.composer.passes[5].uniforms.h.value = bluriness / myPortfolio.world.width;
+            myPortfolio.world.CurrentLayer.composer.passes[6].uniforms.v.value = bluriness / myPortfolio.world.height;
 		}
 	}
 
 	triggerBttn.addEventListener( 'click', toggleOverlay );
-	closeBttn.addEventListener( 'click', toggleOverlay );
 })();
