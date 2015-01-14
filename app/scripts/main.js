@@ -873,7 +873,7 @@ ENGINE = function() {
                  **/
                 var guiMotion = new dat.GUI();
                 guiMotion.add(this.motionParams, 'reverseTime').onChange(function(value) {
-                    world.motionParams.reverseFactor = !!value ? -1 : 1;
+                    world.motionParams.reverseFactor = !! value ? -1 : 1;
                     console.info(world.motionParams.reverseFactor);
                 });
                 guiMotion.add(this.motionParams, 'autoPanX');
@@ -1308,7 +1308,7 @@ ENGINE = function() {
                         var dae = collada.scene;
                         layer.fragments = [];
                         layer.scene.add(dae);
-                        layer.backgroundImage = addBackgroundImage(layer.scene,'../src/textures/background/background'+world.renderParams.backgroundImage+'.jpg');
+                        layer.backgroundImage = addBackgroundImage(layer.scene, '../src/textures/background/background' + world.renderParams.backgroundImage + '.jpg');
                         //addSkyDome(layer, 7, '../src/textures/background/background6.jpg');
                         layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 300, 3, '../src/textures/sprites/WhiteDot.svg', 0.03);
                         layer.spheres = [];
@@ -1462,7 +1462,7 @@ ENGINE = function() {
                                 layer.scene.position.x += layer.rotationSpeed.x;
                             }
                             if(world.motionParams.autoPanY) {
-                                layer.scene.position.y -= layer.rotationSpeed.y*0.1;
+                                layer.scene.position.y -= layer.rotationSpeed.y * 0.1;
                             }
                             if(world.motionParams.autoPanZ) {
                                 layer.scene.position.z += layer.rotationSpeed.z;
@@ -1493,11 +1493,11 @@ ENGINE = function() {
                             if(world.motionParams.animateFragments) {
                                 for(var i = 0; i < layer.fragments.length; i++) {
                                     //rotation
-                                    layer.fragments[i].rotation.x += layer.rotationSpeed.y*2;
-                                    layer.fragments[i].rotation.y += layer.rotationSpeed.y*2;
-                                    layer.fragments[i].rotation.z += layer.rotationSpeed.y*2;
+                                    layer.fragments[i].rotation.x += layer.rotationSpeed.y * 2;
+                                    layer.fragments[i].rotation.y += layer.rotationSpeed.y * 2;
+                                    layer.fragments[i].rotation.z += layer.rotationSpeed.y * 2;
                                     //position
-                                    layer.fragments[i].position.y += layer.rotationSpeed.y*0.5;
+                                    layer.fragments[i].position.y += layer.rotationSpeed.y * 0.5;
                                 }
                                 layer.sphericalCloud.rotation.x -= layer.rotationSpeed.y * .2;
                                 //layer.sphericalCloud.rotation.y -= layer.rotationSpeed.y * .2;
@@ -1708,7 +1708,6 @@ ENGINE = function() {
                         var effectFilmBW = new THREE.FilmPass(world.renderParams.filmStrengh, 0.2, 1024, true);
                         this.composer.addPass(effectFilmBW);
                     }
-                    
                     if(world.renderParams.enableColorify) {
                         var effectColorify = new THREE.ShaderPass(THREE.ColorifyShader);
                         effectColorify.uniforms.color.value.setRGB(1, 0.8, 0.8);
@@ -1837,54 +1836,52 @@ ENGINE.prototype.init = function() {
  **/
 var myPortfolio = new ENGINE();
 myPortfolio.init();
-
-
 /**
  * Open/close menu trigger handlers
- **/ 
+ **/
 (function() {
-	var triggerBttn = document.getElementById( 'trigger-overlay' ),
-		overlay = document.querySelector( 'div.overlay' ),
-        background = document.querySelector( 'div.title' );
-		var transEndEventNames = {
-			'WebkitTransition': 'webkitTransitionEnd',
-			'MozTransition': 'transitionend',
-			'OTransition': 'oTransitionEnd',
-			'msTransition': 'MSTransitionEnd',
-			'transition': 'transitionend'
-		},
-		transEndEventName = transEndEventNames[ Modernizr.prefixed( 'transition' ) ],
-		support = { transitions : Modernizr.csstransitions };
+    var triggerBttn = document.getElementById('trigger-overlay'),
+        overlay = document.querySelector('div.overlay'),
+        header = document.getElementById('headerTitle'),
+        footer = document.getElementById('footerInfo');
+    var transEndEventNames = {
+        'WebkitTransition': 'webkitTransitionEnd',
+        'MozTransition': 'transitionend',
+        'OTransition': 'oTransitionEnd',
+        'msTransition': 'MSTransitionEnd',
+        'transition': 'transitionend'
+    },
+        transEndEventName = transEndEventNames[Modernizr.prefixed('transition')],
+        support = {
+            transitions: Modernizr.csstransitions
+        };
 
-	function toggleOverlay() {
-		if( classie.has( overlay, 'open' ) ) {
-			classie.remove( overlay, 'open' );
-            classie.remove( background, 'open' );
+    function toggleOverlay() {
+        if(classie.has(overlay, 'open')) {
             var bluriness = 3.5;
             myPortfolio.world.CurrentLayer.composer.passes[5].uniforms.h.value = bluriness / myPortfolio.world.width;
             myPortfolio.world.CurrentLayer.composer.passes[6].uniforms.v.value = bluriness / myPortfolio.world.height;
-			var onEndTransitionFn = function( ev ) {
-				if( support.transitions ) {
-					if( ev.propertyName !== 'visibility' ) return;
-					this.removeEventListener( transEndEventName, onEndTransitionFn );
-				}
-				classie.remove( overlay, 'close' );
-			};
-			if( support.transitions ) {
-				overlay.addEventListener( transEndEventName, onEndTransitionFn );
-			}
-			else {
-				onEndTransitionFn();
-			}
-		}
-		else if( !classie.has( overlay, 'close' ) ) {
-			classie.add( overlay, 'open' );
-            classie.add( background, 'open' );
+            var onEndTransitionFn = function(ev) {
+                if(support.transitions) {
+                    if(ev.propertyName !== 'visibility') return;
+                    this.removeEventListener(transEndEventName, onEndTransitionFn);
+                }
+                classie.remove(overlay, 'close');
+            };
+            if(support.transitions) {
+                overlay.addEventListener(transEndEventName, onEndTransitionFn);
+            } else {
+                onEndTransitionFn();
+            }
+        } else if(!classie.has(overlay, 'close')) {
             var bluriness = 10;
             myPortfolio.world.CurrentLayer.composer.passes[5].uniforms.h.value = bluriness / myPortfolio.world.width;
             myPortfolio.world.CurrentLayer.composer.passes[6].uniforms.v.value = bluriness / myPortfolio.world.height;
-		}
-	}
-
-	triggerBttn.addEventListener( 'click', toggleOverlay );
+        }
+        classie.toggleClass(overlay, 'open');
+        classie.toggleClass(header, 'open');
+        classie.toggleClass(footer, 'open');
+        classie.toggleClass(triggerBttn, 'open');
+    }
+    triggerBttn.addEventListener('click', toggleOverlay);
 })();

@@ -87,35 +87,41 @@
 
 
 
-    <div class="body-bg">
-
+    <div class="body-wrapper">
+        <a id="trigger-overlay" class="burger" href="#"><span></span></a>
         <canvas id="threejsCanvas" class="threejs-canvas"></canvas>
         <canvas id="audioCanvas" class="audio-canvas"></canvas>
-        <div id="title" class="title">
-            <span id="surname" class="surname">Qu<br>in<br>te<br>la<br></span>
-            <div id="skills" class="skills"> <span>Web Designer</span> 
-                <hr> <span>Frontend Developer</span>
-            </div>
-        </div>
-        <button id="trigger-overlay" class="trigger-overlay" type="button">Open Overlay</button>
-        <div class="overlay overlay-hugeinc">
-            <nav id="menu" class="menu">
+        <header id="headerTitle" class="title">
+            <div class="surname">Qu</div>
+            <div class="surname">in</div>
+            <div class="surname">te</div>
+            <div class="surname">la</div>
+        </header>
+        <div class="overlay">
+            <nav>
                 <ul>
                     <li><a href="#">Home</a>
                     </li>
-                    <li><a href="#">Work</a>
+                    <li><a href="#">Gallery</a>
                     </li>
                     <li><a href="#">About</a>
-                    </li>
-                    <li><a href="#">Contact</a>
                     </li>
                     <li><a href="#">Credits</a>
                     </li>
                 </ul>
             </nav>
+            <div id="skills" class="skills"> 
+            <div>contact me</div> 
+            <hr>
+            <div>linkedIn Twitter Behance</div>
         </div>
+        </div>
+        <footer id="footerInfo" class="skills"> 
+            <div>Web Designer</div> 
+            <hr>
+            <div>Frontend Developer</div>
+        </footer>
     </div>
-
 
 
     <script id="sem-vs" type="x-shader/x-vertex">
