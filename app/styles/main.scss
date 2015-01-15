@@ -155,7 +155,7 @@ a {
     width: 300px;
 }
 
-.trigger-overlay
+.menu-trigger
 {
     z-index:4;
     position:absolute;
@@ -163,7 +163,7 @@ a {
 }
 
 /* Main menu style */
-.overlay {
+.menu-overlay {
     opacity: 0;
 	visibility: hidden;
     z-index:3;
@@ -177,7 +177,7 @@ a {
 	transition: opacity 0.3s, visibility 0s 0.3s;
 }
 
-.overlay nav {
+.menu-overlay nav {
 	@extend %absolute-center;
     z-index:4;
     width:100%;
@@ -187,7 +187,7 @@ a {
     text-align: center;
 }
 
-.overlay nav ul {
+.menu-overlay nav ul {
 	list-style: none;
 	padding: 0;
 	margin: 0 auto;
@@ -197,33 +197,33 @@ a {
 	opacity: 0.4;
 }
 
-.overlay ul li {
+.menu-overlay ul li {
 	display: block;
 	height: 180px;
 }
 
-.overlay ul li a {
+.menu-overlay ul li a {
 	@extend %surname-font;
-    color: #FFF;
+    color: rgba(255,255,255,1);
 	-webkit-transition: color 0.3s;
 	transition: color 0.3s;
 }
 
-.overlay ul li a:hover,
-.overlay ul li a:focus {
-	color: rgba(0,255,255,0.5);
+.menu-overlay ul li a:hover,
+.menu-overlay ul li a:focus {
+	color: rgba(0,255,255,0.4);
 }
 
 /* Main Menu Open State Transitions */
 
-.overlay.open {
+.menu-overlay.open {
 	opacity: 1;
 	visibility: visible;
 	-webkit-transition: opacity 0.5s;
 	transition: opacity 0.5s;
 }
 
-.overlay.open nav ul {
+.menu-overlay.open nav ul {
 	opacity: 1;
 }
 
@@ -235,7 +235,7 @@ a {
 $fill: #FFF;
 $burgerSize: 30px;
 
-.burger {
+.menu-trigger {
   z-index:5;
   position: absolute;
   display: inline-block;
@@ -270,7 +270,7 @@ $burgerSize: 30px;
     top: $burgerSize * 2 / 5;
   }
 }
-.burger.open {
+.menu-trigger.open {
   span:before {
     transform: translate(0px, ($burgerSize * 2 / 5)) rotate(90deg);
   }

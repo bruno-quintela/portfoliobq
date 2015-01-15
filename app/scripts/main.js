@@ -118,7 +118,7 @@ ENGINE = function() {
             }]
         }
     };
-    this.world = {
+    this.World = {
         width: window.innerWidth,
         height: window.innerHeight,
         targetRotationX: 0,
@@ -126,7 +126,7 @@ ENGINE = function() {
         dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: false,
-            guiEnabled: false
+            guiEnabled: true
         },
         renderParams: {
             antialias: true,
@@ -394,7 +394,7 @@ ENGINE = function() {
             autoRotationZ: false,
             animateFragments: true,
             rotateSceneX: function() {
-                var layer = myPortfolio.world.LayerA;
+                var layer = myPortfolio.World.LayerA;
                 var tweenScene90 = new TWEEN.Tween(layer.scene.rotation).to({
                     x: layer.scene.rotation.x + 90 * Math.PI / 180,
                     y: layer.scene.rotation.y,
@@ -403,7 +403,7 @@ ENGINE = function() {
                 tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
             },
             rotateSceneY: function() {
-                var layer = myPortfolio.world.LayerA;
+                var layer = myPortfolio.World.LayerA;
                 var tweenScene90 = new TWEEN.Tween(layer.scene.rotation).to({
                     x: layer.scene.rotation.x,
                     y: layer.scene.rotation.y + 90 * Math.PI / 180,
@@ -412,74 +412,13 @@ ENGINE = function() {
                 tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
             },
             rotateSceneZ: function() {
-                var layer = myPortfolio.world.LayerA;
+                var layer = myPortfolio.World.LayerA;
                 var tweenScene90 = new TWEEN.Tween(layer.scene.rotation).to({
                     x: layer.scene.rotation.x,
                     y: layer.scene.rotation.y,
                     z: layer.scene.rotation.z + 90 * Math.PI / 180
                 }, 1000);
                 tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
-            },
-            play: function() {
-                var layer = myPortfolio.world.LayerA;
-                var update = function() {
-                    //transitionParams.transitionMixRatio = current.x;
-                };
-                layer.headTop.defaultPosition = layer.headTop.position;
-                layer.headMiddle.defaultPosition = layer.headTop.position;
-                layer.headBottom.defaultPosition = layer.headTop.position;
-                var tweenHeadTop = new TWEEN.Tween(layer.headTop.position).to({
-                    x: layer.headTop.position.x,
-                    y: layer.headTop.position.y + 0.5,
-                    z: layer.headTop.position.z
-                }, 1000).onUpdate(update);
-                tweenHeadTop.easing(TWEEN.Easing.Elastic.Out).start();
-                /*var tweenHeadMiddle = new TWEEN.Tween(layer.headMiddle.position).to({
-                    x: 0,
-                    y: 1,
-                    z: 0
-                }, 1000).onUpdate(update);
-                tweenHeadMiddle.easing(TWEEN.Easing.Elastic.Out).start();*/
-                var tweenHeadBottom = new TWEEN.Tween(layer.headBottom.position).to({
-                    x: layer.headBottom.position.x,
-                    y: layer.headBottom.position.y - 0.5,
-                    z: layer.headBottom.position.z
-                }, 1000).onUpdate(update);
-                tweenHeadBottom.easing(TWEEN.Easing.Elastic.Out).start();
-            },
-            rollback: function() {
-                var layer = myPortfolio.world.LayerA;
-                var update = function() {
-                    //transitionParams.transitionMixRatio = current.x;
-                };
-                layer.headTop.defaultPosition = layer.headTop.position;
-                layer.headMiddle.defaultPosition = layer.headTop.position;
-                layer.headBottom.defaultPosition = layer.headTop.position;
-                var tweenHeadTop = new TWEEN.Tween(layer.headTop.position).to(layer.headTop.defaultPosition, 1000).onUpdate(update);
-                tweenHeadTop.easing(TWEEN.Easing.Quadratic.Out).start();
-                var tweenHeadMiddle = new TWEEN.Tween(layer.headMiddle.position).to(layer.headMiddle.defaultPosition, 1000).onUpdate(update);
-                tweenHeadMiddle.easing(TWEEN.Easing.Quadratic.Out).start();
-                var tweenHeadBottom = new TWEEN.Tween(layer.headBottom.position).to(layer.headBottom.defaultPosition, 1000).onUpdate(update);
-                tweenHeadBottom.easing(TWEEN.Easing.Quadratic.Out).start();
-            },
-            sphereAnim: function() {
-                var layer = myPortfolio.world.LayerA;
-                for(var i = 0; i < layer.spheres.length; i++) {
-                    var tweenVertex = new TWEEN.Tween(layer.spheres[i].rotation).to({
-                        x: layer.spheres[i].rotation.x,
-                        y: layer.spheres[i].rotation.y + 90 * Math.PI / 180,
-                        z: layer.spheres[i].rotation.z
-                    }, 2000);
-                    tweenVertex.delay(i * 200).easing(TWEEN.Easing.Quadratic.Out).start();
-                }
-                /*for(var i = 0; i < layer.spheres.length; i++) {
-                    var tweenVertex = new TWEEN.Tween(layer.spheres[i].position).to({
-                        x: layer.spheres[i].position.x + 30 * Math.PI / 180,
-                        y: layer.spheres[i].position.y,
-                        z: layer.spheres[i].position.z 
-                    }, 2000);
-                    tweenVertex.delay(i *100).easing(TWEEN.Easing.Quadratic.Out).start();
-                }*/
             }
         },
         transitionParams: {
@@ -491,9 +430,9 @@ ENGINE = function() {
             toLayerA: function() {
                 var transitionParams = this;
                 this.transitionMixRatio = 0;
-                myPortfolio.world.NextLayer = myPortfolio.world.LayerA;
-                myPortfolio.world.transition = new myPortfolio.world.Transition(myPortfolio.world.CurrentLayer, myPortfolio.world.NextLayer);
-                myPortfolio.world.CurrentLayer = myPortfolio.world.LayerA;
+                myPortfolio.World.NextLayer = myPortfolio.World.LayerA;
+                myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
+                myPortfolio.World.CurrentLayer = myPortfolio.World.LayerA;
                 var update = function() {
                     transitionParams.transitionMixRatio = current.x;
                 };
@@ -509,11 +448,11 @@ ENGINE = function() {
             toLayerB: function() {
                 var transitionParams = this;
                 this.transitionMixRatio = 0;
-                myPortfolio.world.NextLayer = myPortfolio.world.LayerB;
-                //myPortfolio.world.NextLayer.scene.position = myPortfolio.world.CurrentLayer.scene.position;
-                //myPortfolio.world.NextLayer.scene.rotation = myPortfolio.world.CurrentLayer.scene.rotation;
-                myPortfolio.world.transition = new myPortfolio.world.Transition(myPortfolio.world.CurrentLayer, myPortfolio.world.NextLayer);
-                myPortfolio.world.CurrentLayer = myPortfolio.world.LayerB;
+                myPortfolio.World.NextLayer = myPortfolio.World.LayerB;
+                //myPortfolio.World.NextLayer.scene.position = myPortfolio.World.CurrentLayer.scene.position;
+                //myPortfolio.World.NextLayer.scene.rotation = myPortfolio.World.CurrentLayer.scene.rotation;
+                myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
+                myPortfolio.World.CurrentLayer = myPortfolio.World.LayerB;
                 var update = function() {
                     transitionParams.transitionMixRatio = current.x;
                 };
@@ -529,11 +468,11 @@ ENGINE = function() {
             toLayerC: function() {
                 var transitionParams = this;
                 this.transitionMixRatio = 0;
-                myPortfolio.world.NextLayer = myPortfolio.world.LayerC;
-                //myPortfolio.world.NextLayer.scene.position = myPortfolio.world.CurrentLayer.scene.position;
-                //myPortfolio.world.NextLayer.scene.rotation = myPortfolio.world.CurrentLayer.scene.rotation;
-                myPortfolio.world.transition = new myPortfolio.world.Transition(myPortfolio.world.CurrentLayer, myPortfolio.world.NextLayer);
-                myPortfolio.world.CurrentLayer = myPortfolio.world.LayerC;
+                myPortfolio.World.NextLayer = myPortfolio.World.LayerC;
+                //myPortfolio.World.NextLayer.scene.position = myPortfolio.World.CurrentLayer.scene.position;
+                //myPortfolio.World.NextLayer.scene.rotation = myPortfolio.World.CurrentLayer.scene.rotation;
+                myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
+                myPortfolio.World.CurrentLayer = myPortfolio.World.LayerC;
                 var update = function() {
                     transitionParams.transitionMixRatio = current.x;
                 };
@@ -548,8 +487,8 @@ ENGINE = function() {
             },
             transitionTime: 1,
             tweenVertices: function() {
-                var source = myPortfolio.world.CurrentLayer.lowpoly.geometry;
-                var source2 = myPortfolio.world.CurrentLayer.lowpoly2.geometry;
+                var source = myPortfolio.World.CurrentLayer.lowpoly.geometry;
+                var source2 = myPortfolio.World.CurrentLayer.lowpoly2.geometry;
                 var update = function() {
                     source.verticesNeedUpdate = true;
                 };
@@ -594,7 +533,7 @@ ENGINE = function() {
                 }, 500);
             },
             tweenVerticesBack: function() {
-                var source = myPortfolio.world.CurrentLayer.lowpoly.geometry;
+                var source = myPortfolio.World.CurrentLayer.lowpoly.geometry;
                 var update = function() {
                     source.verticesNeedUpdate = true;
                 };
@@ -638,37 +577,37 @@ ENGINE = function() {
                 }
                 guiRender.add(this.renderParams, 'enableAnaglyph').onChange(function(value) {
                     if(value) {
-                        myPortfolio.world.CurrentLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, 2);
-                        //myPortfolio.world.NextLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, 2);
+                        myPortfolio.World.CurrentLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, 2);
+                        //myPortfolio.World.NextLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, 2);
                     }
                 });
                 guiRender.add(this.renderParams, 'focus', 0, 10.1).listen().onChange(function() {
-                    myPortfolio.world.CurrentLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, world.renderParams.focus);
+                    myPortfolio.World.CurrentLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, world.renderParams.focus);
                 });
                 guiRender.addColor(this.renderParams, 'backgroundColor').onChange(function(value) {
                     world.renderer.setClearColor(new THREE.Color(value[0] / 255, value[1] / 255, value[2] / 255), 0);
                 });
                 guiRender.add(this.renderParams, 'backgroundImage', this.materialParams.backgroundTexture).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.backgroundImage.material.map = THREE.ImageUtils.loadTexture('../src/textures/background/background' + value + '.jpg');
+                    myPortfolio.World.CurrentLayer.backgroundImage.material.map = THREE.ImageUtils.loadTexture('../src/textures/background/background' + value + '.jpg');
                 });
                 guiRender.add(this.renderParams, 'skydomeImage', this.materialParams.backgroundTexture).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.skydome.material.map = THREE.ImageUtils.loadTexture('../src/textures/background/background' + value + '.jpg');
+                    myPortfolio.World.CurrentLayer.skydome.material.map = THREE.ImageUtils.loadTexture('../src/textures/background/background' + value + '.jpg');
                 });
                 guiRender.add(this.renderParams, 'fog', 0, 1, 0.001).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.scene.fog = new THREE.FogExp2(0x000000, value);
+                    myPortfolio.World.CurrentLayer.scene.fog = new THREE.FogExp2(0x000000, value);
                 });
                 guiRender.add(this.renderParams, 'enableTrackball');
                 guiRender.add(this.renderParams, 'enableMouseListener').onChange(function(value) {
                     function onDocumentMouseMove(event) {
-                        var mouseX = event.clientX - myPortfolio.world.width / 2;
-                        var mouseY = event.clientY - myPortfolio.world.height / 2;
-                        myPortfolio.world.targetRotationX = mouseX * 0.0001;
-                        myPortfolio.world.targetRotationY = mouseY * 0.0001;
+                        var mouseX = event.clientX - myPortfolio.World.width / 2;
+                        var mouseY = event.clientY - myPortfolio.World.height / 2;
+                        myPortfolio.World.targetRotationX = mouseX * 0.0001;
+                        myPortfolio.World.targetRotationY = mouseY * 0.0001;
                     }
                     if( !! value) {
-                        myPortfolio.world.renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
+                        myPortfolio.World.renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
                     } else {
-                        myPortfolio.world.renderer.domElement.removeEventListener('mousemove', onDocumentMouseMove, false);
+                        myPortfolio.World.renderer.domElement.removeEventListener('mousemove', onDocumentMouseMove, false);
                     }
                     world.refreshPostProcessing();
                 });
@@ -765,81 +704,81 @@ ENGINE = function() {
                 var guiMaterial = new dat.GUI();
                 guiMaterial.add(this.materialParams, 'shaderAttr');
                 guiMaterial.add(this.materialParams, 'noise', 0, 0.3, 0.001).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.noise.value = value;
+                    myPortfolio.World.CurrentLayer.makehumanBody.material.uniforms.noise.value = value;
                 });
                 guiMaterial.add(this.materialParams, 'normalScale', 0, 10, 0.01).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.normalScale.value = value;
-                    myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.tNormal.value.needsUpdate = true;
+                    myPortfolio.World.CurrentLayer.makehumanBody.material.uniforms.normalScale.value = value;
+                    myPortfolio.World.CurrentLayer.makehumanBody.material.uniforms.tNormal.value.needsUpdate = true;
                 });
                 guiMaterial.add(this.materialParams, 'normalRepeat', 0, 10, 1).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.normalRepeat.value = value;
-                    myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.tNormal.value.needsUpdate = true;
+                    myPortfolio.World.CurrentLayer.makehumanBody.material.uniforms.normalRepeat.value = value;
+                    myPortfolio.World.CurrentLayer.makehumanBody.material.uniforms.tNormal.value.needsUpdate = true;
                 });
                 guiMaterial.add(this.materialParams, 'useScreen').onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.useScreen.value = value;
+                    myPortfolio.World.CurrentLayer.makehumanBody.material.uniforms.useScreen.value = value;
                 });
                 guiMaterial.add(this.materialParams, 'useRim').onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.useRim.value = value;
+                    myPortfolio.World.CurrentLayer.makehumanBody.material.uniforms.useRim.value = value;
                 });
                 guiMaterial.add(this.materialParams, 'rimPower', 0, 5, 0.1).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.rimPower.value = value;
+                    myPortfolio.World.CurrentLayer.makehumanBody.material.uniforms.rimPower.value = value;
                 });
                 guiMaterial.add(this.materialParams, 'matSelected');
                 guiMaterial.add(this.materialParams, 'bodyTexture', this.materialParams.textureMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
+                    myPortfolio.World.CurrentLayer.makehumanBody.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
                 });
                 guiMaterial.add(this.materialParams, 'headTexture', this.materialParams.textureMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.makehumanHead.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
+                    myPortfolio.World.CurrentLayer.makehumanHead.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
                 });
                 guiMaterial.add(this.materialParams, 'hairTexture', this.materialParams.textureMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.makehumanHair.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
+                    myPortfolio.World.CurrentLayer.makehumanHair.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
                 });
                 guiMaterial.add(this.materialParams, 'clothTexture', this.materialParams.textureMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.cloth.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
+                    myPortfolio.World.CurrentLayer.cloth.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
                 });
                 guiMaterial.add(this.materialParams, 'lipsTexture', this.materialParams.textureMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.lips.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
+                    myPortfolio.World.CurrentLayer.lips.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
                 });
                 guiMaterial.add(this.materialParams, 'eyeTexture', this.materialParams.eyeballMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.eyes.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/eyeball' + value + '.png');
+                    myPortfolio.World.CurrentLayer.eyes.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/eyeball' + value + '.png');
                 });
                 guiMaterial.add(this.materialParams, 'lowpolyTexture', this.materialParams.textureMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.lowpoly.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
+                    myPortfolio.World.CurrentLayer.lowpoly.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
                 });
                 guiMaterial.add(this.materialParams, 'lowpoly2Texture', this.materialParams.textureMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.lowpoly2.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
+                    myPortfolio.World.CurrentLayer.lowpoly2.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
                 });
                 guiMaterial.add(this.materialParams, 'lowpoly3Texture', this.materialParams.textureMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.lowpoly3.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
+                    myPortfolio.World.CurrentLayer.lowpoly3.material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
                 });
                 guiMaterial.add(this.materialParams, 'fragmentsTexture', this.materialParams.textureMap).onChange(function(value) {
-                    for(var i = 0; i < myPortfolio.world.CurrentLayer.fragments.length; i++) {
-                        myPortfolio.world.CurrentLayer.fragments[i].material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
+                    for(var i = 0; i < myPortfolio.World.CurrentLayer.fragments.length; i++) {
+                        myPortfolio.World.CurrentLayer.fragments[i].material.uniforms.tMatCap.value = THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + value + '.png');
                     }
                 });
                 guiMaterial.add(this.materialParams, 'normalSelected');
                 guiMaterial.add(this.materialParams, 'bodyNormal', this.materialParams.normalMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
-                    myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.tNormal.value.needsUpdate = true;
-                    myPortfolio.world.CurrentLayer.makehumanBody.material.uniforms.tNormal.value.wrapS = material.uniforms.tNormal.value.wrapT = THREE.RepeatWrapping;
+                    myPortfolio.World.CurrentLayer.makehumanBody.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
+                    myPortfolio.World.CurrentLayer.makehumanBody.material.uniforms.tNormal.value.needsUpdate = true;
+                    myPortfolio.World.CurrentLayer.makehumanBody.material.uniforms.tNormal.value.wrapS = material.uniforms.tNormal.value.wrapT = THREE.RepeatWrapping;
                 });
                 guiMaterial.add(this.materialParams, 'headNormal', this.materialParams.normalMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.makehumanHead.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
+                    myPortfolio.World.CurrentLayer.makehumanHead.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
                 });
                 guiMaterial.add(this.materialParams, 'hairNormal', this.materialParams.normalMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.makehumanHair.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
+                    myPortfolio.World.CurrentLayer.makehumanHair.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
                 });
                 guiMaterial.add(this.materialParams, 'clothNormal', this.materialParams.normalMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.cloth.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
+                    myPortfolio.World.CurrentLayer.cloth.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
                 });
                 guiMaterial.add(this.materialParams, 'lipsNormal', this.materialParams.normalMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.lips.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
+                    myPortfolio.World.CurrentLayer.lips.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
                 });
                 guiMaterial.add(this.materialParams, 'eyeNormal', this.materialParams.normalMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.eyes.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
+                    myPortfolio.World.CurrentLayer.eyes.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
                 });
                 guiMaterial.add(this.materialParams, 'lowpolyNormal', this.materialParams.normalMap).onChange(function(value) {
-                    myPortfolio.world.CurrentLayer.lowpoly.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
+                    myPortfolio.World.CurrentLayer.lowpoly.material.uniforms.tNormal.value = THREE.ImageUtils.loadTexture('../src/textures/normalMaps/normal' + value + '.jpg', 1);
                 });
                 /**
                  * GUI Tween Motions test
@@ -886,9 +825,6 @@ ENGINE = function() {
                 guiMotion.add(this.motionParams, 'rotateSceneX');
                 guiMotion.add(this.motionParams, 'rotateSceneY');
                 guiMotion.add(this.motionParams, 'rotateSceneZ');
-                guiMotion.add(this.motionParams, 'play');
-                guiMotion.add(this.motionParams, 'rollback');
-                guiMotion.add(this.motionParams, 'sphereAnim');
                 /**
                  *  AUDIO GUI params
                  **/
@@ -1773,7 +1709,7 @@ ENGINE = function() {
                 world.CurrentLayer.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
                 world.CurrentLayer.camera.updateProjectionMatrix();
                 if(world.renderParams.enableAnaglyph) {
-                    myPortfolio.world.CurrentLayer.anaglyph.setSize(world.width, world.height);
+                    myPortfolio.World.CurrentLayer.anaglyph.setSize(world.width, world.height);
                 } else {
                     world.transition.quadmaterial.uniforms.tDiffuse1.value = world.CurrentLayer.fbo;
                     world.renderer.setSize(world.width, world.height);
@@ -1818,17 +1754,76 @@ ENGINE = function() {
                     world.onWindowResize();
                 }, 100);
             };
-            //window.addEventListener('resize', world.onWindowResize, false);
         }
     };
+    /**
+     * UI Engine events handler
+     **/
+    this.UI = {
+        /**
+         * Open/close menu trigger handlers
+         **/
+        initMenu: function() {
+            var triggerBttn = document.getElementById('menuTrigger'),
+                menu = document.querySelector('.menu-overlay'),
+                header = document.querySelector('.header-title'),
+                footer = document.getElementById('footerInfo');
+            var transEndEventNames = {
+                'WebkitTransition': 'webkitTransitionEnd',
+                'MozTransition': 'transitionend',
+                'OTransition': 'oTransitionEnd',
+                'msTransition': 'MSTransitionEnd',
+                'transition': 'transitionend'
+            };
+            var transEndEventName = transEndEventNames[Modernizr.prefixed('transition')];
+            var support = {
+                transitions: Modernizr.csstransitions
+            };
+
+            function toggleOverlay() {
+                if(classie.has(menu, 'open')) {
+                    var bluriness = 3.5;
+                    myPortfolio.World.CurrentLayer.composer.passes[5].uniforms.h.value = bluriness / myPortfolio.World.width;
+                    myPortfolio.World.CurrentLayer.composer.passes[6].uniforms.v.value = bluriness / myPortfolio.World.height;
+                    var onEndTransitionFn = function(ev) {
+                        if(support.transitions) {
+                            if(ev.propertyName !== 'visibility') return;
+                            this.removeEventListener(transEndEventName, onEndTransitionFn);
+                        }
+                        classie.remove(menu, 'close');
+                    };
+                    if(support.transitions) {
+                        menu.addEventListener(transEndEventName, onEndTransitionFn);
+                    } else {
+                        onEndTransitionFn();
+                    }
+                } else if(!classie.has(menu, 'close')) {
+                    var bluriness = 10;
+                    myPortfolio.World.CurrentLayer.composer.passes[5].uniforms.h.value = bluriness / myPortfolio.World.width;
+                    myPortfolio.World.CurrentLayer.composer.passes[6].uniforms.v.value = bluriness / myPortfolio.World.height;
+                }
+                classie.toggleClass(menu, 'open');
+                classie.toggleClass(header, 'open');
+                classie.toggleClass(footer, 'open');
+                classie.toggleClass(triggerBttn, 'open');
+            }
+            triggerBttn.addEventListener('click', toggleOverlay);
+        },
+        /**
+         * Start UI events handler
+         **/
+        start: function() {
+            this.initMenu();
+        }
+    }
 };
-/********************************************************/
 /**
  * Page Init
  **/
 ENGINE.prototype.init = function() {
     this.system.init();
-    this.world.start();
+    this.World.start();
+    this.UI.start();
     console.log('Page init completed');
 };
 /**
@@ -1836,52 +1831,3 @@ ENGINE.prototype.init = function() {
  **/
 var myPortfolio = new ENGINE();
 myPortfolio.init();
-/**
- * Open/close menu trigger handlers
- **/
-(function() {
-    var triggerBttn = document.getElementById('trigger-overlay'),
-        overlay = document.querySelector('div.overlay'),
-        header = document.querySelector('.header-title'),
-        footer = document.getElementById('footerInfo');
-    var transEndEventNames = {
-        'WebkitTransition': 'webkitTransitionEnd',
-        'MozTransition': 'transitionend',
-        'OTransition': 'oTransitionEnd',
-        'msTransition': 'MSTransitionEnd',
-        'transition': 'transitionend'
-    },
-        transEndEventName = transEndEventNames[Modernizr.prefixed('transition')],
-        support = {
-            transitions: Modernizr.csstransitions
-        };
-
-    function toggleOverlay() {
-        if(classie.has(overlay, 'open')) {
-            var bluriness = 3.5;
-            myPortfolio.world.CurrentLayer.composer.passes[5].uniforms.h.value = bluriness / myPortfolio.world.width;
-            myPortfolio.world.CurrentLayer.composer.passes[6].uniforms.v.value = bluriness / myPortfolio.world.height;
-            var onEndTransitionFn = function(ev) {
-                if(support.transitions) {
-                    if(ev.propertyName !== 'visibility') return;
-                    this.removeEventListener(transEndEventName, onEndTransitionFn);
-                }
-                classie.remove(overlay, 'close');
-            };
-            if(support.transitions) {
-                overlay.addEventListener(transEndEventName, onEndTransitionFn);
-            } else {
-                onEndTransitionFn();
-            }
-        } else if(!classie.has(overlay, 'close')) {
-            var bluriness = 10;
-            myPortfolio.world.CurrentLayer.composer.passes[5].uniforms.h.value = bluriness / myPortfolio.world.width;
-            myPortfolio.world.CurrentLayer.composer.passes[6].uniforms.v.value = bluriness / myPortfolio.world.height;
-        }
-        classie.toggleClass(overlay, 'open');
-        classie.toggleClass(header, 'open');
-        classie.toggleClass(footer, 'open');
-        classie.toggleClass(triggerBttn, 'open');
-    }
-    triggerBttn.addEventListener('click', toggleOverlay);
-})();
