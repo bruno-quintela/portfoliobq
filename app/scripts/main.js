@@ -1808,6 +1808,19 @@ ENGINE = function() {
                 classie.toggleClass(triggerBttn, 'open');
             }
             triggerBttn.addEventListener('click', toggleOverlay);
+            /**
+             * Menu navigation anchors triggers handler
+             **/
+            var homeAnchor = document.getElementById('home'),
+                galleryAnchor = document.getElementById('gallery'),
+                aboutAnchor = document.getElementById('about'),
+                creditsAnchor = document.getElementById('credits');
+            var headerTitle = document.querySelector('.header-title');
+            aboutAnchor.addEventListener('click', function() {
+                //headerTitle.innerHTML = '<div id="letter"><div class="front">Q</div><div class="back">A</div></div>' + '<div id="letter"><div class="front">U</div><div class="back">B</div></div>' + '<div id="letter"><div class="front">I</div><div class="back">O</div></div>' + '<div id="letter"><div class="front">N</div><div class="back">U</div></div>' + '<div id="letter"><div class="front">T</div><div class="back">T</div></div>' + '<div id="letter"><div class="front">E</div><div class="back">-</div></div>' + '<div id="letter"><div class="front">L</div><div class="back">M</div></div>' + '<div id="letter"><div class="front">A</div><div class="back">E</div></div>';
+                toggleOverlay();
+                classie.toggleClass(headerTitle, 'flipped');
+            });
         },
         /**
          * Start UI events handler
