@@ -126,7 +126,7 @@ ENGINE = function() {
         dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: false,
-            guiEnabled: true
+            guiEnabled: false
         },
         renderParams: {
             antialias: true,
@@ -1502,7 +1502,7 @@ ENGINE = function() {
                                 layer.sphericalCloud.rotation.x -= layer.rotationSpeed.y * .2;
                                 //layer.sphericalCloud.rotation.y -= layer.rotationSpeed.y * .2;
                                 //layer.sphericalCloud.rotation.z -= layer.rotationSpeed.y * .2;
-                                //layer.backgroundImage.position.y -= layer.rotationSpeed.z;
+                                layer.backgroundImage.position.y += layer.rotationSpeed.z;
                                 //layer.skydome.rotation.y += layer.rotationSpeed.z* 0.3;
                                 //layer.skydome.rotation.z += layer.rotationSpeed.z;
                             }
@@ -1842,7 +1842,7 @@ myPortfolio.init();
 (function() {
     var triggerBttn = document.getElementById('trigger-overlay'),
         overlay = document.querySelector('div.overlay'),
-        header = document.getElementById('headerTitle'),
+        header = document.querySelector('.header-title'),
         footer = document.getElementById('footerInfo');
     var transEndEventNames = {
         'WebkitTransition': 'webkitTransitionEnd',
