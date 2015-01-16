@@ -1,0 +1,53 @@
+/**
+ * Burguer menu icon styles
+ **/
+
+
+$fill: #FFF;
+$iconSize: 30px;
+
+.menu-trigger {
+  z-index:5;
+  position: absolute;
+  display: inline-block;
+  width: $iconSize * 1.2;
+  height: $iconSize;
+  margin:20px;
+  
+  span, span:before, span:after {
+    @include transition(transform 0.5s);
+    display: block;
+    width: 100%;
+    height: $iconSize / 5;
+    background: $fill;
+  }
+  
+  span {
+    position: relative;
+    margin: ($iconSize * 2 / 5) 0 0;
+  }
+  
+  span:before, span:after {
+    position: absolute;
+    content: "";
+  }
+  
+  span:before {
+    top: $iconSize * -2 / 5;
+  }
+  
+  span:after {
+    top: $iconSize * 2 / 5;
+  }
+}
+.menu-trigger.open {
+  span:before {
+    @include transform((translate(0px, ($iconSize * 2 / 5)) rotate(90deg)));
+  }
+  span:after {
+    @include transform((translate(0px, -($iconSize * 2 / 5)) rotate(90deg)));
+  }
+  span {
+    @include transform(rotate(-45deg));
+  }
+}

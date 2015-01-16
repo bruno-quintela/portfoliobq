@@ -1,0 +1,120 @@
+/* unicode symbols from the icon font */
+
+.icon--twitter:before {
+    content: "\F309";
+}
+
+.icon--facebook:before {
+    content: "\F30C";
+}
+
+.icon--googleplus:before {
+    content: "\F30F";
+}
+
+.icon--linkedin:before {
+    content: "\F318";
+}
+
+.icon--dribble:before {
+    content: "\F31B";
+}
+
+.icon--soundcloud:before {
+    content: "\F348";
+}
+
+.icon--behance:before {
+    content: "\F34E";
+}
+
+/* Social colours */
+.social__icon--twitter {
+    background-color: #32b9e7;
+}
+
+.social__icon--twitter:hover {
+    background-color: #2a9dc4;
+}
+
+.social__icon--facebook {
+    background-color: #4b70ab;
+}
+
+.social__icon--facebook:hover {
+    background-color: #3f5f91;
+}
+
+.social__icon--googleplus {
+    background-color: #fa5432;
+}
+
+.social__icon--googleplus:hover {
+    background-color: #d4472a;
+}
+
+.social__icon--linkedin {
+    background-color: #0087be;
+}
+
+.social__icon--linkedin:hover {
+    background-color: #0072a1;
+}
+
+.social__icon--dribble {
+    background-color: #fc89b1;
+}
+
+.social__icon--dribble:hover {
+    background-color: #d67496;
+}
+
+.social__icon--soundcloud {
+    background-color: #fb740b;
+}
+
+.social__icon--soundcloud:hover {
+    background-color: #d56209;
+}
+
+.social__icon--behance {
+    background-color: #33abdb;
+}
+
+.social__icon--behance:hover {
+    background-color: #2b91ba;
+}
+
+/* Display icons next to each other */
+.social__item {
+    display: inline-block;
+    letter-spacing: 0px;
+}
+
+/* Basic icon style */
+.icon, [class^="icon--"] {
+    -moz-osx-font-smoothing: grayscale;
+    font-family: "entypo";
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1;
+    text-transform: none;
+}
+
+/* Icon background */
+.social__icon, [class^="social__icon"] {
+    color: white;
+    float: left;
+    font-size: 1.4em;
+    height: 25px;
+    text-align: center;
+    text-decoration: none;
+    width: 25px;
+    background-color: rgba(0,0,0,0);
+    /* Vertical Centering */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include transition(background-color 0.3s);
+}

@@ -16,16 +16,11 @@
     font-family: lato;
   	text-rendering: optimizeLegibility;
   
-    %name-font {
+  %header-title-font {
      text-transform: uppercase;
-      font-size: 100px;
-      font-weight: 100;
-  }
-
-  %surname-font {
-     text-transform: uppercase;
-     font-size: 150px;
+     font-size: 15vh;
      font-weight: 700;
+     @include transition((color 0.3s, opacity 0.3s, font-size 0.1s));
   }
   
 }

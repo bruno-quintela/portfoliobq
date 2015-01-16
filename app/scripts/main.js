@@ -449,8 +449,6 @@ ENGINE = function() {
                 var transitionParams = this;
                 this.transitionMixRatio = 0;
                 myPortfolio.World.NextLayer = myPortfolio.World.LayerB;
-                //myPortfolio.World.NextLayer.scene.position = myPortfolio.World.CurrentLayer.scene.position;
-                //myPortfolio.World.NextLayer.scene.rotation = myPortfolio.World.CurrentLayer.scene.rotation;
                 myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
                 myPortfolio.World.CurrentLayer = myPortfolio.World.LayerB;
                 var update = function() {
@@ -469,8 +467,6 @@ ENGINE = function() {
                 var transitionParams = this;
                 this.transitionMixRatio = 0;
                 myPortfolio.World.NextLayer = myPortfolio.World.LayerC;
-                //myPortfolio.World.NextLayer.scene.position = myPortfolio.World.CurrentLayer.scene.position;
-                //myPortfolio.World.NextLayer.scene.rotation = myPortfolio.World.CurrentLayer.scene.rotation;
                 myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
                 myPortfolio.World.CurrentLayer = myPortfolio.World.LayerC;
                 var update = function() {
@@ -1846,6 +1842,7 @@ ENGINE = function() {
                         classie.toggleClass(currentChar, 'flipped');
                     }, currentChar.delay);
                 });
+                myPortfolio.World.transitionParams.toLayerA();
             });
             // flip main title chars
             galleryAnchor.addEventListener('click', function() {
@@ -1856,6 +1853,7 @@ ENGINE = function() {
                         classie.toggleClass(currentChar, 'flipped');
                     }, currentChar.delay);
                 });
+                myPortfolio.World.transitionParams.toLayerB();
             });
             aboutAnchor.addEventListener('click', function() {
                 changeCurrentTitle('about_me');
@@ -1865,6 +1863,7 @@ ENGINE = function() {
                         classie.toggleClass(currentChar, 'flipped');
                     }, currentChar.delay);
                 });
+                myPortfolio.World.transitionParams.toLayerC();
             });
             creditsAnchor.addEventListener('click', function() {
                 changeCurrentTitle('credits_');

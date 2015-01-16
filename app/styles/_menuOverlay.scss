@@ -1,0 +1,60 @@
+/* Main menu overlay style */
+.menu-overlay {
+    @include transition((opacity 0.5s, visibility 0s 0.3s));
+    opacity: 0;
+	visibility: hidden;
+    z-index:3;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: rgba(0,0,0,0.7);
+}
+
+.menu-overlay nav {
+	@extend %absolute-center;
+    z-index:4;
+    width:100%;
+    height:$header-title-height;
+    padding-top: 25px;
+    border: 0px solid #FFF;
+    text-align: center;
+}
+
+.menu-overlay nav ul {
+	list-style: none;
+	padding: 0;
+	margin: 0 auto;
+	display: inline-block;
+	height: 100%;
+	position: relative;
+	opacity: 0.4;
+}
+
+.menu-overlay ul li {
+	display: block;
+	height: calc(100% / 4);
+}
+
+.menu-overlay ul li a {
+    @extend  %header-title-font;
+    color: rgba(255,255,255,1);
+}
+
+.menu-overlay ul li a:hover,
+.menu-overlay ul li a:focus {
+	color: rgba(0,255,255,0.4);
+}
+
+/* Main Menu Open State Transitions */
+
+.menu-overlay.open {
+    @include transition(opacity 0.5s);
+	opacity: 1;
+	visibility: visible;
+}
+
+.menu-overlay.open nav ul {
+	opacity: 1;
+}
