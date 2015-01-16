@@ -55,7 +55,6 @@ a {
 .header-title
 {
   @extend %absolute-center;
-  perspective: 800px;
   z-index:2;
   width:350px;
   height:770px;
@@ -71,95 +70,47 @@ a {
 /* simple */
 .flip-container {
     @extend %surname-font;
+    @include perspective(1000);
+    @include transform(perspective(1000px));
+    @include transform-style(preserve-3d);
     float:left;
     width:50%;
     height:180px;
-    -webkit-perspective: 1000;
-    -moz-perspective: 1000;
-    -ms-perspective: 1000;
-    perspective: 1000;
-    -ms-transform: perspective(1000px);
-    -moz-transform: perspective(1000px);
-    -moz-transform-style: preserve-3d; 
-    -ms-transform-style: preserve-3d; 
 }
 /* START: Accommodating for IE */
 .flip-container.flipped .back {
-    -webkit-transform: rotateY(0deg);
-    -moz-transform: rotateY(0deg);
-    -o-transform: rotateY(0deg);
-    -ms-transform: rotateY(0deg);
-    transform: rotateY(0deg);
+    @include transform(rotateY(0deg));
 }
 
 .flip-container.flipped .front {
-    -webkit-transform: rotateY(180deg);
-    -moz-transform: rotateY(180deg);
-    -o-transform: rotateY(180deg);
-    transform: rotateY(180deg);
+    @include transform(rotateY(180deg));
 }
 		
 /* END: Accommodating for IE */
 
 .title-char {
+    @include transform-style(preserve-3d);
+    @include transition(0.6s);
     position: absolute;
     width:100%;
-    -webkit-transition: 0.6s;
-    -webkit-transform-style: preserve-3d;
-    -ms-transition: 0.6s;
-
-    -moz-transition: 0.6s;
-    -moz-transform: perspective(1000px);
-    -moz-transform-style: preserve-3d;
-    -ms-transform-style: preserve-3d;
-
-    transition: 0.6s;
-    transform-style: preserve-3d;
-
 }
 
 .front, .back {
+    @include backface-visibility(hidden);
+    @include transform-style(preserve-3d);
+    @include transition(0.6s);
+    @include transform(rotateY(0deg));
     position: absolute;
     width:100%;
     color: #FFF;
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    -ms-backface-visibility: hidden;
-    backface-visibility: hidden;
-
-    -webkit-transition: 0.6s;
-    -webkit-transform-style: preserve-3d;
-    -webkit-transform: rotateY(0deg);
-
-    -moz-transition: 0.6s;
-    -moz-transform-style: preserve-3d;
-    -moz-transform: rotateY(0deg);
-
-    -o-transition: 0.6s;
-    -o-transform-style: preserve-3d;
-    -o-transform: rotateY(0deg);
-
-    -ms-transition: 0.6s;
-    -ms-transform-style: preserve-3d;
-    -ms-transform: rotateY(0deg);
-
-    transition: 0.6s;
-    transform-style: preserve-3d;
-    transform: rotateY(0deg);
 }
 
 .front {
-    -webkit-transform: rotateY(0deg);
-    -ms-transform: rotateY(0deg);
     z-index: 2;
 }
 
 .back {
-    -webkit-transform: rotateY(-180deg);
-    -moz-transform: rotateY(-180deg);
-    -o-transform: rotateY(-180deg);
-    -ms-transform: rotateY(-180deg);
-    transform: rotateY(-180deg);
+    @include transform(rotateY(-180deg));
 }
 
 
@@ -194,6 +145,7 @@ a {
 
 /* Main menu style */
 .menu-overlay {
+    @include transition((opacity 0.3s, visibility 0s 0.3s));
     opacity: 0;
 	visibility: hidden;
     z-index:3;
@@ -203,8 +155,6 @@ a {
 	top: 0;
 	left: 0;
 	background: rgba(0,0,0,0.7);
-    -webkit-transition: opacity 0.3s, visibility 0s 0.3s;
-	transition: opacity 0.3s, visibility 0s 0.3s;
 }
 
 .menu-overlay nav {
@@ -233,10 +183,9 @@ a {
 }
 
 .menu-overlay ul li a {
+    @include transition((color 0.3s, opacity 0.3s));
 	@extend %surname-font;
     color: rgba(255,255,255,1);
-	-webkit-transition: color 0.3s;
-	transition: color 0.3s;
 }
 
 .menu-overlay ul li a:hover,
@@ -247,10 +196,9 @@ a {
 /* Main Menu Open State Transitions */
 
 .menu-overlay.open {
+    @include transition(opacity 0.5s);
 	opacity: 1;
 	visibility: visible;
-	-webkit-transition: opacity 0.5s;
-	transition: opacity 0.5s;
 }
 
 .menu-overlay.open nav ul {
@@ -274,12 +222,11 @@ $iconSize: 30px;
   margin:20px;
   
   span, span:before, span:after {
+    @include transition(all 0.5s);
     display: block;
     width: 100%;
     height: $iconSize / 5;
     background: $fill;
-    transition: all 0.5s;
-    backface-visibility: hidden;
   }
   
   span {
@@ -302,12 +249,12 @@ $iconSize: 30px;
 }
 .menu-trigger.open {
   span:before {
-    transform: translate(0px, ($iconSize * 2 / 5)) rotate(90deg);
+    @include transform((translate(0px, ($iconSize * 2 / 5)) rotate(90deg)));
   }
   span:after {
-    transform: translate(0px, -($iconSize * 2 / 5)) rotate(90deg);
+    @include transform((translate(0px, -($iconSize * 2 / 5)) rotate(90deg)));
   }
   span {
-    transform: rotate(-45deg);
+    @include transform(rotate(-45deg));
   }
 }

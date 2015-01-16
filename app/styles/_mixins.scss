@@ -176,6 +176,39 @@ body {
   transition: #{$str};      
 }
 
+// generic transform
+@mixin transform($transform) {
+	   -moz-transform: #{$transform};
+	     -o-transform: #{$transform};
+	    -ms-transform: #{$transform};
+	-webkit-transform: #{$transform};
+          transform: #{$transform};
+}
+
+@mixin transform-style($transform-style) {
+	   -moz-transform-style: $transform-style;
+	     -o-transform-style: $transform-style;
+	    -ms-transform-style: $transform-style;
+	-webkit-transform-style: $transform-style;
+          transform-style: $transform-style;
+}
+
+@mixin perspective($perspective) {
+	   -moz-perspective: $perspective;
+	     -o-perspective: $perspective;
+	    -ms-perspective: $perspective;
+	-webkit-perspective: $perspective;
+          perspective: $perspective;
+}
+
+@mixin backface-visibility($backface-visibility) {
+	   -moz-backface-visibility: $backface-visibility;
+	     -o-backface-visibility: $backface-visibility;
+	    -ms-backface-visibility: $backface-visibility;
+	-webkit-backface-visibility: $backface-visibility;
+          backface-visibility: $backface-visibility;
+}
+
 /* usage 
 
 @include keyframes(slide-down) {
