@@ -126,7 +126,7 @@ ENGINE = function() {
         dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: false,
-            guiEnabled: true
+            guiEnabled: false
         },
         renderParams: {
             antialias: true,
@@ -392,7 +392,7 @@ ENGINE = function() {
             autoRotationX: false,
             autoRotationY: false,
             autoRotationZ: false,
-            animateFragments: true,
+            animateFragments: false,
             rotateSceneX: function() {
                 var layer = myPortfolio.World.LayerA;
                 var tweenScene90 = new TWEEN.Tween(layer.scene.rotation).to({
@@ -1779,6 +1779,12 @@ ENGINE = function() {
             var support = {
                 transitions: Modernizr.csstransitions
             };
+            // add delay for main title flipping chars effect
+            var headerTitleChars = document.querySelectorAll('.flip-container');
+            var delay = 100;
+            for(var i = 0; i < headerTitleChars.length; i++) {
+                headerTitleChars[i].delay = i * delay;
+            }
 
             function toggleOverlay() {
                 if(classie.has(menu, 'open')) {
@@ -1787,7 +1793,9 @@ ENGINE = function() {
                     myPortfolio.World.CurrentLayer.composer.passes[6].uniforms.v.value = bluriness / myPortfolio.World.height;
                     var onEndTransitionFn = function(ev) {
                         if(support.transitions) {
-                            if(ev.propertyName !== 'visibility') return;
+                            if(ev.propertyName !== 'visibility') {
+                                return;
+                            }
                             this.removeEventListener(transEndEventName, onEndTransitionFn);
                         }
                         classie.remove(menu, 'close');
@@ -1815,11 +1823,57 @@ ENGINE = function() {
                 galleryAnchor = document.getElementById('gallery'),
                 aboutAnchor = document.getElementById('about'),
                 creditsAnchor = document.getElementById('credits');
-            var headerTitle = document.querySelector('.header-title');
-            aboutAnchor.addEventListener('click', function() {
-                //headerTitle.innerHTML = '<div id="letter"><div class="front">Q</div><div class="back">A</div></div>' + '<div id="letter"><div class="front">U</div><div class="back">B</div></div>' + '<div id="letter"><div class="front">I</div><div class="back">O</div></div>' + '<div id="letter"><div class="front">N</div><div class="back">U</div></div>' + '<div id="letter"><div class="front">T</div><div class="back">T</div></div>' + '<div id="letter"><div class="front">E</div><div class="back">-</div></div>' + '<div id="letter"><div class="front">L</div><div class="back">M</div></div>' + '<div id="letter"><div class="front">A</div><div class="back">E</div></div>';
+
+            function changeCurrentTitle(newTitle) {
+                if(classie.has(headerTitleChars[0], 'flipped')) {
+                    var frontTitleChars = document.querySelectorAll('.front');
+                    for(var i = 0; i < frontTitleChars.length; i++) {
+                        frontTitleChars[i].innerHTML = newTitle[i];
+                    }
+                } else {
+                    var backTitleChars = document.querySelectorAll('.back');
+                    for(var i = 0; i < backTitleChars.length; i++) {
+                        backTitleChars[i].innerHTML = newTitle[i];
+                    }
+                }
+            }
+            // flip main title chars
+            homeAnchor.addEventListener('click', function() {
+                changeCurrentTitle('quintela');
                 toggleOverlay();
-                classie.toggleClass(headerTitle, 'flipped');
+                [].forEach.call(headerTitleChars, function(currentChar) {
+                    setTimeout(function() {
+                        classie.toggleClass(currentChar, 'flipped');
+                    }, currentChar.delay);
+                });
+            });
+            // flip main title chars
+            galleryAnchor.addEventListener('click', function() {
+                changeCurrentTitle('gallery_');
+                toggleOverlay();
+                [].forEach.call(headerTitleChars, function(currentChar) {
+                    setTimeout(function() {
+                        classie.toggleClass(currentChar, 'flipped');
+                    }, currentChar.delay);
+                });
+            });
+            aboutAnchor.addEventListener('click', function() {
+                changeCurrentTitle('about_me');
+                toggleOverlay();
+                [].forEach.call(headerTitleChars, function(currentChar) {
+                    setTimeout(function() {
+                        classie.toggleClass(currentChar, 'flipped');
+                    }, currentChar.delay);
+                });
+            });
+            creditsAnchor.addEventListener('click', function() {
+                changeCurrentTitle('credits_');
+                toggleOverlay();
+                [].forEach.call(headerTitleChars, function(currentChar) {
+                    setTimeout(function() {
+                        classie.toggleClass(currentChar, 'flipped');
+                    }, currentChar.delay);
+                });
             });
         },
         /**
