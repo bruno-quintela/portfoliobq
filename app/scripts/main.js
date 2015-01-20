@@ -126,14 +126,14 @@ ENGINE = function() {
         dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: false,
-            guiEnabled: false
+            guiEnabled: true
         },
         renderParams: {
             antialias: true,
             alpha: false,
             showStats: true,
             backgroundColor: [34, 34, 34],
-            backgroundImage: 1,
+            backgroundImage: 7,
             skydomeImage: 1,
             fog: 0.001,
             enableAnaglyph: false,
@@ -150,15 +150,15 @@ ENGINE = function() {
             bloomStrengh: 0.3,
             enableSepia: false,
             enableColorify: false,
-            enableFilm: false,
-            enableFilmBW: true,
+            enableFilm: true,
+            enableFilmBW: false,
             filmStrengh: 0.3,
             enableDotFilter: false,
             bleach: true,
             bleachOpacity: 1,
             technicolor: false,
             enableTiltShift: true,
-            tiltBlur: 3.5,
+            tiltBlur: 5.5,
             enableVignette: true,
             vignetteStrengh: 5,
             disableEffects: false
@@ -347,18 +347,18 @@ ENGINE = function() {
                 19: 19,
                 20: 20
             },
-            bodyTexture: 97,
+            bodyTexture: 113,
             headTexture: 97,
             hairTexture: 1,
             eyeTexture: 8,
             clothTexture: 8,
             lipsTexture: 8,
-            lowpolyTexture: 1,
+            lowpolyTexture: 95,
             lowpoly2Texture: 1,
             lowpoly3Texture: 1,
             fragmentsTexture: 1,
             normalSelected: 'NormalMap selection',
-            bodyNormal: 1,
+            bodyNormal: 11,
             headNormal: 1,
             hairNormal: 1,
             eyeNormal: 1,
@@ -597,13 +597,13 @@ ENGINE = function() {
                     function onDocumentMouseMove(event) {
                         var mouseX = event.clientX - myPortfolio.World.width / 2;
                         var mouseY = event.clientY - myPortfolio.World.height / 2;
-                        myPortfolio.World.targetRotationX = mouseX * 0.0001;
+                        myPortfolio.World.targetRotationX = mouseX * 0.00005;
                         myPortfolio.World.targetRotationY = mouseY * 0.0001;
                     }
                     if( !! value) {
-                        myPortfolio.World.renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
+                        document.addEventListener('mousemove', onDocumentMouseMove, false);
                     } else {
-                        myPortfolio.World.renderer.domElement.removeEventListener('mousemove', onDocumentMouseMove, false);
+                        document.World.renderer.domElement.removeEventListener('mousemove', onDocumentMouseMove, false);
                     }
                     world.refreshPostProcessing();
                 });
@@ -1049,7 +1049,7 @@ ENGINE = function() {
             this.Layer = function(name, colladaPath) {
                 this.name = name;
                 this.scene = new THREE.Scene();
-                this.camera = new THREE.PerspectiveCamera(30, world.width / world.height, 0.1, 100);
+                this.camera = new THREE.PerspectiveCamera(20, world.width / world.height, 0.1, 100);
                 this.camera.position.z = 6;
                 // frame buffer object
                 this.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
@@ -1220,7 +1220,7 @@ ENGINE = function() {
                 var addBackgroundImage = function(scene, imagePath) {
                     // Load the background texture
                     var texture = THREE.ImageUtils.loadTexture(imagePath);
-                    var plane = new THREE.PlaneBufferGeometry(9, 9, 0, 0);
+                    var plane = new THREE.PlaneBufferGeometry(8, 8, 0, 0);
                     var backgroundImage = new THREE.Mesh(plane, new THREE.MeshBasicMaterial({
                         map: texture
                     }));
@@ -1262,7 +1262,7 @@ ENGINE = function() {
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     mesh.geometry.computeTangents();
-                                    mesh.material = world.normalMaterial('../src/textures/matcaps/matcap30.png', '../src/textures/normalMaps/normal11.jpg', 1);
+                                    mesh.material = world.normalMaterial('../src/textures/matcaps/matcap'+world.materialParams.bodyTexture+'.png', '../src/textures/normalMaps/normal'+world.materialParams.bodyNormal+'.jpg', 1);
                                     /*
                                     mesh.geometry.verticesNeedUpdate = true;
                                     mesh.geometry.normalsNeedUpdate = true;
@@ -1305,7 +1305,7 @@ ENGINE = function() {
                                 } else if(child.name === 'makehuman_Eyebrow') {
                                     var mesh = child.children[0];
                                     mesh.material = new THREE.MeshBasicMaterial({
-                                        map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/eyebrow012.png"),
+                                        map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/eyebrowMale2.png"),
                                         blending: THREE.NormalBlending,
                                         depthTest: true,
                                         transparent: true
@@ -1314,7 +1314,7 @@ ENGINE = function() {
                                 } else if(child.name === 'makehuman_Eyelashes') {
                                     var mesh = child.children[0];
                                     mesh.material = new THREE.MeshBasicMaterial({
-                                        map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/eyelashes01.png"),
+                                        map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/eyelashesMale2.png"),
                                         blending: THREE.NormalBlending,
                                         depthTest: true,
                                         transparent: true
@@ -1326,7 +1326,7 @@ ENGINE = function() {
                                 } else if(child.name === 'lowpoly') {
                                     var mesh = child.children[0];
                                     //mesh.geometry.computeTangents();
-                                    mesh.material = world.matcapMaterial(15);
+                                    mesh.material = world.matcapMaterial(world.materialParams.lowpolyTexture);
                                     //world.normalMaterial('../src/textures/matcaps/matcap15.png', '../src/textures/normalMaps/normal11.jpg', 1);
                                     //layer.polyWire1 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
                                     mesh.receiveShadow = false;
@@ -1346,8 +1346,9 @@ ENGINE = function() {
                                     //layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 1.031, 1);
                                 } else if(child.name === 'lowpoly3') {
                                     var mesh = child.children[0];
+                                    mesh.material = world.matcapMaterial(15);
                                     //mesh.geometry.computeTangents();
-                                    mesh.material = world.transparentMaterial(0xFFFFFF, 0.5);
+                                    //mesh.material = world.transparentMaterial(0xFFFFFF, 0.5);
                                     //world.matcapMaterial(15);
                                     //world.matcapMaterial(15);
                                     //layer.polyWire2 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
@@ -1407,8 +1408,8 @@ ENGINE = function() {
                                 //layer.rightArm.rotation.z -= layer.rotationSpeed.x;
                             }
                             if(world.motionParams.autoRotationY) {
-                                layer.lowpoly.rotation.y += layer.rotationSpeed.z * world.motionParams.reverseFactor;
-                                layer.lowpoly2.rotation.y -= layer.rotationSpeed.z * world.motionParams.reverseFactor;
+                                layer.lowpoly.rotation.y -= layer.rotationSpeed.z * world.motionParams.reverseFactor;
+                                layer.lowpoly2.rotation.y += layer.rotationSpeed.z * world.motionParams.reverseFactor;
                                 //layer.skydome.rotation.y += layer.rotationSpeed.y;
                                 //layer.leftArm.rotation.y -= layer.rotationSpeed.x;
                             }
@@ -1721,9 +1722,9 @@ ENGINE = function() {
             var world = this;
             this.init();
             this.transitionParams.clock.elapsedTime = 0;
-            this.LayerA = new this.Layer('LayerA', '../src/collada/male15.dae');
-            this.LayerB = new this.Layer('LayerB', '../src/collada/male15.dae');
-            this.LayerC = new this.Layer('LayerC', '../src/collada/male15.dae');
+            this.LayerA = new this.Layer('LayerA', '../src/collada/male19.dae');
+            this.LayerB = new this.Layer('LayerB', '../src/collada/male19.dae');
+            this.LayerC = new this.Layer('LayerC', '../src/collada/male19.dae');
             this.CurrentLayer = this.LayerA;
             this.NextLayer = this.LayerB;
             this.transition = new this.Transition(this.CurrentLayer, this.NextLayer);
@@ -1775,6 +1776,7 @@ ENGINE = function() {
             var support = {
                 transitions: Modernizr.csstransitions
             };
+            // add perspective change on 
             // add delay for main title flipping chars effect
             var headerTitleChars = document.querySelectorAll('.flip-container');
             var delay = 100;

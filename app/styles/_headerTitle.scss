@@ -8,8 +8,10 @@
   z-index:2;
   width:350px;
   height:$header-title-height;
-  border: 25px solid #FFF;
+  border: 10px solid #000;
   text-align: center;
+  background: rgba(255,255,255,0.3);
+  color: #000;
 }
 
 .header-title.open 
@@ -51,7 +53,6 @@
     @include transform(rotateY(0deg));
     position: absolute;
     width:100%;
-    color: #FFF;
 }
 
 .front {

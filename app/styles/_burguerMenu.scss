@@ -9,6 +9,7 @@ $iconSize: 30px;
 .menu-trigger {
   z-index:5;
   position: absolute;
+  left:0px;
   display: inline-block;
   width: $iconSize * 1.2;
   height: $iconSize;

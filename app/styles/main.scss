@@ -3,7 +3,7 @@
 @import 'gridComposer';
 
 
-$header-title-height: 75%;
+$header-title-height: 80%;
 
 *, *:before, *:after {
   box-sizing: border-box;
@@ -46,21 +46,28 @@ a {
     letter-spacing: 5px;
 }
 
-.follow-info hr
+hr
 {
-    width: 300px;
+    width: 200px;
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: -webkit-linear-gradient(left, #ccc, #333, #ccc); 
+    background-image:    -moz-linear-gradient(left, #ccc, #333, #ccc); 
+    background-image:     -ms-linear-gradient(left, #ccc, #333, #ccc); 
+    background-image:      -o-linear-gradient(left, #ccc, #333, #ccc); 
 }
 
 
 .footer-info{
     position: absolute;
-    bottom:20px;
+    bottom:30px;
     width:100%;
     text-align: center;
     text-transform: uppercase;
     font-size: 12px;
     font-weight: 400;
-    color: #FFF;
+    color: #000;
     letter-spacing: 5px;
 }
 
@@ -69,19 +76,8 @@ a {
     opacity:0;
 }
 
-.footer-info hr
-{
-    width: 300px;
-}
-
-.menu-trigger
-{
-    z-index:4;
-    position:absolute;
-    left:0px;
-}
-
 @import 'burguerMenu';
+@import 'scrollDown';
 @import 'menuOverlay';
 @import 'socialIcons';
 @import 'mediaQueries';

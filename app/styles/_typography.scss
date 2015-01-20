@@ -19,7 +19,7 @@
   %header-title-font {
      text-transform: uppercase;
      font-size: 15vh;
-     font-weight: 700;
+     font-weight: 300;
      @include transition((color 0.3s, opacity 0.3s, font-size 0.1s));
   }
   
