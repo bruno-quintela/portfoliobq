@@ -41,6 +41,34 @@
  * Set a rem font size with pixel fallback
  */
 
+/**
+ * Mixin scrollbar
+ */
+@mixin scrollbar($size, $primary, $secondary: lighten($primary, 25%)) {
+	::-webkit-scrollbar {
+		width:  $size;
+		height: $size;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: $primary;
+        border-radius: 10px;
+	}
+
+	::-webkit-scrollbar-track {
+		background: $secondary;
+	}
+  
+  // For Internet Explorer
+  body {
+    scrollbar-face-color: $primary;
+    scrollbar-track-color: $secondary;
+    border-radius: 8px;
+  }
+}
+
+
+
 @function calculateRem($size) {
   $remSize: $size / 16px;
   @return $remSize * 1rem;

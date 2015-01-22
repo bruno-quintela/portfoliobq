@@ -6,12 +6,13 @@
 {
   @extend %absolute-center;
   z-index:2;
-  width:350px;
+  width:$header-title-width;
   height:$header-title-height;
-  border: 10px solid #000;
+  border: 0px solid #000;
   text-align: center;
   background: rgba(255,255,255,0.3);
   color: #000;
+  opacity:1;//temp
 }
 
 .header-title.open 

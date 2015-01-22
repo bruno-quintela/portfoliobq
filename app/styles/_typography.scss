@@ -11,9 +11,21 @@
 	font-family: 'Lato', sans-serif;
 }
 
+@font-face {
+	font-family: 'Roboto', sans-serif;
+}
+
+@font-face {
+	font-family: 'Oswald', sans-serif;
+}
+
+@font-face {
+	font-family: 'Open Sans', sans-serif;
+}
+
 %body-font
 {
-    font-family: lato;
+    font-family: Open Sans;
   	text-rendering: optimizeLegibility;
   
   %header-title-font {
