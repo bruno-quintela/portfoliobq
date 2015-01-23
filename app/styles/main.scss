@@ -32,10 +32,8 @@ a {
   height:100%;
 }
 
+@include scrollbar(.5em, rgba(255,0,0,0.7));
 @import 'headerTitle';
-
-
-
 
 .follow-info{
     position: absolute;
@@ -61,18 +59,55 @@ hr
     background-image:      -o-linear-gradient(left, #ccc, #333, #ccc); */
 }
 
+/********************************************************************/
+
 .content-wrapper
 {
-    z-index:3;
-	position: fixed;
+    z-index:2;
+	position: absolute;
 	width:66%;
 	height: 100%;
 	top: 0;
 	right: 0;
 	background: rgba(0,0,0,0.2);
+    overflow-y:auto;
+}
+
+.content-wrapper.open
+{
+    opacity:0;
+}
+
+.content
+{
+    height:100%;
+}
+
+.content-info
+{
+    padding-left: 150px;
+    height:100%;
+}
+
+.content-info h1
+{
+    @extend %header-title-font;
+    letter-spacing: 100px;
+    font-weight:600;
+    //color:#fff;
+    color: rgba(255,0,0,0.8);
+}
+
+.content-info p
+{
+    font-weight: 100;
+    text-align: justify;
+    width: 50%;
+    line-height: 32px;
     color: #fff;
 }
 
+/********************************************************************/
 
 .footer-info{
     position: absolute;
@@ -92,7 +127,6 @@ hr
 }
 
 @import 'burguerMenu';
-@import 'scrollDown';
 @import 'menuOverlay';
 @import 'socialIcons';
 @import 'mediaQueries';
