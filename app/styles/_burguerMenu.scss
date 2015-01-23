@@ -3,20 +3,20 @@
  **/
 
 
-$fill: #FFF;
+$fill: #000;
 $iconSize: 30px;
 
 .menu-trigger {
   z-index:5;
   position: absolute;
-  left:0px;
+  right:0px;
   display: inline-block;
   width: $iconSize * 1.2;
   height: $iconSize;
-  margin:20px;
+  margin:50px;
   
   span, span:before, span:after {
-    @include transition(transform 0.5s);
+    @include transition((transform 0.5s, background 0.5s));
     display: block;
     width: 100%;
     height: $iconSize / 5;
@@ -43,12 +43,15 @@ $iconSize: 30px;
 }
 .menu-trigger.open {
   span:before {
+    background: #fff;
     @include transform((translate(0px, ($iconSize * 2 / 5)) rotate(90deg)));
   }
   span:after {
+      background: #fff;
     @include transform((translate(0px, -($iconSize * 2 / 5)) rotate(90deg)));
   }
   span {
+      background: #fff;
     @include transform(rotate(-45deg));
   }
 }

@@ -5,19 +5,21 @@
 	visibility: hidden;
     z-index:3;
 	position: fixed;
-	width: 100%;
+	width:66%;
 	height: 100%;
 	top: 0;
-	left: 0;
-	background: rgba(0,0,0,0.7);
+	right: 0;
+	background: rgba(0,0,0,0.2);
+    color: #fff;
 }
 
 .menu-overlay nav {
-	@extend %absolute-center;
+	position: absolute;
+    top:0px;
+    bottom:0px;
     z-index:4;
-    width:100%;
     height:$header-title-height;
-    padding-top: 25px;
+    padding: 0px;
     border: 0px solid #FFF;
     text-align: center;
 }
@@ -35,16 +37,21 @@
 .menu-overlay ul li {
 	display: block;
 	height: calc(100% / 4);
+    text-align: left;
+    letter-spacing: 115px;
+    padding-top:50px;//tmp
+    padding-left:150px;//tmp
 }
 
 .menu-overlay ul li a {
-    @extend  %header-title-font;
+    @extend  %menu-item-font;
+    font-weight:600;
     color: rgba(255,255,255,1);
 }
 
 .menu-overlay ul li a:hover,
 .menu-overlay ul li a:focus {
-	color: rgba(0,255,255,0.4);
+	color: rgba(255,0,0,0.4);
 }
 
 /* Main Menu Open State Transitions */

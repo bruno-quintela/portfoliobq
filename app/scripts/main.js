@@ -1823,8 +1823,8 @@ ENGINE = function() {
                     myPortfolio.World.CurrentLayer.composer.passes[6].uniforms.v.value = bluriness / myPortfolio.World.height;
                 }
                 classie.toggleClass(menu, 'open');
-                classie.toggleClass(header, 'open');
-                classie.toggleClass(footer, 'open');
+                //classie.toggleClass(header, 'open');
+                //classie.toggleClass(footer, 'open');
                 classie.toggleClass(triggerBttn, 'open');
                 classie.toggleClass(content, 'open');
                 
@@ -1864,7 +1864,7 @@ ENGINE = function() {
             });
             // flip main title chars
             galleryAnchor.addEventListener('click', function() {
-                changeCurrentTitle('gallery_');
+                changeCurrentTitle('gal_ery ');
                 toggleOverlay();
                 [].forEach.call(headerTitleChars, function(currentChar) {
                     setTimeout(function() {

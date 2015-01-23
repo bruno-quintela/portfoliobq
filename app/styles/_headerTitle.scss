@@ -4,7 +4,13 @@
 
 .header-title
 {
-  @extend %absolute-center;
+  position: absolute;
+    top: 0px;
+    bottom: 0px;
+/* left: 0px; */
+/* right: 0px; */
+    margin: auto;
+  right:none;//temp
   z-index:2;
   width:$header-title-width;
   height:$header-title-height;
@@ -28,6 +34,7 @@
     float:left;
     width:50%;
     height:calc(100% / 4);
+    padding-top:50px;//tmp
 }
 /* START: Accommodating for IE */
 .flip-container.flipped .back {
