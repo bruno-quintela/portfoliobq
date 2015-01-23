@@ -1853,7 +1853,7 @@ ENGINE = function() {
             }
             // flip main title chars
             homeAnchor.addEventListener('click', function() {
-                changeCurrentTitle('quintela');
+                changeCurrentTitle('quintela ');
                 toggleOverlay();
                 [].forEach.call(headerTitleChars, function(currentChar) {
                     setTimeout(function() {
@@ -1874,7 +1874,7 @@ ENGINE = function() {
                 myPortfolio.World.transitionParams.toLayerB();
             });
             aboutAnchor.addEventListener('click', function() {
-                changeCurrentTitle('about_me');
+                changeCurrentTitle('about_me ');
                 toggleOverlay();
                 [].forEach.call(headerTitleChars, function(currentChar) {
                     setTimeout(function() {
@@ -1884,7 +1884,7 @@ ENGINE = function() {
                 myPortfolio.World.transitionParams.toLayerC();
             });
             creditsAnchor.addEventListener('click', function() {
-                changeCurrentTitle('credits_');
+                changeCurrentTitle('credits_ ');
                 toggleOverlay();
                 [].forEach.call(headerTitleChars, function(currentChar) {
                     setTimeout(function() {

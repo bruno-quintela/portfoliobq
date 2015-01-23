@@ -26,6 +26,53 @@
     opacity:0;
 }
 
+.bottom-info
+{
+    position:absolute;
+    bottom:0px;
+    left: 0px;
+    width:100%;
+    height:  calc(100% / 4);
+    background-color: transparent;
+}
+
+.bottom-info hr
+{
+    float:right;
+    width:100%
+}
+
+.bottom-info .number
+{
+    position:absolute;
+    top:0px;
+    right: 0px;
+    width:50%;
+    font-weight:600;
+    font-size:16vh;
+    text-align:center;
+    color: rgba(255,0,0,0.8);
+    margin-top: 0px;
+}
+
+.bottom-info .small-text
+{
+    position:absolute;
+    top:40px;
+    left: 0px;
+    width:50%;
+    font-weight:300;
+    font-size:15px;
+    text-align:right;
+    text-transform: initial;
+}
+
+.bottom-info .small-text b
+{
+    text-transform:uppercase;
+}
+
+
 .flip-container {
     @extend %header-title-font;
     @include perspective(1000);
