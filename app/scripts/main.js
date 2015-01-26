@@ -1735,7 +1735,7 @@ ENGINE = function() {
             var world = this;
             this.init();
             this.transitionParams.clock.elapsedTime = 0;
-            this.LayerA = new this.Layer('LayerA', '../src/collada/male19.dae');
+            this.LayerA = new this.Layer('LayerA', '../src/collada/lowpoly.dae');
             this.LayerB = new this.Layer('LayerB', '../src/collada/male19.dae');
             this.LayerC = new this.Layer('LayerC', '../src/collada/male19.dae');
             this.CurrentLayer = this.LayerA;
