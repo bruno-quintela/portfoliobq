@@ -15,13 +15,33 @@ a {
 	outline: none;
 }
 
+textarea {
+    resize: none;
+}
+
+
+hr
+{
+    border: 0;
+    height: 1px;
+    background: #333;
+    /*background-image: -webkit-linear-gradient(left, #ccc, #333, #ccc); 
+    background-image:    -moz-linear-gradient(left, #ccc, #333, #ccc); 
+    background-image:     -ms-linear-gradient(left, #ccc, #333, #ccc); 
+    background-image:      -o-linear-gradient(left, #ccc, #333, #ccc); */
+}
+
+
+
+/*************************************************************************/
+
 .body-wrapper
 {
   @extend %body-font;
   position:absolute;
   width:100%;
   height:100%;
-  background: rgb(0,0,0);
+  background: rgb(255,255,255);
   z-index:-1;
 }
 
@@ -34,30 +54,71 @@ a {
 
 @include scrollbar(.5em, rgba(255,0,0,0.7));
 @import 'headerTitle';
-
-.follow-info{
-    position: absolute;
-    bottom:20px;
-    width:100%;
-    text-align: center;
-    font-size: 12px;
-    font-weight: 400;
-    color: #FFF;
-    letter-spacing: 5px;
-    opacity:0;//tmp
-}
-
-hr
+/************************************************************/
+#aboutWrapper
 {
-    width: 200px;
-    border: 0;
-    height: 1px;
-    background: #333;
-    /*background-image: -webkit-linear-gradient(left, #ccc, #333, #ccc); 
-    background-image:    -moz-linear-gradient(left, #ccc, #333, #ccc); 
-    background-image:     -ms-linear-gradient(left, #ccc, #333, #ccc); 
-    background-image:      -o-linear-gradient(left, #ccc, #333, #ccc); */
+    position:absolute;
+    width:100%;
+    height:100%;
+    opacity:1;
+    @include transform(translateX(-100%));
+    @include transition((opacity 0.6s, transform 0.6s));
+    
 }
+
+#aboutWrapper.active
+{
+    @include transform(translateX(0%));
+    opacity:1;
+}
+
+#reelWrapper 
+{
+    opacity:1;
+    position:absolute;
+    width:100%;
+    height:100%;
+    @include transform(translateX(-100%));
+    @include transition((opacity 0.6s, transform 0.6s));
+}
+
+#reelWrapper.active
+{
+    opacity:1;
+    @include transform(translateX(0%));
+}
+
+
+#contactWrapper
+{   
+    opacity:1;
+    position:absolute;
+    width:100%;
+    height:100%;
+    @include transform(translateX(-100%));
+    @include transition((opacity 0.6s, transform 0.6s));
+}
+
+#contactWrapper.active
+{
+    opacity:1;
+    @include transform(translateX(0%));
+}
+
+#creditsWrapper
+{   
+    position:absolute;
+    width:100%;
+    height:100%;
+    @include transform(translateX(-100%));
+    @include transition((opacity 0.6s, transform 0.6s));
+}
+
+#creditsWrapper.active
+{
+    @include transform(translateX(0%));
+}
+
 
 /********************************************************************/
 
@@ -69,14 +130,9 @@ hr
 	height: 100%;
 	top: 0;
 	right: 0;
-	background: rgba(0,0,0,0.2);
     overflow-y:auto;
-    overflow-x:hidden;
-}
-
-.content-wrapper.open
-{
-    opacity:0;
+    //overflow-x:hidden;
+    background-color: rgba(0,0,0,0.8);
 }
 
 .content
@@ -96,7 +152,7 @@ hr
     letter-spacing: 100px;
     font-weight:600;
     //color:#fff;
-    color: rgba(255,0,0,0.8);
+    color: red;
 }
 
 .content-info p
@@ -144,83 +200,6 @@ hr
 /*********************************************************************/
 
 
-.gallery-item
-{
-    position:absolute;
-    top:0px;
-    width: calc(100%/5);
-    height: 100%;
-    //rder-right: 1px solid #fff;
-    background-repeat: no-repeat;
-    background-position: center;
-    /*-webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;*/
-    cursor:pointer;
-    @include transition((background-position 1000ms, cubic-bezier(0,.05,.03,.84)));
-    
-}
-
-.gallery-item:hover
-{
-   background-position: 40% 50%;
-}
-
-.gallery-item{
-  &:nth-child(1){
-    left:0%;
-    background-image: url(../src/img/galleryItem1.png);
-  }
-  &:nth-child(2){
-    left:20%;
-    background-image: url(../src/img/galleryItem2.png);
-  }
-  &:nth-child(3){
-    left:40%;
-    background-image: url(../src/img/galleryItem3.png);
-  }
-  &:nth-child(4){
-    left:60%;
-    background-image: url(../src/img/galleryItem4.png);
-  }
-  &:nth-child(5){
-    left:80%;
-    background-image: url(../src/img/galleryItem5.png);
-  }
-}
-
-.gallery-item-info{
-    position:absolute;
-    bottom:0px;
-    background-color: rgba(0,0,0,0.5);
-    color:#fff;
-    width: 100%;
-    height:25%;
-    padding:20px;
-    text-align:left;
-    //border-bottom: 5px solid red;
-    border-top: 1px solid red;
-    //opacity:0;
-    @include transform(translateY(100%));
-    @include transition((transform 1000ms, opacity 1000ms, cubic-bezier(0,.05,.03,.84)));
-}
-
-
-.gallery-item:hover .gallery-item-info
-{
-   @include transform(translateY(0%));
-   //opacity:1;
-}
-
-.gallery-item-info .title{
-    font-weight:300;
-    margin:0px;
-}
-
-.gallery-item-info .subtitle{
-    font-weight:300;
-    font-size:11px;
-}
 
 /**********************************************************************/
 
@@ -243,5 +222,7 @@ hr
 
 @import 'burguerMenu';
 @import 'menuOverlay';
+@import 'gallery';
+@import 'contact';
 @import 'socialIcons';
 @import 'mediaQueries';

@@ -35,13 +35,12 @@
      @include transition((color 0.3s, opacity 0.3s, font-size 0.1s));
   }
     
-    %menu-item-font {
+  %menu-item-font {
      text-transform: uppercase;
      font-size: 7vh;
      font-weight: 300;
      @include transition((color 0.3s, opacity 0.3s, font-size 0.1s));
   }
-  
 }
 
 

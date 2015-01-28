@@ -1275,7 +1275,7 @@ ENGINE = function() {
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     mesh.geometry.computeTangents();
-                                    mesh.material = world.normalMaterial('../src/textures/matcaps/matcap'+world.materialParams.bodyTexture+'.png', '../src/textures/normalMaps/normal'+world.materialParams.bodyNormal+'.jpg', 1);
+                                    mesh.material = world.normalMaterial('../src/textures/matcaps/matcap' + world.materialParams.bodyTexture + '.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1);
                                     /*
                                     mesh.geometry.verticesNeedUpdate = true;
                                     mesh.geometry.normalsNeedUpdate = true;
@@ -1735,7 +1735,7 @@ ENGINE = function() {
             var world = this;
             this.init();
             this.transitionParams.clock.elapsedTime = 0;
-            this.LayerA = new this.Layer('LayerA', '../src/collada/lowpoly.dae');
+            this.LayerA = new this.Layer('LayerA', '../src/collada/male15.dae');
             this.LayerB = new this.Layer('LayerB', '../src/collada/male19.dae');
             this.LayerC = new this.Layer('LayerC', '../src/collada/male19.dae');
             this.CurrentLayer = this.LayerA;
@@ -1778,7 +1778,10 @@ ENGINE = function() {
                 menu = document.querySelector('.menu-overlay'),
                 header = document.querySelector('.header-title'),
                 footer = document.getElementById('footerInfo'),
-                content = document.getElementById('contentWrapper');
+                aboutWrapper = document.getElementById('aboutWrapper'),
+                galleryWrapper = document.getElementById('reelWrapper'),
+                contactWrapper = document.getElementById('contactWrapper'),
+                creditsWrapper = document.getElementById('creditsWrapper');
             var transEndEventNames = {
                 'WebkitTransition': 'webkitTransitionEnd',
                 'MozTransition': 'transitionend',
@@ -1823,19 +1826,20 @@ ENGINE = function() {
                     myPortfolio.World.CurrentLayer.composer.passes[6].uniforms.v.value = bluriness / myPortfolio.World.height;
                 }
                 classie.toggleClass(menu, 'open');
-                //classie.toggleClass(footer, 'open');
                 classie.toggleClass(triggerBttn, 'open');
-                classie.toggleClass(content, 'open');
-                
+                classie.removeClass(aboutWrapper, 'active');
+                classie.removeClass(galleryWrapper, 'active');
+                classie.removeClass(contactWrapper, 'active');
+                classie.removeClass(creditsWrapper, 'active');
             }
             triggerBttn.addEventListener('click', toggleOverlay);
             /**
              * Menu navigation anchors triggers handler
              **/
-            var homeAnchor = document.getElementById('home'),
-                galleryAnchor = document.getElementById('gallery'),
-                aboutAnchor = document.getElementById('about'),
-                creditsAnchor = document.getElementById('credits');
+            var contactAnchor = document.getElementById('contactAnchor'),
+                galleryAnchor = document.getElementById('galleryAnchor'),
+                aboutAnchor = document.getElementById('aboutAnchor'),
+                creditsAnchor = document.getElementById('creditsAnchor');
 
             function changeCurrentTitle(newTitle) {
                 if(classie.has(headerTitleChars[0], 'flipped')) {
@@ -1851,9 +1855,11 @@ ENGINE = function() {
                 }
             }
             // flip main title chars
-            homeAnchor.addEventListener('click', function() {
-                changeCurrentTitle('quintela ');
+            // 
+            aboutAnchor.addEventListener('click', function() {
+                changeCurrentTitle('about_me ');
                 toggleOverlay();
+                classie.toggleClass(aboutWrapper, 'active');
                 [].forEach.call(headerTitleChars, function(currentChar) {
                     setTimeout(function() {
                         classie.toggleClass(currentChar, 'flipped');
@@ -1861,30 +1867,37 @@ ENGINE = function() {
                 });
                 myPortfolio.World.transitionParams.toLayerA();
             });
-            // flip main title chars
+        
             galleryAnchor.addEventListener('click', function() {
                 changeCurrentTitle('gal_ery ');
                 toggleOverlay();
+                classie.toggleClass(galleryWrapper, 'active');
                 [].forEach.call(headerTitleChars, function(currentChar) {
                     setTimeout(function() {
                         classie.toggleClass(currentChar, 'flipped');
                     }, currentChar.delay);
                 });
-                myPortfolio.World.transitionParams.toLayerB();
+                
+               // myPortfolio.World.transitionParams.toLayerB();
             });
-            aboutAnchor.addEventListener('click', function() {
-                changeCurrentTitle('about_me ');
+            
+           
+            contactAnchor.addEventListener('click', function() {
+                changeCurrentTitle('gal_ery ');
                 toggleOverlay();
+                classie.toggleClass(contactWrapper, 'active');
                 [].forEach.call(headerTitleChars, function(currentChar) {
                     setTimeout(function() {
                         classie.toggleClass(currentChar, 'flipped');
                     }, currentChar.delay);
                 });
-                myPortfolio.World.transitionParams.toLayerC();
+                
+                myPortfolio.World.transitionParams.toLayerB();
             });
             creditsAnchor.addEventListener('click', function() {
                 changeCurrentTitle('credits_ ');
                 toggleOverlay();
+                classie.toggleClass(creditsWrapper, 'active');
                 [].forEach.call(headerTitleChars, function(currentChar) {
                     setTimeout(function() {
                         classie.toggleClass(currentChar, 'flipped');
@@ -1892,11 +1905,29 @@ ENGINE = function() {
                 });
             });
         },
+        initMap: function() {
+            var myLatlng = new google.maps.LatLng(40.641214, -8.647156);
+            var mapCanvas = document.getElementById('map-canvas');
+            var mapOptions = {
+                center: new google.maps.LatLng(40.641214, -8.647156),
+                zoom: 13,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(mapCanvas, mapOptions);
+            //map.set('styles', [{"featureType":"all","elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#ffcd93"},{"lightness":40}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#000000"},{"lightness":16}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"administrative","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#be7747"},{"lightness":17},{"weight":1.2}]},{"featureType":"administrative","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#aa6033"},{"lightness":20}]},{"featureType":"landscape","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#9e693b"},{"lightness":21}]},{"featureType":"poi.attraction","elementType":"all","stylers":[{"color":"#ffffff"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"color":"#ffffff"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffffff"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway.controlled_access","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":18}]},{"featureType":"road.arterial","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":16}]},{"featureType":"road.local","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":19}]},{"featureType":"transit","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit.line","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit.station.bus","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit.station.rail","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#fff6eb"},{"lightness":17}]}]);
+            var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+            var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                icon: iconBase + 'schools_maps.png'
+            });
+        },
         /**
          * Start UI events handler
          **/
         start: function() {
             this.initMenu();
+            //this.initMap();
         }
     }
 };

@@ -88,6 +88,8 @@
     <script src="scripts/vendor/threejs/modifier/subdivisionModifier.js"></script>
     <!-- CLASSIE JS Plugin  -->
     <script src="scripts/vendor/classiejs/classie.js"></script>
+    <!-- GOOGLE MAPS API -->
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
 
 
 
@@ -148,68 +150,19 @@
         <div class="menu-overlay">
             <nav>
                 <ul>
-                    <li><a id="home" href="#">About</a>
+                    <li><a id="aboutAnchor" href="#">About</a>
                     </li>
-                    <li><a id="gallery" href="#">Gallery</a>
+                    <li><a id="galleryAnchor" href="#">Gallery</a>
                     </li>
-                    <li><a id="about" href="#">Contacts</a>
+                    <li><a id="contactAnchor" href="#">Contact</a>
                     </li>
-                    <li><a id="credits" href="#">Credits</a>
+                    <li><a id="creditsAnchor" href="#">Credits</a>
                     </li>
                 </ul>
             </nav>
-            <div id="followInfo" class="follow-info">
-                <div>follow me</div>
-                <hr>
-                <div class="social__container">
-                    <!-- social__item linkedin -->
-                    <div class="social__item">
-                        <a target="_blank" href="https://www.linkedin.com/pub/steven-roberts/7a/707/409" class="social__icon--linkedin"><i class="icon--linkedin"></i></a>
-                    </div>
-                    <!-- /social__item linkedin -->
-
-                    <!-- social__item twitter -->
-                    <div class="social__item">
-                        <a target="_blank" href="https://twitter.com/matchboxhero10" class="social__icon--twitter"><i class="icon--twitter"></i></a>
-                    </div>
-                    <!-- /social__item twiter -->
-
-                    <!-- social__item google+ -->
-                    <div class="social__item">
-                        <a target="_blank" href="https://plus.google.com/u/0/+StevenRoberts-mbh/posts" class="social__icon--googleplus"><i class="icon--googleplus"></i></a>
-                    </div>
-                    <!-- /social__item google+ -->
-
-                    <!-- social__item soundcloud -->
-                    <div class="social__item">
-                        <a target="_blank" href="https://soundcloud.com/matchboxhero" class="social__icon--soundcloud"><i class="icon--soundcloud"></i></a>
-                    </div>
-                    <!-- /social__item soundcloud -->
-
-
-                    <!-- social__item facebook -->
-                    <div class="social__item">
-                        <a target="_blank" href="http://facebook.com" class="social__icon--facebook"><i class="icon--facebook"></i></a>
-                    </div>
-                    <!-- /social__item facebook -->
-
-                    <!-- social__item dribble -->
-                    <div class="social__item">
-                        <a target="_blank" href="http://dribbble.com" class="social__icon--dribble"><i class="icon--dribble"></i></a>
-                    </div>
-                    <!-- /social__item dribble -->
-
-
-                    <!-- social__item behance -->
-                    <div class="social__item">
-                        <a target="_blank" href="http://behance.com" class="social__icon--behance"><i class="icon--behance"></i></a>
-                    </div>
-                    <!-- /social__item behance -->
-                </div>
-            </div>
         </div>
         <div id="contentWrapper" class="content-wrapper">
-            <!--section id="aboutMe" class="content">
+            <section id="aboutWrapper" class="content ">
                 <div class="nav-info">
                     <div class="small-text">
                         <hr>
@@ -221,7 +174,7 @@
                     
                 </div>
                 <div class="content-info">
-                    <h1>About Me</h1>
+                    <h1>About<br>Me</h1>
 
                     <p>
                         Hello World,
@@ -240,17 +193,17 @@
                     </p>
                 </div>
                 <div class="content-info">
-                    <h1>Purpose</h1>
+                    <h1>Purpo<br>se</h1>
                     <p>
                         In about 5 to 10 years from now we will be facing the age of VR, when almost all visual devices now known to men will be replaced by VR headsets, the usual 2D space we are used to browse the internet, will be replaced by a 3D immersive environment that the user interacts with. This is happening already in gamming with , Oculus Rift and OSVR. Hi expect to be part of this journey.
                     </p>
                 </div>
-            </section-->
-            <section id="gallery" class="content">
+            </section>
+            <section id="reelWrapper" class="content">
                 <div class="gallery-item">
                     <div class="gallery-item-info">
                            <h1 class="title">Model <br> Name</h1>
-                        <hr>
+                        <br>
                         <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
                             
                     </div>
@@ -288,6 +241,70 @@
                     </div>
                 </div>
             </section>
+            <section id="contactWrapper" class="content">
+                <form id="contactForm" class="content-info contact" role="form" action="contact.php" method="POST">
+                    <h1>Cont<br>act</h1>
+                    <div class="input-wrapper">
+                        <span class="input input--hoshi">
+					        <input class="input__field input__field--hoshi" type="text" id="name" name="name" placeholder="Name" required/>
+					        <label class="input__label input__label--hoshi" for="name"></label>
+                        </span>
+                    </div>
+                    <div class="input-wrapper">
+                        <span class="input input--hoshi">
+					    <input class="input__field input__field--hoshi" type="email" id="email" name="email" placeholder="Email" required/>
+					    <label class="input__label input__label--hoshi" for="email">
+                        </label>
+                        </span>
+                    </div>
+                    <div class="input-wrapper">
+                        <span class="input input--hoshi">
+                        <textarea  class="input__field input__field--hoshi" type="text" id="message" name="subject" cols="40" rows="3" placeholder="subject" required></textarea>
+					<label class="input__label input__label--hoshi" for="message">
+                        </label>
+                        </span>
+                    </div>
+                    <div class="send-message">
+                        <input name="submit" type="submit" class="send-message" value="send">
+                    </div>
+
+                    <div id="followInfo" class="follow-info">
+                        <div class="small-text-contact">If you want to talk about stuff, job related or not, feel free to contact me.</div>
+                        <br>
+                        <hr>
+                        <br>
+                        <div class="social__container">
+
+                            <!-- social__item twitter -->
+                            <div class="social__item">
+                                <a target="_blank" href="https://twitter.com/" class="social__icon--twitter"><i class="icon--twitter"></i></a>
+                            </div>
+                            <!-- /social__item twiter -->
+
+                            <!-- social__item linkedin -->
+                            <div class="social__item">
+                                <a target="_blank" href="https://www.linkedin.com/" class="social__icon--linkedin"><i class="icon--linkedin"></i></a>
+                            </div>
+                            <!-- /social__item linkedin -->
+
+                            <!-- social__item behance -->
+                            <div class="social__item">
+                                <a target="_blank" href="http://behance.com" class="social__icon--behance"><i class="icon--behance"></i></a>
+                            </div>
+                            <!-- /social__item behance -->
+
+                            <!-- social__item soundcloud -->
+                            <div class="social__item">
+                                <a target="_blank" href="https://soundcloud.com/matchboxhero" class="social__icon--soundcloud"><i class="icon--soundcloud"></i></a>
+                            </div>
+                            <!-- /social__item soundcloud -->
+                        </div>
+                    </div>
+                </form>
+                <!--div id="map-canvas" class="map"></div-->
+
+            </section>
+            <section id="creditsWrapper" class="content">credits</section>
         </div>
         <footer id="footerInfo" class="footer-info">
             <div>Web Designer</div>
