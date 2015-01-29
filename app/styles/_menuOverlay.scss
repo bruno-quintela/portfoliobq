@@ -2,15 +2,21 @@
 .menu-overlay {
 
     z-index:3;
-    opacity: 1;
+    visibility: hidden;
 	position: fixed;
 	width:67%;
 	height: 100%;
 	top: 0;
-	right: 0;
+	right: 0%;
 	//background: rgba(0,0,0,0.5);
     color: #fff;
-    @include transform(translateX(-100%));
+    //@include transform(translateX(-100%));
+}
+
+.menu-overlay.open
+{
+    visibility: visible;
+    opacity:1;
 }
 
 .menu-overlay nav {
@@ -45,37 +51,37 @@
 }
 
 .menu-overlay ul li {
-    @include transform(translateX(0%));
+    @include transform(translateX(-100%));
     &:nth-child(1){
-    transition-delay:100ms;
+    transition-delay:0ms;
     }
     &:nth-child(2){
-        transition-delay:200ms;
+        transition-delay:100ms;
     }
     &:nth-child(3){
-        transition-delay:300ms;
+        transition-delay:200ms;
     }
     &:nth-child(4){
-        transition-delay:400ms;
+        transition-delay:300ms;
     }
   
 }
 
 .menu-overlay.open ul li{
 	//opacity: 1;
-    @include transform(translateX(100%));
+    @include transform(translateX(0%));
     &:nth-child(1){
-    transition-delay:600ms;
+    transition-delay:500ms;
 
     }
     &:nth-child(2){
-      transition-delay:700ms;
+      transition-delay:600ms;
     }
     &:nth-child(3){
-        transition-delay:800ms;
+        transition-delay:700ms;
     }
     &:nth-child(4){
-        transition-delay:900ms;
+        transition-delay:800ms;
     }
 }
 

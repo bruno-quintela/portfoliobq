@@ -1800,12 +1800,31 @@ ENGINE = function() {
             for(var i = 0; i < headerTitleChars.length; i++) {
                 headerTitleChars[i].delay = i * delay;
             }
+            
+            function changeCurrentTitle(newTitle) {
+                if(classie.has(headerTitleChars[0], 'flipped')) {
+                    var frontTitleChars = document.querySelectorAll('.front');
+                    for(var i = 0; i < frontTitleChars.length; i++) {
+                        frontTitleChars[i].innerHTML = newTitle[i];
+                    }
+                } else {
+                    var backTitleChars = document.querySelectorAll('.back');
+                    for(var i = 0; i < backTitleChars.length; i++) {
+                        backTitleChars[i].innerHTML = newTitle[i];
+                    }
+                }
+                [].forEach.call(headerTitleChars, function(currentChar) {
+                    setTimeout(function() {
+                        classie.toggleClass(currentChar, 'flipped');
+                    }, currentChar.delay);
+                });
+            }
 
             function toggleOverlay() {
                 if(classie.has(menu, 'open')) {
-                    var bluriness = 3.5;
-                    myPortfolio.World.CurrentLayer.composer.passes[5].uniforms.h.value = bluriness / myPortfolio.World.width;
-                    myPortfolio.World.CurrentLayer.composer.passes[6].uniforms.v.value = bluriness / myPortfolio.World.height;
+                    //var bluriness = 3.5;
+                    //myPortfolio.World.CurrentLayer.composer.passes[5].uniforms.h.value = bluriness / myPortfolio.World.width;
+                    //myPortfolio.World.CurrentLayer.composer.passes[6].uniforms.v.value = bluriness / myPortfolio.World.height;
                     var onEndTransitionFn = function(ev) {
                         if(support.transitions) {
                             if(ev.propertyName !== 'visibility') {
@@ -1821,9 +1840,10 @@ ENGINE = function() {
                         onEndTransitionFn();
                     }
                 } else if(!classie.has(menu, 'close')) {
-                    var bluriness = 10;
-                    myPortfolio.World.CurrentLayer.composer.passes[5].uniforms.h.value = bluriness / myPortfolio.World.width;
-                    myPortfolio.World.CurrentLayer.composer.passes[6].uniforms.v.value = bluriness / myPortfolio.World.height;
+                    //var bluriness = 10;
+                    //myPortfolio.World.CurrentLayer.composer.passes[5].uniforms.h.value = bluriness / myPortfolio.World.width;
+                    //myPortfolio.World.CurrentLayer.composer.passes[6].uniforms.v.value = bluriness / myPortfolio.World.height;
+                    changeCurrentTitle('me_nu__e ');
                 }
                 classie.toggleClass(menu, 'open');
                 classie.toggleClass(triggerBttn, 'open');
@@ -1832,6 +1852,7 @@ ENGINE = function() {
                 classie.removeClass(contactWrapper, 'active');
                 classie.removeClass(creditsWrapper, 'active');
                 document.getElementById('fp-nav').style.visibility = "hidden";
+                
             }
             triggerBttn.addEventListener('click', toggleOverlay);
             /**
@@ -1842,30 +1863,13 @@ ENGINE = function() {
                 aboutAnchor = document.getElementById('aboutAnchor'),
                 creditsAnchor = document.getElementById('creditsAnchor');
 
-            function changeCurrentTitle(newTitle) {
-                if(classie.has(headerTitleChars[0], 'flipped')) {
-                    var frontTitleChars = document.querySelectorAll('.front');
-                    for(var i = 0; i < frontTitleChars.length; i++) {
-                        frontTitleChars[i].innerHTML = newTitle[i];
-                    }
-                } else {
-                    var backTitleChars = document.querySelectorAll('.back');
-                    for(var i = 0; i < backTitleChars.length; i++) {
-                        backTitleChars[i].innerHTML = newTitle[i];
-                    }
-                }
-            }
+            
             // flip main title chars
             // 
             aboutAnchor.addEventListener('click', function() {
                 changeCurrentTitle('about_me ');
                 toggleOverlay();
                 classie.toggleClass(aboutWrapper, 'active');
-                [].forEach.call(headerTitleChars, function(currentChar) {
-                    setTimeout(function() {
-                        classie.toggleClass(currentChar, 'flipped');
-                    }, currentChar.delay);
-                });
                 // hide fulPage side navigation dots
                 document.getElementById('fp-nav').style.visibility = "visible";
                 //myPortfolio.World.transitionParams.toLayerA();
@@ -1874,33 +1878,18 @@ ENGINE = function() {
                 changeCurrentTitle('gal_ery ');
                 toggleOverlay();
                 classie.toggleClass(galleryWrapper, 'active');
-                [].forEach.call(headerTitleChars, function(currentChar) {
-                    setTimeout(function() {
-                        classie.toggleClass(currentChar, 'flipped');
-                    }, currentChar.delay);
-                });
                 // myPortfolio.World.transitionParams.toLayerB();
             });
             contactAnchor.addEventListener('click', function() {
                 changeCurrentTitle('gal_ery ');
                 toggleOverlay();
                 classie.toggleClass(contactWrapper, 'active');
-                [].forEach.call(headerTitleChars, function(currentChar) {
-                    setTimeout(function() {
-                        classie.toggleClass(currentChar, 'flipped');
-                    }, currentChar.delay);
-                });
                 //myPortfolio.World.transitionParams.toLayerB();
             });
             creditsAnchor.addEventListener('click', function() {
                 changeCurrentTitle('credits_ ');
                 toggleOverlay();
                 classie.toggleClass(creditsWrapper, 'active');
-                [].forEach.call(headerTitleChars, function(currentChar) {
-                    setTimeout(function() {
-                        classie.toggleClass(currentChar, 'flipped');
-                    }, currentChar.delay);
-                });
             });
             /**** galley item click handler */
             var galleryItems = document.querySelectorAll('.gallery-item');
