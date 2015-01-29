@@ -4,14 +4,15 @@
 
 .header-title
 {
-  position: absolute;
+  z-index:3;
+    position: absolute;
     top: 0px;
     bottom: 0px;
 /* left: 0px; */
 /* right: 0px; */
     margin: auto;
-  right:none;//temp
-  z-index:2;
+  //right:none;//temp
+  
   width:$header-title-width;
   height:$header-title-height;
   border: 0px solid #000;
@@ -112,7 +113,7 @@
 }
 
 .front {
-    z-index: 2;
+    z-index: 3;
 }
 
 .back {

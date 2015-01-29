@@ -1831,6 +1831,7 @@ ENGINE = function() {
                 classie.removeClass(galleryWrapper, 'active');
                 classie.removeClass(contactWrapper, 'active');
                 classie.removeClass(creditsWrapper, 'active');
+                document.getElementById('fp-nav').style.visibility = "hidden";
             }
             triggerBttn.addEventListener('click', toggleOverlay);
             /**
@@ -1865,9 +1866,10 @@ ENGINE = function() {
                         classie.toggleClass(currentChar, 'flipped');
                     }, currentChar.delay);
                 });
-                myPortfolio.World.transitionParams.toLayerA();
+                // hide fulPage side navigation dots
+                document.getElementById('fp-nav').style.visibility = "visible";
+                //myPortfolio.World.transitionParams.toLayerA();
             });
-        
             galleryAnchor.addEventListener('click', function() {
                 changeCurrentTitle('gal_ery ');
                 toggleOverlay();
@@ -1877,11 +1879,8 @@ ENGINE = function() {
                         classie.toggleClass(currentChar, 'flipped');
                     }, currentChar.delay);
                 });
-                
-               // myPortfolio.World.transitionParams.toLayerB();
+                // myPortfolio.World.transitionParams.toLayerB();
             });
-            
-           
             contactAnchor.addEventListener('click', function() {
                 changeCurrentTitle('gal_ery ');
                 toggleOverlay();
@@ -1891,8 +1890,7 @@ ENGINE = function() {
                         classie.toggleClass(currentChar, 'flipped');
                     }, currentChar.delay);
                 });
-                
-                myPortfolio.World.transitionParams.toLayerB();
+                //myPortfolio.World.transitionParams.toLayerB();
             });
             creditsAnchor.addEventListener('click', function() {
                 changeCurrentTitle('credits_ ');
@@ -1902,6 +1900,13 @@ ENGINE = function() {
                     setTimeout(function() {
                         classie.toggleClass(currentChar, 'flipped');
                     }, currentChar.delay);
+                });
+            });
+            /**** galley item click handler */
+            var galleryItems = document.querySelectorAll('.gallery-item');
+            [].forEach.call(galleryItems, function(currentItem) {
+                currentItem.addEventListener('click', function() {
+                    classie.toggleClass(currentItem, 'active');
                 });
             });
         },
@@ -1928,6 +1933,15 @@ ENGINE = function() {
         start: function() {
             this.initMenu();
             //this.initMap();
+            $(document).ready(function() {
+                $('#aboutWrapper').fullpage({
+                    anchors: ['about', 'skills', 'purpose'],
+                    sectionsColor: ['transparent', 'transparent', 'transparent'],
+                    navigation: true,
+                    navigationPosition: 'right',
+                    navigationTooltips: ['about', 'skills', 'purpose']
+                });
+            });
         }
     }
 };

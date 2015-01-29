@@ -20,6 +20,7 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" type="text/css" href="scripts/vendor/fullPageJs/jquery.fullPage.css" />
     <!-- endbuild -->
 
     <!-- build:js scripts/vendor/modernizr.js -->
@@ -90,6 +91,10 @@
     <script src="scripts/vendor/classiejs/classie.js"></script>
     <!-- GOOGLE MAPS API -->
     <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <!-- fulpageVertical Scroll plugin -->
+
+    <script type="text/javascript" src="scripts/vendor/fullPageJs/jquery.slimscroll.min.js"></script>
+    <script type="text/javascript" src="scripts/vendor/fullPageJs/jquery.fullPage.min.js"></script>
 
 
 
@@ -162,88 +167,77 @@
             </nav>
         </div>
         <div id="contentWrapper" class="content-wrapper">
-            <section id="aboutWrapper" class="content ">
-                <div class="nav-info">
-                    <div class="small-text">
-                        <hr>
-                        <br><b>About me</b>
-                        <br>skills
-                        <br>purpose
-                        <br>
+            <section id="aboutWrapper" class="content active">
+                    <div id="section0" class="section content-info">
+                        <h1>About Me</h1>
+
+                        <p>
+                            Hello World,
+                            <br>I'm Bruno Quintela,
+                            <br>I like to call myself a web developer, my focus is to provide a visual feeling to the user, bringing to the web the depth it must needed.
+                            <br>Has you may notice im into minimal lowpoly art and typography, i was amazed when i realized how this marriage worked. To achieve a perfect balance between visual delivery and performance is my main concern when developing.
+                        </p>
                     </div>
-                    
-                </div>
-                <div class="content-info">
-                    <h1>About<br>Me</h1>
 
-                    <p>
-                        Hello World,
-                        <br>I'm Bruno Quintela,
-                        <br>I like to call myself a web developer, my focus is to provide a visual feeling to the user, bringing to the web the depth it must needed.
-                        <br>Has you may notice im into minimal lowpoly art and typography, i was amazed when i realized how this marriage worked. To achieve a perfect balance between visual delivery and performance is my main concern when developing.
-                    </p>
-                </div>
-
-                <div class="content-info">
-                    <h1>Skills</h1>
-                    <p>Hello World,
-                        <br>I'm Bruno Quintela,
-                        <br>I like to call myself a web developer, my focus is to provide a visual feeling to the user, bringing to the web the depth it must needed.
-                        <br>To achieve a perfect balance between visual delivery and performance is my main concern when developing.
-                    </p>
-                </div>
-                <div class="content-info">
-                    <h1>Purpo<br>se</h1>
-                    <p>
-                        In about 5 to 10 years from now we will be facing the age of VR, when almost all visual devices now known to men will be replaced by VR headsets, the usual 2D space we are used to browse the internet, will be replaced by a 3D immersive environment that the user interacts with. This is happening already in gamming with , Oculus Rift and OSVR. Hi expect to be part of this journey.
-                    </p>
-                </div>
+                    <div id="section1" class="section content-info">
+                        <h1>Skills</h1>
+                        <p>Hello World,
+                            <br>I'm Bruno Quintela,
+                            <br>I like to call myself a web developer, my focus is to provide a visual feeling to the user, bringing to the web the depth it must needed.
+                            <br>To achieve a perfect balance between visual delivery and performance is my main concern when developing.
+                        </p>
+                    </div>
+                    <div id="section3" class="section content-info">
+                        <h1>Purpose</h1>
+                        <p>
+                            In about 5 to 10 years from now we will be facing the age of VR, when almost all visual devices now known to men will be replaced by VR headsets, the usual 2D space we are used to browse the internet, will be replaced by a 3D immersive environment that the user interacts with. This is happening already in gamming with , Oculus Rift and OSVR. Hi expect to be part of this journey.
+                        </p>
+                    </div>
             </section>
             <section id="reelWrapper" class="content">
                 <div class="gallery-item">
                     <div class="gallery-item-info">
-                           <h1 class="title">Model <br> Name</h1>
+                        <h1 class="title">Model <br> Name</h1>
                         <br>
                         <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
-                            
                     </div>
                 </div>
                 <div class="gallery-item">
                     <div class="gallery-item-info">
-                           <h1 class="title">Model <br> Name</h1>
+                        <h1 class="title">Model <br> Name</h1>
                         <br>
                         <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
-                            
+
                     </div>
                 </div>
                 <div class="gallery-item">
                     <div class="gallery-item-info">
-                           <h1 class="title">Model <br> Name</h1>
+                        <h1 class="title">Model <br> Name</h1>
                         <br>
                         <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
-                            
+
                     </div>
                 </div>
                 <div class="gallery-item">
                     <div class="gallery-item-info">
-                           <h1 class="title">Model <br> Name</h1>
+                        <h1 class="title">Model <br> Name</h1>
                         <br>
                         <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
-                            
+
                     </div>
                 </div>
                 <div class="gallery-item">
                     <div class="gallery-item-info">
-                           <h1 class="title">Model <br> Name</h1>
+                        <h1 class="title">Model <br> Name</h1>
                         <br>
                         <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
-                            
+
                     </div>
                 </div>
             </section>
             <section id="contactWrapper" class="content">
                 <form id="contactForm" class="content-info contact" role="form" action="contact.php" method="POST">
-                    <h1>Cont<br>act</h1>
+                    <h1>Contact</h1>
                     <div class="input-wrapper">
                         <span class="input input--hoshi">
 					        <input class="input__field input__field--hoshi" type="text" id="name" name="name" placeholder="Name" required/>

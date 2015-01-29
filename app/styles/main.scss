@@ -42,7 +42,7 @@ hr
   width:100%;
   height:100%;
   background: rgb(255,255,255);
-  z-index:-1;
+  z-index:0;
 }
 
 .threejs-canvas
@@ -58,65 +58,79 @@ hr
 #aboutWrapper
 {
     position:absolute;
+    top:0px;
     width:100%;
     height:100%;
-    opacity:1;
-    @include transform(translateX(-100%));
-    @include transition((opacity 0.6s, transform 0.6s));
+    opacity:0;
+    //@include transform(translateX(-100%));
+    @include transition((opacity 0.5s, transform 0.5s));
+    transition-delay: 0s !important;
     
 }
 
 #aboutWrapper.active
 {
-    @include transform(translateX(0%));
+    //include transform(translateX(0%));
+    transition-delay: 0.5s !important;
     opacity:1;
 }
 
 #reelWrapper 
 {
-    opacity:1;
+    top:0px;
+    z-index:5;
+    opacity:0;
     position:absolute;
     width:100%;
     height:100%;
-    @include transform(translateX(-100%));
+    //@include transform(translateX(-100%));
     @include transition((opacity 0.6s, transform 0.6s));
+    transition-delay: 0s;
 }
 
 #reelWrapper.active
 {
+    transition-delay: 0.5s;
     opacity:1;
-    @include transform(translateX(0%));
+    //@include transform(translateX(0%));
 }
 
 
 #contactWrapper
 {   
-    opacity:1;
+    top:0px;
+    opacity:0;
     position:absolute;
     width:100%;
     height:100%;
-    @include transform(translateX(-100%));
+    //@include transform(translateX(-100%));
     @include transition((opacity 0.6s, transform 0.6s));
+    transition-delay: 0s;
 }
 
 #contactWrapper.active
 {
+    transition-delay: 0.5s;
     opacity:1;
-    @include transform(translateX(0%));
+    //@include transform(translateX(0%));
 }
 
 #creditsWrapper
 {   
+    opacity:0;
     position:absolute;
     width:100%;
     height:100%;
     @include transform(translateX(-100%));
     @include transition((opacity 0.6s, transform 0.6s));
+    transition-delay: 0s;
 }
 
 #creditsWrapper.active
 {
-    @include transform(translateX(0%));
+    transition-delay: 0.5s;
+    opacity:1;
+    //@include transform(translateX(0%));
 }
 
 
@@ -124,13 +138,13 @@ hr
 
 .content-wrapper
 {
-    z-index:2;
+    z-index:1;
 	position: absolute;
 	width:67%;
 	height: 100%;
 	top: 0;
 	right: 0;
-    overflow-y:auto;
+    overflow:hidden;
     //overflow-x:hidden;
     background-color: rgba(0,0,0,0.8);
 }
