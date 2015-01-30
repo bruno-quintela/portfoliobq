@@ -94,6 +94,7 @@ textarea
 
 .input-wrapper
 {
+    width:50%;
     height:15%;
 }
 
@@ -111,7 +112,7 @@ textarea
 	display: inline-block;
 	margin: 0px;
 	//max-width: 400px;
-	width: calc(55% - 2em);
+	width: calc(50% - 2em);
 	vertical-align: middle;
 }
 

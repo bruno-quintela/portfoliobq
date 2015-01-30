@@ -1895,7 +1895,7 @@ ENGINE = function() {
             var galleryItems = document.querySelectorAll('.gallery-item');
             [].forEach.call(galleryItems, function(currentItem) {
                 currentItem.addEventListener('click', function() {
-                    classie.toggleClass(currentItem, 'active');
+                    classie.toggleClass(currentItem, 'show');
                 });
             });
         },
@@ -1923,7 +1923,7 @@ ENGINE = function() {
             this.initMenu();
             //this.initMap();
             $(document).ready(function() {
-                $('#aboutWrapper').fullpage({
+                $('#fpWrapper').fullpage({
                     anchors: ['about', 'skills', 'purpose'],
                     sectionsColor: ['transparent', 'transparent', 'transparent'],
                     navigation: true,
