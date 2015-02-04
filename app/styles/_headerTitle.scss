@@ -4,7 +4,7 @@
 
 .header-title
 {
-  z-index:6;
+  z-index:1;
     position: absolute;
     top: 0px;
     bottom: 0px;
@@ -17,14 +17,14 @@
   height:$header-title-height;
   border: 0px solid #000;
   text-align: center;
-  background: rgba(255,255,255,1);
+  background-color: rgba(255,255,255,0.5);
   color: #000;
-  opacity:1;//temp
+  opacity:0;
 }
 
-.header-title.open 
+.header-title.show 
 {
-    opacity:0;
+    opacity:1;
 }
 
 .bottom-info
@@ -35,6 +35,7 @@
     width:100%;
     height:  calc(100% / 4);
     background-color: transparent;
+    display:none;
 }
 
 .bottom-info hr

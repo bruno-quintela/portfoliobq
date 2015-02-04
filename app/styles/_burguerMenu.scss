@@ -3,17 +3,18 @@
  **/
 
 
-$fill: #000;
+$fill: #fff;
 $iconSize: 30px;
 
 .menu-trigger {
   z-index:4;
   position: absolute;
+  opacity:0;
   right:0px;
   display: inline-block;
   width: $iconSize * 1.2;
   height: $iconSize;
-  margin:50px;
+  margin:10px;
   
   span, span:before, span:after {
     @include transition((transform 0.5s, background 0.5s));
@@ -41,6 +42,12 @@ $iconSize: 30px;
     top: $iconSize * 2 / 5;
   }
 }
+
+.menu-trigger.show
+{
+    opacity:1;
+}
+
 .menu-trigger.open {
   span:before {
     background: #fff;

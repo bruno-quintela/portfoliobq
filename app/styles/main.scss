@@ -47,6 +47,25 @@ hr
   z-index:0;
 }
 
+header
+{
+    z-index:8;
+    width:100%;
+    height:50px;
+    position: absolute;
+    top:0px;
+    background-color:#000;
+}
+
+footer{
+    z-index:8;
+    width:100%;
+    position: absolute;
+    height:50px;
+    bottom:0px;
+    background-color:#000;
+}
+
 .threejs-canvas
 {
   position:absolute;
@@ -54,8 +73,187 @@ hr
   height:100%;
 }
 
-@include scrollbar(.5em, rgba(255,0,0,0.7));
+@include scrollbar(.8em, rgba(255,0,0,0.7));
 @import 'headerTitle';
+
+/*************************************************************/
+
+.splash-screen
+{
+    z-index:2;
+    position:absolute;
+    width:100%;
+    height: 100%;
+    opacity:0;
+    background-color:transparent;
+    text-transform:uppercase;
+    text-align: center;
+    @include transform(translateX(-100%));
+    @include transition((opacity 2s, transform 2.5s));
+}
+
+.splash-screen.show
+{
+    @include transform(translateX(0%));
+    opacity:1;
+}
+
+
+.splash-info{
+    @extend %absolute-center;
+    width:100%;
+    height:150px;
+}
+.splash-info hr{
+    width:10%;
+    height:5px;
+    float:left;
+    background-color:#000;
+    margin-bottom:20px;
+    margin-left:50px;
+}
+
+.name-container{
+    width:100%;
+}
+
+.splash-info .name{
+    width:100%;
+    text-align:left;
+    padding-left:50px;
+    float:left;
+    //color:rgba(255, 0, 0, 0.4);
+    font-weight: 300;
+    font-size: 16vh;
+    line-height: 22px;
+}
+
+.splash-info .surname{
+    width:100%;
+    text-align:left;
+    padding-left:50px;
+    float:left;
+    //color:rgba(255, 0, 0, 0.4);
+    font-weight: 800;
+    font-size: 16vh;
+}
+
+.splash-info .info{
+    width:100%;
+    text-align:left;
+    padding-left:50px;
+    float:left;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:1px;
+    text-transform:none;
+}
+
+.splash-screen button{
+    position:absolute;
+    bottom:50px;
+    left:50px;
+    width:200px;
+    height:30px;
+    color:#fff;
+    background-color:rgba(255,255,255,0);
+    border:1px solid #000;
+    color:#000;
+    font-size:11px;
+}
+/****************************************************************/
+
+.loading-screen
+{
+    z-index:10;
+    position:absolute;
+    width:100%;
+    height: 100%;
+    opacity:1;
+    //background-color:#000;
+    color:#fff;
+    @include transform(translateX(0));
+    @include transition((transform 0.5s, opacity 0.5s, visibility 0s 1s));
+}
+
+.loading-screen.done
+{
+    opacity:0;
+    @include transform(translateX(0%));
+    visibility:hidden;
+}
+
+.loading-info-top
+{
+    position:absolute;
+    top:42%;
+    width:100%;
+    height:25px;
+    font-size:11px;
+    text-align: left;
+    padding:20px;
+    //-webkit-animation: fade-transition 1s infinite alternate ; /* Safari 4+ */
+    //-moz-animation:    fade-transition 1s infinite alternate ; /* Fx 5+ */
+    //-o-animation:      fade-transition 1s infinite alternate ; /* Opera 12+ */
+    //animation:         fade-transition 1s infinite alternate ; /* IE 10+, Fx 29+ */
+}
+
+.loading-info-bottom
+{
+    position:absolute;
+    bottom:45%;
+    width:100%;
+    height:25px;
+    font-size:11px;
+    text-align: right;
+    padding:20px;
+}
+
+.loading-bar{
+    position:absolute;
+    bottom:50%;
+    left: 0;
+    width:100%;
+    height:2px;
+    background-color:#fff;
+}
+
+.loading-progress{
+    position:absolute;
+    width:0%;
+    bottom:0px;
+    height:2px;
+    background-color:red;
+    @include transition(width 0.5s);
+}
+
+.tip-title
+{
+    width:100%;
+    color: red;
+    font-size: 15px;
+    text-transform: uppercase;
+    float:right;
+}
+
+@-webkit-keyframes fade-transition {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@-moz-keyframes fade-transition {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@-o-keyframes fade-transition {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes fade-transition {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+
 /************************************************************/
 #aboutWrapper
 {
@@ -143,6 +341,13 @@ hr
     overflow:hidden;
     //overflow-x:hidden;
     background-color: rgba(0,0,0,0.8);
+    opacity:0;
+    @include transition(opacity 0.5s);
+}
+
+.content-wrapper.show
+{
+    opacity:1;
 }
 
 .content

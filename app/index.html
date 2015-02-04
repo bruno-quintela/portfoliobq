@@ -99,43 +99,74 @@
 
 
     <div id="bodyWrapper" class="body-wrapper">
-        <a id="menuTrigger" class="menu-trigger" href="#"><span></span></a>
+        <div id="loadingScreen" class="loading-screen">
+            <div class="loading-info-top">Please wait while loading 3D model...</div>
+            <div class="loading-bar"><div id="progressBar" class="loading-progress"></div></div>
+            <div class="loading-info-bottom"><div class="tip-title">tip#01</div>For a better experience toggle fullscreen (F11) and turn up the volume.</div>
+        </div>
+        <header><a id="menuTrigger" class="menu-trigger" href="#"><span></span></a></header>
+        <footer></footer>
+        <div id="splashScreen" class="splash-screen">
+            <div class="splash-info">
+                <div class="name-container">
+                    <span class="name">Bruno</span><br>
+                    <span class="surname">Quintela</span>
+                </div>
+                <hr>
+                <br>
+               <div class="info">Front end Developer <br> UI/UX Designer </div>
+            </div>
+            <button id="exploreBttn" class="button">explore</button>
+        </div>
+        
         <canvas id="threejsCanvas" class="threejs-canvas"></canvas>
         <canvas id="audioCanvas" class="audio-canvas"></canvas>
         <header id="headerTitle" class="header-title">
             <div class="flip-container">
                 <div class="title-char">
-                    <div class="front">q</div>
+                    <div class="front"></div>
                     <div class="back"></div>
                 </div>
             </div>
             <div class="flip-container">
                 <div class="title-char">
-                    <div class="front">u</div>
+                    <div class="front"></div>
                     <div class="back"></div>
                 </div>
             </div>
             <div class="flip-container">
                 <div class="title-char">
-                    <div class="front">i</div>
+                    <div class="front"></div>
                     <div class="back"></div>
                 </div>
             </div>
             <div class="flip-container">
                 <div class="title-char">
-                    <div class="front">N</div>
+                    <div class="front"></div>
                     <div class="back"></div>
                 </div>
             </div>
             <div class="flip-container">
                 <div class="title-char">
-                    <div class="front">t</div>
+                    <div class="front"></div>
                     <div class="back"></div>
                 </div>
             </div>
             <div class="flip-container">
                 <div class="title-char">
-                    <div class="front">e</div>
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+            </div>
+            <div class="flip-container">
+                <div class="title-char">
+                    <div class="front"></div>
+                    <div class="back"></div>
+                </div>
+            </div>
+            <div class="flip-container">
+                <div class="title-char">
+                    <div class="front"></div>
                     <div class="back"></div>
                 </div>
             </div>
@@ -151,6 +182,7 @@
                 <div class="number">#0</div>
             </div>
         </header>
+
         <!--span class="scroll-icon"></span-->
         <div class="menu-overlay">
             <nav>
@@ -167,56 +199,56 @@
             </nav>
         </div>
         <div id="contentWrapper" class="content-wrapper">
-            <section id="aboutWrapper" class="content active">
+            <section id="aboutWrapper" class="content">
                 <div id="fpWrapper" class="fp-wrapper">
-                <div id="section0" class="section content-info">
-                    <h1>Who<br> Am<br> I</h1>
+                    <div id="section0" class="section content-info">
+                        <h1>Who<br> Am<br> I</h1>
 
-                    <p>
-                        Hello World.
-                        <br>My name (as you may noticed) is Bruno Quintela, i live in Portugal and I'm a web developer. For the past years i've been following the web design trends,
-                        <br>
-                    </p>
-                </div>
+                        <p>
+                            Hello World.
+                            <br>My name (as you may noticed) is Bruno Quintela, i live in Portugal and I'm a web developer. For the past years i've been following the web design trends,
+                            <br>
+                        </p>
+                    </div>
 
-                <div id="section1" class="section content-info">
-                    <h1>What <br>are my<br> skills</h1>
-                    <p>
-                        I've been a frontend developer and UI/UX designer for the past years, but recently i got my interest into computer graphics. To achieve perfect balance between visual delivery and performance is always my main concern when developing content for the Web .
-                    </p>
-                    <div>These are some of the skills i've been perfecting through this years:
+                    <div id="section1" class="section content-info">
+                        <h1>What <br>are my<br> skills</h1>
+                        <p>
+                            I've been a frontend developer and UI/UX designer for the past years, but recently i got my interest into computer graphics. To achieve perfect balance between visual delivery and performance is always my main concern when developing content for the Web .
+                        </p>
+                        <div>These are some of the skills i've been perfecting through this years:
+                        </div>
+                        <div class="skills-container">
+                            <h2>Frontend developer</h2>
+                            <ul>
+                                <li>HTML5</li>
+                                <li>javascript</li>
+                                <li>jquery</li>
+                            </ul>
+                        </div>
+                        <div class="skills-container">
+                            <h2>web designer</h2>
+                            <ul>
+                                <li>CSS3</li>
+                                <li>SASS</li>
+                                <li>LESS</li>
+                            </ul>
+                        </div>
+                        <div class="skills-container">
+                            <h2>Computer Graphics</h2>
+                            <ul>
+                                <li>Blender</li>
+                                <li>WebGL</li>
+                                <li>threeJs</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="skills-container">
-                        <h2>Frontend developer</h2>
-                        <ul>
-                            <li>HTML5</li>
-                            <li>javascript</li>
-                            <li>jquery</li>
-                        </ul>
+                    <div id="section3" class="section content-info">
+                        <h1>what's next</h1>
+                        <p>
+                            In about 5 to 10 years from now we will be facing the age of VR, when almost all visual devices now known to men will be replaced by VR headsets, the usual 2D space we are used to browse the internet, will be replaced by a 3D immersive environment that the user interacts with. This is happening already in gamming with , Oculus Rift and OSVR. Hi expect to be part of this journey.
+                        </p>
                     </div>
-                    <div class="skills-container">
-                        <h2>web designer</h2>
-                        <ul>
-                            <li>CSS3</li>
-                            <li>SASS</li>
-                            <li>LESS</li>
-                        </ul>
-                    </div>
-                    <div class="skills-container">
-                        <h2>Computer Graphics</h2>
-                        <ul>
-                            <li>Blender</li>
-                            <li>WebGL</li>
-                            <li>threeJs</li>
-                        </ul>
-                    </div>
-                </div>
-                <div id="section3" class="section content-info">
-                    <h1>what's next</h1>
-                    <p>
-                        In about 5 to 10 years from now we will be facing the age of VR, when almost all visual devices now known to men will be replaced by VR headsets, the usual 2D space we are used to browse the internet, will be replaced by a 3D immersive environment that the user interacts with. This is happening already in gamming with , Oculus Rift and OSVR. Hi expect to be part of this journey.
-                    </p>
-                </div>
                 </div>
             </section>
             <section id="reelWrapper" class="content">
@@ -325,11 +357,6 @@
             </section>
             <section id="creditsWrapper" class="content">credits</section>
         </div>
-        <footer id="footerInfo" class="footer-info">
-            <div>Web Designer</div>
-            <hr>
-            <div>Frontend Developer</div>
-        </footer>
     </div>
 
 
