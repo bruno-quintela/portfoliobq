@@ -101,157 +101,75 @@
     <div id="bodyWrapper" class="body-wrapper">
         <div id="loadingScreen" class="loading-screen">
             <div class="loading-info-top">Please wait while loading 3D model...</div>
-            <div class="loading-bar"><div id="progressBar" class="loading-progress"></div></div>
-            <div class="loading-info-bottom"><div class="tip-title">tip#01</div>For a better experience toggle fullscreen (F11) and turn up the volume.</div>
+            <div class="loading-bar">
+                <div id="progressBar" class="loading-progress"></div>
+            </div>
+            <div class="loading-info-bottom">
+                <div class="tip-title">tip#01</div>For a better experience toggle fullscreen (F11) and turn up the volume.</div>
         </div>
-        <header><a id="menuTrigger" class="menu-trigger" href="#"><span></span></a></header>
-        <footer></footer>
-        <div id="splashScreen" class="splash-screen">
+        <header><a id="menuTrigger" class="menu-trigger" href="#"><span></span></a>
+        </header>
+        <footer>settings</footer>
+
+
+        <canvas id="threejsCanvas" class="threejs-canvas"></canvas>
+    </div>
+    <!--Single page scroll navigation -->
+    <div id="fullpage">
+        <div class="section " id="section0">
+            <div id="splashScreen" class="splash-screen">
+                <div class="splash-info">
+                    <div class="name-container">
+                        <span class="name">Bruno</span>
+                        <br>
+                        <span class="surname">Quintela</span>
+                    </div>
+
+                    <hr>
+                    <div class="info">
+                        Frontend Developer / Web Designer
+                    </div>
+
+                </div>
+                <div class="splash-screen-bottom">PORTFOLIO 2015</div>
+                <!--button id="exploreBttn" class="button">explore</button-->
+            </div>
+        </div>
+        <div class="section" id="section1">
             <div class="splash-info">
-                <div class="name-container">
-                    <span class="name">Bruno</span><br>
-                    <span class="surname">Quintela</span>
+                <div class="section-container">
+                    <span class="section-title">About</span>
+                    <br>
+                    <span class="section-subtitle">_me</span>
+                </div>
+
+                <br>
+                <div class="section-info">
+                    <div>
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="section" id="section2">
+            <div class="splash-info">
+                <div class="section-container">
+                    <span class="section-title">reference </span>
+                    <br>
+                    <span class="section-subtitle">frase</span>
                 </div>
                 <hr>
                 <br>
-               <div class="info">Front end Developer <br> UI/UX Designer </div>
+                <div class="section-info">
+                    <div>
+                        "Animation :Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                    </div>
+                </div>
             </div>
-            <button id="exploreBttn" class="button">explore</button>
         </div>
-        
-        <canvas id="threejsCanvas" class="threejs-canvas"></canvas>
-        <canvas id="audioCanvas" class="audio-canvas"></canvas>
-        <header id="headerTitle" class="header-title">
-            <div class="flip-container">
-                <div class="title-char">
-                    <div class="front"></div>
-                    <div class="back"></div>
-                </div>
-            </div>
-            <div class="flip-container">
-                <div class="title-char">
-                    <div class="front"></div>
-                    <div class="back"></div>
-                </div>
-            </div>
-            <div class="flip-container">
-                <div class="title-char">
-                    <div class="front"></div>
-                    <div class="back"></div>
-                </div>
-            </div>
-            <div class="flip-container">
-                <div class="title-char">
-                    <div class="front"></div>
-                    <div class="back"></div>
-                </div>
-            </div>
-            <div class="flip-container">
-                <div class="title-char">
-                    <div class="front"></div>
-                    <div class="back"></div>
-                </div>
-            </div>
-            <div class="flip-container">
-                <div class="title-char">
-                    <div class="front"></div>
-                    <div class="back"></div>
-                </div>
-            </div>
-            <div class="flip-container">
-                <div class="title-char">
-                    <div class="front"></div>
-                    <div class="back"></div>
-                </div>
-            </div>
-            <div class="flip-container">
-                <div class="title-char">
-                    <div class="front"></div>
-                    <div class="back"></div>
-                </div>
-            </div>
-            <div class="bottom-info">
-                <div class="small-text">
-                    <br>Who am I
-                    <br>what do i do
-                    <br>skills
-                    <br>stuff
-                    <hr>
-                    <br><b>Bruno Quintela</b>
-                </div>
-                <div class="number">#0</div>
-            </div>
-        </header>
-
-        <!--span class="scroll-icon"></span-->
-        <div class="menu-overlay">
-            <nav>
-                <ul>
-                    <li><a id="aboutAnchor" href="#">About</a>
-                    </li>
-                    <li><a id="galleryAnchor" href="#">Gallery</a>
-                    </li>
-                    <li><a id="contactAnchor" href="#">Contact</a>
-                    </li>
-                    <li><a id="creditsAnchor" href="#">Credits</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <div id="contentWrapper" class="content-wrapper">
-            <section id="aboutWrapper" class="content">
-                <div id="fpWrapper" class="fp-wrapper">
-                    <div id="section0" class="section content-info">
-                        <h1>Who<br> Am<br> I</h1>
-
-                        <p>
-                            Hello World.
-                            <br>My name (as you may noticed) is Bruno Quintela, i live in Portugal and I'm a web developer. For the past years i've been following the web design trends,
-                            <br>
-                        </p>
-                    </div>
-
-                    <div id="section1" class="section content-info">
-                        <h1>What <br>are my<br> skills</h1>
-                        <p>
-                            I've been a frontend developer and UI/UX designer for the past years, but recently i got my interest into computer graphics. To achieve perfect balance between visual delivery and performance is always my main concern when developing content for the Web .
-                        </p>
-                        <div>These are some of the skills i've been perfecting through this years:
-                        </div>
-                        <div class="skills-container">
-                            <h2>Frontend developer</h2>
-                            <ul>
-                                <li>HTML5</li>
-                                <li>javascript</li>
-                                <li>jquery</li>
-                            </ul>
-                        </div>
-                        <div class="skills-container">
-                            <h2>web designer</h2>
-                            <ul>
-                                <li>CSS3</li>
-                                <li>SASS</li>
-                                <li>LESS</li>
-                            </ul>
-                        </div>
-                        <div class="skills-container">
-                            <h2>Computer Graphics</h2>
-                            <ul>
-                                <li>Blender</li>
-                                <li>WebGL</li>
-                                <li>threeJs</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div id="section3" class="section content-info">
-                        <h1>what's next</h1>
-                        <p>
-                            In about 5 to 10 years from now we will be facing the age of VR, when almost all visual devices now known to men will be replaced by VR headsets, the usual 2D space we are used to browse the internet, will be replaced by a 3D immersive environment that the user interacts with. This is happening already in gamming with , Oculus Rift and OSVR. Hi expect to be part of this journey.
-                        </p>
-                    </div>
-                </div>
-            </section>
-            <section id="reelWrapper" class="content">
+        <div class="section" id="section3">
+            <section id="reelWrapper" class="content active">
                 <div class="gallery-item">
                     <div class="gallery-item-info">
                         <h1 class="title">Model <br> Name</h1>
@@ -292,7 +210,25 @@
                     </div>
                 </div>
             </section>
-            <section id="contactWrapper" class="content">
+        </div>
+        <div class="section" id="section4">
+            <div class="splash-info">
+                <div class="name-container">
+                    <span class="name">What's </span>
+                    <br>
+                    <span class="surname">next</span>
+                </div>
+                <hr>
+                <br>
+                <div class="info">
+                    <div>
+                        "transition after gallery for a new layer :Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" id="section">
+            <section id="contactWrapper" class="content active">
                 <form id="contactForm" class="content-info contact" role="form" action="contact.php" method="POST">
                     <h1>Cont<br>act</h1>
                     <div class="input-wrapper">
@@ -355,8 +291,8 @@
                 <!--div id="map-canvas" class="map"></div-->
 
             </section>
-            <section id="creditsWrapper" class="content">credits</section>
         </div>
+
     </div>
 
 

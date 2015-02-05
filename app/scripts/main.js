@@ -133,7 +133,7 @@ ENGINE = function() {
             alpha: false,
             showStats: true,
             backgroundColor: [34, 34, 34],
-            backgroundImage: 7,
+            backgroundImage: 17,
             skydomeImage: 1,
             fog: 0.001,
             enableAnaglyph: false,
@@ -400,7 +400,7 @@ ENGINE = function() {
             reverseFactor: 1,
             reverseTime: false,
             autoPanX: false,
-            autoPanY: true,
+            autoPanY: false,
             autoPanZ: false,
             autoRotationX: false,
             autoRotationY: false,
@@ -1280,7 +1280,7 @@ ENGINE = function() {
                         console.log(layer.numberAssetsLoaded);
                         layer.isLoadComplete();
                     });
-                    var plane = new THREE.PlaneBufferGeometry(8, 8, 0, 0);
+                    var plane = new THREE.PlaneBufferGeometry(15, 18, 0, 0);
                     var backgroundImage = new THREE.Mesh(plane, new THREE.MeshBasicMaterial({
                         map: texture
                     }));
@@ -1302,7 +1302,7 @@ ENGINE = function() {
                         layer.scene.add(dae);
                         layer.backgroundImage = addBackgroundImage(layer, '../src/textures/background/background' + world.renderParams.backgroundImage + '.jpg');
                         //addSkyDome(layer, 7, '../src/textures/background/background6.jpg');
-                        //layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 300, 3, '../src/textures/sprites/WhiteDot.svg', 0.03);
+                        layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 300, 3, '../src/textures/sprites/WhiteDot.svg', 0.03);
                         layer.spheres = [];
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
@@ -1437,7 +1437,7 @@ ENGINE = function() {
                                 } else if(child.name === 'background') {
                                     var mesh = child.children[0];
                                     //mesh.geometry.computeTangents();
-                                    var texture = THREE.ImageUtils.loadTexture( '../src/textures/background/background' + world.renderParams.backgroundImage + '.jpg', new THREE.UVMapping(), function() {
+                                    var texture = THREE.ImageUtils.loadTexture('../src/textures/background/background' + world.renderParams.backgroundImage + '.jpg', new THREE.UVMapping(), function() {
                                         layer.numberAssetsLoaded++;
                                         console.log(layer.numberAssetsLoaded);
                                         layer.isLoadComplete();
@@ -1506,9 +1506,9 @@ ENGINE = function() {
                                     //position
                                     layer.fragments[i].position.y += layer.rotationSpeed.y * 0.5;
                                 }
-                                //layer.sphericalCloud.rotation.x -= layer.rotationSpeed.y * .2;
-                                //layer.sphericalCloud.rotation.y -= layer.rotationSpeed.y * .2;
-                                //layer.sphericalCloud.rotation.z -= layer.rotationSpeed.y * .2;
+                                layer.sphericalCloud.rotation.x -= layer.rotationSpeed.y * .2;
+                                layer.sphericalCloud.rotation.y -= layer.rotationSpeed.y * .2;
+                                layer.sphericalCloud.rotation.z -= layer.rotationSpeed.y * .2;
                                 //layer.backgroundImage.position.y += layer.rotationSpeed.z;
                                 //layer.skydome.rotation.y += layer.rotationSpeed.z* 0.3;
                                 //layer.skydome.rotation.z += layer.rotationSpeed.z;
@@ -1802,7 +1802,7 @@ ENGINE = function() {
                  * Start chain of animation intro
                  **/
             });
-            this.LayerB = new this.Layer('LayerB', '../src/collada/male20.dae', 101, function() {
+            this.LayerB = new this.Layer('LayerB', '../src/collada/male19.dae', 3, function() {
                 console.log('sceneBLoaded');
                 classie.toggleClass(loadingScreen, 'done');
                 setTimeout(function() {
@@ -1817,7 +1817,7 @@ ENGINE = function() {
                     myPortfolio.UI.toggleOverlay();
                     myPortfolio.UI.changeCurrentTitle('bruno   ');
                     myPortfolio.UI.changeCurrentTitle('quintela');*/
-                }, 1000);
+                }, 3000);
                 myPortfolio.World.transitionParams.toLayerB();
             });
             //this.LayerC = new this.Layer('LayerC', '../src/collada/male19.dae');
@@ -1941,23 +1941,21 @@ ENGINE = function() {
             /**
              * Explore animation trigger
              **/
-            exploreBttn.addEventListener('click', function() {
+            /*exploreBttn.addEventListener('click', function() {
                 var splashScreen = document.getElementById('splashScreen');
-                    classie.toggleClass(splashScreen, 'show');
-                setTimeout(function(){
+                classie.toggleClass(splashScreen, 'show');
+                setTimeout(function() {
                     var headerTitle = document.getElementById('headerTitle');
                     classie.toggleClass(headerTitle, 'show');
                     var menuTrigger = document.getElementById('menuTrigger');
                     classie.toggleClass(menuTrigger, 'show');
                     var contentWrapper = document.getElementById('contentWrapper');
                     classie.toggleClass(contentWrapper, 'show');
-                    
                     myPortfolio.UI.toggleOverlay();
-                     myPortfolio.UI.changeCurrentTitle('bruno   ');
-                     myPortfolio.UI.changeCurrentTitle('quintela');
-                },1000)
-                
-            });
+                    myPortfolio.UI.changeCurrentTitle('bruno   ');
+                    myPortfolio.UI.changeCurrentTitle('quintela');
+                }, 1000)
+            });*/
             /**
              * Menu navigation anchors triggers handler
              **/
@@ -2021,15 +2019,134 @@ ENGINE = function() {
          * Start UI events handler
          **/
         start: function() {
-            this.initMenu();
+            //this.initMenu();
             //this.initMap();
             $(document).ready(function() {
-                $('#fpWrapper').fullpage({
-                    anchors: ['about', 'skills', 'purpose'],
-                    sectionsColor: ['transparent', 'transparent', 'transparent'],
-                    navigation: true,
-                    navigationPosition: 'right',
-                    navigationTooltips: ['about', 'skills', 'purpose']
+                $('#fullpage').fullpage({
+                    anchors: ['firstPage', 'secondPage', '3rdPage','4th','5th'],
+                    sectionsColor: ['transparent', 'transparent', 'transparent', 'transparent', 'transparent'],
+                    slidesNavigation: false,
+                    afterLoad: function(anchorLink, index, direction) {
+                        /*if(direction == 'down') {
+                            var layer = myPortfolio.World.CurrentLayer;
+                            var tweenScene90 = new TWEEN.Tween(layer.scene.position).to({
+                                x: layer.scene.position.x,
+                                y: layer.scene.position.y + 3,
+                                z: layer.scene.position.z
+                            }, 1000);
+                            tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
+                        } else {
+                            var layer = myPortfolio.World.CurrentLayer;
+                            var tweenScene90 = new TWEEN.Tween(layer.scene.position).to({
+                                x: layer.scene.position.x,
+                                y: layer.scene.position.y - 3,
+                                z: layer.scene.position.z
+                            }, 1000);
+                            tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
+                        }*/
+                        /*if(index == 2) {
+                            $('#iphone3, #iphone2, #iphone4').addClass('active');
+                        }
+                        $('#infoMenu').toggleClass('whiteLinks', index == 4);*/
+                    },
+                    onLeave: function(index, newIndex, direction) {
+                        if(direction == 'down') {
+                            var layer = myPortfolio.World.CurrentLayer;
+                            var tweenScene90 = new TWEEN.Tween(layer.scene.position).to({
+                                x: layer.scene.position.x,
+                                y: layer.scene.position.y + 2,
+                                z: layer.scene.position.z
+                            }, 1000);
+                            tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
+                        } else {
+                            var layer = myPortfolio.World.CurrentLayer;
+                            var tweenScene90 = new TWEEN.Tween(layer.scene.position).to({
+                                x: layer.scene.position.x,
+                                y: layer.scene.position.y - 2,
+                                z: layer.scene.position.z
+                            }, 1000);
+                            tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
+                        }
+                        if(index == 3 && direction == 'down') {
+                            $('.section').eq(index - 1).removeClass('moveDown').addClass('moveUp');
+                        } else if(index == 3 && direction == 'up') {
+                            $('.section').eq(index - 1).removeClass('moveUp').addClass('moveDown');
+                        }
+                        $('#staticImg').toggleClass('active', (index == 2 && direction == 'down') || (index == 4 && direction == 'up'));
+                        $('#staticImg').toggleClass('moveDown', newIndex == 4);
+                        $('#staticImg').toggleClass('moveUp', index == 4 && direction == 'up');
+                    },
+                    afterSlideLoad: function(anchorLink, index, slideAnchor, slideIndex) {},
+                    onSlideLeave: function(anchorLink, index, slideIndex, direction) {
+                        if(direction == 'left') {
+                            var layer = myPortfolio.World.CurrentLayer;
+                            var tweenScene90 = new TWEEN.Tween(layer.scene.rotation).to({
+                                x: layer.scene.rotation.x,
+                                y: layer.scene.rotation.y + 90 * Math.PI / 180,
+                                z: layer.scene.rotation.z
+                            }, 1000);
+                            tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
+                        } else {
+                            var layer = myPortfolio.World.CurrentLayer;
+                            var tweenScene90 = new TWEEN.Tween(layer.scene.rotation).to({
+                                x: layer.scene.rotation.x,
+                                y: layer.scene.rotation.y - 90 * Math.PI / 180,
+                                z: layer.scene.rotation.z
+                            }, 1000);
+                            tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
+                        }
+                    }
+                    //Navigation
+                    /*menu: false,
+        anchors:['firstSlide', 'secondSlide'],
+        navigation: false,
+        navigationPosition: 'right',
+        navigationTooltips: ['firstSlide', 'secondSlide'],
+        slidesNavigation: true,
+        slidesNavPosition: 'bottom',
+
+        //Scrolling
+        css3: true,
+        scrollingSpeed: 700,
+        autoScrolling: true,
+        scrollBar: false,
+        easing: 'easeInQuart',
+        easingcss3: 'ease',
+        loopBottom: false,
+        loopTop: false,
+        loopHorizontal: true,
+        continuousVertical: false,
+        normalScrollElements: '#element1, .element2',
+        scrollOverflow: false,
+        touchSensitivity: 15,
+        normalScrollElementTouchThreshold: 5,
+
+        //Accessibility
+        keyboardScrolling: true,
+        animateAnchor: true,
+        recordHistory: true,
+
+        //Design
+        controlArrows: true,
+        verticalCentered: true,
+        resize : true,
+        sectionsColor : ['#ccc', '#fff'],
+        paddingTop: '3em',
+        paddingBottom: '10px',
+        fixedElements: '#header, .footer',
+        responsive: 0,
+
+        //Custom selectors
+        sectionSelector: '.section',
+        slideSelector: '.slide',
+
+        //events
+        onLeave: function(index, nextIndex, direction){},
+        afterLoad: function(anchorLink, index){},
+        afterRender: function(){},
+        afterResize: function(){},
+        afterSlideLoad: function(anchorLink, index, slideAnchor, slideIndex){},
+        onSlideLeave: function(anchorLink, index, slideIndex, direction){}*/
                 });
             });
         }

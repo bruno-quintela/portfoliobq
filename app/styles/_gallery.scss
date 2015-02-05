@@ -9,7 +9,7 @@
     background-repeat: no-repeat;
     background-position: center;
     //@extend %cursorPlus;
-    @include transform(translateY(100%));
+    @include transform(translateX(100%));
 }
 
 .gallery-item{
@@ -44,7 +44,7 @@
 
 #reelWrapper.active .gallery-item
 {
-    @include transform(translateY(0%));
+    @include transform(translateX(0%));
 }
 
 /*#reelWrapper.active .gallery-item

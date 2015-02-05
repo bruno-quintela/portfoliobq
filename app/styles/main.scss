@@ -45,6 +45,7 @@ hr
   height:100%;
   background: rgb(255,255,255);
   z-index:0;
+    
 }
 
 header
@@ -54,16 +55,19 @@ header
     height:50px;
     position: absolute;
     top:0px;
-    background-color:#000;
+    //background-color:#000;
 }
 
 footer{
     z-index:8;
-    width:100%;
+    width:10%;
     position: absolute;
     height:50px;
     bottom:0px;
-    background-color:#000;
+    right:0px;
+    text-align:right;
+    border-top:5px solid #000;
+    margin-right:50px;
 }
 
 .threejs-canvas
@@ -88,13 +92,15 @@ footer{
     background-color:transparent;
     text-transform:uppercase;
     text-align: center;
-    @include transform(translateX(-100%));
+    font-family: Open Sans !important;
+  	text-rendering: optimizeLegibility;
+    @include transform(translateY(-100%));
     @include transition((opacity 2s, transform 2.5s));
 }
 
 .splash-screen.show
 {
-    @include transform(translateX(0%));
+    @include transform(translateY(0%));
     opacity:1;
 }
 
@@ -107,60 +113,95 @@ footer{
 .splash-info hr{
     width:10%;
     height:5px;
+    margin-left:50px;
     float:left;
     background-color:#000;
-    margin-bottom:20px;
-    margin-left:50px;
 }
 
 .name-container{
     width:100%;
+    text-align:left;
+    padding-left:50px;
 }
 
 .splash-info .name{
     width:100%;
-    text-align:left;
-    padding-left:50px;
-    float:left;
     //color:rgba(255, 0, 0, 0.4);
     font-weight: 300;
-    font-size: 16vh;
+    font-size: 13vh;
     line-height: 22px;
 }
 
 .splash-info .surname{
     width:100%;
-    text-align:left;
-    padding-left:50px;
-    float:left;
     //color:rgba(255, 0, 0, 0.4);
     font-weight: 800;
-    font-size: 16vh;
+    font-size: 15vh;
 }
 
 .splash-info .info{
     width:100%;
     text-align:left;
-    padding-left:50px;
     float:left;
+    margin-left:50px;
+    margin-top:25px;
+    font-size:15px;
+    font-weight:300;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+.splash-screen-bottom{
+    width:100%;
+    height:200px;
+    position:absolute;
+    bottom:20px;
+    right:50px;
+    text-align:right;
+    //color:rgba(255, 0, 0, 0.4);
+    font-weight: 800;
+    font-size: 15vh;
+    color:rgba(255, 0, 0, 0.7);
+    letter-spacing:15px;
+}
+/*****************************************************************/
+
+
+
+.section-container{
+    width:25%;
+    text-align:right;
+    margin:auto;
+    font-family: Open Sans !important;
+  	text-rendering: optimizeLegibility;
+}
+
+.splash-info .section-title{
+    width:100%;
+    color:rgba(255, 0, 0, 0.7);
+    font-weight: 300;
+    font-size: 16vh;
+    line-height: 22px;
+}
+
+.splash-info .section-subtitle{
+    width:100%;
+    //color:rgba(255, 0, 0, 0.4);
+    font-weight: 800;
+    font-size: 12vh;
+}
+
+.splash-info .section-info{
+    width:20%;
+    text-align:left;
+    margin:auto;
     font-size:13px;
-    font-weight:600;
+    font-weight:500;
     letter-spacing:1px;
     text-transform:none;
 }
 
-.splash-screen button{
-    position:absolute;
-    bottom:50px;
-    left:50px;
-    width:200px;
-    height:30px;
-    color:#fff;
-    background-color:rgba(255,255,255,0);
-    border:1px solid #000;
-    color:#000;
-    font-size:11px;
-}
+
 /****************************************************************/
 
 .loading-screen
