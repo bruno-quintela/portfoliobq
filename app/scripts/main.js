@@ -1280,7 +1280,7 @@ ENGINE = function() {
                         console.log(layer.numberAssetsLoaded);
                         layer.isLoadComplete();
                     });
-                    var plane = new THREE.PlaneBufferGeometry(15, 18, 0, 0);
+                    var plane = new THREE.PlaneBufferGeometry(20, 20, 0, 0);
                     var backgroundImage = new THREE.Mesh(plane, new THREE.MeshBasicMaterial({
                         map: texture
                     }));
@@ -1504,7 +1504,7 @@ ENGINE = function() {
                                     layer.fragments[i].rotation.y += layer.rotationSpeed.y * 2;
                                     layer.fragments[i].rotation.z += layer.rotationSpeed.y * 2;
                                     //position
-                                    layer.fragments[i].position.y += layer.rotationSpeed.y * 0.5;
+                                    layer.fragments[i].position.x += layer.rotationSpeed.y * 0.5;
                                 }
                                 layer.sphericalCloud.rotation.x -= layer.rotationSpeed.y * .2;
                                 layer.sphericalCloud.rotation.y -= layer.rotationSpeed.y * .2;
@@ -1802,7 +1802,7 @@ ENGINE = function() {
                  * Start chain of animation intro
                  **/
             });
-            this.LayerB = new this.Layer('LayerB', '../src/collada/male19.dae', 3, function() {
+            this.LayerB = new this.Layer('LayerB', '../src/collada/male21.dae', 3, function() {
                 console.log('sceneBLoaded');
                 classie.toggleClass(loadingScreen, 'done');
                 setTimeout(function() {
@@ -1858,7 +1858,7 @@ ENGINE = function() {
          **/
         initMenu: function() {
             var UI = this;
-            var exploreBttn = document.getElementById('exploreBttn'),
+            /*var exploreBttn = document.getElementById('exploreBttn'),
                 triggerBttn = document.getElementById('menuTrigger'),
                 menu = document.querySelector('.menu-overlay'),
                 header = document.querySelector('.header-title'),
@@ -1959,7 +1959,7 @@ ENGINE = function() {
             /**
              * Menu navigation anchors triggers handler
              **/
-            var contactAnchor = document.getElementById('contactAnchor'),
+            /*var contactAnchor = document.getElementById('contactAnchor'),
                 galleryAnchor = document.getElementById('galleryAnchor'),
                 aboutAnchor = document.getElementById('aboutAnchor'),
                 creditsAnchor = document.getElementById('creditsAnchor');
@@ -1997,6 +1997,7 @@ ENGINE = function() {
                     classie.toggleClass(currentItem, 'show');
                 });
             });
+
         },
         initMap: function() {
             var myLatlng = new google.maps.LatLng(40.641214, -8.647156);
@@ -2019,7 +2020,7 @@ ENGINE = function() {
          * Start UI events handler
          **/
         start: function() {
-            //this.initMenu();
+            this.initMenu();
             //this.initMap();
             $(document).ready(function() {
                 $('#fullpage').fullpage({
