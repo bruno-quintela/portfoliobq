@@ -133,7 +133,7 @@ ENGINE = function() {
             alpha: false,
             showStats: true,
             backgroundColor: [34, 34, 34],
-            backgroundImage: 17,
+            backgroundImage: 20,
             skydomeImage: 1,
             fog: 0.001,
             enableAnaglyph: false,
@@ -149,7 +149,7 @@ ENGINE = function() {
             enableBloom: false,
             bloomStrengh: 0.3,
             enableSepia: false,
-            enableColorify: false,
+            enableColorify: true,
             enableFilm: false,
             enableFilmBW: true,
             filmStrengh: 0.3,
@@ -169,7 +169,7 @@ ENGINE = function() {
             normalScale: 0.5,
             normalRepeat: 1,
             useScreen: false,
-            useRim: false,
+            useRim: true,
             rimPower: 3,
             matSelected: 'Material selection',
             backgroundTexture: {
@@ -360,14 +360,14 @@ ENGINE = function() {
                 19: 19,
                 20: 20
             },
-            bodyTexture: 113,
+            bodyTexture: 8,//113,
             headTexture: 97,
             hairTexture: 1,
             eyeTexture: 8,
             clothTexture: 8,
             lipsTexture: 8,
-            lowpolyTexture: 95,
-            lowpoly2Texture: 1,
+            lowpolyTexture: 1,
+            lowpoly2Texture: 60,
             lowpoly3Texture: 1,
             fragmentsTexture: 1,
             normalSelected: 'NormalMap selection',
@@ -405,7 +405,7 @@ ENGINE = function() {
             autoRotationX: false,
             autoRotationY: false,
             autoRotationZ: false,
-            animateFragments: true,
+            animateFragments: false,
             rotateSceneX: function() {
                 var layer = myPortfolio.World.CurrentLayer;
                 var tweenScene90 = new TWEEN.Tween(layer.scene.rotation).to({
@@ -1093,8 +1093,8 @@ ENGINE = function() {
                 this.onLoadedCallback = onLoadedCallback;
                 this.name = name;
                 this.scene = new THREE.Scene();
-                this.camera = new THREE.PerspectiveCamera(20, world.width / world.height, 0.1, 100);
-                this.camera.position.z = 6;
+                this.camera = new THREE.PerspectiveCamera(10, world.width / world.height, 0.1, 100);
+                this.camera.position.z = 15;
                 // frame buffer object
                 this.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
                 /**
@@ -1280,11 +1280,11 @@ ENGINE = function() {
                         console.log(layer.numberAssetsLoaded);
                         layer.isLoadComplete();
                     });
-                    var plane = new THREE.PlaneBufferGeometry(20, 20, 0, 0);
+                    var plane = new THREE.PlaneBufferGeometry(20, 40, 0, 0);
                     var backgroundImage = new THREE.Mesh(plane, new THREE.MeshBasicMaterial({
                         map: texture
                     }));
-                    backgroundImage.position.z = -2;
+                    backgroundImage.position.z = -5;
                     backgroundImage.position.y = 0;
                     layer.scene.add(backgroundImage);
                     return backgroundImage;
@@ -1323,7 +1323,7 @@ ENGINE = function() {
                                     //addCubeMap(layer, '../src/textures/UVmaps/SwedishRoyalCastle/');
                                     //layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 2500, 4, '../src/textures/sprites/WhiteDot.svg', 0.03);
                                     //addSkyDome(layer, 10, '../src/textures/UVmaps/background1.jpg');
-                                } else if(child.name === 'makehuman_Body') {
+                                } else if(child.name.indexOf('makehuman_Body') != -1) {
                                     var mesh = child.children[0];
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
@@ -1403,7 +1403,7 @@ ENGINE = function() {
                                 } else if(child.name === 'lowpoly2') {
                                     var mesh = child.children[0];
                                     //mesh.geometry.computeTangents();
-                                    mesh.material = world.matcapMaterial(layer, 15);
+                                    mesh.material = world.matcapMaterial(layer, world.materialParams.lowpoly2Texture);
                                     //layer.polyWire2 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
@@ -1412,7 +1412,7 @@ ENGINE = function() {
                                     //layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 1.031, 1);
                                 } else if(child.name === 'lowpoly3') {
                                     var mesh = child.children[0];
-                                    mesh.material = world.matcapMaterial(layer, 15);
+                                    mesh.material = world.matcapMaterial(layer, world.materialParams.lowpoly3Texture);
                                     //mesh.geometry.computeTangents();
                                     //mesh.material = world.transparentMaterial(0xFFFFFF, 0.5);
                                     //world.matcapMaterial(15);
@@ -1426,7 +1426,7 @@ ENGINE = function() {
                                 } else if(child.name.indexOf('cell') != -1) {
                                     var mesh = child.children[0];
                                     //mesh.geometry.computeTangents();
-                                    mesh.material = world.matcapMaterial(layer, 30);
+                                    mesh.material = world.matcapMaterial(layer, 95);
                                     //world.wireframeMaterial();
                                     //layer.polyWire2 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
                                     mesh.receiveShadow = false;
@@ -1509,6 +1509,9 @@ ENGINE = function() {
                                 layer.sphericalCloud.rotation.x -= layer.rotationSpeed.y * .2;
                                 layer.sphericalCloud.rotation.y -= layer.rotationSpeed.y * .2;
                                 layer.sphericalCloud.rotation.z -= layer.rotationSpeed.y * .2;
+                                layer.lowpoly.rotation.x -= layer.rotationSpeed.y * .2;
+                                layer.lowpoly.rotation.y -= layer.rotationSpeed.y * .2;
+                                layer.lowpoly.rotation.z -= layer.rotationSpeed.y * .2;
                                 //layer.backgroundImage.position.y += layer.rotationSpeed.z;
                                 //layer.skydome.rotation.y += layer.rotationSpeed.z* 0.3;
                                 //layer.skydome.rotation.z += layer.rotationSpeed.z;
@@ -1802,7 +1805,7 @@ ENGINE = function() {
                  * Start chain of animation intro
                  **/
             });
-            this.LayerB = new this.Layer('LayerB', '../src/collada/male21.dae', 3, function() {
+            this.LayerB = new this.Layer('LayerB', '../src/collada/male23.dae', 3, function() {
                 console.log('sceneBLoaded');
                 classie.toggleClass(loadingScreen, 'done');
                 setTimeout(function() {
@@ -2024,6 +2027,7 @@ ENGINE = function() {
             //this.initMap();
             $(document).ready(function() {
                 $('#fullpage').fullpage({
+                    keyboardScrolling: false,
                     anchors: ['firstPage', 'secondPage', '3rdPage','4th','5th'],
                     sectionsColor: ['transparent', 'transparent', 'transparent', 'transparent', 'transparent'],
                     slidesNavigation: false,
@@ -2055,7 +2059,7 @@ ENGINE = function() {
                             var layer = myPortfolio.World.CurrentLayer;
                             var tweenScene90 = new TWEEN.Tween(layer.scene.position).to({
                                 x: layer.scene.position.x,
-                                y: layer.scene.position.y + 2,
+                                y: layer.scene.position.y + 3,
                                 z: layer.scene.position.z
                             }, 1000);
                             tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
@@ -2063,7 +2067,7 @@ ENGINE = function() {
                             var layer = myPortfolio.World.CurrentLayer;
                             var tweenScene90 = new TWEEN.Tween(layer.scene.position).to({
                                 x: layer.scene.position.x,
-                                y: layer.scene.position.y - 2,
+                                y: layer.scene.position.y - 3,
                                 z: layer.scene.position.z
                             }, 1000);
                             tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
@@ -2123,7 +2127,7 @@ ENGINE = function() {
         normalScrollElementTouchThreshold: 5,
 
         //Accessibility
-        keyboardScrolling: true,
+        keyboardScrolling: false,
         animateAnchor: true,
         recordHistory: true,
 
