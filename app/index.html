@@ -93,11 +93,6 @@
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <!-- fulpageVertical Scroll plugin -->
 
-    <script type="text/javascript" src="scripts/vendor/fullPageJs/jquery.slimscroll.min.js"></script>
-    <script type="text/javascript" src="scripts/vendor/fullPageJs/jquery.fullPage.min.js"></script>
-
-
-
     <div id="bodyWrapper" class="body-wrapper">
         <div id="loadingScreen" class="loading-screen">
             <div class="loading-info-top">Please wait while loading 3D model...</div>
@@ -107,278 +102,309 @@
             <div class="loading-info-bottom">
                 <div class="tip-title">tip#01</div>For a better experience toggle fullscreen (F11) and turn up the volume.</div>
         </div>
-        <header><a id="menuTrigger" class="menu-trigger" href="#"><span></span></a>
-        </header>
-        <footer>settings</footer>
-
-
         <canvas id="threejsCanvas" class="threejs-canvas"></canvas>
     </div>
+    <!-- menu -->
+    <nav class="menu-overlay">
+        <ul>
+            <li><a id="home" href="#">Home</a>
+            </li>
+            <li><a id="about" href="#">About</a>
+            </li>
+            <li><a id="gallery" href="#">Gallery</a>
+            </li>
+           
+            <li><a id="contact" href="#">Contact</a>
+            </li>
+        </ul>
+        <div id="menuScroller" class="menu-scroller section1 show"></div>
+    </nav>
     <!--Single page scroll navigation -->
-    <div id="fullpage">
-        <div class="section " id="section0">
-            <div id="splashScreen" class="splash-screen">
-                <div class="splash-info">
-                    <div class="name-container">
-                        <span class="name">Bruno</span>
-                        <br>
-                        <span class="surname">Quintela</span>
-                    </div>
-
-                    <hr>
-                    <div class="info">
-                        Frontend Developer / Web Designer
-                    </div>
-
+    <section id="sectionHome" class="section-content home">
+                <div class="info top">
+                    A Website By_
                 </div>
-                <!--div class="splash-screen-bottom"><span>PORTFOLIO</span> <span>2015</span></div-->
-                <!--button id="exploreBttn" class="button">explore</button-->
-            </div>
-        </div>
-        <div class="section" id="section1">
-            <div class="splash-info">
-                <div class="section-container">
-                    <span class="section-title">About</span>
-                    <br>
-                    <span class="section-subtitle">_me</span>
+                <div class="name-container">
+                    <span class="name">Bruno</span>
+                    <span class="surname">Quintela</span>
                 </div>
-
+                <div class="info">
+                    Frontend Developer / Web Designer
+                </div>
+   </section>
+    <section id="sectionAbout" class="section-content about">
+                <div class="title-top">
+                    Who am I _
+                </div>
+                <div class="title-container">
+                    <span class="title">About </span>
+                    <span class="subtitle">me</span>
+                </div>
+                <div class="title-info">
+                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                </div>
+   </section>
+    
+    <section id="sectionGallery" class="section-content gallery">
+               <div class="title-top">
+                    A Website By_
+                </div>
+                <div class="title-container">
+                    <span class="title">About </span>
+                    <span class="subtitle">me</span>
+                </div>
+                <div class="title-info">
+                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                </div>
+   </section>
+        <section id="sectionContact" class="section-content contact">
+                <div class="title-top">
+                    A Website By_
+                </div>
+                <div class="title-container">
+                    <span class="title">About </span>
+                    <span class="subtitle">me</span>
+                </div>
+                <div class="title-info">
+                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                </div>
+   </section>
+    <!--div class="section" id="section1">
+        <div class="splash-info">
+            <div class="section-container">
+                <span class="section-title">About</span>
                 <br>
-                <div class="section-info">
-                    <div>
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                    </div>
+                <span class="section-subtitle">_me</span>
+            </div>
 
+            <br>
+            <div class="section-info">
+                <div>
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                 </div>
+
             </div>
         </div>
-        <div class="section" id="section2">
-            <div class="splash-info">
-                <div class="section-container">
-                    <span class="section-title">Skills</span>
-                    <br>
-                    <span class="section-subtitle">_do</span>
-                </div>
+    </div>
+    <div class="section" id="section2">
+        <div class="splash-info">
+            <div class="section-container">
+                <span class="section-title">Skills</span>
                 <br>
-                <div class="section-info">
-                    <div>
-                        "Animation :Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                    </div>
+                <span class="section-subtitle">_do</span>
+            </div>
+            <br>
+            <div class="section-info">
+                <div>
+                    "Animation :Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                 </div>
             </div>
         </div>
-        <div class="section" id="section3">
-            <div class="splash-info">
-                <div class="section-container">
-                    <span class="section-title">About</span>
-                    <br>
-                    <span class="section-subtitle">_me</span>
-                </div>
-
+    </div>
+    <div class="section" id="section3">
+        <div class="splash-info">
+            <div class="section-container">
+                <span class="section-title">About</span>
                 <br>
-                <div class="section-info">
-                    <div>
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                    </div>
+                <span class="section-subtitle">_me</span>
+            </div>
 
+            <br>
+            <div class="section-info">
+                <div>
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                 </div>
+
             </div>
         </div>
-        <div class="section" id="section4">
-            <div class="splash-info">
-                <div class="section-container">
-                    <span class="section-title">About</span>
-                    <br>
-                    <span class="section-subtitle">_me</span>
-                </div>
-
+    </div>
+    <div class="section" id="section4">
+        <div class="splash-info">
+            <div class="section-container">
+                <span class="section-title">About</span>
                 <br>
-                <div class="section-info">
-                    <div>
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                    </div>
+                <span class="section-subtitle">_me</span>
+            </div>
 
+            <br>
+            <div class="section-info">
+                <div>
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                 </div>
+
             </div>
         </div>
+    </div>
 
-        <div class="section" id="section5">
-            <div class="splash-info">
-                <div class="section-container">
-                    <span class="section-title">What's</span>
-                    <br>
-                    <span class="section-subtitle">_next</span>
-                </div>
-
+    <div class="section" id="section5">
+        <div class="splash-info">
+            <div class="section-container">
+                <span class="section-title">What's</span>
                 <br>
-                <div class="section-info">
-                    <div>
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                    </div>
+                <span class="section-subtitle">_next</span>
+            </div>
 
+            <br>
+            <div class="section-info">
+                <div>
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="section" id="section6">
+        <div id="headerTitle" class="header-title">
+            <div class="flip-container">
+                <div class="title-char">
+                    <div class="front">g</div>
+                    <div class="back"></div>
+                </div>
+            </div>
+            <div class="flip-container">
+                <div class="title-char">
+                    <div class="front">a</div>
+                    <div class="back"></div>
+                </div>
+            </div>
+            <div class="flip-container">
+                <div class="title-char">
+                    <div class="front">l</div>
+                    <div class="back"></div>
+                </div>
+            </div>
+            <div class="flip-container">
+                <div class="title-char">
+                    <div class="front">l</div>
+                    <div class="back"></div>
+                </div>
+            </div>
+            <div class="flip-container">
+                <div class="title-char">
+                    <div class="front">e</div>
+                    <div class="back"></div>
+                </div>
+            </div>
+            <div class="flip-container">
+                <div class="title-char">
+                    <div class="front">r</div>
+                    <div class="back"></div>
+                </div>
+            </div>
+            <div class="flip-container">
+                <div class="title-char">
+                    <div class="front">y</div>
+                    <div class="back"></div>
+                </div>
+            </div>
+            <div class="flip-container">
+                <div class="title-char">
+                    <div class="front">_</div>
+                    <div class="back"></div>
                 </div>
             </div>
         </div>
-        <div class="section" id="section6">
-            <div id="headerTitle" class="header-title">
-                <div class="flip-container">
-                    <div class="title-char">
-                        <div class="front">g</div>
-                        <div class="back"></div>
-                    </div>
-                </div>
-                <div class="flip-container">
-                    <div class="title-char">
-                        <div class="front">a</div>
-                        <div class="back"></div>
-                    </div>
-                </div>
-                <div class="flip-container">
-                    <div class="title-char">
-                        <div class="front">l</div>
-                        <div class="back"></div>
-                    </div>
-                </div>
-                <div class="flip-container">
-                    <div class="title-char">
-                        <div class="front">l</div>
-                        <div class="back"></div>
-                    </div>
-                </div>
-                <div class="flip-container">
-                    <div class="title-char">
-                        <div class="front">e</div>
-                        <div class="back"></div>
-                    </div>
-                </div>
-                <div class="flip-container">
-                    <div class="title-char">
-                        <div class="front">r</div>
-                        <div class="back"></div>
-                    </div>
-                </div>
-                <div class="flip-container">
-                    <div class="title-char">
-                        <div class="front">y</div>
-                        <div class="back"></div>
-                    </div>
-                </div>
-                <div class="flip-container">
-                    <div class="title-char">
-                        <div class="front">_</div>
-                        <div class="back"></div>
-                    </div>
+        <section id="reelWrapper" class="content active">
+            <div class="gallery-item">
+                <div class="gallery-item-info">
+                    <h1 class="title">Model <br> Name</h1>
+                    <br>
+                    <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
                 </div>
             </div>
-            <section id="reelWrapper" class="content active">
-                <div class="gallery-item">
-                    <div class="gallery-item-info">
-                        <h1 class="title">Model <br> Name</h1>
-                        <br>
-                        <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <div class="gallery-item-info">
-                        <h1 class="title">Model <br> Name</h1>
-                        <br>
-                        <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
+            <div class="gallery-item">
+                <div class="gallery-item-info">
+                    <h1 class="title">Model <br> Name</h1>
+                    <br>
+                    <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
 
-                    </div>
                 </div>
-                <div class="gallery-item">
-                    <div class="gallery-item-info">
-                        <h1 class="title">Model <br> Name</h1>
-                        <br>
-                        <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
+            </div>
+            <div class="gallery-item">
+                <div class="gallery-item-info">
+                    <h1 class="title">Model <br> Name</h1>
+                    <br>
+                    <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
 
-                    </div>
                 </div>
-                <div class="gallery-item">
-                    <div class="gallery-item-info">
-                        <h1 class="title">Model <br> Name</h1>
-                        <br>
-                        <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
+            </div>
+            <div class="gallery-item">
+                <div class="gallery-item-info">
+                    <h1 class="title">Model <br> Name</h1>
+                    <br>
+                    <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
 
-                    </div>
                 </div>
-                <div class="gallery-item">
-                    <div class="gallery-item-info">
-                        <h1 class="title">Model <br> Name</h1>
-                        <br>
-                        <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
+            </div>
+            <div class="gallery-item">
+                <div class="gallery-item-info">
+                    <h1 class="title">Model <br> Name</h1>
+                    <br>
+                    <div class="subtitle">"Lorem ipsum dolor sit amet, consectetur adipiscing elit exercitation ullamco laboris nisi ut</div>
 
-                    </div>
                 </div>
-            </section>
-        </div>
-        <div class="section" id="section">
-            <section id="contactWrapper" class="content active">
-                <form id="contactForm" class="content-info contact" role="form" action="contact.php" method="POST">
-                    <h1>Cont<br>act</h1>
-                    <div class="input-wrapper">
-                        <span class="input input--hoshi">
+            </div>
+        </section>
+    </div>
+    <div class="section" id="section">
+        <section id="contactWrapper" class="content active">
+            <form id="contactForm" class="content-info contact" role="form" action="contact.php" method="POST">
+                <h1>Cont<br>act</h1>
+                <div class="input-wrapper">
+                    <span class="input input--hoshi">
 					        <input class="input__field input__field--hoshi" type="text" id="name" name="name" placeholder="Name" required/>
 					        <label class="input__label input__label--hoshi" for="name"></label>
                         </span>
-                    </div>
-                    <div class="input-wrapper">
-                        <span class="input input--hoshi">
+                </div>
+                <div class="input-wrapper">
+                    <span class="input input--hoshi">
 					    <input class="input__field input__field--hoshi" type="email" id="email" name="email" placeholder="Email" required/>
 					    <label class="input__label input__label--hoshi" for="email">
                         </label>
                         </span>
-                    </div>
-                    <div class="input-wrapper">
-                        <span class="input input--hoshi">
+                </div>
+                <div class="input-wrapper">
+                    <span class="input input--hoshi">
                         <textarea  class="input__field input__field--hoshi" type="text" id="message" name="subject" cols="40" rows="3" placeholder="subject" required></textarea>
 					<label class="input__label input__label--hoshi" for="message">
                         </label>
                         </span>
-                    </div>
-                    <div class="send-message">
-                        <input name="submit" type="submit" class="send-message" value="send">
-                    </div>
+                </div>
+                <div class="send-message">
+                    <input name="submit" type="submit" class="send-message" value="send">
+                </div>
 
-                    <div id="followInfo" class="follow-info">
-                        <div class="small-text-contact">If you want to talk about stuff, job related or not, feel free to contact me.</div>
-                        <br>
-                        <hr>
-                        <br>
-                        <div class="social__container">
+                <div id="followInfo" class="follow-info">
+                    <div class="small-text-contact">If you want to talk about stuff, job related or not, feel free to contact me.</div>
+                    <br>
+                    <hr>
+                    <br>
+                    <div class="social__container">
 
-                            <!-- social__item twitter -->
-                            <div class="social__item">
-                                <a target="_blank" href="https://twitter.com/" class="social__icon--twitter"><i class="icon--twitter"></i></a>
-                            </div>
-                            <!-- /social__item twiter -->
-
-                            <!-- social__item linkedin -->
-                            <div class="social__item">
-                                <a target="_blank" href="https://www.linkedin.com/" class="social__icon--linkedin"><i class="icon--linkedin"></i></a>
-                            </div>
-                            <!-- /social__item linkedin -->
-
-                            <!-- social__item behance -->
-                            <div class="social__item">
-                                <a target="_blank" href="http://behance.com" class="social__icon--behance"><i class="icon--behance"></i></a>
-                            </div>
-                            <!-- /social__item behance -->
-
-                            <!-- social__item soundcloud -->
-                            <div class="social__item">
-                                <a target="_blank" href="https://soundcloud.com/matchboxhero" class="social__icon--soundcloud"><i class="icon--soundcloud"></i></a>
-                            </div>
-                            <!-- /social__item soundcloud -->
+                        <div class="social__item">
+                            <a target="_blank" href="https://twitter.com/" class="social__icon--twitter"><i class="icon--twitter"></i></a>
                         </div>
+
+                        <div class="social__item">
+                            <a target="_blank" href="https://www.linkedin.com/" class="social__icon--linkedin"><i class="icon--linkedin"></i></a>
+                        </div>
+
+                        <div class="social__item">
+                            <a target="_blank" href="http://behance.com" class="social__icon--behance"><i class="icon--behance"></i></a>
+                        </div>
+
+                        <div class="social__item">
+                            <a target="_blank" href="https://soundcloud.com/matchboxhero" class="social__icon--soundcloud"><i class="icon--soundcloud"></i></a>
+                        </div>
+
                     </div>
-                </form>
-                <!--div id="map-canvas" class="map"></div-->
+                </div>
+            </form>
+            <div id="map-canvas" class="map"></div>
 
-            </section>
-        </div>
+        </section>
+    </div-->
 
-    </div>
 
 
     <script id="sem-vs" type="x-shader/x-vertex">
