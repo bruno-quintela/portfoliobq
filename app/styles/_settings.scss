@@ -1,0 +1,43 @@
+.settings .title-top
+{
+    margin-bottom:10px;
+}
+
+
+.settings .title-info
+{
+    text-align:left;
+    width:190px;
+}
+
+.settings-name
+{
+    margin:5px;
+    display: inline-block;
+    width: 100px;
+    text-align:right;
+    font-weight:500;
+}
+
+.settings-toggle
+{
+    margin:10px;
+    cursor:pointer;
+}
+
+.on{
+    color:red;
+}
+.off{
+    color:grey;
+}
+
+.settings-quality
+{
+    margin-right:20px;
+    cursor:pointer;
+    display: inline-block;
+    width: 100px;
+    float:right;
+    text-align:right;
+}

@@ -1861,7 +1861,6 @@ ENGINE = function() {
                 sectionContact = document.getElementById('sectionContact'),
                 menuScroller = document.getElementById('menuScroller');
             /* menu navigation handler*/
-           
             aboutAnchor.addEventListener('click', function() {
                 /* vertical scroll animation handler */
                 classie.toggleClass(menuScroller, 'show');
@@ -1897,6 +1896,13 @@ ENGINE = function() {
                     classie.addClass(menuScroller, 'show');
                     classie.addClass(sectionGallery, 'show');
                 }, 1000);
+                /* gallery items show */
+                setTimeout(function() {
+                    var galleryItems = document.querySelectorAll('.gallery-item');
+                    [].forEach.call(galleryItems, function(currentItem) {
+                        classie.toggleClass(currentItem, 'hide');
+                    });
+                }, 1500);
             });
             contactAnchor.addEventListener('click', function() {
                 /* vertical scroll animation handler */
@@ -1916,7 +1922,7 @@ ENGINE = function() {
                     classie.addClass(sectionContact, 'show');
                 }, 1000);
             });
-             settingsAnchor.addEventListener('click', function() {
+            settingsAnchor.addEventListener('click', function() {
                 /* vertical scroll animation handler */
                 classie.toggleClass(menuScroller, 'show');
                 classie.removeClass(menuScroller, 'section1');
@@ -1924,12 +1930,11 @@ ENGINE = function() {
                 classie.removeClass(menuScroller, 'section3');
                 classie.removeClass(menuScroller, 'section4');
                 classie.addClass(menuScroller, 'section4');
-                 /* section animation handler */
+                /* section animation handler */
                 classie.removeClass(sectionSettings, 'show');
                 classie.removeClass(sectionAbout, 'show');
                 classie.removeClass(sectionGallery, 'show');
                 classie.removeClass(sectionContact, 'show');
-                
                 setTimeout(function() {
                     classie.addClass(menuScroller, 'show');
                     classie.addClass(sectionSettings, 'show');
@@ -1937,11 +1942,17 @@ ENGINE = function() {
             });
             /**** galley item click handler */
             var galleryItems = document.querySelectorAll('.gallery-item');
-            /*[].forEach.call(galleryItems, function(currentItem) {
+            [].forEach.call(galleryItems, function(currentItem) {
                 currentItem.addEventListener('click', function() {
+                    //hide all items
+                    [].forEach.call(galleryItems, function(currentItem) {
+                        classie.toggleClass(currentItem, 'hide');
+                    });
+                    // show clicked one
+                    classie.toggleClass(currentItem, 'hide');
                     classie.toggleClass(currentItem, 'show');
                 });
-            });*/
+            });
         },
         initMap: function() {
             var myLatlng = new google.maps.LatLng(40.641214, -8.647156);
@@ -1952,7 +1963,33 @@ ENGINE = function() {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             var map = new google.maps.Map(mapCanvas, mapOptions);
-            map.set('styles', [{"featureType":"all","elementType":"all","stylers":[{"saturation":-100},{"gamma":0.5}]},{"featureType":"all","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"administrative.country","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},{"featureType":"administrative.country","elementType":"labels.text","stylers":[{"color":"#e90303"}]}]);
+            map.set('styles', [{
+                "featureType": "all",
+                "elementType": "all",
+                "stylers": [{
+                    "saturation": -100
+                }, {
+                    "gamma": 0.5
+                }]
+            }, {
+                "featureType": "all",
+                "elementType": "geometry",
+                "stylers": [{
+                    "visibility": "on"
+                }]
+            }, {
+                "featureType": "administrative.country",
+                "elementType": "geometry.fill",
+                "stylers": [{
+                    "visibility": "on"
+                }]
+            }, {
+                "featureType": "administrative.country",
+                "elementType": "labels.text",
+                "stylers": [{
+                    "color": "#e90303"
+                }]
+            }]);
             var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
             var marker = new google.maps.Marker({
                 position: myLatlng,

@@ -1,82 +1,54 @@
+.gallery-item-container
+{
+    position:absolute;
+    top:0px;
+    right:0px;
+    width:33%;
+    height:100%;
+   // border: 1px solid #000;
+    
+}
+
 .gallery-item
 {
     z-index:2;
     position:absolute;
     top:0px;
-    width: calc(100%/5);
-    height: 100%;
-    //border-right: 1px solid #fff;
+    right:0px;
+    width: 100%;
+    height: calc(100%/4);
+   
     background-repeat: no-repeat;
     background-position: center;
+   // border-right:2px solid red;
     //@extend %cursorPlus;
-    @include transform(translateX(100%));
 }
 
 .gallery-item{
   &:nth-child(1){
-    left:0%;
-    @include transition((z-index 0ms 1000ms,background-position 1000ms, width 1000ms, transform 1000ms 0ms, cubic-bezier(0,.05,.03,.84)));
+    top:0%;
+    @include transition((z-index 0ms 1000ms,background-position 1000ms, height 1000ms, transform 1000ms 0ms, cubic-bezier(0,.05,.03,.84)));
     background-image: url(../src/img/galleryItem1.png);
 
   }
   &:nth-child(2){
-    left:20%;
-    @include transition((z-index 0ms 1000ms,background-position 1000ms, width 1000ms, transform 1000ms 200ms, cubic-bezier(0,.05,.03,.84)));
+    top:25%;
+    @include transition((z-index 0ms 1000ms,background-position 1000ms, height 1000ms, transform 1000ms 200ms, cubic-bezier(0,.05,.03,.84)));
     background-image: url(../src/img/galleryItem2.png);
   }
   &:nth-child(3){
-    left:40%;
-      @include transition((z-index 0ms 1000ms,background-position 1000ms, width 1000ms, transform 1000ms 400ms, cubic-bezier(0,.05,.03,.84)));
+    top:50%;
+      @include transition((z-index 0ms 1000ms,background-position 1000ms, height 1000ms, transform 1000ms 400ms, cubic-bezier(0,.05,.03,.84)));
     background-image: url(../src/img/galleryItem3.png);
   }
   &:nth-child(4){
-    left:60%;
-      @include transition((z-index 0ms 1000ms,background-position 1000ms, width 1000ms, transform 1000ms 600ms, cubic-bezier(0,.05,.03,.84)));
+    top:75%;
+      @include transition((z-index 0ms 1000ms,background-position 1000ms, height 1000ms, transform 1000ms 600ms, cubic-bezier(0,.05,.03,.84)));
     background-image: url(../src/img/galleryItem4.png);
   }
-  &:nth-child(5){
-    left:80%;
-      @include transition((z-index 0ms 1000ms,background-position 1000ms, width 1000ms, transform 1000ms 800ms, cubic-bezier(0,.05,.03,.84)));
-    background-image: url(../src/img/galleryItem5.png);
-  }
 }
 
 
-#reelWrapper.active .gallery-item
-{
-    @include transform(translateX(0%));
-}
-
-/*#reelWrapper.active .gallery-item
-{
-    &:nth-child(1){
-    left:0%;
-    @include transition((z-index 0ms 1000ms,background-position 1000ms, width 1000ms, transform 1000ms 500ms, cubic-bezier(0,.05,.03,.84)));
-    background-image: url(../src/img/galleryItem1.png);
-
-  }
-  &:nth-child(2){
-    left:20%;
-    @include transition((z-index 0ms 1000ms,background-position 1000ms, width 1000ms, transform 1000ms 1000ms, cubic-bezier(0,.05,.03,.84)));
-    background-image: url(../src/img/galleryItem2.png);
-  }
-  &:nth-child(3){
-    left:40%;
-      @include transition((z-index 0ms 1000ms,background-position 1000ms, width 1000ms, transform 1000ms 2000ms, cubic-bezier(0,.05,.03,.84)));
-    background-image: url(../src/img/galleryItem3.png);
-  }
-  &:nth-child(4){
-    left:60%;
-      @include transition((z-index 0ms 1000ms,background-position 1000ms, width 1000ms, transform 1000ms 3000ms, cubic-bezier(0,.05,.03,.84)));
-    background-image: url(../src/img/galleryItem4.png);
-  }
-  &:nth-child(5){
-    left:80%;
-      @include transition((z-index 0ms 1000ms,background-position 1000ms, width 1000ms, transform 1000ms 4000ms, cubic-bezier(0,.05,.03,.84)));
-    background-image: url(../src/img/galleryItem5.png);
-  }
-}
-*/
 .gallery-item:hover
 {
    background-position: 40% 50%;
@@ -85,56 +57,93 @@
 
 .gallery-item.show{
   //@extend %cursorClose;
-  @include transition((z-index 0ms 0ms, background-position 1000ms, width 1000ms, transform 1000ms 0s, cubic-bezier(0,.05,.03,.84)));    
-  background-position: 50% 50%;
+  @include transition((z-index 0ms 0ms, background-position 1000ms, height 1000ms, transform 1000ms 0s, cubic-bezier(0,.05,.03,.84)));    
+  background-position: 40% 50%;
   z-index:3;
-  width:100%;
   &:nth-child(1){
-    @include transform(translateX(0) !important);
+    @include transform(translateY(100%) !important);
   }
   &:nth-child(2){
-    @include transform(translateX(-20%) !important);
+    @include transform(translateY(0%) !important);
   }
   &:nth-child(3){
-    @include transform(translateX(-40%) !important);
+    @include transform(translateY(-100%) !important);
   }
   &:nth-child(4){
-    @include transform(translateX(-60%) !important);
-  }
-  &:nth-child(5){
-    @include transform(translateX(-80%) !important);
+    @include transform(translateY(-200%) !important);
   }
 }
 
+.gallery-item.hide{
+  //@extend %cursorClose;
+  @include transition((z-index 0ms 0ms, background-position 1000ms, height 1000ms, transform 1000ms 0s, cubic-bezier(0,.05,.03,.84)));    
+  z-index:1;
+  opacity:0;
+  @include transform(translateX(100%) !important);
+}
+
+.gallery-item.show .gallery-item-info{
+    opacity:1;
+}
+
+
 .gallery-item-info{
-    position:absolute;
-    bottom:0px;
-    background-color: rgba(0,0,0,0.5);
+        font-family: Open Sans !important;
+  	text-rendering: optimizeLegibility;
+    float:left;
+    background-color:rgba(255,255,255,1);
     color:#fff;
-    width: 100%;
-    height:25%;
+    width: 100px;
+    height:100%;
     padding:20px;
     text-align:left;
     //border-bottom: 5px solid red;
-    border-top: 1px solid red;
-    //opacity:0;
+    //border-top: 1px solid red;
+    opacity:0;
     @include transform(translateX(0%));
     @include transition((transform 1000ms, opacity 1000ms, cubic-bezier(0,.05,.03,.84)));
+}
+
+.gallery-item-info .title-container
+{
+    text-align:left;
+    color:#000;
+}
+
+.gallery-item-info .title-info
+{
+    text-align:left;
+    float:left;
+    width:100%;
+    color:#000;
+}
+
+.gallery-item-info .title-top
+{
+    text-align:left;
+    color:#000;
+    font-weight:600;
 }
 
 
 .gallery-item:hover .gallery-item-info
 {
    @include transform(translateX(0%));
-   //opacity:1;
+   opacity:1;
 }
 
-.gallery-item-info .title{
-    font-weight:300;
-    margin:0px;
-}
-
-.gallery-item-info .subtitle{
-    font-weight:300;
-    font-size:11px;
+.view-model
+{
+    position: absolute;
+    left: 0px;
+    bottom: 10px;
+    width: 100%;
+    color: red;
+    text-align: center;
+    border-top: 1px solid #000;
+    font-size: 12px;
+    /* text-transform: uppercase; */
+    padding-top: 7px;
+    letter-spacing: 2px;
+    cursor:pointer;
 }

@@ -107,7 +107,7 @@ hr
 
 .section-content.gallery.show
 {
-    transform: translateX(-70%) translateY(100%);
+    transform: translateX(-33%) translateY(100%);
 }
 
 .section-content.contact.show
@@ -116,7 +116,7 @@ hr
 }
 .section-content.settings.show
 {
-    transform: translateX(-70%) translateY(300%);
+    transform: translateX(-85%) translateY(300%);
 }
 
 
@@ -301,7 +301,7 @@ text-align: right;
 
 
 
-@import 'burguerMenu';
+@import 'settings';
 @import 'menuOverlay';
 @import 'gallery';
 @import 'contact';
