@@ -1851,34 +1851,17 @@ ENGINE = function() {
             /**
              * Menu navigation anchors triggers handler
              **/
-            var homeAnchor = document.getElementById('home'),
-                aboutAnchor = document.getElementById('about'),
-                galleryAnchor = document.getElementById('gallery'),
-                contactAnchor = document.getElementById('contact'),
-                sectionHome = document.getElementById('sectionHome'),
+            var settingsAnchor = document.getElementById('settingsAnchor'),
+                aboutAnchor = document.getElementById('aboutAnchor'),
+                galleryAnchor = document.getElementById('galleryAnchor'),
+                contactAnchor = document.getElementById('contactAnchor'),
+                sectionSettings = document.getElementById('sectionSettings'),
                 sectionAbout = document.getElementById('sectionAbout'),
                 sectionGallery = document.getElementById('sectionGallery'),
                 sectionContact = document.getElementById('sectionContact'),
                 menuScroller = document.getElementById('menuScroller');
             /* menu navigation handler*/
-            homeAnchor.addEventListener('click', function() {
-                /* vertical scroll animation handler */
-                classie.toggleClass(menuScroller, 'show');
-                classie.removeClass(menuScroller, 'section1');
-                classie.removeClass(menuScroller, 'section2');
-                classie.removeClass(menuScroller, 'section3');
-                classie.removeClass(menuScroller, 'section4');
-                /* section animation handler */
-                classie.removeClass(sectionHome, 'show');
-                classie.removeClass(sectionAbout, 'show');
-                classie.removeClass(sectionGallery, 'show');
-                classie.removeClass(sectionContact, 'show');
-                classie.addClass(menuScroller, 'section1');
-                setTimeout(function() {
-                    classie.addClass(menuScroller, 'show');
-                    classie.addClass(sectionHome, 'show');
-                }, 1000);
-            });
+           
             aboutAnchor.addEventListener('click', function() {
                 /* vertical scroll animation handler */
                 classie.toggleClass(menuScroller, 'show');
@@ -1887,11 +1870,11 @@ ENGINE = function() {
                 classie.removeClass(menuScroller, 'section3');
                 classie.removeClass(menuScroller, 'section4');
                 /* section animation handler */
-                classie.removeClass(sectionHome, 'show');
+                classie.removeClass(sectionSettings, 'show');
                 classie.removeClass(sectionAbout, 'show');
                 classie.removeClass(sectionGallery, 'show');
                 classie.removeClass(sectionContact, 'show');
-                classie.addClass(menuScroller, 'section2');
+                classie.addClass(menuScroller, 'section1');
                 setTimeout(function() {
                     classie.addClass(menuScroller, 'show');
                     classie.addClass(sectionAbout, 'show');
@@ -1904,9 +1887,9 @@ ENGINE = function() {
                 classie.removeClass(menuScroller, 'section2');
                 classie.removeClass(menuScroller, 'section3');
                 classie.removeClass(menuScroller, 'section4');
-                classie.addClass(menuScroller, 'section3');
+                classie.addClass(menuScroller, 'section2');
                 /* section animation handler */
-                classie.removeClass(sectionHome, 'show');
+                classie.removeClass(sectionSettings, 'show');
                 classie.removeClass(sectionAbout, 'show');
                 classie.removeClass(sectionGallery, 'show');
                 classie.removeClass(sectionContact, 'show');
@@ -1922,15 +1905,34 @@ ENGINE = function() {
                 classie.removeClass(menuScroller, 'section2');
                 classie.removeClass(menuScroller, 'section3');
                 classie.removeClass(menuScroller, 'section4');
-                classie.addClass(menuScroller, 'section4');
+                classie.addClass(menuScroller, 'section3');
                 /* section animation handler */
-                classie.removeClass(sectionHome, 'show');
+                classie.removeClass(sectionSettings, 'show');
                 classie.removeClass(sectionAbout, 'show');
                 classie.removeClass(sectionGallery, 'show');
                 classie.removeClass(sectionContact, 'show');
                 setTimeout(function() {
                     classie.addClass(menuScroller, 'show');
                     classie.addClass(sectionContact, 'show');
+                }, 1000);
+            });
+             settingsAnchor.addEventListener('click', function() {
+                /* vertical scroll animation handler */
+                classie.toggleClass(menuScroller, 'show');
+                classie.removeClass(menuScroller, 'section1');
+                classie.removeClass(menuScroller, 'section2');
+                classie.removeClass(menuScroller, 'section3');
+                classie.removeClass(menuScroller, 'section4');
+                classie.addClass(menuScroller, 'section4');
+                 /* section animation handler */
+                classie.removeClass(sectionSettings, 'show');
+                classie.removeClass(sectionAbout, 'show');
+                classie.removeClass(sectionGallery, 'show');
+                classie.removeClass(sectionContact, 'show');
+                
+                setTimeout(function() {
+                    classie.addClass(menuScroller, 'show');
+                    classie.addClass(sectionSettings, 'show');
                 }, 1000);
             });
             /**** galley item click handler */
@@ -1950,7 +1952,7 @@ ENGINE = function() {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             var map = new google.maps.Map(mapCanvas, mapOptions);
-            //map.set('styles', [{"featureType":"all","elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#ffcd93"},{"lightness":40}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#000000"},{"lightness":16}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"administrative","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#be7747"},{"lightness":17},{"weight":1.2}]},{"featureType":"administrative","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#aa6033"},{"lightness":20}]},{"featureType":"landscape","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#9e693b"},{"lightness":21}]},{"featureType":"poi.attraction","elementType":"all","stylers":[{"color":"#ffffff"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"color":"#ffffff"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffffff"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway.controlled_access","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":18}]},{"featureType":"road.arterial","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":16}]},{"featureType":"road.local","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":19}]},{"featureType":"transit","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit.line","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit.station.bus","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit.station.rail","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#fff6eb"},{"lightness":17}]}]);
+            map.set('styles', [{"featureType":"all","elementType":"all","stylers":[{"saturation":-100},{"gamma":0.5}]},{"featureType":"all","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"administrative.country","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},{"featureType":"administrative.country","elementType":"labels.text","stylers":[{"color":"#e90303"}]}]);
             var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
             var marker = new google.maps.Marker({
                 position: myLatlng,
@@ -1963,7 +1965,7 @@ ENGINE = function() {
          **/
         start: function() {
             this.initMenu();
-            //this.initMap();
+            this.initMap();
         }
     }
 };

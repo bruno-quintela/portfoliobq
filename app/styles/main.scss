@@ -78,45 +78,47 @@ hr
     
 }
 
-.section-content.home
+
+
+.section-content.about
 {
     transform: translateX(-100%) translateY(0%);
 }
 
-.section-content.about
+.section-content.gallery
 {
     transform: translateX(-100%) translateY(100%);
 }
 
-.section-content.gallery
-{
-    transform: translateX(-100%) translateY(200%);
-}
-
 .section-content.contact
 {
-    transform:translateX(-100%) translateY(300%);
+    transform:translateX(-100%) translateY(200%);
+}
+
+.section-content.settings
+{
+    transform: translateX(-100%) translateY(300%);
 }
 /** show */
-.section-content.home.show
+.section-content.about.show
 {
     transform: translateX(-70%) translateY(0%);
 }
 
-.section-content.about.show
+.section-content.gallery.show
 {
     transform: translateX(-70%) translateY(100%);
 }
 
-.section-content.gallery.show
-{
-    transform: translateX(-70%) translateY(200%);
-}
-
 .section-content.contact.show
 {
-    transform:translateX(-70%) translateY(300%);
+    transform:translateX(-75%) translateY(200%);
 }
+.section-content.settings.show
+{
+    transform: translateX(-70%) translateY(300%);
+}
+
 
 /* name and skills styles ********************************************/
 
