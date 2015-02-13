@@ -221,31 +221,13 @@
                 <span class="subtitle">me</span>
             </div>
             <div class="title-info">
-                Lorem ipsum dolor sit ametr sit amet.
-                <br>
-                <br>email:
-                <span class="email">bruno.quintela.bastos@gmail.com</span>
-                <br>
-                <br>social:
-                <div class="social-container">
-                    <div class="social__item">
-                        <a target="_blank" href="https://twitter.com/" class="social__icon--twitter"><i class="icon--twitter"></i></a>
-                    </div>
-                    <div class="social__item">
-                        <a target="_blank" href="https://www.linkedin.com/" class="social__icon--linkedin"><i class="icon--linkedin"></i></a>
-                    </div>
-                    <div class="social__item">
-                        <a target="_blank" href="http://behance.com" class="social__icon--behance"><i class="icon--behance"></i></a>
-                    </div>
-                    <div class="social__item">
-                        <a target="_blank" href="https://soundcloud.com/matchboxhero" class="social__icon--soundcloud"><i class="icon--soundcloud"></i></a>
-                    </div>
-                </div>
-
+                Lorem ipsum dolor sit ametr sit amet.sum dolor sit amet, consectetur adipiscing elit, sed dLorem ipsum 
+                <a class="email" href="mailto:bruno.quintela.bastos@gmail.com?body=The message's first paragraph.">bruno.quintela.bastos@gmail.com</a> 
+                dolor sit amet, Lorem ipsum dolor
             </div>
         </div>
         <!-- RIGHT -->
-        <div class="contact right">
+        <div id="contactRight" class="contact right">
             <div class="title-top">
                 @bruno_quintela
             </div>
@@ -255,11 +237,17 @@
             </div>
             <div class="title-info">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed dLorem ipsum dolor sit amet, Lorem ipsum dolor sit amet,
+            </div>
+            <div class="social-info">
+                <a target="_blank" href="https://twitter.com/" class="social-item">twitter</a> 
+                <a target="_blank" href="https://www.linkedin.com/" class="social-item">linkedIn</a>
+                <a target="_blank" href="http://behance.com" class="social-item">behance</a>
+                <a target="_blank" href="https://soundcloud.com/matchboxhero" class="social-item">soundcloud</a>
             </div>
 
         </div>
         <!-- TOP -->
-        <div id="map-canvas" class="contact top">
+        <!--div id="map-canvas" class="contact top">
             <div class="title-top">
                 @bruno_quintela
             </div>
@@ -271,9 +259,9 @@
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed dLorem ipsum dolor sit amet, Lorem ipsum dolor sit amet,
 
             </div>
-        </div>
+        </div-->
         <!-- BOTTOM -->
-        <div class="contact bottom">
+        <!--div class="contact bottom">
             <form id="contactForm" class="content-info contact" role="form" action="contact.php" method="POST">
                 <div class="input-wrapper">
                     <span class="input input--hoshi">
@@ -301,20 +289,18 @@
 
 
             </form>
-        </div>
+        </div-->
     </section>
     <section id="sectionSettings" class="section-content settings">
-        <div class="title-top">
-            settings _
-        </div>
         <div class="title-info">
-            <span class="settings-name">audio</span><span class="settings-toggle on">on</span><span class="settings-toggle off">off</span>
+            <span class="settings-name">Audio</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
             <br>
-            <span class="settings-name">fullscreen</span><span class="settings-toggle on">on</span><span class="settings-toggle off">off</span>
+            <span class="settings-name">Fullscreen</span><span id="settingsFullscreenOn" class="settings-toggle">on</span><span id="settingsFullscreenOff" class="settings-toggle active">off</span>
             <br>
-            <span class="settings-name">stereoscopic 3d</span><span class="settings-toggle on">on</span><span class="settings-toggle off">off</span>
+            <span class="settings-name">Stereoscopic 3D</span><span id="settingsStereoscopicOn" class="settings-toggle">on</span><span id="settingsStereoscopicOff" class="settings-toggle active">off</span>
             <br>
-            <span class="settings-name">quality</span><span class="settings-quality on">high</span><br><span class="settings-quality off">medium</span><br><span class="settings-quality off">low</span>
+            <span class="settings-quality-name">Postprocessing</span>
+            <div class="settings-quality-container"><span id="settingsQualityHigh" class="settings-quality active">High</span><br><span id="settingsQualityMedium" class="settings-quality">Medium</span><br><span id="settingsQualityLow" class="settings-quality off">Low</span></div>
         </div>
     </section>
 

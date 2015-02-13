@@ -6,13 +6,13 @@
 
 .settings .title-info
 {
-    text-align:left;
+    text-align:right;
     width:190px;
 }
 
 .settings-name
 {
-    margin:5px;
+    margin-top:5px;
     display: inline-block;
     width: 100px;
     text-align:right;
@@ -21,23 +21,56 @@
 
 .settings-toggle
 {
-    margin:10px;
+    margin-left:10px;
+    color:grey;
+    font-weight:100;
     cursor:pointer;
+    @include transition(color 0.5s);
 }
 
-.on{
-    color:red;
+.settings-toggle:hover
+{
+    color:#fff;
 }
-.off{
-    color:grey;
+
+.active{
+    color:red !important;
+    font-weight:500;
+}
+
+.settings-quality-name
+{
+    margin-top:15px;
+    margin-right:30px;
+    display: inline-block;
+    width: 100px;
+    text-align:right;
+    font-weight:500;
+}
+
+
+.settings-quality-container
+{
+    cursor:pointer;
+    width: 20px;
+    float:right;
+    text-align:right;
+    margin-top:15px;
 }
 
 .settings-quality
 {
-    margin-right:20px;
+    margin-right: 20px;
+    margin-bottom: 3px;
     cursor:pointer;
     display: inline-block;
-    width: 100px;
+    width: 20px;
     float:right;
-    text-align:right;
+    color:grey;
+    @include transition(color 0.5s);
+}
+
+.settings-quality:hover
+{
+    color:#fff;
 }

@@ -125,8 +125,8 @@ ENGINE = function() {
         targetRotationY: 0,
         dpr: window.devicePixelRatio,
         settings: {
-            statsEnabled: false,
-            guiEnabled: false
+            statsEnabled: true,
+            guiEnabled: true
         },
         renderParams: {
             antialias: true,
@@ -137,7 +137,7 @@ ENGINE = function() {
             skydomeImage: 1,
             fog: 0.001,
             enableAnaglyph: false,
-            focus: 2,
+            focus: 12,
             enableTrackball: true,
             enableMouseListener: false,
             enableGrid: false,
@@ -587,10 +587,9 @@ ENGINE = function() {
                 guiRender.add(this.renderParams, 'enableAnaglyph').onChange(function(value) {
                     if(value) {
                         myPortfolio.World.CurrentLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, 2);
-                        //myPortfolio.World.NextLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, 2);
                     }
                 });
-                guiRender.add(this.renderParams, 'focus', 0, 10.1).listen().onChange(function() {
+                guiRender.add(this.renderParams, 'focus', 0, 50).listen().onChange(function() {
                     myPortfolio.World.CurrentLayer.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, world.renderParams.focus);
                 });
                 guiRender.addColor(this.renderParams, 'backgroundColor').onChange(function(value) {
@@ -888,16 +887,21 @@ ENGINE = function() {
                 this.fpsStats = new Stats();
                 this.fpsStats.setMode(0); // 0: fps, 1: ms
                 this.fpsStats.domElement.style.position = 'absolute';
-                this.fpsStats.domElement.style.left = '0px';
-                this.fpsStats.domElement.style.top = '0px';
-                document.body.appendChild(this.fpsStats.domElement);
+                this.fpsStats.domElement.style.right = '-10px';
+                this.fpsStats.domElement.style.bottom = '10px';
+                document.getElementById('sectionSettings').appendChild(this.fpsStats.domElement);
+                document.getElementById('fps').style.background = 'transparent';
+                document.getElementById('fpsText').style.color = '#fff';
+                document.getElementById('fpsText').style.fontWeight = '100';
+                document.getElementById('fpsText').style.fontFamily = "Open Sans";
+                document.getElementById('fpsGraph').style.display = 'none';
                 //add threex.renderstats WEBGL render
-                this.gpuStats = new THREEx.RendererStats();
+                /*this.gpuStats = new THREEx.RendererStats();
                 this.gpuStats.domElement.id = 'gpuStats';
                 this.gpuStats.domElement.style.position = 'absolute';
                 this.gpuStats.domElement.style.left = '0px';
                 this.gpuStats.domElement.style.bottom = '0px';
-                document.body.appendChild(this.gpuStats.domElement);
+                document.body.appendChild(this.gpuStats.domElement);*/
             }
         },
         transparentMaterial: function(matColor, matOpacity) {
@@ -1696,6 +1700,9 @@ ENGINE = function() {
                 var renderModel = new THREE.RenderPass(this.scene, this.camera);
                 this.composer.addPass(renderModel);
                 if(!world.renderParams.disableEffects) {
+                     if(world.renderParams.enableAnaglyph) {
+                        this.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, world.renderParams.focus);
+                    }
                     if(world.renderParams.enableGlitch) {
                         var glitchPass = new THREE.GlitchPass(world.renderParams.glitchType);
                         this.composer.addPass(glitchPass);
@@ -1789,7 +1796,22 @@ ENGINE = function() {
                     world.renderer.setSize(world.width, world.height);
                     world.refreshPostProcessing();
                 }
-                console.log('resized');
+                
+                /** fullscreen F11 event handlers */
+                var maxHeight = window.screen.height,
+                    maxWidth = window.screen.width,
+                    curHeight = window.outerHeight,
+                    curWidth = window.outerWidth;
+                console.log('resized'+ maxWidth +'=='+ curWidth +'&&'+ maxHeight +'=='+ curHeight);
+                if(maxWidth == curWidth && maxHeight == curHeight) {
+                    console.log('fulscreen changed');
+                    classie.toggleClass(settingsFullscreenOn, 'active');
+                    classie.toggleClass(settingsFullscreenOff, 'active');
+                }
+                else{
+                    classie.removeClass(settingsFullscreenOn, 'active');
+                    classie.addClass(settingsFullscreenOff, 'active');
+                }
             };
         },
         /**
@@ -1822,7 +1844,7 @@ ENGINE = function() {
             var render = function() {
                 if( !! world.settings.statsEnabled) {
                     world.fpsStats.update(world.renderer);
-                    world.gpuStats.update(world.renderer);
+                    //world.gpuStats.update(world.renderer);
                 }
                 // update the tweens from TWEEN library
                 TWEEN.update();
@@ -1859,6 +1881,7 @@ ENGINE = function() {
                 sectionAbout = document.getElementById('sectionAbout'),
                 sectionGallery = document.getElementById('sectionGallery'),
                 sectionContact = document.getElementById('sectionContact'),
+                contactRight = document.getElementById('contactRight'),
                 menuScroller = document.getElementById('menuScroller');
             /* menu navigation handler*/
             aboutAnchor.addEventListener('click', function() {
@@ -1920,6 +1943,7 @@ ENGINE = function() {
                 setTimeout(function() {
                     classie.addClass(menuScroller, 'show');
                     classie.addClass(sectionContact, 'show');
+                    classie.toggleClass(contactRight, 'show');
                 }, 1000);
             });
             settingsAnchor.addEventListener('click', function() {
@@ -1952,6 +1976,135 @@ ENGINE = function() {
                     classie.toggleClass(currentItem, 'hide');
                     classie.toggleClass(currentItem, 'show');
                 });
+            });
+        },
+        /**
+         * UI Settings event handlers
+         **/
+        initSettings: function() {
+            var settingsAudioOn = document.getElementById('settingsAudioOn'),
+                settingsAudioOff = document.getElementById('settingsAudioOff'),
+                settingsFullscreenOn = document.getElementById('settingsFullscreenOn'),
+                settingsFullscreenOff = document.getElementById('settingsFullscreenOff'),
+                settingsStereoscopicOn = document.getElementById('settingsStereoscopicOn'),
+                settingsStereoscopicOff = document.getElementById('settingsStereoscopicOff'),
+                settingsQualityHigh = document.getElementById('settingsQualityHigh'),
+                settingsQualityMedium = document.getElementById('settingsQualityMedium'),
+                settingsQualityLow = document.getElementById('settingsQualityLow');
+
+            function launchIntoFullscreen(element) {
+                console.log('launchFullscreen');
+                if(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled) {
+                    if(element.requestFullscreen) {
+                        element.requestFullscreen();
+                    } else if(element.mozRequestFullScreen) {
+                        element.mozRequestFullScreen();
+                    } else if(element.webkitRequestFullscreen) {
+                        element.webkitRequestFullscreen();
+                    } else if(element.msRequestFullscreen) {
+                        element.msRequestFullscreen();
+                    }
+                }
+            }
+
+            function exitFullscreen() {
+                console.log('exitFullscreen');
+                if(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled) {
+                    if(document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if(document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    } else if(document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    } else if(document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                    }
+                }
+            }
+            /** fullscreen F11 event handlers */
+            
+            /* AUDIO */
+            settingsAudioOn.addEventListener('click', function() {
+                classie.toggleClass(settingsAudioOn, 'active');
+                classie.toggleClass(settingsAudioOff, 'active');
+            });
+            settingsAudioOff.addEventListener('click', function() {
+                classie.toggleClass(settingsAudioOn, 'active');
+                classie.toggleClass(settingsAudioOff, 'active');
+            });
+            /* FULLSCREEN */
+            settingsFullscreenOn.addEventListener('click', function() {
+                // if already on do nothing
+                if(!classie.hasClass(settingsFullscreenOn, 'active')) {
+                    if(!document.fullscreenElement || !document.webkitFullscreenElement || !document.mozFullScreenElement || !document.msFullscreenElement) {
+                        //fullscreen is disabled
+                        launchIntoFullscreen(document.documentElement);
+                    }
+                }
+            });
+            settingsFullscreenOff.addEventListener('click', function() {
+                // if already on do nothing
+                if(!classie.hasClass(settingsFullscreenOff, 'active')) {
+                    if(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                        //fullscreen is enabled
+                        exitFullscreen();
+                    }
+                }
+            });
+            
+            /* Anaglyph 3D */
+            settingsStereoscopicOn.addEventListener('click', function() {
+                classie.toggleClass(settingsStereoscopicOn, 'active');
+                classie.toggleClass(settingsStereoscopicOff, 'active');
+                myPortfolio.World.renderParams.enableAnaglyph = true;
+                myPortfolio.World.refreshPostProcessing();
+            });
+            settingsStereoscopicOff.addEventListener('click', function() {
+                classie.toggleClass(settingsStereoscopicOn, 'active');
+                classie.toggleClass(settingsStereoscopicOff, 'active');
+                myPortfolio.World.renderParams.enableAnaglyph = false;
+                myPortfolio.World.refreshPostProcessing();
+            });
+            
+            /* POSTPROCESSING QUALITY */
+            settingsQualityHigh.addEventListener('click', function() {
+                classie.toggleClass(settingsQualityHigh, 'active');
+                classie.removeClass(settingsQualityMedium, 'active');
+                classie.removeClass(settingsQualityLow, 'active');
+                
+                myPortfolio.World.renderParams.enableFXAA = true;
+                myPortfolio.World.renderParams.enableTiltShift = true;
+                myPortfolio.World.renderParams.enableRGBShift = true;
+                myPortfolio.World.renderParams.enableVignette = true;
+                myPortfolio.World.renderParams.bleach = true;
+                
+                myPortfolio.World.refreshPostProcessing();
+            });
+            settingsQualityMedium.addEventListener('click', function() {
+                classie.removeClass(settingsQualityHigh, 'active');
+                classie.toggleClass(settingsQualityMedium, 'active');
+                classie.removeClass(settingsQualityLow, 'active');
+                
+                myPortfolio.World.renderParams.enableFXAA = false;
+                myPortfolio.World.renderParams.enableTiltShift = false;
+                myPortfolio.World.renderParams.enableRGBShift = false;
+                myPortfolio.World.renderParams.enableVignette = true;
+                myPortfolio.World.renderParams.bleach = true;
+                
+                myPortfolio.World.refreshPostProcessing();
+            });
+            settingsQualityLow.addEventListener('click', function() {
+                classie.removeClass(settingsQualityHigh, 'active');
+                classie.removeClass(settingsQualityMedium, 'active');
+                classie.toggleClass(settingsQualityLow, 'active');
+                
+                 myPortfolio.World.renderParams.enableFXAA = false;
+                myPortfolio.World.renderParams.enableTiltShift = false;
+                myPortfolio.World.renderParams.enableRGBShift = false;
+                myPortfolio.World.renderParams.enableVignette = false;
+                myPortfolio.World.renderParams.bleach = false;
+                
+                myPortfolio.World.refreshPostProcessing();
             });
         },
         initMap: function() {
@@ -2002,7 +2155,8 @@ ENGINE = function() {
          **/
         start: function() {
             this.initMenu();
-            this.initMap();
+            this.initSettings();
+            //this.initMap();
         }
     }
 };
