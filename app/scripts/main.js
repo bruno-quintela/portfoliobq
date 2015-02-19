@@ -1901,7 +1901,6 @@ ENGINE = function() {
                 /*remove submenu event listeners*/
                 submenu2.removeEventListener('click', displaySkills, false);
                 submenu3.removeEventListener('click', displayInterests, false);
-                
                 submenu2.removeEventListener('click', displaySocial, false);
                 submenu4.removeEventListener('click', displayLocation, false);
                 // toggle section active state
@@ -1924,20 +1923,19 @@ ENGINE = function() {
             };
 
             function displaySkills() {
-                classie.removeClass(submenuInterests, 'show');
-                classie.addClass(submenuSkills, 'show');
+                classie.toggleClass(submenuSkills, 'show');
             };
+
             function displayInterests() {
-                classie.removeClass(submenuSkills, 'show');
-                classie.addClass(submenuInterests, 'show');
+                classie.toggleClass(submenuInterests, 'show');
             };
+
             function displaySocial() {
-                classie.removeClass(submenuLocation, 'show');
-                classie.addClass(submenuSocial, 'show');
+                classie.toggleClass(submenuSocial, 'show');
             };
+
             function displayLocation() {
-                classie.removeClass(submenuSocial, 'show');
-                classie.addClass(submenuLocation, 'show');
+                classie.toggleClass(submenuLocation, 'show');
             };
             /* menu navigation handler*/
             aboutAnchor.addEventListener('click', function() {
@@ -1955,7 +1953,7 @@ ENGINE = function() {
                 classie.removeClass(submenu4.parentNode, 'active');
                 submenu2.innerHTML = "skills";
                 submenu3.innerHTML = "interests";
-                submenu4.innerHTML = "";
+                submenu4.innerHTML = "settings";
                 /* vertical scroll animation handler */
                 classie.toggleClass(menuScroller, 'show');
                 classie.removeClass(menuScroller, 'section1');
@@ -2004,26 +2002,21 @@ ENGINE = function() {
                 setTimeout(function() {
                     classie.addClass(menuScroller, 'show');
                     classie.addClass(sectionGallery, 'show');
-                }, 1000);
-                setTimeout(function() {
                     classie.toggleClass(menu, 'toggle');
-                }, 500);
-                /* gallery items show */
-                setTimeout(function() {
+                    /* gallery items show */
                     var galleryItems = document.querySelectorAll('.gallery-item');
                     [].forEach.call(galleryItems, function(currentItem) {
                         classie.toggleClass(currentItem, 'hide');
                     });
-                }, 1500);
+                },500);
+
             });
             contactAnchor.addEventListener('click', function() {
                 //add on close submenu event handler
                 submenu3.addEventListener('click', closeSubmenu);
                 //submenu anchors on click event handlers
-                submenu2.onclick = null;
+                submenu1.addEventListener('click', displayLocation);
                 submenu2.addEventListener('click', displaySocial);
-                submenu4.onclick = null;
-                submenu4.addEventListener('click', displayLocation);
                 /** active item style **/
                 submenu3.innerHTML = "back";
                 classie.addClass(submenu3.parentNode, 'active');
@@ -2031,9 +2024,9 @@ ENGINE = function() {
                 classie.removeClass(submenu1.parentNode, 'active');
                 classie.removeClass(submenu2.parentNode, 'active');
                 classie.removeClass(submenu4.parentNode, 'active');
-                submenu1.innerHTML = "";
+                submenu1.innerHTML = "location";
                 submenu2.innerHTML = "social";
-                submenu4.innerHTML = "location";
+                submenu4.innerHTML = "Settings";
                 /* vertical scroll animation handler */
                 classie.toggleClass(menuScroller, 'show');
                 classie.removeClass(menuScroller, 'section1');

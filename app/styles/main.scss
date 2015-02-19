@@ -74,6 +74,12 @@ hr
     //border:1px solid #000;
 }
 
+/** show */
+.section-content.show
+{
+    transform: translateX(0%);
+}
+
 .section-content.main-menu
 {
     color:#fff;
@@ -111,11 +117,7 @@ hr
 {
     top:75%;
 }
-/** show */
-.section-content.show
-{
-    transform: translateX(0%);
-}
+
 
 
 /* gallery styling */
