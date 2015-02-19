@@ -126,7 +126,7 @@ ENGINE = function() {
         dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: true,
-            guiEnabled: true
+            guiEnabled: false
         },
         renderParams: {
             antialias: true,
@@ -1700,7 +1700,7 @@ ENGINE = function() {
                 var renderModel = new THREE.RenderPass(this.scene, this.camera);
                 this.composer.addPass(renderModel);
                 if(!world.renderParams.disableEffects) {
-                     if(world.renderParams.enableAnaglyph) {
+                    if(world.renderParams.enableAnaglyph) {
                         this.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, world.renderParams.focus);
                     }
                     if(world.renderParams.enableGlitch) {
@@ -1796,19 +1796,17 @@ ENGINE = function() {
                     world.renderer.setSize(world.width, world.height);
                     world.refreshPostProcessing();
                 }
-                
                 /** fullscreen F11 event handlers */
                 var maxHeight = window.screen.height,
                     maxWidth = window.screen.width,
                     curHeight = window.outerHeight,
                     curWidth = window.outerWidth;
-                console.log('resized'+ maxWidth +'=='+ curWidth +'&&'+ maxHeight +'=='+ curHeight);
+                console.log('resized' + maxWidth + '==' + curWidth + '&&' + maxHeight + '==' + curHeight);
                 if(maxWidth == curWidth && maxHeight == curHeight) {
                     console.log('fulscreen changed');
                     classie.toggleClass(settingsFullscreenOn, 'active');
                     classie.toggleClass(settingsFullscreenOff, 'active');
-                }
-                else{
+                } else {
                     classie.removeClass(settingsFullscreenOn, 'active');
                     classie.addClass(settingsFullscreenOff, 'active');
                 }
@@ -1873,7 +1871,8 @@ ENGINE = function() {
             /**
              * Menu navigation anchors triggers handler
              **/
-            var settingsAnchor = document.getElementById('settingsAnchor'),
+            var menu = document.getElementById('menu'),
+                settingsAnchor = document.getElementById('settingsAnchor'),
                 aboutAnchor = document.getElementById('aboutAnchor'),
                 galleryAnchor = document.getElementById('galleryAnchor'),
                 contactAnchor = document.getElementById('contactAnchor'),
@@ -1881,10 +1880,82 @@ ENGINE = function() {
                 sectionAbout = document.getElementById('sectionAbout'),
                 sectionGallery = document.getElementById('sectionGallery'),
                 sectionContact = document.getElementById('sectionContact'),
-                contactRight = document.getElementById('contactRight'),
                 menuScroller = document.getElementById('menuScroller');
+            var submenu1 = document.getElementById("submenuAnchor1");
+            var submenu2 = document.getElementById("submenuAnchor2");
+            var submenu3 = document.getElementById("submenuAnchor3");
+            var submenu4 = document.getElementById("submenuAnchor4");
+            var submenuSkills = document.getElementById("submenuSkills");
+            var submenuInterests = document.getElementById("submenuInterests");
+            var submenuSocial = document.getElementById('submenuSocial');
+            var submenuLocation = document.getElementById('submenuLocation');
+            /*event listeners handlers*/
+            /* handle the submenu BACK event*/
+
+            function closeSubmenu() {
+                /*remove all event listeners*/
+                submenu1.removeEventListener('click', closeSubmenu, false);
+                submenu2.removeEventListener('click', closeSubmenu, false);
+                submenu3.removeEventListener('click', closeSubmenu, false);
+                submenu4.removeEventListener('click', closeSubmenu, false);
+                /*remove submenu event listeners*/
+                submenu2.removeEventListener('click', displaySkills, false);
+                submenu3.removeEventListener('click', displayInterests, false);
+                
+                submenu2.removeEventListener('click', displaySocial, false);
+                submenu4.removeEventListener('click', displayLocation, false);
+                // toggle section active state
+                classie.removeClass(sectionSettings, 'show');
+                classie.removeClass(sectionAbout, 'show');
+                classie.removeClass(sectionGallery, 'show');
+                classie.removeClass(sectionContact, 'show');
+                classie.toggleClass(menu, 'toggle');
+                /* close submenus active */
+                classie.removeClass(submenuSkills, 'show');
+                classie.removeClass(submenuInterests, 'show');
+                classie.removeClass(submenuSocial, 'show');
+                classie.removeClass(submenuLocation, 'show');
+                /* gallery items hide*/
+                var galleryItems = document.querySelectorAll('.gallery-item');
+                [].forEach.call(galleryItems, function(currentItem) {
+                    classie.addClass(currentItem, 'hide');
+                });
+                /* menu scroller vertical position*/
+            };
+
+            function displaySkills() {
+                classie.removeClass(submenuInterests, 'show');
+                classie.addClass(submenuSkills, 'show');
+            };
+            function displayInterests() {
+                classie.removeClass(submenuSkills, 'show');
+                classie.addClass(submenuInterests, 'show');
+            };
+            function displaySocial() {
+                classie.removeClass(submenuLocation, 'show');
+                classie.addClass(submenuSocial, 'show');
+            };
+            function displayLocation() {
+                classie.removeClass(submenuSocial, 'show');
+                classie.addClass(submenuLocation, 'show');
+            };
             /* menu navigation handler*/
             aboutAnchor.addEventListener('click', function() {
+                //add on close submenu event handler
+                submenu1.addEventListener('click', closeSubmenu);
+                // override submenu anchors on click event handlers
+                submenu2.addEventListener('click', displaySkills);
+                submenu3.addEventListener('click', displayInterests);
+                /** active item style **/
+                submenu1.innerHTML = "back";
+                classie.addClass(submenu1.parentNode, 'active');
+                /** inactive items style, content and event handlers **/
+                classie.removeClass(submenu2.parentNode, 'active');
+                classie.removeClass(submenu3.parentNode, 'active');
+                classie.removeClass(submenu4.parentNode, 'active');
+                submenu2.innerHTML = "skills";
+                submenu3.innerHTML = "interests";
+                submenu4.innerHTML = "";
                 /* vertical scroll animation handler */
                 classie.toggleClass(menuScroller, 'show');
                 classie.removeClass(menuScroller, 'section1');
@@ -1901,8 +1972,23 @@ ENGINE = function() {
                     classie.addClass(menuScroller, 'show');
                     classie.addClass(sectionAbout, 'show');
                 }, 1000);
+                setTimeout(function() {
+                    classie.toggleClass(menu, 'toggle');
+                }, 1000);
             });
             galleryAnchor.addEventListener('click', function() {
+                //add on close submenu event handler
+                submenu2.addEventListener('click', closeSubmenu);
+                /** active item style **/
+                submenu2.innerHTML = "back";
+                classie.addClass(submenu2.parentNode, 'active');
+                /** inactive items style and content **/
+                classie.removeClass(submenu1.parentNode, 'active');
+                classie.removeClass(submenu3.parentNode, 'active');
+                classie.removeClass(submenu4.parentNode, 'active');
+                submenu1.innerHTML = "";
+                submenu3.innerHTML = "";
+                submenu4.innerHTML = "";
                 /* vertical scroll animation handler */
                 classie.toggleClass(menuScroller, 'show');
                 classie.removeClass(menuScroller, 'section1');
@@ -1919,6 +2005,9 @@ ENGINE = function() {
                     classie.addClass(menuScroller, 'show');
                     classie.addClass(sectionGallery, 'show');
                 }, 1000);
+                setTimeout(function() {
+                    classie.toggleClass(menu, 'toggle');
+                }, 500);
                 /* gallery items show */
                 setTimeout(function() {
                     var galleryItems = document.querySelectorAll('.gallery-item');
@@ -1928,6 +2017,23 @@ ENGINE = function() {
                 }, 1500);
             });
             contactAnchor.addEventListener('click', function() {
+                //add on close submenu event handler
+                submenu3.addEventListener('click', closeSubmenu);
+                //submenu anchors on click event handlers
+                submenu2.onclick = null;
+                submenu2.addEventListener('click', displaySocial);
+                submenu4.onclick = null;
+                submenu4.addEventListener('click', displayLocation);
+                /** active item style **/
+                submenu3.innerHTML = "back";
+                classie.addClass(submenu3.parentNode, 'active');
+                /** inactive items style and content **/
+                classie.removeClass(submenu1.parentNode, 'active');
+                classie.removeClass(submenu2.parentNode, 'active');
+                classie.removeClass(submenu4.parentNode, 'active');
+                submenu1.innerHTML = "";
+                submenu2.innerHTML = "social";
+                submenu4.innerHTML = "location";
                 /* vertical scroll animation handler */
                 classie.toggleClass(menuScroller, 'show');
                 classie.removeClass(menuScroller, 'section1');
@@ -1943,10 +2049,24 @@ ENGINE = function() {
                 setTimeout(function() {
                     classie.addClass(menuScroller, 'show');
                     classie.addClass(sectionContact, 'show');
-                    classie.toggleClass(contactRight, 'show');
                 }, 1000);
+                setTimeout(function() {
+                    classie.toggleClass(menu, 'toggle');
+                }, 500);
             });
             settingsAnchor.addEventListener('click', function() {
+                //add on close submenu event handler
+                submenu4.addEventListener('click', closeSubmenu);
+                /** active item style **/
+                submenu4.innerHTML = "back";
+                classie.addClass(submenu4.parentNode, 'active');
+                /** inactive submenu style and content **/
+                classie.removeClass(submenu1.parentNode, 'active');
+                classie.removeClass(submenu2.parentNode, 'active');
+                classie.removeClass(submenu3.parentNode, 'active');
+                submenu1.innerHTML = "";
+                submenu2.innerHTML = "";
+                submenu3.innerHTML = "";
                 /* vertical scroll animation handler */
                 classie.toggleClass(menuScroller, 'show');
                 classie.removeClass(menuScroller, 'section1');
@@ -1958,11 +2078,14 @@ ENGINE = function() {
                 classie.removeClass(sectionSettings, 'show');
                 classie.removeClass(sectionAbout, 'show');
                 classie.removeClass(sectionGallery, 'show');
-                classie.removeClass(sectionContact, 'show');
+                classie.removeClass(submenuSocial, 'show');
                 setTimeout(function() {
                     classie.addClass(menuScroller, 'show');
                     classie.addClass(sectionSettings, 'show');
                 }, 1000);
+                setTimeout(function() {
+                    classie.toggleClass(menu, 'toggle');
+                }, 500);
             });
             /**** galley item click handler */
             var galleryItems = document.querySelectorAll('.gallery-item');
@@ -2022,7 +2145,6 @@ ENGINE = function() {
                 }
             }
             /** fullscreen F11 event handlers */
-            
             /* AUDIO */
             settingsAudioOn.addEventListener('click', function() {
                 classie.toggleClass(settingsAudioOn, 'active');
@@ -2051,7 +2173,6 @@ ENGINE = function() {
                     }
                 }
             });
-            
             /* Anaglyph 3D */
             settingsStereoscopicOn.addEventListener('click', function() {
                 classie.toggleClass(settingsStereoscopicOn, 'active');
@@ -2065,45 +2186,38 @@ ENGINE = function() {
                 myPortfolio.World.renderParams.enableAnaglyph = false;
                 myPortfolio.World.refreshPostProcessing();
             });
-            
             /* POSTPROCESSING QUALITY */
             settingsQualityHigh.addEventListener('click', function() {
                 classie.toggleClass(settingsQualityHigh, 'active');
                 classie.removeClass(settingsQualityMedium, 'active');
                 classie.removeClass(settingsQualityLow, 'active');
-                
                 myPortfolio.World.renderParams.enableFXAA = true;
                 myPortfolio.World.renderParams.enableTiltShift = true;
                 myPortfolio.World.renderParams.enableRGBShift = true;
                 myPortfolio.World.renderParams.enableVignette = true;
                 myPortfolio.World.renderParams.bleach = true;
-                
                 myPortfolio.World.refreshPostProcessing();
             });
             settingsQualityMedium.addEventListener('click', function() {
                 classie.removeClass(settingsQualityHigh, 'active');
                 classie.toggleClass(settingsQualityMedium, 'active');
                 classie.removeClass(settingsQualityLow, 'active');
-                
                 myPortfolio.World.renderParams.enableFXAA = false;
                 myPortfolio.World.renderParams.enableTiltShift = false;
                 myPortfolio.World.renderParams.enableRGBShift = false;
                 myPortfolio.World.renderParams.enableVignette = true;
                 myPortfolio.World.renderParams.bleach = true;
-                
                 myPortfolio.World.refreshPostProcessing();
             });
             settingsQualityLow.addEventListener('click', function() {
                 classie.removeClass(settingsQualityHigh, 'active');
                 classie.removeClass(settingsQualityMedium, 'active');
                 classie.toggleClass(settingsQualityLow, 'active');
-                
-                 myPortfolio.World.renderParams.enableFXAA = false;
+                myPortfolio.World.renderParams.enableFXAA = false;
                 myPortfolio.World.renderParams.enableTiltShift = false;
                 myPortfolio.World.renderParams.enableRGBShift = false;
                 myPortfolio.World.renderParams.enableVignette = false;
                 myPortfolio.World.renderParams.bleach = false;
-                
                 myPortfolio.World.refreshPostProcessing();
             });
         },
@@ -2112,7 +2226,7 @@ ENGINE = function() {
             var mapCanvas = document.getElementById('map-canvas');
             var mapOptions = {
                 center: new google.maps.LatLng(40.641214, -8.647156),
-                zoom: 13,
+                zoom: 16,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             var map = new google.maps.Map(mapCanvas, mapOptions);
@@ -2156,7 +2270,7 @@ ENGINE = function() {
         start: function() {
             this.initMenu();
             this.initSettings();
-            //this.initMap();
+            this.initMap();
         }
     }
 };

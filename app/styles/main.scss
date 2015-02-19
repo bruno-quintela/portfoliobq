@@ -4,8 +4,10 @@
 @import 'gridComposer';
 
 
-$header-title-height: 100%;
-$header-title-width: 33%;
+$menu-width: 50px;
+$content-width:400px;
+$content-height:calc(100%/4);
+$content-padding:30px;
 
 *, *:before, *:after {
   box-sizing: border-box;
@@ -26,10 +28,6 @@ hr
     border: 0;
     height: 1px;
     background: #333;
-    /*background-image: -webkit-linear-gradient(left, #ccc, #333, #ccc); 
-    background-image:    -moz-linear-gradient(left, #ccc, #333, #ccc); 
-    background-image:     -ms-linear-gradient(left, #ccc, #333, #ccc); 
-    background-image:      -o-linear-gradient(left, #ccc, #333, #ccc); */
 }
 
 
@@ -64,98 +62,111 @@ hr
 {
     z-index:2;
     position:absolute;
-    width:100%;
-    height: calc(100%/4);
-    padding:30px;
+    width:$content-width;
+    height: $content-height;
+    padding:$content-padding;
     text-align: right;
-    color:#fff;
-    border-right:3px solid red;
-    background-color:rgba(0,0,0,0.7);
+    right:$menu-width;
     font-family: Open Sans !important;
   	text-rendering: optimizeLegibility;
     @include transition(transform 0.5s 0s);
+    transform: translateX(100%);
     //border:1px solid #000;
-    
+}
+
+.section-content.main-menu
+{
+    color:#fff;
+    background-color:rgba(0,0,0,0.7);
+}
+
+.section-content.sub-menu
+{
+    color:#000;
+    background-color:rgba(255,255,255,0.3);
+    opacity:1;
 }
 
 
 
 .section-content.about
 {
-    transform: translateX(-100%) translateY(0%);
+
+    top:0%;
 }
 
 .section-content.gallery
 {
-    transform: translateX(-100%) translateY(100%);
+    transform: translateX(-100%);
+    width: 100%;
+    top:25%;
 }
 
 .section-content.contact
 {
-    transform:translateX(-100%) translateY(200%);
+    top:50%;
 }
 
 .section-content.settings
 {
-    transform: translateX(-100%) translateY(300%);
+    top:75%;
 }
 /** show */
-.section-content.about.show
+.section-content.show
 {
-    transform: translateX(-70%) translateY(0%);
+    transform: translateX(0%);
 }
 
+
+/* gallery styling */
 .section-content.gallery.show
 {
-    transform: translateX(-33%) translateY(100%);
+    transform: translateX(-33%);
 }
 
-.section-content.contact.show
+.gallery-summary
 {
-    transform:translateX(-75%) translateY(200%);
-}
-.section-content.settings.show
-{
-    transform: translateX(-85%) translateY(300%);
-}
-
-
-/* name and skills styles ********************************************/
-
-.name-container{
-    width:100%;
     float:right;
+    width:$content-width;
 }
 
-.name-container .name{
+.contact-map
+{
+    position:absolute;
     width:100%;
-    //color:rgba(255, 0, 0, 0.4);
-    font-weight: 300;
-    font-size: 5vh;
-    letter-spacing: 0px;
+    height:100%;
+    top:0px;
+    left:0px;
+    
 }
 
-.name-container .surname{
-    width:100px;
-    //color:rgba(255, 0, 0, 0.4);
-    font-weight: 100;
-    font-size: 5vh;
+
+/****** submenus styling *****************/
+
+.submenu1
+{
+    top:0%;    
 }
 
-.info{
-float: right;
-width: 100%;
-font-weight: 100;
-font-size: 11px;
-letter-spacing: 4px;
-text-transform: uppercase;
-text-align: right;
+
+.submenu2
+{
+    top:25%;    
 }
 
-.info.top{
-border: none;
-text-align: right;
+.submenu3
+{
+    top:50%;    
 }
+
+.submenu4
+{
+    top:75%;    
+}
+
+
+
+
 
 /* content section styles *************************************************/
 
@@ -170,7 +181,7 @@ text-align: right;
 
 .title-container{
     width:100%;
-    float:right;
+    float:left;
     text-transform: uppercase;
 }
 
@@ -192,7 +203,7 @@ text-align: right;
 
 .title-info{
     float: right;
-    width: 400px;
+    width: 100%;
     font-weight: 100;
     font-size: 11px;
     letter-spacing: 0px;
