@@ -126,13 +126,13 @@ ENGINE = function() {
         dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: true,
-            guiEnabled: false
+            guiEnabled: true
         },
         renderParams: {
             antialias: true,
             alpha: false,
             showStats: true,
-            backgroundColor: [34, 34, 34],
+            backgroundColor: [0, 0, 0],
             backgroundImage: 20,
             skydomeImage: 1,
             fog: 0.001,
@@ -1097,13 +1097,14 @@ ENGINE = function() {
             this.renderer.shadowCameraFov = 50;
             this.renderer.shadowMapBias = 0.005;
             this.renderer.shadowMapDarkness = 0.1;
-            this.renderer.shadowMapWidth = 1024*1;
-            this.renderer.shadowMapHeight = 1024*1;
+            this.renderer.shadowMapWidth = 1024 * 1;
+            this.renderer.shadowMapHeight = 1024 * 1;
             this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
             /**
              * Scene
              **/
-            this.Layer = function(name, colladaPath, totalAssetsToLoad, onLoadedCallback) {
+            this.Layer = function(name, totalAssetsToLoad, onLoadedCallback) {
+                var layer = this;
                 this.numberAssetsLoaded = 0;
                 this.totalAssetsToLoad = totalAssetsToLoad;
                 this.onLoadedCallback = onLoadedCallback;
@@ -1117,21 +1118,26 @@ ENGINE = function() {
                  * Check if all assets are loaded and execute onLoadedCallback if true
                  **/
                 this.isLoadComplete = function() {
-                    if(this.numberAssetsLoaded == this.totalAssetsToLoad) {
-                        this.onLoadedCallback();
-                        classie.addClass(loadingScreen, 'done');
+                    // TODO: change next condition to generic
+                    if(this.name !== 'initLoadingModel') {
+                        var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
+                        document.getElementById('progressBar').style.width = loadProgression + '%';
+                        console.log(this.numberAssetsLoaded + '==' + +this.totalAssetsToLoad);
+                        if(this.numberAssetsLoaded == this.totalAssetsToLoad) {
+                            setTimeout(function() {
+                                layer.onLoadedCallback();
+                                classie.addClass(loadingScreen, 'done');
+                                layer.loadReset();
+                            }, 4500);
+                        }
+                        console.info(loadProgression);
                     }
-                    var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
-                    document.getElementById('progressBar').style.width = loadProgression + '%';
-                    console.log(this.numberAssetsLoaded + '==' + +this.totalAssetsToLoad);
-                    console.info(loadProgression);
                 }
-                
                 this.loadReset = function() {
                     var loadProgression = 0;
-                    var loadingScreen = document.getElementById('loadingScreen');
-                    document.getElementById('progressBar').style.width = loadProgression + '%';
-                    classie.removeClass(loadingScreen, 'done');
+                    var progressBar = document.getElementById('progressBar');
+                    classie.addClass(progressBar, 'reset');
+                    progressBar.style.width = loadProgression + '%';
                 }
                 /**
                  * Add vertices sprites to scene
@@ -1300,11 +1306,11 @@ ENGINE = function() {
                 /**
                  * Import collada(.dae) object and corresponding UVmap into scene
                  **/
-                var loadMainModel = function(layer, filePathCollada) {
+                var loadMainModel = function(layer) {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
-                    loader.load(filePathCollada, function(collada) {
+                    loader.load('../src/collada/male24.dae', function(collada) {
                         var dae = collada.scene;
                         //layer.fragments = [];
                         layer.scene.add(dae);
@@ -1494,6 +1500,62 @@ ENGINE = function() {
                     });
                 };
                 /**
+                 * Import INIT LOADING ON PROGRESS MODEL collada(.dae)
+                 **/
+                var loadInitModel = function(layer) {
+                    // load collada assets
+                    var loader = new THREE.ColladaLoader();
+                    loader.options.convertUpAxis = false;
+                    loader.load('../src/collada/loading.dae', function(collada) {
+                        var dae = collada.scene;
+                        layer.scene.add(dae);
+                        addLights(layer.scene);
+                        collada.scene.traverse(function(child) {
+                            if(child instanceof THREE.Object3D) {
+                                console.info(child.name);
+                                if(child.name === 'Cube') {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    //mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.matcapMaterial(layer, 95);
+                                    layer.spinner = mesh;
+                                }
+                            }
+                        });
+                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.0002);
+                        /**
+                         * Anaglyph effect
+                         **/
+                        layer.render = function(rtt) {
+                            layer.spinner.rotation.x += layer.rotationSpeed.z * 1.5;
+                            layer.spinner.rotation.y += layer.rotationSpeed.z * 1.5;
+                            layer.spinner.rotation.z += layer.rotationSpeed.z * 1.5;
+                            if(world.renderParams.enableTrackball) {
+                                layer.trackball.update();
+                            }
+                            if(world.renderParams.enableMouseListener) {
+                                layer.scene.rotation.y = world.targetRotationX;
+                                layer.scene.rotation.x = world.targetRotationY;
+                            }
+                            if(rtt) {
+                                //
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
+                                }
+                            } else {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    this.composer.render(0.01);
+                                }
+                            }
+                        };
+                    });
+                };
+                /**
                  * Import MALE HEAD collada(.dae) object and corresponding UVmap into scene
                  **/
                 var loadMaleHeadModel = function(layer) {
@@ -1579,7 +1641,7 @@ ENGINE = function() {
                                     mesh.geometry.computeTangents();
                                     var shaderParams = {
                                         shininess: 1,
-                                        normalScale: 0.2,
+                                        normalScale: 0.5,
                                         diffuseTexture: '../src/textures/nms/planet_Arnessk.png',
                                         specTexture: '../src/textures/nms/planet_Arnessk_SPEC.png',
                                         AOTexture: '../src/textures/nms/planet_Arnessk_AO.png',
@@ -1632,7 +1694,7 @@ ENGINE = function() {
                          **/
                         layer.render = function(rtt) {
                             layer.planet.rotation.z += layer.rotationSpeed.z * 1.5;
-                            layer.clouds.rotation.x += layer.rotationSpeed.z;
+                            //layer.clouds.rotation.x += layer.rotationSpeed.z;
                             //layer.clouds.rotation.y += layer.rotationSpeed.z;
                             layer.clouds.rotation.z += layer.rotationSpeed.z;
                             layer.piramid.rotation.z -= layer.rotationSpeed.z * 5;
@@ -1701,8 +1763,10 @@ ENGINE = function() {
                 }
                 //add scene fog
                 //this.scene.fog = new THREE.FogExp2(0x000000, 0.01);
-                if(this.name === 'LayerA' || this.name === 'LayerB') {
-                    loadMainModel(this, colladaPath);
+                if(this.name === 'initLoadingModel') {
+                    loadInitModel(this);
+                } else if(this.name === 'initMainModel') {
+                    loadMainModel(this);
                 } else if(this.name === 'GalleryModel1') {
                     loadNMSModel(this);
                 } else if(this.name === 'GalleryModel2') {
@@ -1712,8 +1776,6 @@ ENGINE = function() {
                 } else if(this.name === 'GalleryModel4') {
                     loadNMSModel(this);
                 }
-                //loadNMSModel(this);
-                //importJSON(this, '../src/json/LeePerrySmith.js');
                 /*******************************/
                 world.postprocess.apply(this);
                 /*this render is dummy used only until collada imports scene*/
@@ -1937,17 +1999,25 @@ ENGINE = function() {
             var world = this;
             this.init();
             this.transitionParams.clock.elapsedTime = 0;
-            this.LayerA = new this.Layer('LayerA', '../src/collada/loading.dae', 0, function() {
+            this.CurrentLayer = new this.Layer('initLoadingModel', 1, function() {
                 console.log('sceneALoaded');
             });
-            this.LayerB = new this.Layer('LayerB', '../src/collada/male24.dae', 6, function() {
+            this.NextLayer = new this.Layer('initMainModel', 6, function() {
                 console.log('sceneBLoaded');
-                classie.toggleClass(loadingScreen, 'done');
-                myPortfolio.World.transitionParams.toLayerB();
+                classie.addClass(loadingScreen, 'done');
+                world.transitionMixRatio = 0;
+                var update = function() {
+                    world.transitionParams.transitionMixRatio = current.x;
+                };
+                var current = {
+                    x: 1
+                };
+                // remove previous tweens if needed
+                var tweenLayerTransition = new TWEEN.Tween(current).to({
+                    x: 0
+                }, world.transitionParams.transitionTime * 1000).onUpdate(update);
+                tweenLayerTransition.start();
             });
-            //this.LayerC = new this.Layer('LayerC', '../src/collada/male19.dae');
-            this.CurrentLayer = this.LayerA;
-            this.NextLayer = this.LayerB;
             this.transition = new this.Transition(this.CurrentLayer, this.NextLayer);
             /**/
             var animate = function() {
@@ -2209,10 +2279,14 @@ ENGINE = function() {
                     classie.toggleClass(currentItem, 'hide');
                     classie.toggleClass(currentItem, 'show');
                     //show loading model progress
+                    classie.removeClass(progressBar, 'reset');
+                    classie.removeClass(loadingScreen, 'done');
                     setTimeout(function() {
-                        myPortfolio.World.CurrentLayer.loadReset();
+                        //start loader progress
+                        myPortfolio.World.CurrentLayer.numberAssetsLoaded = 1;
+                        myPortfolio.World.CurrentLayer.isLoadComplete();
                         // create next model layer
-                        myPortfolio.World.NextLayer = new myPortfolio.World.Layer('GalleryModel' + selectedModel, '../src/collada/male07.dae', totalAssets, function() {
+                        myPortfolio.World.NextLayer = new myPortfolio.World.Layer('GalleryModel' + selectedModel, totalAssets, function() {
                             console.log('newSceneLoaded');
                             myPortfolio.World.transitionParams.transitionMixRatio = 0;
                             myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
@@ -2223,7 +2297,7 @@ ENGINE = function() {
                             var current = {
                                 x: 1
                             };
-                            // remove previous tweens if needed
+                            // remove previous tweens if needed:TODO use same instanciated tween
                             var tweenLayerTransition = new TWEEN.Tween(current).to({
                                 x: 0
                             }, myPortfolio.World.transitionParams.transitionTime * 1000).onUpdate(update);
