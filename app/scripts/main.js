@@ -126,15 +126,15 @@ ENGINE = function() {
         dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: true,
-            guiEnabled: false
+            guiEnabled: true
         },
         renderParams: {
             antialias: true,
             alpha: false,
             showStats: true,
-            backgroundColor: [255, 255, 255],
+            backgroundColor: [0, 0, 0],
             backgroundImage: 20,
-            skydomeImage: 1,
+            skydomeImage: 4,
             fog: 0.001,
             enableAnaglyph: false,
             focus: 12,
@@ -360,13 +360,13 @@ ENGINE = function() {
                 19: 19,
                 20: 20
             },
-            bodyTexture: 8, //113,
+            bodyTexture: 16, //113,
             headTexture: 97,
             hairTexture: 1,
             eyeTexture: 8,
             clothTexture: 8,
             lipsTexture: 8,
-            lowpolyTexture: 1,
+            lowpolyTexture: 109,
             lowpoly2Texture: 60,
             lowpoly3Texture: 1,
             fragmentsTexture: 1,
@@ -1111,7 +1111,7 @@ ENGINE = function() {
                 this.loadProgressCallback = loadProgressCallback;
                 this.name = name;
                 this.scene = new THREE.Scene();
-                this.camera = new THREE.PerspectiveCamera(10, world.width / world.height, 0.1, 200);
+                this.camera = new THREE.PerspectiveCamera(5, world.width / world.height, 0.1, 200);
                 this.camera.position.z = 15;
                 // frame buffer object
                 this.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
@@ -1292,12 +1292,12 @@ ENGINE = function() {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/male24.dae', function(collada) {
+                    loader.load('../src/collada/lowpoly.dae', function(collada) {
                         var dae = collada.scene;
-                        //layer.fragments = [];
+                        layer.fragments = [];
                         layer.scene.add(dae);
                         //layer.backgroundImage = addBackgroundImage(layer, '../src/textures/background/background' + world.renderParams.backgroundImage + '.jpg');
-                        //addSkyDome(layer, 7, '../src/textures/background/background6.jpg');
+                        //addSkyDome(layer, 7, '../src/textures/background/background' + world.renderParams.skydomeImage + '.jpg');
                         //layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 300, 3, '../src/textures/sprites/WhiteDot.svg', 0.03);
                         //layer.spheres = [];
                         collada.scene.traverse(function(child) {
@@ -1344,17 +1344,17 @@ ENGINE = function() {
                                     mesh.geometry.computeTangents();
                                     mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap14.png', '../src/textures/normalMaps/normal1.jpg', 1);
                                     layer.makehumanHair = mesh;
-                                } else if(child.name === 'makehuman_HighPolyEyes') {
+                                } else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
                                     var mesh = child.children[0];
                                     mesh.geometry.computeTangents();
                                     mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/eyeball8.png', '../src/textures/normalMaps/normal1.jpg', 1);
                                     layer.eyes = mesh;
-                                } else if(child.name === 'makehuman_Lips') {
+                                } else if(child.name.indexOf('makehuman_Lips') != -1) {
                                     var mesh = child.children[0];
                                     mesh.geometry.computeTangents();
                                     mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap97.png', '../src/textures/UVmaps/male/cb_NRM.png', 1);
                                     layer.lips = mesh;
-                                } else if(child.name === 'makehuman_Eyebrow') {
+                                } else if(child.name.indexOf('makehuman_Eyebrow') != -1) {
                                     var mesh = child.children[0];
                                     mesh.material = new THREE.MeshBasicMaterial({
                                         map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/eyebrowMale2.png"),
@@ -1363,7 +1363,7 @@ ENGINE = function() {
                                         transparent: true
                                     });
                                     layer.makehumanEyebrows = mesh;
-                                } else if(child.name === 'makehuman_Eyelashes') {
+                                } else if(child.name.indexOf('makehuman_Eyelashes') != -1) {
                                     var mesh = child.children[0];
                                     mesh.material = new THREE.MeshBasicMaterial({
                                         map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/eyelashesMale2.png"),
@@ -1386,7 +1386,7 @@ ENGINE = function() {
                                     layer.lowpoly = mesh;
                                     //layer.polyWire = addWireframe(layer.scene, mesh.geometry, 0x000000, 1, 1);
                                     //layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 1.031, 1);
-                                } else if(child.name === 'lowpoly2') {
+                                } else if(child.name === 'lowpoly_001') {
                                     var mesh = child.children[0];
                                     //mesh.geometry.computeTangents();
                                     mesh.material = world.materials.matcapMaterial(layer, world.materialParams.lowpoly2Texture);
@@ -1447,7 +1447,12 @@ ENGINE = function() {
                         });
                         layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.0002);
                         layer.render = function(rtt) {
-                            layer.scene.position.y += layer.rotationSpeed.y * 0.1;
+                            //layer.scene.position.y += layer.rotationSpeed.y * 0.1;
+                            //layer.lowpoly.rotation.x += layer.rotationSpeed.z;
+                            layer.scene.rotation.y += layer.rotationSpeed.z*3;
+                            /*layer.lowpoly.rotation.x += layer.rotationSpeed.z;
+                            layer.lowpoly.rotation.y += layer.rotationSpeed.z;
+                            layer.lowpoly.rotation.z += layer.rotationSpeed.z;*/
                             if(world.motionParams.animateFragments) {
                                 for(var i = 0; i < layer.fragments.length; i++) {
                                     //rotation
@@ -1984,7 +1989,7 @@ ENGINE = function() {
             var world = this;
             this.init();
             this.transitionParams.clock.elapsedTime = 0;
-            this.CurrentLayer = new this.Layer('initMainModel', 6, function() {
+            this.CurrentLayer = new this.Layer('initMainModel', 1, function() {
                 var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
                 document.getElementById('initProgressBar').style.width = loadProgression + '%';
                 console.log(this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
@@ -1994,16 +1999,31 @@ ENGINE = function() {
                 console.info(loadProgression);
             }, function() {
                 console.log('MainModel Loaded!');
+                var layer = myPortfolio.World.CurrentLayer;
                 //hide init loading screen
                 var initLoadingScreen = document.getElementById('initLoadingScreen');
+                var initIntroScreen = document.getElementById('initIntroScreen');
                 classie.toggleClass(initLoadingScreen, 'hide');
+                // start init loading screen
+                setTimeout(function() {
+                    classie.toggleClass(initIntroScreen, 'show');
+                    // rotate lowpoly when name is showing
+                    /*setTimeout(function() {
+                        var tweenScene90 = new TWEEN.Tween(layer.lowpoly.rotation).to({
+                            x: layer.scene.rotation.x + 90 * Math.PI / 180,
+                            y: layer.scene.rotation.y + 90 * Math.PI / 180,
+                            z: layer.scene.rotation.z
+                        }, 2000);
+                        tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
+                    }, 1500);*/
+                }, 1000);
                 //show menu
                 setTimeout(function() {
                     var menu = document.getElementById('menu');
                     classie.toggleClass(menu, 'hide');
                     //destroy loading screen to prevent opacity animation 
-                    document.getElementById('initLoadingScreen').innerHTML='';
-                }, 3000);
+                    document.getElementById('initLoadingScreen').innerHTML = '';
+                }, 7000);
             });
             this.NextLayer = new this.Layer('initLoadingModel', 1, function() {}, function() {
                 console.log('Dummy Loaded!');
@@ -2076,7 +2096,6 @@ ENGINE = function() {
                 submenu2Anchor.removeEventListener('click', closeSubmenu, false);
                 submenu3Anchor.removeEventListener('click', closeSubmenu, false);
                 submenu4Anchor.removeEventListener('click', closeSubmenu, false);
-
                 // toggle section active state
                 classie.removeClass(sectionSettings, 'show');
                 classie.removeClass(sectionAbout, 'show');
@@ -2093,7 +2112,21 @@ ENGINE = function() {
                 [].forEach.call(galleryItems, function(currentItem) {
                     classie.addClass(currentItem, 'hide');
                 });
-                /* menu scroller vertical position*/
+                /*model to right tween*/
+                var layer = myPortfolio.World.CurrentLayer;
+                /*var tweenSceneRight = new TWEEN.Tween(layer.scene.position).to({
+                    x: layer.scene.position.x + 0.5,
+                    y: layer.scene.position.y,
+                    z: layer.scene.position.z
+                }, 500);
+                tweenSceneRight.easing(TWEEN.Easing.Quadratic.Out).start();*/
+                
+                /* var tweenScene90 = new TWEEN.Tween(layer.lowpoly.rotation).to({
+                    x: layer.lowpoly.rotation.x,
+                    y: layer.lowpoly.rotation.y + 20 * Math.PI / 180,
+                    z: layer.lowpoly.rotation.z
+                }, 1000);
+                tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();*/
             };
 
             function displaySkills() {
@@ -2113,6 +2146,21 @@ ENGINE = function() {
             };
             /* menu navigation handler*/
             aboutAnchor.addEventListener('click', function() {
+                /*model to left tween*/
+                var layer = myPortfolio.World.CurrentLayer;
+                /*var tweenSceneLeft = new TWEEN.Tween(layer.scene.position).to({
+                    x: layer.scene.position.x - 0.5,
+                    y: layer.scene.position.y,
+                    z: layer.scene.position.z
+                }, 500);
+                tweenSceneLeft.easing(TWEEN.Easing.Quadratic.Out).start();
+                //rotate scene*/
+                var tweenScene90 = new TWEEN.Tween(layer.lowpoly.rotation).to({
+                    x: layer.lowpoly.rotation.x ,
+                    y: layer.lowpoly.rotation.y + 20 * Math.PI / 180,
+                    z: layer.lowpoly.rotation.z
+                }, 1000);
+                tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
                 //add on close submenu event handler
                 submenu1Anchor.addEventListener('click', closeSubmenu);
                 classie.toggleClass(submenu2Section, 'show');
@@ -2125,10 +2173,9 @@ ENGINE = function() {
                 classie.removeClass(submenu2Anchor.parentNode, 'active');
                 classie.removeClass(submenu3Anchor.parentNode, 'active');
                 classie.removeClass(submenu4Anchor.parentNode, 'active');
-                submenu2Anchor.innerHTML = 'about_';
-                submenu3Anchor.innerHTML = 'skills_';
-                submenu4Anchor.innerHTML = 'Next_';
-
+                submenu2Anchor.innerHTML = 'Who am_I';
+                submenu3Anchor.innerHTML = 'What i_do';
+                submenu4Anchor.innerHTML = 'What\'s Next?';
                 /* section animation handler */
                 classie.removeClass(sectionSettings, 'show');
                 classie.removeClass(sectionAbout, 'show');
@@ -2151,21 +2198,18 @@ ENGINE = function() {
                 submenu1Anchor.innerHTML = 'Model<span style="color:red">#01 </span>';
                 submenu3Anchor.innerHTML = 'Model<span style="color:red">#02 </span>';
                 submenu4Anchor.innerHTML = 'Model<span style="color:red">#03 </span>';
-
                 /* section animation handler */
                 classie.removeClass(sectionSettings, 'show');
                 classie.removeClass(sectionAbout, 'show');
                 classie.removeClass(sectionGallery, 'show');
                 classie.removeClass(sectionContact, 'show');
-
-                    classie.addClass(sectionGallery, 'show');
-                    classie.toggleClass(menu, 'toggle');
-                    /* gallery items show */
-                    var galleryItems = document.querySelectorAll('.gallery-item');
-                    [].forEach.call(galleryItems, function(currentItem) {
-                        classie.toggleClass(currentItem, 'hide');
-                    });
-
+                classie.addClass(sectionGallery, 'show');
+                classie.toggleClass(menu, 'toggle');
+                /* gallery items show */
+                var galleryItems = document.querySelectorAll('.gallery-item');
+                [].forEach.call(galleryItems, function(currentItem) {
+                    classie.toggleClass(currentItem, 'hide');
+                });
             });
             contactAnchor.addEventListener('click', function() {
                 //add on close submenu event handler
@@ -2191,9 +2235,7 @@ ENGINE = function() {
                 setTimeout(function() {
                     classie.addClass(sectionContact, 'show');
                 }, 500);
-
-                    classie.toggleClass(menu, 'toggle');
-
+                classie.toggleClass(menu, 'toggle');
             });
             settingsAnchor.addEventListener('click', function() {
                 //add on close submenu event handler
@@ -2208,7 +2250,6 @@ ENGINE = function() {
                 submenu1Anchor.innerHTML = "";
                 submenu2Anchor.innerHTML = "";
                 submenu3Anchor.innerHTML = "";
-
                 /* section animation handler */
                 classie.removeClass(sectionSettings, 'show');
                 classie.removeClass(sectionAbout, 'show');
@@ -2217,7 +2258,6 @@ ENGINE = function() {
                 setTimeout(function() {
                     classie.addClass(sectionSettings, 'show');
                 }, 500);
-
                 classie.toggleClass(menu, 'toggle');
             });
             /**** galley item click handler */
@@ -2487,7 +2527,7 @@ ENGINE = function() {
             //this.initMap();
             /*particlesJS('particlesjs', {
                 particles: {
-                    color: '#000',
+                    color: '#fff',
                     color_random: false,
                     shape: 'circle', // "circle", "edge" or "triangle"
                     opacity: {
@@ -2501,11 +2541,11 @@ ENGINE = function() {
                     },
                     size: 2.5,
                     size_random: true,
-                    nb: 300,
+                    nb: 100,
                     line_linked: {
                         enable_auto: true,
                         distance: 40,
-                        color: '#000',
+                        color: '#fff',
                         opacity: 1,
                         width: 1,
                         condensed_mode: {
