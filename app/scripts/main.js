@@ -126,7 +126,7 @@ ENGINE = function() {
         dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: true,
-            guiEnabled: true
+            guiEnabled: false
         },
         renderParams: {
             antialias: true,
@@ -1992,7 +1992,7 @@ ENGINE = function() {
             this.CurrentLayer = new this.Layer('initMainModel', 6, function() {
                 var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
                 document.getElementById('initProgressBar').style.width = loadProgression + '%';
-                console.log(this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
+                console.log(loadProgression+":"+this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
                 if(this.numberAssetsLoaded == this.totalAssetsToLoad) {
                     this.onLoadedCallback();
                 }
@@ -2086,6 +2086,7 @@ ENGINE = function() {
             var submenu2Section = document.getElementById("submenu2");
             var submenu3Section = document.getElementById("submenu3");
             var submenu4Section = document.getElementById("submenu4");
+            var galleryContainer = document.getElementById("galleryContainer");
             //var submenuInterests = document.getElementById("submenuInterests");
             //var submenuSocial = document.getElementById('submenuSocial');
             //var submenuLocation = document.getElementById('submenuLocation');
@@ -2129,6 +2130,9 @@ ENGINE = function() {
                     z: layer.lowpoly.rotation.z
                 }, 1000);
                 tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();*/
+                
+                //hide gallery visibility
+                 classie.removeClass(galleryContainer, 'show');
             };
 
             function displaySkills() {
@@ -2157,12 +2161,12 @@ ENGINE = function() {
                 }, 500);
                 tweenSceneLeft.easing(TWEEN.Easing.Quadratic.Out).start();
                 //rotate scene*/
-                var tweenScene90 = new TWEEN.Tween(layer.lowpoly.rotation).to({
+                /*var tweenScene90 = new TWEEN.Tween(layer.lowpoly.rotation).to({
                     x: layer.lowpoly.rotation.x,
                     y: layer.lowpoly.rotation.y + 20 * Math.PI / 180,
                     z: layer.lowpoly.rotation.z
                 }, 1000);
-                tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
+                tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();*/
                 //add on close submenu event handler
                 submenu1Anchor.addEventListener('click', closeSubmenu);
                 classie.toggleClass(submenu2Section, 'show');
@@ -2175,9 +2179,9 @@ ENGINE = function() {
                 classie.removeClass(submenu2Anchor.parentNode, 'active');
                 classie.removeClass(submenu3Anchor.parentNode, 'active');
                 classie.removeClass(submenu4Anchor.parentNode, 'active');
-                submenu2Anchor.innerHTML = 'Who am_I';
-                submenu3Anchor.innerHTML = 'What i_do';
-                submenu4Anchor.innerHTML = 'What\'s Next?';
+                submenu2Anchor.innerHTML = '';
+                submenu3Anchor.innerHTML = '';
+                submenu4Anchor.innerHTML = '';
                 /* section animation handler */
                 classie.removeClass(sectionSettings, 'show');
                 classie.removeClass(sectionAbout, 'show');
@@ -2188,6 +2192,8 @@ ENGINE = function() {
                 classie.toggleClass(menu, 'toggle');
             });
             galleryAnchor.addEventListener('click', function() {
+                //show gallery
+                classie.addClass(galleryContainer, 'show');
                 //add on close submenu event handler
                 submenu2Anchor.addEventListener('click', closeSubmenu);
                 /** active item style **/
