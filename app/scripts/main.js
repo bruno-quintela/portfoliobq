@@ -134,10 +134,10 @@ ENGINE = function() {
             showStats: true,
             backgroundColor: [0, 0, 0],
             backgroundImage: 20,
-            skydomeImage: 4,
+            skydomeImage: 6,
             fog: 0.001,
             enableAnaglyph: false,
-            focus: 12,
+            focus: 15,
             enableTrackball: true,
             enableMouseListener: false,
             enableGrid: false,
@@ -145,7 +145,7 @@ ENGINE = function() {
             enableGlitch: false,
             enableRGBShift: false,
             rgbValue: 0.002,
-            enableFXAA: false,
+            enableFXAA: true,
             enableBloom: false,
             bloomStrengh: 0.3,
             enableSepia: false,
@@ -158,7 +158,7 @@ ENGINE = function() {
             bleachOpacity: 1,
             technicolor: false,
             enableTiltShift: true,
-            tiltBlur: 4.5,
+            tiltBlur: 3.5,
             enableVignette: true,
             vignetteStrengh: 5,
             disableEffects: false
@@ -169,7 +169,7 @@ ENGINE = function() {
             normalScale: 0.5,
             normalRepeat: 1,
             useScreen: false,
-            useRim: true,
+            useRim: false,
             rimPower: 3,
             matSelected: 'Material selection',
             backgroundTexture: {
@@ -1292,13 +1292,13 @@ ENGINE = function() {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/male27.dae', function(collada) {
+                    loader.load('../src/collada/male30.dae', function(collada) {
                         var dae = collada.scene;
                         layer.fragments = [];
                         layer.scene.add(dae);
                         //layer.backgroundImage = addBackgroundImage(layer, '../src/textures/background/background' + world.renderParams.backgroundImage + '.jpg');
                         addSkyDome(layer, 8, '../src/textures/background/background' + world.renderParams.skydomeImage + '.jpg');
-                        //layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 300, 3, '../src/textures/sprites/WhiteDot.svg', 0.03);
+                        //layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 1000, 4, '../src/textures/sprites/WhiteDot.svg', 0.03);
                         //layer.spheres = [];
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
@@ -1377,7 +1377,7 @@ ENGINE = function() {
                                     layer.cloth = mesh;
                                 } else if(child.name === 'lowpoly') {
                                     var mesh = child.children[0];
-                                    //mesh.geometry.computeTangents();
+                                     //mesh.geometry.computeTangents();
                                     mesh.material = world.materials.matcapMaterial(layer, world.materialParams.lowpolyTexture);
                                     //world.normalMaterial('../src/textures/matcaps/matcap15.png', '../src/textures/normalMaps/normal11.jpg', 1);
                                     //layer.polyWire1 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
@@ -1386,8 +1386,10 @@ ENGINE = function() {
                                     layer.lowpoly = mesh;
                                     //layer.polyWire = addWireframe(layer.scene, mesh.geometry, 0x000000, 1, 1);
                                     //layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 1.031, 1);
-                                } else if(child.name === 'lowpoly_001') {
+                                } else if(child.name === 'lowpoly2') {
                                     var mesh = child.children[0];
+                                    var modifier = new THREE.SubdivisionModifier(1);
+                                    modifier.modify(mesh.geometry);
                                     //mesh.geometry.computeTangents();
                                     mesh.material = world.materials.matcapMaterial(layer, world.materialParams.lowpoly2Texture);
                                     //layer.polyWire2 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
@@ -1447,12 +1449,12 @@ ENGINE = function() {
                         });
                         layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.0002);
                         layer.render = function(rtt) {
-                            layer.scene.position.y += layer.rotationSpeed.y * 0.1;
-                            //layer.lowpoly.rotation.x += layer.rotationSpeed.z;
-                            layer.scene.rotation.y += layer.rotationSpeed.z * 2;
-                            /*layer.lowpoly.rotation.x += layer.rotationSpeed.z;
-                            layer.lowpoly.rotation.y += layer.rotationSpeed.z;
-                            layer.lowpoly.rotation.z += layer.rotationSpeed.z;*/
+                            //layer.scene.position.y += layer.rotationSpeed.y * 0.1;
+//                            layer.lowpoly2.rotation.x += layer.rotationSpeed.z*5;
+                            layer.scene.rotation.y += layer.rotationSpeed.z*2;
+                            /*layer.lowpoly2.rotation.x += layer.rotationSpeed.z;
+                            layer.lowpoly2.rotation.y += layer.rotationSpeed.z;
+                            layer.lowpoly2.rotation.z += layer.rotationSpeed.z;*/
                             if(world.motionParams.animateFragments) {
                                 for(var i = 0; i < layer.fragments.length; i++) {
                                     //rotation
@@ -1989,7 +1991,7 @@ ENGINE = function() {
             var world = this;
             this.init();
             this.transitionParams.clock.elapsedTime = 0;
-            this.CurrentLayer = new this.Layer('initMainModel', 6, function() {
+            this.CurrentLayer = new this.Layer('initMainModel', 2, function() {
                 var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
                 document.getElementById('initProgressBar').style.width = loadProgression + '%';
                 console.log(loadProgression+":"+this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
@@ -2004,12 +2006,14 @@ ENGINE = function() {
                 var initLoadingScreen = document.getElementById('initLoadingScreen');
                 var initIntroScreen = document.getElementById('initIntroScreen');
                 classie.toggleClass(initLoadingScreen, 'hide');
-                //start background AUDIO
-                //myPortfolio.SoundFx.backgroundMusic.play(0);
-                
+               
+                setTimeout(function() {
+                     //start background AUDIO
+                    myPortfolio.SoundFx.backgroundMusic.play(0);
+                }, 1800);
                 // start init loading screen
                 setTimeout(function() {
-                    classie.toggleClass(initIntroScreen, 'show');
+                     classie.toggleClass(initIntroScreen, 'show');
                     // rotate lowpoly when name is showing
                     /*setTimeout(function() {
                         var tweenScene90 = new TWEEN.Tween(layer.lowpoly.rotation).to({
@@ -2019,7 +2023,7 @@ ENGINE = function() {
                         }, 2000);
                         tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
                     }, 1500);*/
-                }, 5000);
+                }, 10000);
                 //show menu
                 setTimeout(function() {
                     var menu = document.getElementById('menu');
@@ -2463,7 +2467,7 @@ ENGINE = function() {
                 classie.removeClass(settingsQualityLow, 'active');
                 myPortfolio.World.renderParams.enableFXAA = true;
                 myPortfolio.World.renderParams.enableTiltShift = true;
-                myPortfolio.World.renderParams.enableRGBShift = true;
+                myPortfolio.World.renderParams.enableRGBShift = false;
                 myPortfolio.World.renderParams.enableVignette = true;
                 myPortfolio.World.renderParams.bleach = true;
                 myPortfolio.World.refreshPostProcessing();
@@ -2607,8 +2611,8 @@ ENGINE = function() {
      * WEB AUDIO API
      **/
     this.SoundFx = {
-        backgroundAudioFile: '../src/audio/orionsbell.mp3',
-        menuOpenAudioFile: '../src/audio/orionsbell.mp3',
+        backgroundAudioFile: '../src/audio/backgroundLoop.mp3',
+        menuOpenAudioFile: '../src/audio/IAO.mp3',
         init: function() {
             this.backgroundMusic = new Audio();
             this.backgroundMusic.addEventListener('loadeddata', function() {

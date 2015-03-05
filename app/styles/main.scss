@@ -399,14 +399,15 @@ p{
 .init-loading-progress{
     width:0%;
     margin:auto;
+    float: left;
     height:1px;
-    background-color:red;
+    background-color:#fff;
     @include transition(width 2s);
 }
 
 .init-loading-screen.hide .init-loading-bar{
-    opacity:0;
-    @include transition((opacity 3s 0s));
+    transform: translateX(100%);
+    @include transition((transform 0.5s 1.5s));
 }
 
 /******* INTRO SCREEN *****/
@@ -478,7 +479,7 @@ p{
     will-change: opacity;
     visibility:hidden;
     font-weight:300;
-    @include transition((opacity 1.5s 2.5s, transform 2.5s 2.5s, visibility 0s 2.5s));
+    @include transition((opacity 1.5s 2s, transform 2.5s 2.5s, visibility 0s 2s));
 }
 
 .init-intro-screen.show .subtitle{
