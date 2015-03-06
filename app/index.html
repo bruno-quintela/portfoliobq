@@ -98,15 +98,13 @@
     <div id="bodyWrapper" class="body-wrapper">
 
         <div id="initLoadingScreen" class="init-loading-screen">
-            <div class="top"></div>
+            <div class="title">NOW LOADING</div>
             <div class="init-loading-bar">
                 <div id="initProgressBar" class="init-loading-progress"></div>
             </div>
-            <div class="bottom"></div>
-
-            <div class="title">NOW LOADING</div>
-            <div class="tips"><span>TIP</span> for a better experience turn up your volume and go fullscreen mode(f11)</div>
+            <!--div class="tips"><span>TIP</span> for a better experience turn up your volume and go fullscreen mode(f11)</div-->
         </div>
+
         <div id="initIntroScreen" class="init-intro-screen">
             <div class="title">A website by_</div>
             <div class="subtitle">Bruno <b>Quintela</b>
@@ -114,12 +112,12 @@
             <!--div class="subtitle">web developer</div-->
         </div>
 
-        <div id="loadingScreen" class="loading-screen">
+        <div id="loadingScreen" class="model-loading-screen">
             <div class="init-loading-bar">
-                <div id="progressBar" class="loading-progress"></div>
+                <div id="progressBar" class="model-loading-progress"></div>
             </div>
-            <div class="loading-info-bottom">
-                ...now Loading
+            <div class="loading-info">
+                ... now Loading
             </div>
         </div>
 
@@ -132,21 +130,24 @@
                 </li>
                 <li><a id="galleryAnchor" href="#">Gallery</a>
                 </li>
-
                 <li><a id="contactAnchor" href="#">Contact</a>
                 </li>
-                <li><a id="settingsAnchor" href="#">Settings</a>
+                <li><a id="creditsAnchor" href="#">Credits</a>
                 </li>
             </ul>
             <ul class="sub-menu">
-                <li><a id="submenuAnchor1" href="#">back</a>
+                <li>
+                    <a id="submenuAnchor1" href="#"></a>
                 </li>
-                <li><a id="submenuAnchor2" href="#">back</a>
+                <li>
+                    <a id="submenuAnchor2" href="#"></a>
                 </li>
 
-                <li><a id="submenuAnchor3" href="#">back</a>
+                <li>
+                    <a id="submenuAnchor3" href="#"></a>
                 </li>
-                <li><a id="submenuAnchor4" href="#">back</a>
+                <li>
+                    <a id="submenuAnchor4" href="#"></a>
                 </li>
             </ul>
         </nav>
@@ -157,7 +158,14 @@
             <div class="title-container">
                 <span class="title">About </span>
                 <div class="title-top right">
-                    <span style="color:red">#01 </span>me_
+                    <div class="rule right"></div>
+                    <div class="about-info-container">
+                        <span style="color:red">#01 </span><b>name</b> Bruno Quintela
+                        <span style="color:red">#02 </span><b>Age</b> 32
+                        <span style="color:red">#03 </span><b>Location</b> Portugal
+                        <span style="color:red">#04 </span><b>Job</b> Web Developer
+                    </div>
+
                 </div>
 
             </div>
@@ -226,18 +234,13 @@
                 </div>
             </div>
         </div>
-        <section id="sectionContact" class="section-content sub-menu contact">
+        <section id="sectionContact" class="section-content main-menu contact">
             <!-- LEFT -->
             <div class="title-top right">
                 <b>Contact</b> Me
             </div>
             <div class="rule right"></div>
-            <div class="title-info">
-                Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly art, and procedurally generated.
-            </div>
-
-
-            <div class="social-container">
+             <div class="social-container">
                 <div class="social__item">
                     <a target="_blank" href="https://twitter.com/" class="social__icon--twitter"><i class="icon--twitter"></i></a>
                 </div>
@@ -251,40 +254,21 @@
                     <a target="_blank" href="https://soundcloud.com/matchboxhero" class="social__icon--soundcloud"><i class="icon--soundcloud"></i></a>
                 </div>
             </div>
-            <!-- RIGHT -->
-
-            <!-- TOP -->
-
-            <!-- BOTTOM -->
-            <!--div class="contact bottom">
-            <form id="contactForm" class="content-info contact" role="form" action="contact.php" method="POST">
-                <div class="input-wrapper">
-                    <span class="input input--hoshi">
-					        <input class="input__field input__field--hoshi" type="text" id="name" name="name" placeholder="Name" required/>
-					        <label class="input__label input__label--hoshi" for="name"></label>
-                        </span>
+            <div class="title-info">
+                Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly art, and procedurally generated.
+            </div>
+        </section>
+        <section id="sectionCredits" class="section-content main-menu credits">
+            <!-- LEFT -->
+            <div class="title-container">
+                <div class="title-top left">
+                    who <b>am I</b>
                 </div>
-                <div class="input-wrapper">
-                    <span class="input input--hoshi">
-					    <input class="input__field input__field--hoshi" type="email" id="email" name="email" placeholder="Email" required/>
-					    <label class="input__label input__label--hoshi" for="email">
-                        </label>
-                        </span>
-                </div>
-                <div class="input-wrapper">
-                    <span class="input input--hoshi">
-                        <textarea  class="input__field input__field--hoshi" type="text" id="message" name="subject" cols="40" rows="3" placeholder="subject" required></textarea>
-					<label class="input__label input__label--hoshi" for="message">
-                        </label>
-                        </span>
-                </div>
-                <div class="send-message">
-                    <input name="submit" type="submit" class="send-message" value="send">
-                </div>
-
-
-            </form>
-        </div-->
+                <div class="rule left"></div>
+            </div>
+            <div class="title-info">
+                Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly art, and procedurally generated.
+            </div>
         </section>
         <section id="sectionSettings" class="section-content main-menu settings">
             <div class="title-info">
@@ -302,27 +286,51 @@
             </div>
         </section>
 
-        <!-- submenu1 content -->
-        <section id="submenu1" class="section-content sub-menu submenu1">
-            <div id="map-canvas" class="contact-map">
-            </div>
-        </section>
 
-        <!-- submenu2 content -->
-        <section id="submenu2" class="section-content sub-menu submenu2">
+        <!-- MODEL INFO -->
+        <div id="modelInfo" class="model-info">
+            <div class="title"><b>Model</b><span style="color:red">#01 </span>
+            </div>
+            <div class="subtitle">Lowpoly <b>Hybrid</b>
+            </div>
+            <!--div class="subtitle">web developer</div-->
+        </div>
+
+        <!-- submenu1 content -->
+        <section id="creditsSubmenu1" class="section-content sub-menu submenu1">
             <div class="title-top left">
                 who <b>am I</b>
             </div>
             <div class="rule left"></div>
             <div class="title-info">
-                Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly art, and procedurally generated.
+                Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly, procedural and generative generated.
+            </div>
+        </section>
+
+        <!-- submenu2 content -->
+        <section id="aboutSubmenu2" class="section-content sub-menu submenu2">
+            <div class="title-top left">
+                who <b>am I</b>
+            </div>
+            <div class="rule left"></div>
+            <div class="title-info">
+                Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly, procedural and generative generated.
+            </div>
+        </section>
+        <section id="creditsSubmenu2" class="section-content sub-menu submenu2">
+            <div class="title-top left">
+                who <b>am I</b>
+            </div>
+            <div class="rule left"></div>
+            <div class="title-info">
+                Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly, procedural and generative generated.
             </div>
         </section>
 
 
         <!-- submenu3 content -->
 
-        <section id="submenu3" class="section-content sub-menu submenu3">
+        <section id="aboutSubmenu3" class="section-content sub-menu submenu3">
             <div class="title-top left">
                 What <b>i do_</b>
             </div>
@@ -336,8 +344,17 @@
                 </ul>
             </div>
         </section>
+        <section id="creditsSubmenu3" class="section-content sub-menu submenu3">
+            <div class="title-top left">
+                who <b>am I</b>
+            </div>
+            <div class="rule left"></div>
+            <div class="title-info">
+                Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly, procedural and generative generated.
+            </div>
+        </section>
         <!-- submenu4 content -->
-        <section id="submenu4" class="section-content sub-menu submenu4">
+        <section id="aboutSubmenu4" class="section-content sub-menu submenu4">
             <div class="title-top left">
                 what's <b>next_</b>
             </div>

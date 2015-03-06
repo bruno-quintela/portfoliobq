@@ -1991,7 +1991,7 @@ ENGINE = function() {
             var world = this;
             this.init();
             this.transitionParams.clock.elapsedTime = 0;
-            this.CurrentLayer = new this.Layer('initMainModel', 2, function() {
+            this.CurrentLayer = new this.Layer('initMainModel', 4, function() {
                 var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
                 document.getElementById('initProgressBar').style.width = loadProgression + '%';
                 console.log(loadProgression+":"+this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
@@ -2002,18 +2002,19 @@ ENGINE = function() {
             }, function() {
                 console.log('MainModel Loaded!');
                 var layer = myPortfolio.World.CurrentLayer;
-                //hide init loading screen
                 var initLoadingScreen = document.getElementById('initLoadingScreen');
                 var initIntroScreen = document.getElementById('initIntroScreen');
+                var modelInfo = document.getElementById('modelInfo');
+                //hide init loading screen
                 classie.toggleClass(initLoadingScreen, 'hide');
                
                 setTimeout(function() {
                      //start background AUDIO
-                    myPortfolio.SoundFx.backgroundMusic.play(0);
-                }, 1800);
+                    //myPortfolio.SoundFx.backgroundMusic.play(0);
+                }, 500);
                 // start init loading screen
                 setTimeout(function() {
-                     classie.toggleClass(initIntroScreen, 'show');
+                     classie.addClass(initIntroScreen, 'show');
                     // rotate lowpoly when name is showing
                     /*setTimeout(function() {
                         var tweenScene90 = new TWEEN.Tween(layer.lowpoly.rotation).to({
@@ -2023,14 +2024,19 @@ ENGINE = function() {
                         }, 2000);
                         tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
                     }, 1500);*/
+                }, 5000);
+                //end init loading screen
+                setTimeout(function() {
+                     classie.removeClass(initIntroScreen, 'show');
                 }, 10000);
                 //show menu
                 setTimeout(function() {
                     var menu = document.getElementById('menu');
-                    classie.toggleClass(menu, 'hide');
+                    classie.removeClass(menu, 'hide');
+                    classie.addClass(modelInfo, 'show');
                     //destroy loading screen to prevent opacity animation 
-                    document.getElementById('initLoadingScreen').innerHTML = '';
-                }, 10000);
+                    
+                }, 15000);
             });
             this.NextLayer = new this.Layer('initLoadingModel', 1, function() {}, function() {
                 console.log('Dummy Loaded!');
@@ -2074,26 +2080,26 @@ ENGINE = function() {
              * Menu navigation anchors triggers handler
              **/
             var menu = document.getElementById('menu'),
-                settingsAnchor = document.getElementById('settingsAnchor'),
                 aboutAnchor = document.getElementById('aboutAnchor'),
                 galleryAnchor = document.getElementById('galleryAnchor'),
                 contactAnchor = document.getElementById('contactAnchor'),
-                sectionSettings = document.getElementById('sectionSettings'),
+                creditsAnchor = document.getElementById('creditsAnchor'),
                 sectionAbout = document.getElementById('sectionAbout'),
                 sectionGallery = document.getElementById('sectionGallery'),
-                sectionContact = document.getElementById('sectionContact');
-            var submenu1Anchor = document.getElementById("submenuAnchor1");
-            var submenu2Anchor = document.getElementById("submenuAnchor2");
-            var submenu3Anchor = document.getElementById("submenuAnchor3");
-            var submenu4Anchor = document.getElementById("submenuAnchor4");
-            var submenu1Section = document.getElementById("submenu1");
-            var submenu2Section = document.getElementById("submenu2");
-            var submenu3Section = document.getElementById("submenu3");
-            var submenu4Section = document.getElementById("submenu4");
-            var galleryContainer = document.getElementById("galleryContainer");
-            //var submenuInterests = document.getElementById("submenuInterests");
-            //var submenuSocial = document.getElementById('submenuSocial');
-            //var submenuLocation = document.getElementById('submenuLocation');
+                sectionContact = document.getElementById('sectionContact'),
+                sectionCredits = document.getElementById('sectionCredits'),
+                sectionSettings = document.getElementById('sectionSettings');
+            var submenu1Anchor = document.getElementById('submenuAnchor1');
+            var submenu2Anchor = document.getElementById('submenuAnchor2');
+            var submenu3Anchor = document.getElementById('submenuAnchor3');
+            var submenu4Anchor = document.getElementById('submenuAnchor4');
+            var aboutSubmenu2 = document.getElementById('aboutSubmenu2');
+            var aboutSubmenu3 = document.getElementById('aboutSubmenu3');
+            var aboutSubmenu4 = document.getElementById('aboutSubmenu4');
+            var creditsSubmenu1 = document.getElementById('creditsSubmenu1');
+            var creditsSubmenu2 = document.getElementById('creditsSubmenu2');
+            var creditsSubmenu3 = document.getElementById('creditsSubmenu3');
+            var galleryContainer = document.getElementById('galleryContainer');
             var galleryLoader = document.getElementById('galleryLoader');
             /*event listeners handlers*/
             /* handle the submenu BACK event*/
@@ -2105,16 +2111,18 @@ ENGINE = function() {
                 submenu3Anchor.removeEventListener('click', closeSubmenu, false);
                 submenu4Anchor.removeEventListener('click', closeSubmenu, false);
                 // toggle section active state
-                classie.removeClass(sectionSettings, 'show');
                 classie.removeClass(sectionAbout, 'show');
                 classie.removeClass(sectionGallery, 'show');
                 classie.removeClass(sectionContact, 'show');
+                classie.removeClass(sectionCredits, 'show');
                 classie.toggleClass(menu, 'toggle');
                 /* close submenus active */
-                classie.removeClass(submenu1Section, 'show');
-                classie.removeClass(submenu2Section, 'show');
-                classie.removeClass(submenu3Section, 'show');
-                classie.removeClass(submenu4Section, 'show');
+                classie.removeClass(aboutSubmenu2, 'show');
+                classie.removeClass(aboutSubmenu3, 'show');
+                classie.removeClass(aboutSubmenu4, 'show');
+                classie.removeClass(creditsSubmenu1, 'show');
+                classie.removeClass(creditsSubmenu2, 'show');
+                classie.removeClass(creditsSubmenu3, 'show');
                 /* gallery items hide*/
                 var galleryItems = document.querySelectorAll('.gallery-item');
                 [].forEach.call(galleryItems, function(currentItem) {
@@ -2139,25 +2147,10 @@ ENGINE = function() {
                  classie.removeClass(galleryContainer, 'show');
             };
 
-            function displaySkills() {
-                classie.toggleClass(submenuSkills, 'show');
-            };
-
-            function displayInterests() {
-                classie.toggleClass(submenuInterests, 'show');
-            };
-
-            function displaySocial() {
-                classie.toggleClass(submenuSocial, 'show');
-            };
-
-            function displayLocation() {
-                classie.toggleClass(submenuLocation, 'show');
-            };
             /* menu navigation handler*/
             aboutAnchor.addEventListener('click', function() {
                 /*model to left tween*/
-                var layer = myPortfolio.World.CurrentLayer;
+                //var layer = myPortfolio.World.CurrentLayer;
                 /*var tweenSceneLeft = new TWEEN.Tween(layer.scene.position).to({
                     x: layer.scene.position.x - 0.5,
                     y: layer.scene.position.y,
@@ -2173,9 +2166,9 @@ ENGINE = function() {
                 tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();*/
                 //add on close submenu event handler
                 submenu1Anchor.addEventListener('click', closeSubmenu);
-                classie.toggleClass(submenu2Section, 'show');
-                classie.toggleClass(submenu3Section, 'show');
-                classie.toggleClass(submenu4Section, 'show');
+                classie.toggleClass(aboutSubmenu2, 'show');
+                classie.toggleClass(aboutSubmenu3, 'show');
+                classie.toggleClass(aboutSubmenu4, 'show');
                 /** active item style **/
                 submenu1Anchor.innerHTML = "back";
                 classie.addClass(submenu1Anchor.parentNode, 'active');
@@ -2187,11 +2180,7 @@ ENGINE = function() {
                 submenu3Anchor.innerHTML = '';
                 submenu4Anchor.innerHTML = '';
                 /* section animation handler */
-                classie.removeClass(sectionSettings, 'show');
-                classie.removeClass(sectionAbout, 'show');
-                classie.removeClass(sectionGallery, 'show');
-                classie.removeClass(sectionContact, 'show');
-                classie.removeClass(sectionContact, 'show');
+
                 classie.addClass(sectionAbout, 'show');
                 classie.toggleClass(menu, 'toggle');
             });
@@ -2208,20 +2197,19 @@ ENGINE = function() {
                 classie.removeClass(submenu3Anchor.parentNode, 'active');
                 classie.removeClass(submenu4Anchor.parentNode, 'active');
                 submenu1Anchor.innerHTML = 'Model<span style="color:red">#01 </span>';
-                submenu3Anchor.innerHTML = 'Model<span style="color:red">#02 </span>';
-                submenu4Anchor.innerHTML = 'Model<span style="color:red">#03 </span>';
+                submenu3Anchor.innerHTML = 'Model<span style="color:red">#03 </span>';
+                submenu4Anchor.innerHTML = 'Model<span style="color:red">#04 </span>';
                 /* section animation handler */
-                classie.removeClass(sectionSettings, 'show');
-                classie.removeClass(sectionAbout, 'show');
-                classie.removeClass(sectionGallery, 'show');
-                classie.removeClass(sectionContact, 'show');
                 classie.addClass(sectionGallery, 'show');
-                classie.toggleClass(menu, 'toggle');
+                
                 /* gallery items show */
                 var galleryItems = document.querySelectorAll('.gallery-item');
                 [].forEach.call(galleryItems, function(currentItem) {
                     classie.toggleClass(currentItem, 'hide');
                 });
+                
+                /* menu toggle*/
+                classie.toggleClass(menu, 'toggle');
             });
             contactAnchor.addEventListener('click', function() {
                 //add on close submenu event handler
@@ -2240,36 +2228,29 @@ ENGINE = function() {
                 submenu2Anchor.innerHTML = "";
                 submenu4Anchor.innerHTML = "";
                 /* section animation handler */
-                classie.removeClass(sectionSettings, 'show');
-                classie.removeClass(sectionAbout, 'show');
-                classie.removeClass(sectionGallery, 'show');
-                classie.removeClass(sectionContact, 'show');
+
                 setTimeout(function() {
                     classie.addClass(sectionContact, 'show');
                 }, 500);
                 classie.toggleClass(menu, 'toggle');
             });
-            settingsAnchor.addEventListener('click', function() {
-                //add on close submenu event handler
+            creditsAnchor.addEventListener('click', function() {
                 submenu4Anchor.addEventListener('click', closeSubmenu);
+                classie.toggleClass(creditsSubmenu1, 'show');
+                classie.toggleClass(creditsSubmenu2, 'show');
+                classie.toggleClass(creditsSubmenu3, 'show');
                 /** active item style **/
                 submenu4Anchor.innerHTML = "back";
                 classie.addClass(submenu4Anchor.parentNode, 'active');
-                /** inactive submenu style and content **/
+                /** inactive items style, content and event handlers **/
                 classie.removeClass(submenu1Anchor.parentNode, 'active');
                 classie.removeClass(submenu2Anchor.parentNode, 'active');
                 classie.removeClass(submenu3Anchor.parentNode, 'active');
-                submenu1Anchor.innerHTML = "";
-                submenu2Anchor.innerHTML = "";
-                submenu3Anchor.innerHTML = "";
+                submenu1Anchor.innerHTML = '';
+                submenu2Anchor.innerHTML = '';
+                submenu3Anchor.innerHTML = '';
                 /* section animation handler */
-                classie.removeClass(sectionSettings, 'show');
-                classie.removeClass(sectionAbout, 'show');
-                classie.removeClass(sectionGallery, 'show');
-                classie.removeClass(submenuSocial, 'show');
-                setTimeout(function() {
-                    classie.addClass(sectionSettings, 'show');
-                }, 500);
+                classie.addClass(sectionCredits, 'show');
                 classie.toggleClass(menu, 'toggle');
             });
             /**** galley item click handler */
