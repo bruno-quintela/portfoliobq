@@ -89,11 +89,6 @@
     <script src="scripts/vendor/threejs/modifier/subdivisionModifier.js"></script>
     <!-- CLASSIE JS Plugin  -->
     <script src="scripts/vendor/classiejs/classie.js"></script>
-    <!-- Particels JS Plugin  -->
-    <script src="scripts/vendor/particlesjs/particles.min.js"></script>
-    <!-- GOOGLE MAPS API -->
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
-    <!-- fulpageVertical Scroll plugin -->
 
     <div id="bodyWrapper" class="body-wrapper">
 
@@ -151,6 +146,10 @@
                 </li>
             </ul>
         </nav>
+        
+        <!-- setting Button -->
+        
+        
         <!--Single page scroll navigation -->
 
         <section id="sectionAbout" class="section-content main-menu about">
@@ -158,15 +157,14 @@
             <div class="title-container">
                 <span class="title">About </span>
                 <div class="title-top right">
-                    <div class="rule right"></div>
                     <div class="about-info-container">
                         <span style="color:red">#01 </span><b>name</b> Bruno Quintela
                         <span style="color:red">#02 </span><b>Age</b> 32
                         <span style="color:red">#03 </span><b>Location</b> Portugal
                         <span style="color:red">#04 </span><b>Job</b> Web Developer
                     </div>
-
                 </div>
+                <div class="rule right"></div>
 
             </div>
         </section>
@@ -240,7 +238,7 @@
                 <b>Contact</b> Me
             </div>
             <div class="rule right"></div>
-             <div class="social-container">
+            <div class="social-container">
                 <div class="social__item">
                     <a target="_blank" href="https://twitter.com/" class="social__icon--twitter"><i class="icon--twitter"></i></a>
                 </div>
@@ -260,18 +258,25 @@
         </section>
         <section id="sectionCredits" class="section-content main-menu credits">
             <!-- LEFT -->
-            <div class="title-container">
-                <div class="title-top left">
-                    who <b>am I</b>
-                </div>
-                <div class="rule left"></div>
+            <div class="title-top left">
+                Special <b>thanks</b>
             </div>
+            <div class="rule left"></div>
             <div class="title-info">
-                Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly art, and procedurally generated.
+                Friendly Communities that shared a lot of knowledge and public examples
+                <ul>
+                    <li>Blender Communittie</li>
+                    <li>Codepen.io</li>
+                    <li>Tympanus.net</li>
+                </ul>
             </div>
         </section>
+        
+        <!-- SETTINGS TAB -->
         <section id="sectionSettings" class="section-content main-menu settings">
+            <div class="settings-performance">Performance</div>
             <div class="title-info">
+                
                 <span class="settings-name">Audio</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
                 <br>
                 <span class="settings-name">Fullscreen</span><span id="settingsFullscreenOn" class="settings-toggle">on</span><span id="settingsFullscreenOff" class="settings-toggle active">off</span>
@@ -289,21 +294,25 @@
 
         <!-- MODEL INFO -->
         <div id="modelInfo" class="model-info">
-            <div class="title"><b>Model</b><span style="color:red">#01 </span>
+            <div class="title"><b>Model</b><span style="color:red">#02 </span>
             </div>
             <div class="subtitle">Lowpoly <b>Hybrid</b>
             </div>
-            <!--div class="subtitle">web developer</div-->
+            
+            <div class="model-details"><a id="settings" href="#" class="settings-anchor">Settings</a></div>
+             <div class="model-credits">
+                 this model is a part of three pieces, they represent the lore ipsum lalalalala revious pionering work made by the amazing webdevelopers that inspired me and made this kind of technology available.
+            </div>
         </div>
 
         <!-- submenu1 content -->
         <section id="creditsSubmenu1" class="section-content sub-menu submenu1">
-            <div class="title-top left">
-                who <b>am I</b>
-            </div>
-            <div class="rule left"></div>
-            <div class="title-info">
-                Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly, procedural and generative generated.
+            <div class="title-container">
+                <span class="title">Credits </span>
+                <div class="rule right"></div>
+                <div class="title-info">
+                    This site woudn't exist if it wasn't for the previous pionering work made by the amazing webdevelopers that inspired me and made this kind of technology available.
+                </div>
             </div>
         </section>
 
@@ -319,11 +328,17 @@
         </section>
         <section id="creditsSubmenu2" class="section-content sub-menu submenu2">
             <div class="title-top left">
-                who <b>am I</b>
+                people that <b>inspired me</b>
             </div>
             <div class="rule left"></div>
             <div class="title-info">
-                Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly, procedural and generative generated.
+                This site woudn't look like this if it wasn't for the amazing work made by the visionary webdevelopers that made this kind of technology available.
+                <ul>
+                    <li>Ricardo Cabello aka mr Doob</li>
+                    <li>AlteredQualia</li>
+                    <li>Cabbibo</li>
+                    <li>James Elias....</li>
+                </ul>
             </div>
         </section>
 
@@ -339,20 +354,38 @@
                 I create unique, state of the art, visual content for the web, to achieve a perfect ballance between visual delivery and performance is my pripority.
                 <ul>
                     <li>front end developer</li>
-                    <li>UI&UX designer</li>
+                    <li>UI/UX designer</li>
                     <li>Web designer</li>
                 </ul>
             </div>
         </section>
         <section id="creditsSubmenu3" class="section-content sub-menu submenu3">
             <div class="title-top left">
-                who <b>am I</b>
+                <b>Open Source</b> Software Used
             </div>
             <div class="rule left"></div>
-            <div class="title-info">
-                Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly, procedural and generative generated.
+            
+            <div class="title-info column">
+                All the contents were created using only open source software
+                <ul>
+                    <li>Blender</li>
+                    <li>Makehuman 3D</li>
+                    <li>Gimp</li>
+                    <li>Meshlab</li>
+                    <li>Audacity</li>
+                </ul>
+                Javascript librarys used
+                <ul>
+                    <li>ThreeJS</li>
+                    <li>ClassieJs</li>
+                    <li>StatsJs</li>
+                    <li>DatGuiJS</li>
+                    <li>TweenJs</li>
+                </ul>
             </div>
         </section>
+
+
         <!-- submenu4 content -->
         <section id="aboutSubmenu4" class="section-content sub-menu submenu4">
             <div class="title-top left">
@@ -364,26 +397,6 @@
             </div>
         </section>
 
-
-
-        <section id="submenuSocial" class="section-content sub-menu submenu2">
-            <div class="title-top">
-                @bruno_quintela
-            </div>
-            <div class="title-container">
-                <span class="title"> </span>
-                <span class="subtitle">#01</span>
-            </div>
-            <div class="title-info">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed dLorem ipsum dolor sit amet, Lorem ipsum dolor sit amet,
-            </div>
-            <div class="social-info">
-                <a target="_blank" href="https://twitter.com/" class="social-item">twitter</a> 
-                <a target="_blank" href="https://www.linkedin.com/" class="social-item">linkedIn</a>
-                <a target="_blank" href="http://behance.com" class="social-item">behance</a>
-                <a target="_blank" href="https://soundcloud.com/matchboxhero" class="social-item">soundcloud</a>
-            </div>
-        </section>
 
 
     </div>

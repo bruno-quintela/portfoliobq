@@ -32,8 +32,8 @@
 
 .gallery-item:hover
 {
-   border-right:5px solid red;
-   border-left:5px solid red;
+   //border-right:5px solid red;
+   border:1px solid red;
 }
 
 .gallery-item{
@@ -282,7 +282,7 @@ figure.effect-apollo figcaption::before {
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 90%;
+	height: 120%;
 	background: rgba(255,255,255,0.7);
 	content: '';
 	-webkit-transition: -webkit-transform 0.6s;
@@ -298,7 +298,7 @@ figure.effect-apollo p {
 	margin: 3em;
 	padding: 0 1em;
 	max-width: 350px;
-	border-right: 4px solid #fff;
+	border-right: 4px solid red;
 	text-align: right;
 	opacity: 0;
 	-webkit-transition: opacity 0.35s;
@@ -312,13 +312,13 @@ figure.effect-apollo h2 {
 
 figure.effect-apollo:hover img {
 	opacity: 0.2;
-	-webkit-transform: scale3d(2,2,2);
+	-webkit-transform: scale3d(3.3,3.3,2);
 	transform: scale3d(3.3,3.3,2);
 }
 
 figure.effect-apollo:hover figcaption::before {
-	-webkit-transform: scale3d(1.9,1.4,1) rotate3d(0,0,1,45deg) translate3d(0,100%,0);
-	transform: scale3d(1.9,1.4,1) rotate3d(0,0,1,45deg) translate3d(0,100%,0);
+	-webkit-transform: scale3d(1.9,1.4,1) rotate3d(0,0,1,45deg) translate3d(0,150%,0);
+	transform: scale3d(1.9,1.4,1) rotate3d(0,0,1,45deg) translate3d(0,150%,0);
 }
 
 figure.effect-apollo:hover h2 {

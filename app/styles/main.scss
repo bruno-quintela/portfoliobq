@@ -50,6 +50,7 @@ p{
   height:100%;
   background: rgb(255,255,255);
   z-index:0;
+  overflow:hidden;
 }
 
 .threejs-canvas
@@ -126,11 +127,15 @@ p{
 }
 
 .about-info-container{
-    float:left;
-    width:100%;
-    margin-top:20px;
+    float:right;
+    width:250px;
+    margin-top:10px;
+    margin-bottom:10px;
+    font-size: 8px;
+    clear:both;
     
 }
+
 
 
 /****** submenus styling *****************/
@@ -192,7 +197,21 @@ p{
     @include transition((transform 1000ms 300ms));
 }
 
+.section-content.settings
+{
+    bottom:0;
+    left:0;
+    width:200px;
+    height:200px;
+    padding:20px;
+    border-right: 1px solid red;
+    transform: translateX(-100%);
+}
 
+.section-content.settings.show
+{
+    transform: translateX(0);
+}
 
 /* gallery styling */
 .section-content.gallery.show
@@ -253,8 +272,10 @@ p{
     width:100%;
     //color:rgba(255, 0, 0, 0.4);
     font-weight: 300;
-    font-size: 5vh;
+    font-size: 6vh;
     letter-spacing: 5px;
+    float:right;
+    clear:both;
 }
 
 .title-container .subtitle{
@@ -288,22 +309,28 @@ p{
 .model-info
 {
     position:absolute;
-    left:50px;
-    bottom:35px;
-    width:400px;
+    left:35px;
+    bottom:50px;
+    width:300px;
     height:50px;
     text-align:left;
     text-transform:uppercase;
     color:#fff;
     font-weight:300;
     letter-spacing:3px;
-    opacity:1;
-    transform: translateX(-100%);
-    @include transition((transform 1.5s 2s));
+    opacity:0;
+    //transform: translateX(-100%);
+    @include transition((transform 1s 0s, opacity 1.5s 0s));
 }
 .model-info.show
 {
-    transform: translateX(0);
+    opacity:1;
+}
+
+// when settings tab is open
+.model-info.open
+{
+    transform: translateX(200px);
 }
 
 .model-info .title
@@ -315,6 +342,47 @@ p{
     font-size:25px;
 }
 
+.model-info .title a
+{
+    font-size:9px;
+    color:#fff;
+    text-transform:none;
+}
+
+.model-details
+{
+    position:absolute;
+    left:0px;
+    font-size:11px;
+    color:#fff;
+    text-transform:none;
+    margin-top: 10px;
+}
+
+.model-details a
+{
+    color:#fff;
+}
+
+.model-credits{
+    position:absolute;
+    top:0px;
+    left:300px;
+    border-left: 2px solid #fff;
+    width:500px;
+    height:100%;
+    font-size:9px;
+    color:#fff;
+    padding-left:20px;
+    text-transform:none;
+    opacity:0;
+    @include transition((opacity 0.5s 0s));
+}
+
+.model-info.show .model-credits
+{
+    opacity:1;
+}
 
 
 /*****************************************************************/
@@ -379,7 +447,7 @@ p{
 
 .init-loading-screen.hide .init-loading-bar{
     transform: translateX(100%);
-    opacity:0;
+    opacity:1;
 }
 
 .init-loading-progress{
@@ -587,6 +655,7 @@ p{
 
     height:3px;
     background-color:red;
+    clear:both;
 }
 
 .rule.left
@@ -602,6 +671,7 @@ p{
     float:right;
     margin-top:10px;
     margin-bottom:10px;
+    margin-right:5px;
 
 }
 
