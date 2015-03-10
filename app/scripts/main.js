@@ -2009,7 +2009,7 @@ ENGINE = function() {
                 classie.toggleClass(initLoadingScreen, 'hide');
                 setTimeout(function() {
                     //start background AUDIO
-                    //myPortfolio.SoundFx.backgroundMusic.play(0);
+                    myPortfolio.SoundFx.backgroundMusic.play(0);
                 }, 500);
                 // start init loading screen
                 setTimeout(function() {
@@ -2086,7 +2086,6 @@ ENGINE = function() {
                 sectionGallery = document.getElementById('sectionGallery'),
                 sectionContact = document.getElementById('sectionContact'),
                 sectionCredits = document.getElementById('sectionCredits');
-                
             var submenu1Anchor = document.getElementById('submenuAnchor1');
             var submenu2Anchor = document.getElementById('submenuAnchor2');
             var submenu3Anchor = document.getElementById('submenuAnchor3');
@@ -2140,9 +2139,6 @@ ENGINE = function() {
                 [].forEach.call(galleryItems, function(currentItem) {
                     classie.addClass(currentItem, 'hide');
                 });
-
-                
-
                 //hide gallery visibility
                 classie.removeClass(galleryContainer, 'show');
             };
@@ -2386,27 +2382,30 @@ ENGINE = function() {
                 }
             }
             /** settings event handlers */
-            
             settings.addEventListener('click', function() {
                 classie.toggleClass(sectionSettings, 'show');
                 classie.toggleClass(modelInfo, 'open');
             });
             /* AUDIO */
             settingsAudioOn.addEventListener('click', function() {
-                classie.toggleClass(settingsAudioOn, 'active');
-                classie.toggleClass(settingsAudioOff, 'active');
-                var fadeIn = new TWEEN.Tween(myPortfolio.SoundFx.backgroundMusic).to({
-                    volume: 1
-                }, 1000);
-                fadeIn.easing(TWEEN.Easing.Quadratic.Out).start();
+                if(!classie.hasClass(settingsAudioOn, 'active')) {
+                    var fadeIn = new TWEEN.Tween(myPortfolio.SoundFx.backgroundMusic).to({
+                        volume: 1
+                    }, 300);
+                    fadeIn.easing(TWEEN.Easing.Quadratic.Out).start();
+                    classie.toggleClass(settingsAudioOn, 'active');
+                    classie.toggleClass(settingsAudioOff, 'active');
+                }
             });
             settingsAudioOff.addEventListener('click', function() {
-                classie.toggleClass(settingsAudioOn, 'active');
-                classie.toggleClass(settingsAudioOff, 'active');
-                var fadeOut = new TWEEN.Tween(myPortfolio.SoundFx.backgroundMusic).to({
-                    volume: 0
-                }, 1000);
-                fadeOut.easing(TWEEN.Easing.Quadratic.Out).start();
+                if(!classie.hasClass(settingsAudioOff, 'active')) {
+                    var fadeIn = new TWEEN.Tween(myPortfolio.SoundFx.backgroundMusic).to({
+                        volume: 0
+                    }, 300);
+                    fadeIn.easing(TWEEN.Easing.Quadratic.Out).start();
+                    classie.toggleClass(settingsAudioOn, 'active');
+                    classie.toggleClass(settingsAudioOff, 'active');
+                }
             });
             /* FULLSCREEN */
             settingsFullscreenOn.addEventListener('click', function() {
@@ -2429,50 +2428,60 @@ ENGINE = function() {
             });
             /* Anaglyph 3D */
             settingsStereoscopicOn.addEventListener('click', function() {
-                classie.toggleClass(settingsStereoscopicOn, 'active');
-                classie.toggleClass(settingsStereoscopicOff, 'active');
-                myPortfolio.World.renderParams.enableAnaglyph = true;
-                myPortfolio.World.refreshPostProcessing();
+                if(!classie.hasClass(settingsStereoscopicOn, 'active')) {
+                    classie.toggleClass(settingsStereoscopicOn, 'active');
+                    classie.toggleClass(settingsStereoscopicOff, 'active');
+                    myPortfolio.World.renderParams.enableAnaglyph = true;
+                    myPortfolio.World.refreshPostProcessing();
+                }
             });
             settingsStereoscopicOff.addEventListener('click', function() {
-                classie.toggleClass(settingsStereoscopicOn, 'active');
-                classie.toggleClass(settingsStereoscopicOff, 'active');
-                myPortfolio.World.renderParams.enableAnaglyph = false;
-                myPortfolio.World.refreshPostProcessing();
+                if(!classie.hasClass(settingsStereoscopicOff, 'active')) {
+                    classie.toggleClass(settingsStereoscopicOn, 'active');
+                    classie.toggleClass(settingsStereoscopicOff, 'active');
+                    myPortfolio.World.renderParams.enableAnaglyph = false;
+                    myPortfolio.World.refreshPostProcessing();
+                }
             });
             /* POSTPROCESSING QUALITY */
             settingsQualityHigh.addEventListener('click', function() {
-                classie.toggleClass(settingsQualityHigh, 'active');
-                classie.removeClass(settingsQualityMedium, 'active');
-                classie.removeClass(settingsQualityLow, 'active');
-                myPortfolio.World.renderParams.enableFXAA = true;
-                myPortfolio.World.renderParams.enableTiltShift = true;
-                myPortfolio.World.renderParams.enableRGBShift = false;
-                myPortfolio.World.renderParams.enableVignette = true;
-                myPortfolio.World.renderParams.bleach = true;
-                myPortfolio.World.refreshPostProcessing();
+                if(!classie.hasClass(settingsQualityHigh, 'active')) {
+                    classie.toggleClass(settingsQualityHigh, 'active');
+                    classie.removeClass(settingsQualityMedium, 'active');
+                    classie.removeClass(settingsQualityLow, 'active');
+                    myPortfolio.World.renderParams.enableFXAA = true;
+                    myPortfolio.World.renderParams.enableTiltShift = true;
+                    myPortfolio.World.renderParams.enableRGBShift = false;
+                    myPortfolio.World.renderParams.enableVignette = true;
+                    myPortfolio.World.renderParams.bleach = true;
+                    myPortfolio.World.refreshPostProcessing();
+                }
             });
             settingsQualityMedium.addEventListener('click', function() {
-                classie.removeClass(settingsQualityHigh, 'active');
-                classie.toggleClass(settingsQualityMedium, 'active');
-                classie.removeClass(settingsQualityLow, 'active');
-                myPortfolio.World.renderParams.enableFXAA = false;
-                myPortfolio.World.renderParams.enableTiltShift = false;
-                myPortfolio.World.renderParams.enableRGBShift = false;
-                myPortfolio.World.renderParams.enableVignette = true;
-                myPortfolio.World.renderParams.bleach = true;
-                myPortfolio.World.refreshPostProcessing();
+                if(!classie.hasClass(settingsQualityMedium, 'active')) {
+                    classie.removeClass(settingsQualityHigh, 'active');
+                    classie.toggleClass(settingsQualityMedium, 'active');
+                    classie.removeClass(settingsQualityLow, 'active');
+                    myPortfolio.World.renderParams.enableFXAA = false;
+                    myPortfolio.World.renderParams.enableTiltShift = false;
+                    myPortfolio.World.renderParams.enableRGBShift = false;
+                    myPortfolio.World.renderParams.enableVignette = true;
+                    myPortfolio.World.renderParams.bleach = true;
+                    myPortfolio.World.refreshPostProcessing();
+                }
             });
             settingsQualityLow.addEventListener('click', function() {
-                classie.removeClass(settingsQualityHigh, 'active');
-                classie.removeClass(settingsQualityMedium, 'active');
-                classie.toggleClass(settingsQualityLow, 'active');
-                myPortfolio.World.renderParams.enableFXAA = false;
-                myPortfolio.World.renderParams.enableTiltShift = false;
-                myPortfolio.World.renderParams.enableRGBShift = false;
-                myPortfolio.World.renderParams.enableVignette = false;
-                myPortfolio.World.renderParams.bleach = false;
-                myPortfolio.World.refreshPostProcessing();
+                if(!classie.hasClass(settingsQualityLow, 'active')) {
+                    classie.removeClass(settingsQualityHigh, 'active');
+                    classie.removeClass(settingsQualityMedium, 'active');
+                    classie.toggleClass(settingsQualityLow, 'active');
+                    myPortfolio.World.renderParams.enableFXAA = false;
+                    myPortfolio.World.renderParams.enableTiltShift = false;
+                    myPortfolio.World.renderParams.enableRGBShift = false;
+                    myPortfolio.World.renderParams.enableVignette = false;
+                    myPortfolio.World.renderParams.bleach = false;
+                    myPortfolio.World.refreshPostProcessing();
+                }
             });
         },
         initMap: function() {
@@ -2525,66 +2534,6 @@ ENGINE = function() {
             this.initMenu();
             this.initSettings();
             //this.initMap();
-            /*particlesJS('particlesjs', {
-                particles: {
-                    color: '#fff',
-                    color_random: false,
-                    shape: 'circle', // "circle", "edge" or "triangle"
-                    opacity: {
-                        opacity: 1,
-                        anim: {
-                            enable: false,
-                            speed: 1.5,
-                            opacity_min: 0,
-                            sync: false
-                        }
-                    },
-                    size: 2.5,
-                    size_random: true,
-                    nb: 100,
-                    line_linked: {
-                        enable_auto: true,
-                        distance: 40,
-                        color: '#fff',
-                        opacity: 1,
-                        width: 1,
-                        condensed_mode: {
-                            enable: false,
-                            rotateX: 600,
-                            rotateY: 600
-                        }
-                    },
-                    anim: {
-                        enable: true,
-                        speed: 1
-                    }
-                },
-                interactivity: {
-                    enable: false,
-                    mouse: {
-                        distance: 250
-                    },
-                    detect_on: 'canvas', // "canvas" or "window"
-                    mode: 'grab', // "grab" of false
-                    line_linked: {
-                        opacity: .5
-                    },
-                    events: {
-                        onclick: {
-                            enable: true,
-                            mode: 'push', // "push" or "remove"
-                            nb: 4
-                        },
-                        onresize: {
-                            enable: true,
-                            mode: 'out', // "out" or "bounce"
-                            density_auto: false,
-                            density_area: 800 // nb_particles = particles.nb * (canvas width *  canvas height / 1000) / density_area
-                        }
-                    }
-                },
-                retina_detect: true
-            });*/
         }
     },
     /**

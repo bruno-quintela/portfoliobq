@@ -1,54 +1,40 @@
-@import 'mixins';
-@import 'cursors';
-@import 'typography';
-@import 'gridComposer';
-
-
 $menu-width: 50px;
 $content-width:500px;
 $content-height:calc(100%/4);
 $content-padding:30px;
 $gallery-width:33%;
 
-*, *:before, *:after {
-  box-sizing: border-box;
- }
+$primary-color: rgba(0,0,0,0.8);
+$secondary-color: rgba(255,0,0,1);
+$background-color: rgba(0,0,0,1);
+$text-color: rgba(255,255,255,1);
 
-a {
-	text-decoration: none;
-	outline: none;
-}
+$loading-progress-color: #fff;
+$loading-bar-color: #333;
 
-textarea {
-    resize: none;
-}
+$main-menu-background: rgba(0,0,0,1);
+$sub-menu-background: rgba(0,0,0,1);
 
+$primary-font-family: Open Sans;
 
-hr
-{
-    border: 0;
-    height: 1px;
-    background: #333;
-}
+$transition-effect: ease-in-out;
 
-p{
-    -webkit-column-break-inside: avoid;
-          page-break-inside: avoid;
-               break-inside: avoid;
-}
+@import 'mixins';
+@import 'reset';
+@import 'typography';
+@import 'gridComposer';
+@include scrollbar(.8em, $secondary-color);
 
-
-
-/*************************************************************************/
-
+/**
+* Wrappers and Container 
+**/
 .body-wrapper
 {
-  @extend %body-font;
-  //@extend %cursorDefault;
+  @extend %main-font;
   position:absolute;
   width:100%;
   height:100%;
-  background: rgb(255,255,255);
+  background: $background-color;
   z-index:0;
   overflow:hidden;
 }
@@ -60,13 +46,13 @@ p{
   height:100%;
 }
 
-@include scrollbar(.8em, rgba(255,0,0,0.7));
-@import 'headerTitle';
-
-/*************************************************************/
+/**
+* Sections 
+**/
 
 .section-content
 {
+    @extend %main-font;
     z-index:2;
     position:absolute;
     width:$content-width;
@@ -75,54 +61,37 @@ p{
     padding-right: $menu-width + $content-padding;
     text-align: right;
     right:0px;
-    font-family: Open Sans !important;
-  	text-rendering: optimizeLegibility;
-    @include transition(transform 0.5s 0s);
-    //border:1px solid #000;
+    will-change: transform;
+    @include transition((transform 1000ms 0ms $transition-effect,  opacity 500ms 0ms $transition-effect));
 }
-
-/** show */
-
 
 .section-content.main-menu
 {
-    color:#fff;
-    background-color:rgba(0,0,0,0.8);
-    transform: translateX(100%);
-    //background-position:0%;
-    //background-image:url(../src/img/lowpolyBackground.png);
+    opacity:0;
+    color:$text-color;
+    background-color:$primary-color;
+    will-change: transform, opacity;
+    @include transform(translateX(100%));
 }
 
 .section-content.main-menu.show
 {
-    transform: translateX(0%);
-}
-
-.perspective-container
-{
-    z-index:2;
-    position:absolute;
-    width:$content-width;
-    height: $content-height;
-    perspective: 1200px;
-    //transform-style: preserve-3d;
-    perspective-origin: bottom;    
-    border:1px solid #000;
+    opacity:1;
+    @include transform(translateX(0));
 }
 
 .section-content.sub-menu
 {
-    color:#fff;
-    background-color:rgba(0,0,0,0.8);
-    opacity:1;
-    transform-origin: bottom;
-    transform: translateX(110%);
-    //background-image:url(../src/img/lowpolyBackground.png);
+    color:$text-color;
+    background-color:$primary-color;
+    opacity:0;
+    will-change: transform, opacity;
+    @include transform(translateX(100%));
 }
 
 .section-content.sub-menu.show
 {
-    transform: translateX(0%);
+    @include transform(translateX(0));
     opacity:1;
 }
 
@@ -133,57 +102,57 @@ p{
     margin-bottom:10px;
     font-size: 8px;
     clear:both;
-    
 }
 
 
 
-/****** submenus styling *****************/
+/**
+* Submenus
+**/
 
 
 .submenu1
 {
     top:0%;
-    @include transition((transform 1000ms 0ms, opacity 500ms 0ms, cubic-bezier(0,.05,.03,.84)));
+    @include transition((transform 1000ms 0ms $transition-effect,  opacity 500ms 0ms $transition-effect));
 }
 
 
 .submenu2
 {
     top:25%;    
-    @include transition((transform 1000ms 100ms,  opacity 500ms 100ms, cubic-bezier(0,.05,.03,.84)));
+    @include transition((transform 1000ms 100ms $transition-effect,  opacity 500ms 100ms $transition-effect));
 }
 
 .submenu3
 {
     top:50%;
-    @include transition((transform 1000ms 200ms,  opacity 500ms 200ms, cubic-bezier(0,.05,.03,.84)));
+    @include transition((transform 1000ms 200ms $transition-effect,  opacity 500ms 200ms $transition-effect));
 }
 
 .submenu4
 {
     top:75%;    
-    @include transition((transform 1000ms 300ms,  opacity 500ms 300ms, cubic-bezier(0,.05,.03,.84)));
+    @include transition((transform 1000ms 300ms $transition-effect,  opacity 500ms 300ms $transition-effect));
 }
 
 
-
-/****************************/
-
-.section-content.about
-{
-
-    top:0%;
-}
 
 .section-content.gallery
 {
-    background-color:rgba(0,0,0,1);
-    will-change: transform;
-    transform: translateX(-100%);
-    width: 100%;
     top:25%;
-    @include transition((transform 1000ms 0ms));
+    width: 100%;
+    background-color:$background-color;
+    will-change: transform;
+    @include transform(translateX(-100%));
+    @include transition((transform 1000ms 0ms $transition-effect,  opacity 1000ms 0ms $transition-effect));
+}
+
+
+
+.section-content.gallery.show
+{
+    @include transform(translateX(-33%));
 }
 
 .section-content.contact
@@ -194,30 +163,10 @@ p{
 .section-content.credits
 {
     top:75%;
-    @include transition((transform 1000ms 300ms));
+    @include transition((transform 1000ms 300ms $transition-effect,  opacity 500ms 300ms $transition-effect));
 }
 
-.section-content.settings
-{
-    bottom:0;
-    left:0;
-    width:200px;
-    height:200px;
-    padding:20px;
-    border-right: 1px solid red;
-    transform: translateX(-100%);
-}
 
-.section-content.settings.show
-{
-    transform: translateX(0);
-}
-
-/* gallery styling */
-.section-content.gallery.show
-{
-    transform: translateX(-33%);
-}
 
 .gallery-summary
 {
@@ -225,32 +174,31 @@ p{
     width:$content-width;
 }
 
-.contact-map
+.section-content.settings
 {
     position:absolute;
-    width:100%;
-    height:100%;
-    top:0px;
-    left:0px;
-    
+    bottom:0;
+    left:0;
+    width:200px;
+    height:200px;
+    padding:20px;
+    border-right: 1px solid $secondary-color;
+    @include transform(translateX(-100%));
+}
+
+.section-content.settings.show
+{
+    @include transform(translateX(0));
 }
 
 
+/**
+* Title
+**/
 
-
-
-
-
-
-/* content section styles *************************************************/
 
 .title-top{
-    border: none;
-    
-    text-transform: uppercase;
-    font-weight: 100;
-    font-size: 10px;
-    letter-spacing: 5px;
+    @extend %submenu-title-font;
 }
 
 .title-top.left{
@@ -265,118 +213,109 @@ p{
 .title-container{
     width:100%;
     float:left;
-    text-transform: uppercase;
 }
 
 .title-container .title{
+    @extend %menu-title-font;
     width:100%;
-    //color:rgba(255, 0, 0, 0.4);
-    font-weight: 300;
-    font-size: 6vh;
-    letter-spacing: 5px;
     float:right;
     clear:both;
 }
 
-.title-container .subtitle{
-    width:100px;
-    //color:rgba(255, 0, 0, 0.4);
-    font-weight: 100;
-    font-size: 3vh;
-    border-top: 2px solid red;
-}
 
-.title-info{
+.section-info{
+    @extend %section-info-font;
     float: right;
     width: 100%;
-    font-weight: 100;
-    font-size: 11px;
-    letter-spacing: 0px;
-    text-transform: none;
     text-align: left;
     margin-top:20px;
     margin-bottom:20px;
    
 }
 
-.title-info.column{
-     -webkit-column-count: 2; /* Chrome, Safari, Opera */
+.section-info.column{
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
     -moz-column-count: 2; /* Firefox */
     column-count: 2;
 }
 
-/******* MODEL INFO*****/
+/**
+* Current model Info
+**/
+
 .model-info
 {
+    @extend %model-info-font;
     position:absolute;
     left:35px;
     bottom:50px;
     width:300px;
     height:50px;
     text-align:left;
-    text-transform:uppercase;
-    color:#fff;
-    font-weight:300;
-    letter-spacing:3px;
     opacity:0;
-    //transform: translateX(-100%);
-    @include transition((transform 1s 0s, opacity 1.5s 0s));
+    will-change: transform, opacity;
+    @include transition((transform 1s 0s $transition-effect, opacity 1.5s 0s $transition-effect));
 }
 .model-info.show
 {
     opacity:1;
 }
 
-// when settings tab is open
 .model-info.open
 {
-    transform: translateX(200px);
+    @include transform(translateX(200px));
 }
 
 .model-info .title
 {
-    font-size:11px;
+    @extend %model-info-font;
 }
 .model-info .subtitle
 {
-    font-size:25px;
+    @extend %model-subtitle-font;
 }
 
-.model-info .title a
-{
-    font-size:9px;
-    color:#fff;
-    text-transform:none;
-}
-
-.model-details
+.model-settings
 {
     position:absolute;
-    left:0px;
-    font-size:11px;
-    color:#fff;
-    text-transform:none;
+    left:-20px;
     margin-top: 10px;
 }
 
-.model-details a
+
+.model-settings img
 {
-    color:#fff;
+    position:absolute;
+    left:0px;
+    margin-top: 5px;
+    width:20px;
+}
+
+.model-settings a
+{
+    @extend %model-settings-font;
+    margin-left:20px;
+    will-change: color;
+    @include transition(color 0.5s 0s $transition-effect);
+}
+
+.model-settings a:hover
+{
+    color: $secondary-color;
 }
 
 .model-credits{
+    @extend %model-credits-font;
     position:absolute;
     top:0px;
     left:300px;
-    border-left: 2px solid #fff;
+    border-left: 2px solid $text-color;
     width:500px;
     height:100%;
-    font-size:9px;
-    color:#fff;
     padding-left:20px;
-    text-transform:none;
     opacity:0;
-    @include transition((opacity 0.5s 0s));
+    will-change:opacity;
+    @include transition(opacity 0.5s 0s $transition-effect);
 }
 
 .model-info.show .model-credits
@@ -385,10 +324,12 @@ p{
 }
 
 
-/*****************************************************************/
+/**
+* Loading Screens
+**/
+
 .init-loading-screen
 {
-    will-change: opacity;
     z-index:2;
     display: inline-block;
     position:absolute;
@@ -398,9 +339,10 @@ p{
     opacity:1;
     visibility:visible;
     background: #121212 url(data:image/gif;base64,R0lGODlhKAAoAIAAABISEiIiIiH5BAAHAP8ALAAAAAAoACgAAAJzDA6Gepz4FnSzyttsxq7ruIWgh4EmGaLnpzItC5ex+JbuvNpaTeO3DuxxfERZMCdM8pDMX7I5W0p3xaeqCg1Oj6itlcrFOrNfY/mM9JJH4qra+8a2w0M6ehzXzs959H6N99clGEWoZwcIYci3mNY4iOhVAAA7) 0 0;
-    //background-color:rgba(255,255,255,0);
+    //background-color:#121212;
     color:#fff;
-    @include transition((opacity 4s 0.5s ease-in-out, visibility 0s 4.5s)); 
+    will-change: opacity, visibility;
+    @include transition((opacity 4s 0.5s $transition-effect, visibility 0s 4.5s)); 
 }
 
 .init-loading-screen.hide
@@ -411,13 +353,10 @@ p{
 
 .init-loading-screen .title {
 	@extend %absolute-center;
+    @extend %model-info-font;
     height:80px;
     width:100%;
     text-align:center;
-    font-size:15px;
-    color:#fff;
-    font-weight:300;
-    text-transform:uppercase;
     will-change: opacity;
     -webkit-animation: fade-transition 0.7s infinite alternate ; /* Safari 4+ */
     -moz-animation:    fade-transition 0.7s infinite alternate; /* Fx 5+ */
@@ -440,8 +379,8 @@ p{
     left: 0;
     width:100%;
     height:1px;
-    background-color:#333;
-    @include transition((transform 0.5s 0s, opacity 0.5s 0s, ease-out));
+    background-color:$loading-bar-color;
+    @include transition((transform 0.5s 0s $transition-effect, opacity 0.5s 0s $transition-effect));
 }
 
 
@@ -455,12 +394,14 @@ p{
     margin:auto;
     float: left;
     height:1px;
-    background-color:#fff;
-    @include transition((width 2s));
+    background-color:$loading-progress-color;
+    @include transition(width 2s $transition-effect);
 }
 
 
-/******* INTRO SCREEN *****/
+/**
+ *  INTRO SCREEN 
+ **/
 
 .init-intro-screen
 {
@@ -473,8 +414,7 @@ p{
     opacity:1;
     visibility:visible;
     text-align:center;
-    //background-color: rgba(0,0,0,1);
-    @include transition((opacity 0.5s 6s, visibility 0s 6.5s));
+    @include transition((opacity 0.5s 6s $transition-effect, visibility 0s 6.5s $transition-effect));
 }
 
 .init-intro-screen.hide
@@ -485,19 +425,15 @@ p{
 
 .init-intro-screen .title
 {
+    @extend %model-info-font;
     position:absolute;
     bottom:70px;
     height:20px;
     width:100%;
     opacity:0;
-    font-size:11px;
-    text-transform:uppercase;
-    color:#fff;
-    font-weight:300;
-    letter-spacing:3px;
     will-change: opacity;
     visibility:visible;
-    @include transition((opacity 1.5s 0s));
+    @include transition(opacity 1.5s 0s $transition-effect);
 }
 
 
@@ -508,52 +444,25 @@ p{
 
 
 .init-intro-screen .subtitle{
-    
+    @extend %model-subtitle-font;    
 	position:absolute;
     bottom:50px;
     height:20px;
     width:100%;
     opacity:0;
-    font-size:25px;
-    text-transform:uppercase;
-    color:#fff;
-    font-weight:300;
-    letter-spacing:3px;
     will-change: opacity;
-    font-weight:300;
-    @include transition((opacity 1.5s 2s));
+    @include transition(opacity 1.5s 2s $transition-effect);
 }
 
 .init-intro-screen.show .subtitle{
     opacity:1;
 }
 
-// spliter
-.init-intro-screen .spliter
-{
-    @extend %absolute-center;
-    margin:auto;
-    width:500px;
-    height:20px;
-    font-size:9px;
-    color:#fff;
-        opacity:0;
-    font-weight:300;
-    letter-spacing:1px;
-    background-color:transparent;
-        text-transform:uppercase;
-    @include transition((opacity 1.5s 2.5s,visibility 0s 2.5s));
-}
 
-.init-intro-screen.show .spliter
-{
-    opacity:1;
-    //visibility:hidden;
-   // transform:scale(1.1);
-}
+/**
+ * Model Loading
+**/
 
-
-/****************************************************************/
 
 .model-loading-screen
 {
@@ -564,21 +473,22 @@ p{
     height: 100%;
     opacity:0;
     visibility:hidden;
-    background-color:rgba(0,0,0,0.7);
-    color:#fff;
-    @include transition((opacity 0.5s 0s, visibility 0s 0.5s));
+    background-color:$primary-color;
+    will-change:opacity, visibility;
+    @include transition((opacity 0.5s 0s $transition-effect, visibility 0s 0.5s));
 }
 
 .model-loading-screen.show
 {
     opacity:1;
     visibility:visible;
-    @include transition((opacity 0.5s 1.5s, visibility 0s 1.5s));
+    @include transition((opacity 0.5s 1.5s $transition-effect, visibility 0s 1.5s));
     
 }
 
 .loading-info
 {
+    @extend %model-settings-font; 
     position:absolute;
     bottom:46%;
     right:$menu-width;
@@ -586,12 +496,9 @@ p{
     height:30px;
     padding-right:10px;
     text-align: right;
-    font-size: 13px;
-    color:#fff;
-    text-transform:uppercase;
     opacity:0;
     will-change:opacity;
-    @include transition(opacity 0.5s);
+    @include transition(opacity 0.5s $transition-effect);
 }
 
 .model-loading-screen.show .loading-info
@@ -602,24 +509,6 @@ p{
     animation:         fade-transition 1s infinite alternate ; /* IE 10+, Fx 29+ */
 }
 
-@-webkit-keyframes fade-transition {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
-}
-@-moz-keyframes fade-transition {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
-}
-@-o-keyframes fade-transition {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
-}
-@keyframes fade-transition {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-
 .model-loading-bar{
     position:absolute;
     bottom:50%;
@@ -628,7 +517,8 @@ p{
     height:1px;
     background-color:transparent;
     transform: translateX(100%);
-    @include transition(transform 0.5s 0s);
+    will-change: transform;
+    @include transition(transform 0.5s 0s $transition-effect);
 }
 
 .model-loading-progress{
@@ -637,24 +527,27 @@ p{
     bottom:0px;
     right:0px;
     height:1px;
-    background-color:red;
-    @include transition(width 5s);
+    background-color:$secondary-color;
+    will-change: width;
+    @include transition(width 2s $transition-effect);
 }
 
 .model-loading-progress.reset{
     position:absolute;
     width:0%;
-    @include transition(width 0s);
+    @include transition(width 0s $transition-effect);
 }
 
 
-/************************/
+/**
+ * Ruler
+ **/
 
 .rule
 {
 
     height:3px;
-    background-color:red;
+    background-color:$secondary-color;
     clear:both;
 }
 
@@ -676,12 +569,30 @@ p{
 }
 
 
-/**************************/
+/** 
+ * fade animation Keyframes
+ **/
+
+@-webkit-keyframes fade-transition {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@-moz-keyframes fade-transition {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@-o-keyframes fade-transition {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes fade-transition {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
 
 
 @import 'settings';
 @import 'menuOverlay';
 @import 'gallery';
-@import 'contact';
 @import 'socialIcons';
 @import 'mediaQueries';

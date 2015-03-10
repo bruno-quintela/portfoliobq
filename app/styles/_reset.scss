@@ -1,0 +1,26 @@
+*, *:before, *:after {
+  box-sizing: border-box;
+ }
+
+a {
+	text-decoration: none;
+	outline: none;
+}
+
+textarea {
+    resize: none;
+}
+
+
+hr
+{
+    border: 0;
+    height: 1px;
+    background: #333;
+}
+
+p{
+    -webkit-column-break-inside: avoid;
+          page-break-inside: avoid;
+               break-inside: avoid;
+}

@@ -20,7 +20,6 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" type="text/css" href="scripts/vendor/fullPageJs/jquery.fullPage.css" />
     <!-- endbuild -->
 
     <!-- build:js scripts/vendor/modernizr.js -->
@@ -38,8 +37,6 @@
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="../bower_components/jquery/dist/jquery.js"></script>
-    <script src="../bower_components/velocity/velocity.js"></script>
     <script src="../bower_components/threejs/build/three.js"></script>
     <script src="../bower_components/threejs-stats/Stats.js"></script>
     <script src="../bower_components/threex.rendererstats/threex.rendererstats.js"></script>
@@ -47,7 +44,6 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- Vendor Libs -->
-    <script src="scripts/polyfills.js"></script>
     <script src="scripts/vendor/tweenjs/tween.min.js"></script>
     <!-- SHADERS -->
     <script src="scripts/vendor/threejs/shaders/BleachBypassShader.js"></script>
@@ -178,7 +174,7 @@
                     <span class="title">Gallery </span>
                 </div>
                 <div class="rule right"></div>
-                <div class="title-info">
+                <div class="section-info">
                     In this section you can chose which model to render in the backround. Note that in order to achieve the intended level of detail, some of the 3D objects amd textures are quite big, so they may take a while to load. Please be Patient. If your frame rate is to low, try to change the graphics quality in this webpage settings panel.
                 </div>
             </div>
@@ -240,19 +236,19 @@
             <div class="rule right"></div>
             <div class="social-container">
                 <div class="social__item">
-                    <a target="_blank" href="https://twitter.com/" class="social__icon--twitter"><i class="icon--twitter"></i></a>
+                    <a target="_blank" href="https://twitter.com/bruno_quintela" class="social__icon--twitter"><i class="icon--twitter"></i></a>
                 </div>
                 <div class="social__item">
-                    <a target="_blank" href="https://www.linkedin.com/" class="social__icon--linkedin"><i class="icon--linkedin"></i></a>
+                    <a target="_blank" href="https://pt.linkedin.com/pub/bruno-quintela/85/750/614/" class="social__icon--linkedin"><i class="icon--linkedin"></i></a>
                 </div>
                 <div class="social__item">
-                    <a target="_blank" href="http://behance.com" class="social__icon--behance"><i class="icon--behance"></i></a>
+                    <a target="_blank" href="https://www.behance.net/bruno_quintela" class="social__icon--behance"><i class="icon--behance"></i></a>
                 </div>
                 <div class="social__item">
-                    <a target="_blank" href="https://soundcloud.com/matchboxhero" class="social__icon--soundcloud"><i class="icon--soundcloud"></i></a>
+                    <a target="_blank" href="https://soundcloud.com/bruno-quintela" class="social__icon--soundcloud"><i class="icon--soundcloud"></i></a>
                 </div>
             </div>
-            <div class="title-info">
+            <div class="section-info">
                 Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly art, and procedurally generated.
             </div>
         </section>
@@ -262,7 +258,7 @@
                 Special <b>thanks</b>
             </div>
             <div class="rule left"></div>
-            <div class="title-info">
+            <div class="section-info">
                 Friendly Communities that shared a lot of knowledge and public examples
                 <ul>
                     <li>Blender Communittie</li>
@@ -275,7 +271,7 @@
         <!-- SETTINGS TAB -->
         <section id="sectionSettings" class="section-content main-menu settings">
             <div class="settings-performance">Performance</div>
-            <div class="title-info">
+            <div class="section-info">
                 
                 <span class="settings-name">Audio</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
                 <br>
@@ -299,7 +295,7 @@
             <div class="subtitle">Lowpoly <b>Hybrid</b>
             </div>
             
-            <div class="model-details"><a id="settings" href="#" class="settings-anchor">Settings</a></div>
+            <div class="model-settings"><img src="../src/img/settings2.png" alt=""><a id="settings" href="#" class="settings-anchor">Settings</a></div>
              <div class="model-credits">
                  this model is a part of three pieces, they represent the lore ipsum lalalalala revious pionering work made by the amazing webdevelopers that inspired me and made this kind of technology available.
             </div>
@@ -310,7 +306,7 @@
             <div class="title-container">
                 <span class="title">Credits </span>
                 <div class="rule right"></div>
-                <div class="title-info">
+                <div class="section-info">
                     This site woudn't exist if it wasn't for the previous pionering work made by the amazing webdevelopers that inspired me and made this kind of technology available.
                 </div>
             </div>
@@ -322,7 +318,7 @@
                 who <b>am I</b>
             </div>
             <div class="rule left"></div>
-            <div class="title-info">
+            <div class="section-info">
                 Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly, procedural and generative generated.
             </div>
         </section>
@@ -331,13 +327,11 @@
                 people that <b>inspired me</b>
             </div>
             <div class="rule left"></div>
-            <div class="title-info">
+            <div class="section-info">
                 This site woudn't look like this if it wasn't for the amazing work made by the visionary webdevelopers that made this kind of technology available.
                 <ul>
                     <li>Ricardo Cabello aka mr Doob</li>
                     <li>AlteredQualia</li>
-                    <li>Cabbibo</li>
-                    <li>James Elias....</li>
                 </ul>
             </div>
         </section>
@@ -350,7 +344,7 @@
                 What <b>i do_</b>
             </div>
             <div class="rule left"></div>
-            <div class="title-info column">
+            <div class="section-info column">
                 I create unique, state of the art, visual content for the web, to achieve a perfect ballance between visual delivery and performance is my pripority.
                 <ul>
                     <li>front end developer</li>
@@ -365,7 +359,7 @@
             </div>
             <div class="rule left"></div>
             
-            <div class="title-info column">
+            <div class="section-info column">
                 All the contents were created using only open source software
                 <ul>
                     <li>Blender</li>
@@ -392,7 +386,7 @@
                 what's <b>next_</b>
             </div>
             <div class="rule left"></div>
-            <div class="title-info">
+            <div class="section-info">
                 I strongly believe that in the next five years we will enter in the age of VR, every media and entertainment system will... So i expect to be on that same boat as a web developer.
             </div>
         </section>
@@ -534,7 +528,6 @@
         ga('send', 'pageview');
     </script>
     <!-- build:js({app,.tmp}) scripts/main.js -->
-    <script src="scripts/audioVisualizer.js"></script>
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
 </body>
