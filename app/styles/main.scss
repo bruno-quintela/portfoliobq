@@ -2,12 +2,12 @@ $menu-width: 50px;
 $content-width:500px;
 $content-height:calc(100%/4);
 $content-padding:30px;
-$gallery-width:33%;
+$gallery-width:100%;
 
-$primary-color: rgba(0,0,0,0.8);
-$secondary-color: rgba(255,0,0,1);
-$background-color: rgba(0,0,0,1);
-$text-color: rgba(255,255,255,1);
+$primary-color: #231f20;//rgba(0,0,0,0.8);
+$secondary-color: #f15a29;//rgba(255,0,0,1);
+$background-color: #333;//rgba(0,0,0,1);
+$text-color: #9b8579;//rgba(255,255,255,1);
 
 $loading-progress-color: #fff;
 $loading-bar-color: #333;
@@ -17,13 +17,15 @@ $sub-menu-background: rgba(0,0,0,1);
 
 $primary-font-family: Open Sans;
 
-$transition-effect: ease-in-out;
+$transition-effect: ease;
+
+
 
 @import 'mixins';
 @import 'reset';
 @import 'typography';
 @import 'gridComposer';
-@include scrollbar(.8em, $secondary-color);
+/*@include scrollbar(.8em, $secondary-color);*/
 
 /**
 * Wrappers and Container 
@@ -46,16 +48,38 @@ $transition-effect: ease-in-out;
   height:100%;
 }
 
+.video-background
+{
+    position: fixed; 
+    right: 0; 
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
+    width: auto; 
+    height: auto; 
+    z-index: -100;
+    background: no-repeat;
+    background-size: cover;
+}
+
 /**
 * Sections 
 **/
+
+.section-wrapper{
+    position:absolute;
+    top:0;
+    right:0;
+    width:$content-width;
+    height:100%;
+}
 
 .section-content
 {
     @extend %main-font;
     z-index:2;
     position:absolute;
-    width:$content-width;
+    width:100%;
     height: $content-height;
     padding:$content-padding;
     padding-right: $menu-width + $content-padding;
@@ -97,7 +121,7 @@ $transition-effect: ease-in-out;
 
 .about-info-container{
     float:right;
-    width:250px;
+    width:100%;
     margin-top:10px;
     margin-bottom:10px;
     font-size: 8px;
@@ -246,6 +270,7 @@ $transition-effect: ease-in-out;
 .model-info
 {
     @extend %model-info-font;
+    z-index: 1;
     position:absolute;
     left:35px;
     bottom:50px;

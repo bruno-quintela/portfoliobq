@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>workspace</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="shortcut icon" href="/favicon.ico">
     <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,500,700,900,300' rel='stylesheet' type='text/css'>
@@ -63,6 +63,8 @@
     <script src="scripts/vendor/threejs/shaders/HorizontalTiltShiftShader.js"></script>
     <script src="scripts/vendor/threejs/shaders/VerticalTiltShiftShader.js"></script>
     <script src="scripts/vendor/threejs/shaders/DigitalGlitch.js"></script>
+    <!-- ThreeJS supports Webgl Detector -->
+    <script src="scripts/vendor/threejs/Detector.js"></script>
 
     <!-- RENDER PASSES -->
     <script src="scripts/vendor/threejs/postprocessing/EffectComposer.js"></script>
@@ -142,137 +144,28 @@
                 </li>
             </ul>
         </nav>
-        
-        <!-- setting Button -->
-        
-        
-        <!--Single page scroll navigation -->
 
-        <section id="sectionAbout" class="section-content main-menu about">
+        <!-- MODEL INFO -->
+        <div id="modelInfo" class="model-info">
+            <div class="title"><b>Model</b><span style="color:red">#02 </span>
+            </div>
+            <div class="subtitle">Lowpoly <b>Hybrid</b>
+            </div>
 
-            <div class="title-container">
-                <span class="title">About </span>
-                <div class="title-top right">
-                    <div class="about-info-container">
-                        <span style="color:red">#01 </span><b>name</b> Bruno Quintela
-                        <span style="color:red">#02 </span><b>Age</b> 32
-                        <span style="color:red">#03 </span><b>Location</b> Portugal
-                        <span style="color:red">#04 </span><b>Job</b> Web Developer
-                    </div>
-                </div>
-                <div class="rule right"></div>
-
+            <div class="model-settings">
+                <img src="../src/img/settings2.png" alt=""><a id="settings" href="#" class="settings-anchor">Settings</a>
             </div>
-        </section>
-
-        <section id="sectionGallery" class="section-content main-menu gallery">
-            <div class="gallery-summary">
-                <div class="title-top">
-                    _digital
-                </div>
-                <div class="title-container">
-                    <span class="title">Gallery </span>
-                </div>
-                <div class="rule right"></div>
-                <div class="section-info">
-                    In this section you can chose which model to render in the backround. Note that in order to achieve the intended level of detail, some of the 3D objects amd textures are quite big, so they may take a while to load. Please be Patient. If your frame rate is to low, try to change the graphics quality in this webpage settings panel.
-                </div>
-            </div>
-        </section>
-        <div id="galleryContainer" class="gallery-item-container">
-            <div data-model="1" data-totalassets="7" class="gallery-item hide">
-                <div class="grid">
-                    <figure class="effect-apollo">
-                        <img src="../src/img/galleryItem1.png" alt="img18" />
-                        <figcaption>
-                            <h2>Human <span>Female</span></h2>
-                            <p>Portrait of a female
-                                <br>mude posing.</p>
-                        </figcaption>
-                    </figure>
-                </div>
-            </div>
-            <div data-model="2" data-totalassets="4" class="gallery-item hide">
-                <div class="grid">
-                    <figure class="effect-apollo">
-                        <img src="../src/img/galleryItem2.png" alt="img18" />
-                        <figcaption>
-                            <h2>Human <span>Cyborg</span></h2>
-                            <p>Apollo's last game of
-                                <br>pool was so strange.</p>
-                        </figcaption>
-                    </figure>
-                </div>
-            </div>
-            <div data-model="3" data-totalassets="4" class="gallery-item hide">
-                <div class="grid">
-                    <figure class="effect-apollo">
-                        <img src="../src/img/galleryItem3.png" alt="img18" />
-                        <figcaption>
-                            <h2>Earth <span>Above</span></h2>
-                            <p>Earth model,
-                                <br>viewed from space</p>
-                        </figcaption>
-                    </figure>
-                </div>
-            </div>
-            <div data-model="4" data-totalassets="4" class="gallery-item hide">
-                <div class="grid">
-                    <figure class="effect-apollo">
-                        <img src="../src/img/galleryItem4.png" alt="img18" />
-                        <figcaption>
-                            <h2>Strong <span>Apollo</span></h2>
-                            <p>Apollo's last game of pool was so strange.</p>
-                        </figcaption>
-                    </figure>
-                </div>
+            <div class="model-credits">
+                this model is a part of three pieces, they represent the lore ipsum lalalalala revious pionering work made by the amazing webdevelopers that inspired me and made this kind of technology available.
             </div>
         </div>
-        <section id="sectionContact" class="section-content main-menu contact">
-            <!-- LEFT -->
-            <div class="title-top right">
-                <b>Contact</b> Me
-            </div>
-            <div class="rule right"></div>
-            <div class="social-container">
-                <div class="social__item">
-                    <a target="_blank" href="https://twitter.com/bruno_quintela" class="social__icon--twitter"><i class="icon--twitter"></i></a>
-                </div>
-                <div class="social__item">
-                    <a target="_blank" href="https://pt.linkedin.com/pub/bruno-quintela/85/750/614/" class="social__icon--linkedin"><i class="icon--linkedin"></i></a>
-                </div>
-                <div class="social__item">
-                    <a target="_blank" href="https://www.behance.net/bruno_quintela" class="social__icon--behance"><i class="icon--behance"></i></a>
-                </div>
-                <div class="social__item">
-                    <a target="_blank" href="https://soundcloud.com/bruno-quintela" class="social__icon--soundcloud"><i class="icon--soundcloud"></i></a>
-                </div>
-            </div>
-            <div class="section-info">
-                Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly art, and procedurally generated.
-            </div>
-        </section>
-        <section id="sectionCredits" class="section-content main-menu credits">
-            <!-- LEFT -->
-            <div class="title-top left">
-                Special <b>thanks</b>
-            </div>
-            <div class="rule left"></div>
-            <div class="section-info">
-                Friendly Communities that shared a lot of knowledge and public examples
-                <ul>
-                    <li>Blender Communittie</li>
-                    <li>Codepen.io</li>
-                    <li>Tympanus.net</li>
-                </ul>
-            </div>
-        </section>
-        
+
+
         <!-- SETTINGS TAB -->
         <section id="sectionSettings" class="section-content main-menu settings">
             <div class="settings-performance">Performance</div>
             <div class="section-info">
-                
+
                 <span class="settings-name">Audio</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
                 <br>
                 <span class="settings-name">Fullscreen</span><span id="settingsFullscreenOn" class="settings-toggle">on</span><span id="settingsFullscreenOff" class="settings-toggle active">off</span>
@@ -288,110 +181,227 @@
         </section>
 
 
-        <!-- MODEL INFO -->
-        <div id="modelInfo" class="model-info">
-            <div class="title"><b>Model</b><span style="color:red">#02 </span>
-            </div>
-            <div class="subtitle">Lowpoly <b>Hybrid</b>
-            </div>
-            
-            <div class="model-settings"><img src="../src/img/settings2.png" alt=""><a id="settings" href="#" class="settings-anchor">Settings</a></div>
-             <div class="model-credits">
-                 this model is a part of three pieces, they represent the lore ipsum lalalalala revious pionering work made by the amazing webdevelopers that inspired me and made this kind of technology available.
-            </div>
-        </div>
-
-        <!-- submenu1 content -->
-        <section id="creditsSubmenu1" class="section-content sub-menu submenu1">
-            <div class="title-container">
-                <span class="title">Credits </span>
+        <section id="sectionGallery" class="section-content main-menu gallery">
+            <div class="gallery-summary">
+                <div class="title-top">
+                    _digital
+                </div>
+                <div class="title-container">
+                    <span class="title">Gallery </span>
+                </div>
                 <div class="rule right"></div>
                 <div class="section-info">
-                    This site woudn't exist if it wasn't for the previous pionering work made by the amazing webdevelopers that inspired me and made this kind of technology available.
+                    In this section you can chose which model to render in the backround. Note that in order to achieve the intended level of detail, some of the 3D objects amd textures are quite big, so they may take a while to load. Please be Patient. If your frame rate is to low, try to change the graphics quality in this webpage settings panel.
                 </div>
             </div>
         </section>
+        <div class="section-wrapper">
 
-        <!-- submenu2 content -->
-        <section id="aboutSubmenu2" class="section-content sub-menu submenu2">
-            <div class="title-top left">
-                who <b>am I</b>
-            </div>
-            <div class="rule left"></div>
-            <div class="section-info">
-                Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly, procedural and generative generated.
-            </div>
-        </section>
-        <section id="creditsSubmenu2" class="section-content sub-menu submenu2">
-            <div class="title-top left">
-                people that <b>inspired me</b>
-            </div>
-            <div class="rule left"></div>
-            <div class="section-info">
-                This site woudn't look like this if it wasn't for the amazing work made by the visionary webdevelopers that made this kind of technology available.
-                <ul>
-                    <li>Ricardo Cabello aka mr Doob</li>
-                    <li>AlteredQualia</li>
-                </ul>
-            </div>
-        </section>
+            <!--Single page scroll navigation -->
+
+            <section id="sectionAbout" class="section-content main-menu about">
+
+                <div class="title-container">
+                    <span class="title">About </span>
+                    <div class="title-top right">
+                        <div class="about-info-container">
+                            <span style="color:red">#01 </span><b>name</b> Bruno Quintela
+                            <span style="color:red">#02 </span><b>Age</b> 32
+                            <span style="color:red">#03 </span><b>Location</b> Portugal
+                            <span style="color:red">#04 </span><b>Job</b> Web Developer
+                        </div>
+                    </div>
+                    <div class="rule right"></div>
+
+                </div>
+            </section>
 
 
-        <!-- submenu3 content -->
+            <div id="galleryContainer" class="gallery-item-container">
+                <div data-model="1" data-totalassets="7" class="gallery-item hide">
+                    <div class="grid">
+                        <figure class="effect-apollo">
+                            <img src="../src/img/galleryItem1.png" alt="img18" />
+                            <figcaption>
+                                <h2>Human <span>Female</span></h2>
+                                <p>Portrait of a female
+                                    <br>mude posing.</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+                <div data-model="2" data-totalassets="4" class="gallery-item hide">
+                    <div class="grid">
+                        <figure class="effect-apollo">
+                            <img src="../src/img/galleryItem2.png" alt="img18" />
+                            <figcaption>
+                                <h2>Human <span>Cyborg</span></h2>
+                                <p>Apollo's last game of
+                                    <br>pool was so strange.</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+                <div data-model="3" data-totalassets="4" class="gallery-item hide">
+                    <div class="grid">
+                        <figure class="effect-apollo">
+                            <img src="../src/img/galleryItem3.png" alt="img18" />
+                            <figcaption>
+                                <h2>Earth <span>Above</span></h2>
+                                <p>Earth model,
+                                    <br>viewed from space</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+                <div data-model="4" data-totalassets="4" class="gallery-item hide">
+                    <div class="grid">
+                        <figure class="effect-apollo">
+                            <img src="../src/img/galleryItem4.png" alt="img18" />
+                            <figcaption>
+                                <h2>Strong <span>Apollo</span></h2>
+                                <p>Apollo's last game of pool was so strange.</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+            <section id="sectionContact" class="section-content main-menu contact">
+                <!-- LEFT -->
+                <div class="title-top right">
+                    <b>Contact</b> Me
+                </div>
+                <div class="rule right"></div>
 
-        <section id="aboutSubmenu3" class="section-content sub-menu submenu3">
-            <div class="title-top left">
-                What <b>i do_</b>
-            </div>
-            <div class="rule left"></div>
-            <div class="section-info column">
-                I create unique, state of the art, visual content for the web, to achieve a perfect ballance between visual delivery and performance is my pripority.
-                <ul>
-                    <li>front end developer</li>
-                    <li>UI/UX designer</li>
-                    <li>Web designer</li>
-                </ul>
-            </div>
-        </section>
-        <section id="creditsSubmenu3" class="section-content sub-menu submenu3">
-            <div class="title-top left">
-                <b>Open Source</b> Software Used
-            </div>
-            <div class="rule left"></div>
-            
-            <div class="section-info column">
-                All the contents were created using only open source software
-                <ul>
-                    <li>Blender</li>
-                    <li>Makehuman 3D</li>
-                    <li>Gimp</li>
-                    <li>Meshlab</li>
-                    <li>Audacity</li>
-                </ul>
-                Javascript librarys used
-                <ul>
-                    <li>ThreeJS</li>
-                    <li>ClassieJs</li>
-                    <li>StatsJs</li>
-                    <li>DatGuiJS</li>
-                    <li>TweenJs</li>
-                </ul>
-            </div>
-        </section>
+                <div class="section-info">
+                    Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly art, and procedurally generated.
+                </div>
+                <div class="social-container">
+                    <div class="social__item">
+                        <a target="_blank" href="https://twitter.com/bruno_quintela" class="social__icon--twitter"><i class="icon--twitter"></i></a>
+                    </div>
+                    <div class="social__item">
+                        <a target="_blank" href="https://pt.linkedin.com/pub/bruno-quintela/85/750/614/" class="social__icon--linkedin"><i class="icon--linkedin"></i></a>
+                    </div>
+                    <div class="social__item">
+                        <a target="_blank" href="https://www.behance.net/bruno_quintela" class="social__icon--behance"><i class="icon--behance"></i></a>
+                    </div>
+                    <div class="social__item">
+                        <a target="_blank" href="https://soundcloud.com/bruno-quintela" class="social__icon--soundcloud"><i class="icon--soundcloud"></i></a>
+                    </div>
+                </div>
+            </section>
+            <section id="sectionCredits" class="section-content main-menu credits">
+                <!-- LEFT -->
+                <div class="title-top left">
+                    Special <b>thanks</b>
+                </div>
+                <div class="rule left"></div>
+                <div class="section-info">
+                    Friendly Communities that shared a lot of knowledge and public examples
+                    <ul>
+                        <li>Blender Communittie</li>
+                        <li>Codepen.io</li>
+                        <li>Tympanus.net</li>
+                    </ul>
+                </div>
+            </section>
 
 
-        <!-- submenu4 content -->
-        <section id="aboutSubmenu4" class="section-content sub-menu submenu4">
-            <div class="title-top left">
-                what's <b>next_</b>
-            </div>
-            <div class="rule left"></div>
-            <div class="section-info">
-                I strongly believe that in the next five years we will enter in the age of VR, every media and entertainment system will... So i expect to be on that same boat as a web developer.
-            </div>
-        </section>
 
 
+
+            <!-- submenu1 content -->
+            <section id="creditsSubmenu1" class="section-content sub-menu submenu1">
+                <div class="title-container">
+                    <span class="title">Credits </span>
+                    <div class="rule right"></div>
+                    <div class="section-info">
+                        This site woudn't exist if it wasn't for the previous pionering work made by the amazing webdevelopers that inspired me and made this kind of technology available.
+                    </div>
+                </div>
+            </section>
+
+            <!-- submenu2 content -->
+            <section id="aboutSubmenu2" class="section-content sub-menu submenu2">
+                <div class="title-top left">
+                    who <b>am I</b>
+                </div>
+                <div class="rule left"></div>
+                <div class="section-info">
+                    Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly, procedural and generative generated.
+                </div>
+            </section>
+            <section id="creditsSubmenu2" class="section-content sub-menu submenu2">
+                <div class="title-top left">
+                    people that <b>inspired me</b>
+                </div>
+                <div class="rule left"></div>
+                <div class="section-info">
+                    This site woudn't look like this if it wasn't for the amazing work made by the visionary webdevelopers that made this kind of technology available.
+                    <ul>
+                        <li>Ricardo Cabello aka mr Doob</li>
+                        <li>AlteredQualia</li>
+                    </ul>
+                </div>
+            </section>
+
+
+            <!-- submenu3 content -->
+
+            <section id="aboutSubmenu3" class="section-content sub-menu submenu3">
+                <div class="title-top left">
+                    What <b>i do_</b>
+                </div>
+                <div class="rule left"></div>
+                <div class="section-info column">
+                    I create unique, state of the art, visual content for the web, to achieve a perfect ballance between visual delivery and performance is my pripority.
+                    <ul>
+                        <li>front end developer</li>
+                        <li>UI/UX designer</li>
+                        <li>Web designer</li>
+                    </ul>
+                </div>
+            </section>
+            <section id="creditsSubmenu3" class="section-content sub-menu submenu3">
+                <div class="title-top left">
+                    <b>Open Source</b> Software Used
+                </div>
+                <div class="rule left"></div>
+
+                <div class="section-info column">
+                    All the contents were created using only open source software
+                    <ul>
+                        <li>Blender</li>
+                        <li>Makehuman 3D</li>
+                        <li>Gimp</li>
+                        <li>Audacity</li>
+                    </ul>
+                    Javascript librarys used
+                    <ul>
+                        <li>ThreeJS</li>
+                        <li>ClassieJs</li>
+                        <li>StatsJs</li>
+                        <li>DatGuiJS</li>
+                        <li>TweenJs</li>
+                    </ul>
+                </div>
+            </section>
+
+
+            <!-- submenu4 content -->
+            <section id="aboutSubmenu4" class="section-content sub-menu submenu4">
+                <div class="title-top left">
+                    what's <b>next_</b>
+                </div>
+                <div class="rule left"></div>
+                <div class="section-info">
+                    I strongly believe that in the next five years we will enter in the age of VR, every media and entertainment system will... So i expect to be on that same boat as a web developer.
+                </div>
+            </section>
+
+        </div>
+        <!-- end sectionWrapper -->
 
     </div>
 

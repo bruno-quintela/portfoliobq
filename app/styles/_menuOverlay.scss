@@ -24,7 +24,7 @@
 .menu ul li {
 	width: 50px;
     position: relative;
-    height:calc(100%/4);
+    height:$content-height;
     will-change: transform, background-color;
     @include transition((transform 0.5s 0s $transition-effect,background-color 0.5s 0s $transition-effect));
 }

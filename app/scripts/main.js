@@ -10,50 +10,6 @@
 /*global threejsCanvas:false */
 /*global TWEEN:false */
 /*global classie:false */
-/* How to remove DOM element after animation/transition */
-/*$('#someSelector').bind('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function(){ ... });*/
-/*$('#someSelector').bind('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function(){ ... });*/
-/*var Page = function() {
-    this.system = {
-        isTouch:bool,
-        init: function() {},
-        browser: {
-            name:string,
-            version:string,
-            init:function() {},
-            ...
-        }
-    };
-    this.World = {
-        settings: {
-            statsEnabled: true,
-            guiEnabled: true
-        },
-        config: {
-            color: [0, 128, 255],
-            antialias: true,
-            alpha: true,
-            speed1: 0.0141,
-            level: 0.75,
-            var1: 0.35,
-            var2: 0,
-            speed2: 0.09,
-            random: function() {}
-        },
-        fpsStats: {},
-        gpuStats: {},
-        scenes: [],
-        renderer: null,
-        camera: null,
-        lights: [],
-        init: function() {},
-        addStats: function(),
-        addGui: function()
-    };
-    
-    this.$logo = $('.name');
-    
-};*/
 /*
  * Declare Namespace
  */
@@ -65,7 +21,7 @@ var ENGINE = ENGINE || {
 ENGINE = function() {
     this.system = {
         isTouch: Modernizr.touch,
-        supportsWEBGL: true,
+        supportsWEBGL: Detector.webgl,
         // init System
         init: function() {
             this.browser.init();
@@ -116,6 +72,13 @@ ENGINE = function() {
                 subString: 'Opera',
                 identity: 'Opera'
             }]
+        },
+        isBrowserDeprecated: function() {
+            if(this.browser.name === 'Chrome' && parseInt(this.browser.version) < 40) {
+                return true;
+            } else if(this.browser.name === 'Firefox' && parseInt(this.browser.version) < 35) {
+                return true;
+            }
         }
     };
     this.World = {
@@ -2101,7 +2064,7 @@ ENGINE = function() {
             var layer = myPortfolio.World.CurrentLayer;
             /* Scene tweens init buffers */
             /*model to left tween*/
-            var tweenZoomIn = new TWEEN.Tween(layer.scene.position).to({
+            /*var tweenZoomIn = new TWEEN.Tween(layer.scene.position).to({
                 x: layer.scene.position.x,
                 y: layer.scene.position.y,
                 z: layer.scene.position.z + 2.5
@@ -2110,7 +2073,7 @@ ENGINE = function() {
                 x: layer.scene.position.x,
                 y: layer.scene.position.y,
                 z: layer.scene.position.z - 2.5
-            }, 1000);
+            }, 1000);*/
             /*event listeners handlers*/
             /* handle the submenu BACK event*/
 
@@ -2561,8 +2524,55 @@ ENGINE = function() {
  **/
 ENGINE.prototype.init = function() {
     this.system.init();
-    this.SoundFx.init();
-    this.World.start();
+    if(this.system.isTouch || !this.system.supportsWEBGL) {
+        // remove Threejs canvas
+        var threejsCanvas = document.getElementById('threejsCanvas');
+        if(threejsCanvas) {
+            threejsCanvas.parentNode.removeChild(threejsCanvas);
+        }
+        var modelInfo = document.getElementById('modelInfo');
+        /*if(modelInfo) {
+            modelInfo.parentNode.removeChild(modelInfo);
+        }*/
+        
+        var settings = document.getElementById('sectionSettings');
+        if(settings) {
+            settings.parentNode.removeChild(settings);
+        }
+        
+        //add video as background
+        var videoBackground = document.createElement('video');
+        videoBackground.id = 'videoBackground';
+        classie.addClass(videoBackground, 'video-background');
+        //videoBackground.poster='../src/img/galleryItem1.png';
+        videoBackground.preload = true;
+        videoBackground.loop = true;
+        videoBackground.muted = true;
+        /// now, add sources:
+        var sourceMP4 = document.createElement("source");
+        sourceMP4.type = 'video/mp4';
+        sourceMP4.src = 'http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04';
+        videoBackground.appendChild(sourceMP4);
+        
+        
+        var bodyWrapper = document.getElementById('bodyWrapper');
+        bodyWrapper.appendChild(videoBackground);
+        videoBackground.play();
+        
+        /********************/
+        var menu = document.getElementById('menu');
+        var initLoadingScreen = document.getElementById('initLoadingScreen');
+        var initIntroScreen = document.getElementById('initIntroScreen');
+        //hide init loading screen
+        classie.addClass(initIntroScreen, 'show');
+        classie.addClass(modelInfo, 'show');
+        classie.toggleClass(initLoadingScreen, 'hide');
+        classie.removeClass(menu, 'hide');
+    }
+    else {
+        this.SoundFx.init();
+        this.World.start();
+    }
     this.UI.start();
     console.log('Page init completed');
 };
