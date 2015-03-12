@@ -7,10 +7,12 @@ $gallery-width:100%;
 $primary-color: #231f20;//rgba(0,0,0,0.8);
 $secondary-color: #f15a29;//rgba(255,0,0,1);
 $background-color: #333;//rgba(0,0,0,1);
-$text-color: #9b8579;//rgba(255,255,255,1);
+$text-color: rgba(255,255,255,1);
+$text-secondary-color: #9b8579;
 
 $loading-progress-color: #fff;
 $loading-bar-color: #333;
+$loading-model-background: rgba(0,0,0,0.7);
 
 $main-menu-background: rgba(0,0,0,1);
 $sub-menu-background: rgba(0,0,0,1);
@@ -190,14 +192,6 @@ $transition-effect: ease;
     @include transition((transform 1000ms 300ms $transition-effect,  opacity 500ms 300ms $transition-effect));
 }
 
-
-
-.gallery-summary
-{
-    float:right;
-    width:$content-width;
-}
-
 .section-content.settings
 {
     position:absolute;
@@ -215,6 +209,22 @@ $transition-effect: ease;
     @include transform(translateX(0));
 }
 
+
+.email
+{
+    color:$secondary-color;
+}
+
+.anchor-link
+{
+    color:$text-color;
+    @include transition(color 500ms $transition-effect);
+}
+
+.anchor-link:hover
+{
+    color:$secondary-color;
+}
 
 /**
 * Title
@@ -364,7 +374,6 @@ $transition-effect: ease;
     opacity:1;
     visibility:visible;
     background: #121212 url(data:image/gif;base64,R0lGODlhKAAoAIAAABISEiIiIiH5BAAHAP8ALAAAAAAoACgAAAJzDA6Gepz4FnSzyttsxq7ruIWgh4EmGaLnpzItC5ex+JbuvNpaTeO3DuxxfERZMCdM8pDMX7I5W0p3xaeqCg1Oj6itlcrFOrNfY/mM9JJH4qra+8a2w0M6ehzXzs959H6N99clGEWoZwcIYci3mNY4iOhVAAA7) 0 0;
-    //background-color:#121212;
     color:#fff;
     will-change: opacity, visibility;
     @include transition((opacity 4s 0.5s $transition-effect, visibility 0s 4.5s)); 
@@ -378,8 +387,8 @@ $transition-effect: ease;
 
 .init-loading-screen .title {
 	@extend %absolute-center;
-    @extend %model-info-font;
-    height:80px;
+    @extend %submenu-title-font;
+    height:50px;
     width:100%;
     text-align:center;
     will-change: opacity;
@@ -428,7 +437,7 @@ $transition-effect: ease;
  *  INTRO SCREEN 
  **/
 
-.init-intro-screen
+/*.init-intro-screen
 {
     z-index:2;
     position:absolute;
@@ -482,7 +491,7 @@ $transition-effect: ease;
 .init-intro-screen.show .subtitle{
     opacity:1;
 }
-
+*/
 
 /**
  * Model Loading
@@ -498,7 +507,7 @@ $transition-effect: ease;
     height: 100%;
     opacity:0;
     visibility:hidden;
-    background-color:$primary-color;
+    background-color:$loading-model-background;
     will-change:opacity, visibility;
     @include transition((opacity 0.5s 0s $transition-effect, visibility 0s 0.5s));
 }
@@ -593,6 +602,19 @@ $transition-effect: ease;
 
 }
 
+/** 
+ * Skills
+**/
+
+.skills-title{
+  font-weight: 600;
+  margin-left: 25px;
+}
+
+.skills-list
+{
+    margin-top:0px;
+}
 
 /** 
  * fade animation Keyframes

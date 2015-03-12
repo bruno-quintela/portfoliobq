@@ -95,15 +95,15 @@
             <div class="init-loading-bar">
                 <div id="initProgressBar" class="init-loading-progress"></div>
             </div>
-            <!--div class="tips"><span>TIP</span> for a better experience turn up your volume and go fullscreen mode(f11)</div-->
+            <!--div class="tips"><span>Tip#01</span> for a better experience turn up your volume and go fullscreen mode</div-->
         </div>
 
-        <div id="initIntroScreen" class="init-intro-screen">
+        <!--div id="initIntroScreen" class="init-intro-screen">
             <div class="title">A website by_</div>
             <div class="subtitle">Bruno <b>Quintela</b>
             </div>
-            <!--div class="subtitle">web developer</div-->
-        </div>
+            <div class="subtitle">web developer</div>
+        </div-->
 
         <div id="loadingScreen" class="model-loading-screen">
             <div class="init-loading-bar">
@@ -147,16 +147,16 @@
 
         <!-- MODEL INFO -->
         <div id="modelInfo" class="model-info">
-            <div class="title"><b>Model</b><span style="color:red">#02 </span>
+            <div class="title"><b>Portfolio</b><span style="color:red"> #2015 </span>
             </div>
-            <div class="subtitle">Lowpoly <b>Hybrid</b>
+            <div class="subtitle">Bruno <b>Quintela</b>
             </div>
 
-            <div class="model-settings">
+            <div id="modelSettings" class="model-settings">
                 <img src="../src/img/settings2.png" alt=""><a id="settings" href="#" class="settings-anchor">Settings</a>
             </div>
             <div class="model-credits">
-                this model is a part of three pieces, they represent the lore ipsum lalalalala revious pionering work made by the amazing webdevelopers that inspired me and made this kind of technology available.
+                This site is a WebGL experiment. It all started with a spining cube, but soon i've realized that with the current technology i could achieve much more than that, so i've compiled the best WebGL experiments i achieved in the past months in this website. Hope you enjoy.
             </div>
         </div>
 
@@ -166,7 +166,7 @@
             <div class="settings-performance">Performance</div>
             <div class="section-info">
 
-                <span class="settings-name">Audio</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
+                <span class="settings-name">Background Music</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
                 <br>
                 <span class="settings-name">Fullscreen</span><span id="settingsFullscreenOn" class="settings-toggle">on</span><span id="settingsFullscreenOff" class="settings-toggle active">off</span>
                 <br>
@@ -218,7 +218,7 @@
 
 
             <div id="galleryContainer" class="gallery-item-container">
-                <div data-model="1" data-totalassets="7" class="gallery-item hide">
+                <div data-model="1" data-totalassets="7" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
                     <div class="grid">
                         <figure class="effect-apollo">
                             <img src="../src/img/galleryItem1.png" alt="img18" />
@@ -230,7 +230,7 @@
                         </figure>
                     </div>
                 </div>
-                <div data-model="2" data-totalassets="4" class="gallery-item hide">
+                <div data-model="2" data-totalassets="4" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
                     <div class="grid">
                         <figure class="effect-apollo">
                             <img src="../src/img/galleryItem2.png" alt="img18" />
@@ -242,7 +242,7 @@
                         </figure>
                     </div>
                 </div>
-                <div data-model="3" data-totalassets="4" class="gallery-item hide">
+                <div data-model="3" data-totalassets="4" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
                     <div class="grid">
                         <figure class="effect-apollo">
                             <img src="../src/img/galleryItem3.png" alt="img18" />
@@ -254,7 +254,7 @@
                         </figure>
                     </div>
                 </div>
-                <div data-model="4" data-totalassets="4" class="gallery-item hide">
+                <div data-model="4" data-totalassets="4" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
                     <div class="grid">
                         <figure class="effect-apollo">
                             <img src="../src/img/galleryItem4.png" alt="img18" />
@@ -274,7 +274,10 @@
                 <div class="rule right"></div>
 
                 <div class="section-info">
-                    Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly art, and procedurally generated.
+                    If you want to share ideas, hire my services, or simply talk about stuff, web related or not, feel free to sent me a message to <a class="email" href="mailto:bruno.quintela.bastos@gmail.com<">bruno.quintela.bastos@gmail.com</a>. I will try to message you back as soon as possible.
+                    <br>
+                    <br>I am also available at the following social networks.
+
                 </div>
                 <div class="social-container">
                     <div class="social__item">
@@ -294,15 +297,16 @@
             <section id="sectionCredits" class="section-content main-menu credits">
                 <!-- LEFT -->
                 <div class="title-top left">
-                    Special <b>thanks</b>
+                    <b>Communities</b> knowledge
                 </div>
                 <div class="rule left"></div>
-                <div class="section-info">
-                    Friendly Communities that shared a lot of knowledge and public examples
+                <div class="section-info column">
+                    This were the main online sources of knowledge i ended up using in the making of this website. Thank you all, keep up the good work and keep sharing.
                     <ul>
-                        <li>Blender Communittie</li>
-                        <li>Codepen.io</li>
-                        <li>Tympanus.net</li>
+                        <li><a class="anchor-link" target="_blank" href="http://blendernation.com/">BlenderNation</a></li>
+                        <li><a class="anchor-link" target="_blank" href="http://cgcookie.com/">CGcookie</a></li>
+                        <li><a class="anchor-link" target="_blank" href="http://codepen.io/">Codepen</a></li>
+                        <li><a class="anchor-link" target="_blank" href="http://tympanus.net/codrops/">Codrops</a></li>
                     </ul>
                 </div>
             </section>
@@ -329,23 +333,25 @@
                 </div>
                 <div class="rule left"></div>
                 <div class="section-info">
-                    Hello World, my name is Bruno Quintela and i'm a web developer who recently got into computer graphics. I love music, games (MMORPG and JRPG addicted), and digital art , specially lowpoly, procedural and generative generated.
-                </div>
-            </section>
-            <section id="creditsSubmenu2" class="section-content sub-menu submenu2">
-                <div class="title-top left">
-                    people that <b>inspired me</b>
-                </div>
-                <div class="rule left"></div>
-                <div class="section-info">
-                    This site woudn't look like this if it wasn't for the amazing work made by the visionary webdevelopers that made this kind of technology available.
-                    <ul>
-                        <li>Ricardo Cabello aka mr Doob</li>
-                        <li>AlteredQualia</li>
-                    </ul>
+                    I'm a web developer who recently got into computer graphics. I love music, videogames (MMORPG and JRPG addicted), and digital art, specially lowpoly, procedural and generative.
                 </div>
             </section>
 
+            <section id="creditsSubmenu2" class="section-content sub-menu submenu2">
+                <div class="title-top left">
+                    <b>Open Source</b> Software
+                </div>
+                <div class="rule left"></div>
+                <div class="section-info column">
+                    Open source software i used to create the 3D models assets and audio. Kudos to all the respective contributors.
+                    <ul class="skills-list">
+                        <li><a class="anchor-link" target="_blank" href="http://www.blender.org/">Blender</a></li>
+                        <li><a class="anchor-link" target="_blank" href="http://www.makehuman.org/">Makehuman</a></li>
+                        <li><a class="anchor-link" target="_blank" href="http://www.gimp.org/">Gimp</a></li>
+                        <li><a class="anchor-link" target="_blank" href="http://audacity.sourceforge.net/">Audacity</a></li>
+                    </ul>
+                </div>
+            </section>
 
             <!-- submenu3 content -->
 
@@ -355,35 +361,28 @@
                 </div>
                 <div class="rule left"></div>
                 <div class="section-info column">
-                    I create unique, state of the art, visual content for the web, to achieve a perfect ballance between visual delivery and performance is my pripority.
-                    <ul>
-                        <li>front end developer</li>
-                        <li>UI/UX designer</li>
-                        <li>Web designer</li>
+                    I create unique visual content for the web. To achieve a perfect ballance between visual delivery and performance is allways my pripority.
+                    <span class="skills-title">Job related Skills:</span>
+                    <ul class="skills-list">
+                        <li>Front end Developer</li>
+                        <li>UI/UX Designer</li>
+                        <li>Web Designer</li>
                     </ul>
                 </div>
             </section>
+
             <section id="creditsSubmenu3" class="section-content sub-menu submenu3">
                 <div class="title-top left">
-                    <b>Open Source</b> Software Used
+                    <b>Javascript</b> librarys
                 </div>
                 <div class="rule left"></div>
-
                 <div class="section-info column">
-                    All the contents were created using only open source software
-                    <ul>
-                        <li>Blender</li>
-                        <li>Makehuman 3D</li>
-                        <li>Gimp</li>
-                        <li>Audacity</li>
-                    </ul>
-                    Javascript librarys used
-                    <ul>
-                        <li>ThreeJS</li>
-                        <li>ClassieJs</li>
-                        <li>StatsJs</li>
-                        <li>DatGuiJS</li>
-                        <li>TweenJs</li>
+                    Javascript librarys i used to build this website. Special thanks to <b><a class="anchor-link" target="_blank" href="https://twitter.com/mrdoob">Ricardo Cabello</a></b> and <b><a class="anchor-link" target="_blank" href="https://twitter.com/alteredq">AlteredQualia</a></b>, for making WebGL accessible to common mortals.
+                    <ul class="skills-list">
+                        <li><a class="anchor-link" target="_blank" href="http://threejs.org/">ThreeJS</a></li>
+                        <li><a class="anchor-link" target="_blank" href="https://github.com/desandro/classie">Classie</a></li>
+                        <li><a class="anchor-link" target="_blank" href="https://github.com/mrdoob/stats.js/">StatsJs</a></li>
+                        <li><a class="anchor-link" target="_blank" href="https://github.com/tweenjs/">TweenJs</a></li>
                     </ul>
                 </div>
             </section>
@@ -396,7 +395,7 @@
                 </div>
                 <div class="rule left"></div>
                 <div class="section-info">
-                    I strongly believe that in the next five years we will enter in the age of VR, every media and entertainment system will... So i expect to be on that same boat as a web developer.
+                    In the next five years we will enter into the age of Virtual Reality, and that will have a massive impact in the way you surf the web, so i expect to be in a vanguard project related to that, as a web developer or creative director.
                 </div>
             </section>
 

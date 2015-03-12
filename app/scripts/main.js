@@ -1966,7 +1966,7 @@ ENGINE = function() {
                 console.log('MainModel Loaded!');
                 var layer = myPortfolio.World.CurrentLayer;
                 var initLoadingScreen = document.getElementById('initLoadingScreen');
-                var initIntroScreen = document.getElementById('initIntroScreen');
+                //var initIntroScreen = document.getElementById('initIntroScreen');
                 var modelInfo = document.getElementById('modelInfo');
                 //hide init loading screen
                 classie.toggleClass(initLoadingScreen, 'hide');
@@ -1975,29 +1975,29 @@ ENGINE = function() {
                     myPortfolio.SoundFx.backgroundMusic.play(0);
                 }, 500);
                 // start init loading screen
-                setTimeout(function() {
+                /*setTimeout(function() {
                     classie.addClass(initIntroScreen, 'show');
                     // rotate lowpoly when name is showing
-                    /*setTimeout(function() {
+                    setTimeout(function() {
                         var tweenScene90 = new TWEEN.Tween(layer.lowpoly.rotation).to({
                             x: layer.scene.rotation.x + 90 * Math.PI / 180,
                             y: layer.scene.rotation.y + 90 * Math.PI / 180,
                             z: layer.scene.rotation.z
                         }, 2000);
                         tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
-                    }, 1500);*/
+                    }, 1500);
                 }, 5000);
                 //end init loading screen
                 setTimeout(function() {
                     classie.removeClass(initIntroScreen, 'show');
-                }, 10000);
+                }, 10000);*/
                 //show menu
                 setTimeout(function() {
                     var menu = document.getElementById('menu');
                     classie.removeClass(menu, 'hide');
                     classie.addClass(modelInfo, 'show');
                     //destroy loading screen to prevent opacity animation 
-                }, 13000);
+                }, 5000);
             });
             this.NextLayer = new this.Layer('initLoadingModel', 1, function() {}, function() {
                 console.log('Dummy Loaded!');
@@ -2207,50 +2207,57 @@ ENGINE = function() {
             var galleryItems = document.querySelectorAll('.gallery-item');
             [].forEach.call(galleryItems, function(currentItem) {
                 currentItem.addEventListener('click', function() {
-                    var selectedModel = currentItem.getAttribute('data-model');
-                    var totalAssets = parseInt(currentItem.getAttribute('data-totalassets'));
-                    //hide all items
-                    [].forEach.call(galleryItems, function(currentItem) {
+                    if(myPortfolio.system.isTouch) {
+                        var selectedVideo = currentItem.getAttribute('data-video');
+                        myPortfolio.videoBackground.src = selectedVideo;
+                        myPortfolio.videoBackground.play();
+                        classie.removeClass(currentItem, 'show');
+                        closeSubmenu();
+                    } else {
+                        var selectedModel = currentItem.getAttribute('data-model');
+                        var totalAssets = parseInt(currentItem.getAttribute('data-totalassets'));
+                        //hide all items
+                        [].forEach.call(galleryItems, function(currentItem) {
+                            classie.toggleClass(currentItem, 'hide');
+                        });
+                        // show clicked one
                         classie.toggleClass(currentItem, 'hide');
-                    });
-                    // show clicked one
-                    classie.toggleClass(currentItem, 'hide');
-                    classie.toggleClass(currentItem, 'show');
-                    //show loading model progress
-                    classie.removeClass(progressBar, 'reset');
-                    classie.toggleClass(loadingScreen, 'show');
-                    setTimeout(function() {
-                        // create next model layer
-                        myPortfolio.World.NextLayer = new myPortfolio.World.Layer('GalleryModel' + selectedModel, totalAssets, function() {
-                            var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
-                            document.getElementById('progressBar').style.width = loadProgression + '%';
-                            console.log(this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
-                            if(this.numberAssetsLoaded == this.totalAssetsToLoad) {
-                                var layer = this;
-                                setTimeout(function() {
-                                    layer.onLoadedCallback();
-                                    classie.toggleClass(loadingScreen, 'show');
-                                    layer.loadReset();
-                                }, 4500);
-                            }
-                            console.info(loadProgression);
-                        }, function() {
-                            console.log('newSceneLoaded');
-                            myPortfolio.World.transitionParams.transitionMixRatio = 0;
-                            myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
-                            myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
-                            var update = function() {
-                                myPortfolio.World.transitionParams.transitionMixRatio = current.x;
-                            };
-                            var current = {
-                                x: 1
-                            };
-                            // remove previous tweens if needed:TODO use same instanciated tween
-                            var tweenLayerTransition = new TWEEN.Tween(current).to({
-                                x: 0
-                            }, myPortfolio.World.transitionParams.transitionTime * 1000).onUpdate(update);
-                            tweenLayerTransition.start();
-                            /*myPortfolio.World.renderParams = {
+                        classie.toggleClass(currentItem, 'show');
+                        //show loading model progress
+                        classie.removeClass(progressBar, 'reset');
+                        classie.toggleClass(loadingScreen, 'show');
+                        setTimeout(function() {
+                            // create next model layer
+                            myPortfolio.World.NextLayer = new myPortfolio.World.Layer('GalleryModel' + selectedModel, totalAssets, function() {
+                                var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
+                                document.getElementById('progressBar').style.width = loadProgression + '%';
+                                console.log(this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
+                                if(this.numberAssetsLoaded == this.totalAssetsToLoad) {
+                                    var layer = this;
+                                    setTimeout(function() {
+                                        layer.onLoadedCallback();
+                                        classie.toggleClass(loadingScreen, 'show');
+                                        layer.loadReset();
+                                    }, 4500);
+                                }
+                                console.info(loadProgression);
+                            }, function() {
+                                console.log('newSceneLoaded');
+                                myPortfolio.World.transitionParams.transitionMixRatio = 0;
+                                myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
+                                myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
+                                var update = function() {
+                                    myPortfolio.World.transitionParams.transitionMixRatio = current.x;
+                                };
+                                var current = {
+                                    x: 1
+                                };
+                                // remove previous tweens if needed:TODO use same instanciated tween
+                                var tweenLayerTransition = new TWEEN.Tween(current).to({
+                                    x: 0
+                                }, myPortfolio.World.transitionParams.transitionTime * 1000).onUpdate(update);
+                                tweenLayerTransition.start();
+                                /*myPortfolio.World.renderParams = {
                                 antialias: true,
                                 alpha: false,
                                 showStats: true,
@@ -2288,13 +2295,14 @@ ENGINE = function() {
                             setTimeout(function(){
                                 myPortfolio.World.refreshPostProcessing();
                             },myPortfolio.World.transitionParams.transitionTime * 1000);*/
-                            // show clicked one
-                            //classie.toggleClass(currentItem, 'hide');
-                            classie.toggleClass(currentItem, 'show');
-                            //classie.toggleClass(galleryLoader, 'show');
-                            closeSubmenu();
-                        });
-                    }, 1500);
+                                // show clicked one
+                                //classie.toggleClass(currentItem, 'hide');
+                                classie.toggleClass(currentItem, 'show');
+                                //classie.toggleClass(galleryLoader, 'show');
+                                closeSubmenu();
+                            });
+                        }, 1500);
+                    }
                 });
             });
         },
@@ -2534,42 +2542,40 @@ ENGINE.prototype.init = function() {
         /*if(modelInfo) {
             modelInfo.parentNode.removeChild(modelInfo);
         }*/
-        
+        var modelSettings = document.getElementById('modelSettings');
+        if(modelSettings) {
+            modelSettings.parentNode.removeChild(modelSettings);
+        }
         var settings = document.getElementById('sectionSettings');
         if(settings) {
             settings.parentNode.removeChild(settings);
         }
-        
         //add video as background
-        var videoBackground = document.createElement('video');
-        videoBackground.id = 'videoBackground';
-        classie.addClass(videoBackground, 'video-background');
+        this.videoBackground = document.createElement('video');
+        this.videoBackground.id = 'videoBackground';
+        classie.addClass(this.videoBackground, 'video-background');
         //videoBackground.poster='../src/img/galleryItem1.png';
-        videoBackground.preload = true;
-        videoBackground.loop = true;
-        videoBackground.muted = true;
+        this.videoBackground.preload = true;
+        this.videoBackground.loop = true;
+        this.videoBackground.muted = true;
         /// now, add sources:
         var sourceMP4 = document.createElement("source");
         sourceMP4.type = 'video/mp4';
         sourceMP4.src = 'http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04';
-        videoBackground.appendChild(sourceMP4);
-        
-        
+        this.videoBackground.appendChild(sourceMP4);
         var bodyWrapper = document.getElementById('bodyWrapper');
-        bodyWrapper.appendChild(videoBackground);
-        videoBackground.play();
-        
+        bodyWrapper.appendChild(this.videoBackground);
+        this.videoBackground.play();
         /********************/
         var menu = document.getElementById('menu');
         var initLoadingScreen = document.getElementById('initLoadingScreen');
-        var initIntroScreen = document.getElementById('initIntroScreen');
+        //var initIntroScreen = document.getElementById('initIntroScreen');
         //hide init loading screen
-        classie.addClass(initIntroScreen, 'show');
+        //classie.addClass(initIntroScreen, 'show');
         classie.addClass(modelInfo, 'show');
         classie.toggleClass(initLoadingScreen, 'hide');
         classie.removeClass(menu, 'hide');
-    }
-    else {
+    } else {
         this.SoundFx.init();
         this.World.start();
     }
