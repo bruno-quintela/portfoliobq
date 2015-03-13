@@ -1967,7 +1967,7 @@ ENGINE = function() {
                 var layer = myPortfolio.World.CurrentLayer;
                 var initLoadingScreen = document.getElementById('initLoadingScreen');
                 //var initIntroScreen = document.getElementById('initIntroScreen');
-                var modelInfo = document.getElementById('modelInfo');
+                var siteInfo = document.getElementById('siteInfo');
                 //hide init loading screen
                 classie.toggleClass(initLoadingScreen, 'hide');
                 setTimeout(function() {
@@ -1995,7 +1995,7 @@ ENGINE = function() {
                 setTimeout(function() {
                     var menu = document.getElementById('menu');
                     classie.removeClass(menu, 'hide');
-                    classie.addClass(modelInfo, 'show');
+                    classie.addClass(siteInfo, 'show');
                     //destroy loading screen to prevent opacity animation 
                 }, 5000);
             });
@@ -2121,12 +2121,12 @@ ENGINE = function() {
                 classie.toggleClass(aboutSubmenu3, 'show');
                 classie.toggleClass(aboutSubmenu4, 'show');
                 /** active item style **/
-                submenu1Anchor.innerHTML = "back";
-                classie.addClass(submenu1Anchor.parentNode, 'active');
+                submenu1Anchor.innerHTML = "<span>back</span>";
+                classie.addClass(submenu1Anchor, 'active');
                 /** inactive items style, content and event handlers **/
-                classie.removeClass(submenu2Anchor.parentNode, 'active');
-                classie.removeClass(submenu3Anchor.parentNode, 'active');
-                classie.removeClass(submenu4Anchor.parentNode, 'active');
+                classie.removeClass(submenu2Anchor, 'active');
+                classie.removeClass(submenu3Anchor, 'active');
+                classie.removeClass(submenu4Anchor, 'active');
                 submenu2Anchor.innerHTML = '';
                 submenu3Anchor.innerHTML = '';
                 submenu4Anchor.innerHTML = '';
@@ -2141,15 +2141,15 @@ ENGINE = function() {
                 //add on close submenu event handler
                 submenu2Anchor.addEventListener('click', closeSubmenu);
                 /** active item style **/
-                submenu2Anchor.innerHTML = "back";
-                classie.addClass(submenu2Anchor.parentNode, 'active');
+                submenu2Anchor.innerHTML = "<span>back</span>";
+                classie.addClass(submenu2Anchor, 'active');
                 /** inactive items style and content **/
-                classie.removeClass(submenu1Anchor.parentNode, 'active');
-                classie.removeClass(submenu3Anchor.parentNode, 'active');
-                classie.removeClass(submenu4Anchor.parentNode, 'active');
-                submenu1Anchor.innerHTML = 'Model<span style="color:red">#01 </span>';
-                submenu3Anchor.innerHTML = 'Model<span style="color:red">#03 </span>';
-                submenu4Anchor.innerHTML = 'Model<span style="color:red">#04 </span>';
+                classie.removeClass(submenu1Anchor, 'active');
+                classie.removeClass(submenu3Anchor, 'active');
+                classie.removeClass(submenu4Anchor, 'active');
+                submenu1Anchor.innerHTML = '';
+                submenu3Anchor.innerHTML = '';
+                submenu4Anchor.innerHTML = '';
                 /* section animation handler */
                 classie.addClass(sectionGallery, 'show');
                 /* gallery items show */
@@ -2168,12 +2168,12 @@ ENGINE = function() {
                 //submenu1Anchor.addEventListener('click', displayLocation);
                 //submenu2Anchor.addEventListener('click', displaySocial);
                 /** active item style **/
-                submenu3Anchor.innerHTML = "back";
-                classie.addClass(submenu3Anchor.parentNode, 'active');
+                submenu3Anchor.innerHTML = "<span>back</span>";
+                classie.addClass(submenu3Anchor, 'active');
                 /** inactive items style and content **/
-                classie.removeClass(submenu1Anchor.parentNode, 'active');
-                classie.removeClass(submenu2Anchor.parentNode, 'active');
-                classie.removeClass(submenu4Anchor.parentNode, 'active');
+                classie.removeClass(submenu1Anchor, 'active');
+                classie.removeClass(submenu2Anchor, 'active');
+                classie.removeClass(submenu4Anchor, 'active');
                 submenu1Anchor.innerHTML = "";
                 submenu2Anchor.innerHTML = "";
                 submenu4Anchor.innerHTML = "";
@@ -2190,12 +2190,12 @@ ENGINE = function() {
                 classie.toggleClass(creditsSubmenu2, 'show');
                 classie.toggleClass(creditsSubmenu3, 'show');
                 /** active item style **/
-                submenu4Anchor.innerHTML = "back";
-                classie.addClass(submenu4Anchor.parentNode, 'active');
+                submenu4Anchor.innerHTML = "<span>back</span>";
+                classie.addClass(submenu4Anchor, 'active');
                 /** inactive items style, content and event handlers **/
-                classie.removeClass(submenu1Anchor.parentNode, 'active');
-                classie.removeClass(submenu2Anchor.parentNode, 'active');
-                classie.removeClass(submenu3Anchor.parentNode, 'active');
+                classie.removeClass(submenu1Anchor, 'active');
+                classie.removeClass(submenu2Anchor, 'active');
+                classie.removeClass(submenu3Anchor, 'active');
                 submenu1Anchor.innerHTML = '';
                 submenu2Anchor.innerHTML = '';
                 submenu3Anchor.innerHTML = '';
@@ -2320,7 +2320,7 @@ ENGINE = function() {
                 settingsQualityHigh = document.getElementById('settingsQualityHigh'),
                 settingsQualityMedium = document.getElementById('settingsQualityMedium'),
                 settingsQualityLow = document.getElementById('settingsQualityLow'),
-                modelInfo = document.getElementById('modelInfo'),
+                siteInfo = document.getElementById('siteInfo'),
                 sectionSettings = document.getElementById('sectionSettings');
 
             function launchIntoFullscreen(element) {
@@ -2355,7 +2355,7 @@ ENGINE = function() {
             /** settings event handlers */
             settings.addEventListener('click', function() {
                 classie.toggleClass(sectionSettings, 'show');
-                classie.toggleClass(modelInfo, 'open');
+                classie.toggleClass(siteInfo, 'open');
             });
             /* AUDIO */
             settingsAudioOn.addEventListener('click', function() {
@@ -2538,10 +2538,8 @@ ENGINE.prototype.init = function() {
         if(threejsCanvas) {
             threejsCanvas.parentNode.removeChild(threejsCanvas);
         }
-        var modelInfo = document.getElementById('modelInfo');
-        /*if(modelInfo) {
-            modelInfo.parentNode.removeChild(modelInfo);
-        }*/
+        var siteInfo = document.getElementById('siteInfo');
+
         var modelSettings = document.getElementById('modelSettings');
         if(modelSettings) {
             modelSettings.parentNode.removeChild(modelSettings);
@@ -2554,7 +2552,7 @@ ENGINE.prototype.init = function() {
         this.videoBackground = document.createElement('video');
         this.videoBackground.id = 'videoBackground';
         classie.addClass(this.videoBackground, 'video-background');
-        //videoBackground.poster='../src/img/galleryItem1.png';
+        videoBackground.poster='../src/img/galleryItem1.png';
         this.videoBackground.preload = true;
         this.videoBackground.loop = true;
         this.videoBackground.muted = true;
@@ -2572,9 +2570,20 @@ ENGINE.prototype.init = function() {
         //var initIntroScreen = document.getElementById('initIntroScreen');
         //hide init loading screen
         //classie.addClass(initIntroScreen, 'show');
-        classie.addClass(modelInfo, 'show');
+        classie.addClass(siteInfo, 'show');
         classie.toggleClass(initLoadingScreen, 'hide');
         classie.removeClass(menu, 'hide');
+        
+        if(!window.location.hash)
+          {
+              if(document.height < window.outerHeight)
+              {
+                  document.body.style.height = (window.outerHeight + 50) + 'px';
+              }
+
+              setTimeout( function(){ window.scrollTo(0, 1); }, 50 );
+          }
+ 
     } else {
         this.SoundFx.init();
         this.World.start();
@@ -2587,3 +2596,4 @@ ENGINE.prototype.init = function() {
  **/
 var myPortfolio = new ENGINE();
 myPortfolio.init();
+

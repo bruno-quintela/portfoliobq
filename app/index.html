@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>workspace</title>
-    <meta name="description" content="">
+    <meta name="description" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="shortcut icon" href="/favicon.ico">
     <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
@@ -110,7 +110,7 @@
                 <div id="progressBar" class="model-loading-progress"></div>
             </div>
             <div class="loading-info">
-                ... now Loading
+                now Loading
             </div>
         </div>
 
@@ -119,44 +119,45 @@
         <!-- menu -->
         <nav id="menu" class="menu hide">
             <ul class="main-menu">
-                <li><a id="aboutAnchor" href="#">About</a>
+                <li id="aboutAnchor"><span>About</span>
                 </li>
-                <li><a id="galleryAnchor" href="#">Gallery</a>
+                <li id="galleryAnchor"><span href="#">Gallery</span>
                 </li>
-                <li><a id="contactAnchor" href="#">Contact</a>
+                <li id="contactAnchor"><span href="#">Contact</span>
                 </li>
-                <li><a id="creditsAnchor" href="#">Credits</a>
+                <li id="creditsAnchor"><span href="#">Credits</span>
                 </li>
             </ul>
             <ul class="sub-menu">
-                <li>
-                    <a id="submenuAnchor1" href="#"></a>
+                <li id="submenuAnchor1">
+                    <span></span>
                 </li>
-                <li>
-                    <a id="submenuAnchor2" href="#"></a>
+                <li id="submenuAnchor2">
+                    <span></span>
                 </li>
 
-                <li>
-                    <a id="submenuAnchor3" href="#"></a>
+                <li id="submenuAnchor3">
+                    <span></span>
                 </li>
-                <li>
-                    <a id="submenuAnchor4" href="#"></a>
+                <li id="submenuAnchor4">
+                    <span></span>
                 </li>
             </ul>
         </nav>
 
         <!-- MODEL INFO -->
-        <div id="modelInfo" class="model-info">
-            <div class="title"><b>Portfolio</b><span style="color:red"> #2015 </span>
-            </div>
+        <div id="siteInfo" class="site-info">
             <div class="subtitle">Bruno <b>Quintela</b>
             </div>
+            <div class="title"><b>Portfolio</b><span class="highlight"> #2015 </span>
+            </div>
+
 
             <div id="modelSettings" class="model-settings">
                 <img src="../src/img/settings2.png" alt=""><a id="settings" href="#" class="settings-anchor">Settings</a>
             </div>
-            <div class="model-credits">
-                This site is a WebGL experiment. It all started with a spining cube, but soon i've realized that with the current technology i could achieve much more than that, so i've compiled the best WebGL experiments i achieved in the past months in this website. Hope you enjoy.
+            <div class="site-intro">
+                This site is a WebGL experiment. It all started with a spining cube, but soon i've realized that with the current technology i could achieve much more than that, so i've compiled the best WebGL experiments i achieved in the past months. Hope you enjoy.
             </div>
         </div>
 
@@ -205,10 +206,10 @@
                     <span class="title">About </span>
                     <div class="title-top right">
                         <div class="about-info-container">
-                            <span style="color:red">#01 </span><b>name</b> Bruno Quintela
-                            <span style="color:red">#02 </span><b>Age</b> 32
-                            <span style="color:red">#03 </span><b>Location</b> Portugal
-                            <span style="color:red">#04 </span><b>Job</b> Web Developer
+                            <span class="highlight">#01 </span><b>name</b> Bruno Quintela
+                            <span class="highlight">#02 </span><b>Age</b> 32
+                            <span class="highlight">#03 </span><b>Location</b> Portugal
+                            <span class="highlight">#04 </span><b>Job</b> Web Developer
                         </div>
                     </div>
                     <div class="rule right"></div>
@@ -300,14 +301,22 @@
                     <b>Communities</b> knowledge
                 </div>
                 <div class="rule left"></div>
-                <div class="section-info column">
-                    This were the main online sources of knowledge i ended up using in the making of this website. Thank you all, keep up the good work and keep sharing.
-                    <ul>
-                        <li><a class="anchor-link" target="_blank" href="http://blendernation.com/">BlenderNation</a></li>
-                        <li><a class="anchor-link" target="_blank" href="http://cgcookie.com/">CGcookie</a></li>
-                        <li><a class="anchor-link" target="_blank" href="http://codepen.io/">Codepen</a></li>
-                        <li><a class="anchor-link" target="_blank" href="http://tympanus.net/codrops/">Codrops</a></li>
-                    </ul>
+                <div class="section-info">
+                    <div class="left">
+                        This were the main online sources of knowledge i ended up using in the making of this website. Thank you all, keep up the good work and keep sharing.
+                    </div>
+                    <div class="right">
+                        <ul class="list">
+                            <li><a class="anchor-link" target="_blank" href="http://blendernation.com/">BlenderNation</a>
+                            </li>
+                            <li><a class="anchor-link" target="_blank" href="http://cgcookie.com/">CGcookie</a>
+                            </li>
+                            <li><a class="anchor-link" target="_blank" href="http://codepen.io/">Codepen</a>
+                            </li>
+                            <li><a class="anchor-link" target="_blank" href="http://tympanus.net/codrops/">Codrops</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
@@ -342,14 +351,22 @@
                     <b>Open Source</b> Software
                 </div>
                 <div class="rule left"></div>
-                <div class="section-info column">
-                    Open source software i used to create the 3D models assets and audio. Kudos to all the respective contributors.
-                    <ul class="skills-list">
-                        <li><a class="anchor-link" target="_blank" href="http://www.blender.org/">Blender</a></li>
-                        <li><a class="anchor-link" target="_blank" href="http://www.makehuman.org/">Makehuman</a></li>
-                        <li><a class="anchor-link" target="_blank" href="http://www.gimp.org/">Gimp</a></li>
-                        <li><a class="anchor-link" target="_blank" href="http://audacity.sourceforge.net/">Audacity</a></li>
-                    </ul>
+                <div class="section-info">
+                    <div class="left">
+                        Open source software i used to create the 3D models assets and audio. Kudos to all the respective contributors.
+                    </div>
+                    <div class="right">
+                        <ul class="list">
+                            <li><a class="anchor-link" target="_blank" href="http://www.blender.org/">Blender</a>
+                            </li>
+                            <li><a class="anchor-link" target="_blank" href="http://www.makehuman.org/">Makehuman</a>
+                            </li>
+                            <li><a class="anchor-link" target="_blank" href="http://www.gimp.org/">Gimp</a>
+                            </li>
+                            <li><a class="anchor-link" target="_blank" href="http://audacity.sourceforge.net/">Audacity</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
@@ -357,17 +374,20 @@
 
             <section id="aboutSubmenu3" class="section-content sub-menu submenu3">
                 <div class="title-top left">
-                    What <b>i do_</b>
+                    What <b>i do</b>
                 </div>
                 <div class="rule left"></div>
-                <div class="section-info column">
-                    I create unique visual content for the web. To achieve a perfect ballance between visual delivery and performance is allways my pripority.
-                    <span class="skills-title">Job related Skills:</span>
-                    <ul class="skills-list">
-                        <li>Front end Developer</li>
-                        <li>UI/UX Designer</li>
-                        <li>Web Designer</li>
-                    </ul>
+                <div class="section-info">
+                    <div class="left">
+                        I create unique content for the web. To achieve a perfect ballance between visual delivery and performance is allways my pripority.
+                    </div>
+                    <div class="right">
+                        <ul class="list">
+                            <li>Front end Developer</li>
+                            <li>UI/UX Designer</li>
+                            <li>Web Designer</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
@@ -376,14 +396,22 @@
                     <b>Javascript</b> librarys
                 </div>
                 <div class="rule left"></div>
-                <div class="section-info column">
-                    Javascript librarys i used to build this website. Special thanks to <b><a class="anchor-link" target="_blank" href="https://twitter.com/mrdoob">Ricardo Cabello</a></b> and <b><a class="anchor-link" target="_blank" href="https://twitter.com/alteredq">AlteredQualia</a></b>, for making WebGL accessible to common mortals.
-                    <ul class="skills-list">
-                        <li><a class="anchor-link" target="_blank" href="http://threejs.org/">ThreeJS</a></li>
-                        <li><a class="anchor-link" target="_blank" href="https://github.com/desandro/classie">Classie</a></li>
-                        <li><a class="anchor-link" target="_blank" href="https://github.com/mrdoob/stats.js/">StatsJs</a></li>
-                        <li><a class="anchor-link" target="_blank" href="https://github.com/tweenjs/">TweenJs</a></li>
-                    </ul>
+                <div class="section-info">
+                    <div class="left">
+                        Javascript librarys i used to build this website. Special thanks to <b><a class="anchor-link" target="_blank" href="https://twitter.com/mrdoob">Ricardo Cabello</a></b> and <b><a class="anchor-link" target="_blank" href="https://twitter.com/alteredq">AlteredQualia</a></b>, for making WebGL accessible to common mortals.
+                    </div>
+                    <div class="right">
+                        <ul class="list">
+                            <li><a class="anchor-link" target="_blank" href="http://threejs.org/">ThreeJS</a>
+                            </li>
+                            <li><a class="anchor-link" target="_blank" href="https://github.com/desandro/classie">Classie</a>
+                            </li>
+                            <li><a class="anchor-link" target="_blank" href="https://github.com/mrdoob/stats.js/">StatsJs</a>
+                            </li>
+                            <li><a class="anchor-link" target="_blank" href="https://github.com/tweenjs/">TweenJs</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
@@ -391,7 +419,7 @@
             <!-- submenu4 content -->
             <section id="aboutSubmenu4" class="section-content sub-menu submenu4">
                 <div class="title-top left">
-                    what's <b>next_</b>
+                    what's <b>next</b>
                 </div>
                 <div class="rule left"></div>
                 <div class="section-info">

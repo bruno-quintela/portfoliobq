@@ -94,6 +94,17 @@
     font-size: 9px;
 }
 
+%model-loading-font
+{
+    font-family: $primary-font-family;
+  	text-rendering: optimizeLegibility;
+    text-transform:uppercase;
+    color:$text-color;
+    font-weight:300;
+    letter-spacing:3px;
+    font-size: 9px;
+}
+
 %model-credits-font
 {
     font-family: $primary-font-family;
@@ -101,6 +112,7 @@
     font-size:9px;
     color:$text-color;
     text-transform:none;
+    letter-spacing:2px;
 }
 
 

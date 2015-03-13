@@ -22,11 +22,16 @@
 }
 
 .menu ul li {
+    cursor:pointer;
 	width: 50px;
     position: relative;
     height:$content-height;
     will-change: transform, background-color;
     @include transition((transform 0.5s 0s $transition-effect,background-color 0.5s 0s $transition-effect));
+}
+
+.menu ul.main-menu li:hover span{
+    color:$secondary-color;
 }
 
 .menu ul.main-menu li {
@@ -65,16 +70,16 @@
     background-color:$secondary-color;
 }
 
-.menu.toggle ul.sub-menu li.active a{
+.menu.toggle ul.sub-menu li.active span{
     color:$text-color;
 }
 
-.menu ul.main-menu li a {
+.menu ul.main-menu li span {
     color: $text-color;
     
 }
 
-.menu ul.sub-menu li a{
+.menu ul.sub-menu li span{
     color: $text-color;
     
 }
@@ -95,7 +100,7 @@
 }
 
 
-.menu ul li a {
+.menu ul li span {
     @extend %menu-font;
     position: absolute;
     top: 50%;
@@ -105,7 +110,3 @@
     @include transition(color 0.5s);
 }
 
-.menu ul li a:hover,
-.menu ul li a:focus {
-	color: $secondary-color;
-}
