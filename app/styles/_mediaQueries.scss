@@ -1,5 +1,5 @@
 /* generic sreen resize */
-@media only screen and (max-width : 1024px)
+@media only screen and (max-width : 1280px)
 {
     .section-wrapper{
         width:50%;
@@ -45,7 +45,7 @@
     }
 }
 
-@media only screen and (max-width : 600px)
+@media only screen and (max-width : 860px)
 {
     .section-wrapper{
         width:100%;
@@ -98,7 +98,7 @@
     }
 }
 
-@media only screen and (orientation : landscape) {
+@media only screen and (max-device-width : 1024px) and (orientation : landscape) {
     .model-settings{
         display:none;
     }

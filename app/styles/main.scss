@@ -5,7 +5,7 @@ $content-padding:30px;
 $gallery-width:100%;
 
 $primary-color: rgba(0,0,0,0.9);
-$secondary-color: #f15a29;//rgba(255,0,0,1);
+$secondary-color: rgba(255,0,0,1);
 $background-color: rgba(0,0,0,1);
 $text-color: rgba(255,255,255,1);
 $text-secondary-color: #9b8579;
@@ -29,7 +29,7 @@ $transition-effect: ease;
 @import 'reset';
 @import 'typography';
 @import 'gridComposer';
-@include scrollbar(.4em, $secondary-color);
+@include scrollbar(.2em, $secondary-color);
 
 /**
 * Wrappers and Container 
@@ -75,6 +75,7 @@ $transition-effect: ease;
     top:0;
     right:0;
     width:$content-width;
+    //overflow:hidden;
     height:100%;
 }
 
@@ -682,6 +683,51 @@ $transition-effect: ease;
 @keyframes fade-transition {
   0%   { opacity: 0; }
   100% { opacity: 1; }
+}
+
+/** 
+ * model controls
+**/
+
+.model-controls{
+    position: absolute;
+    left: 820px;
+    bottom:10px;
+    font-size:9px;
+    text-transform:none;
+}
+
+input[type="range"].zoom{
+     top: 5px;
+     left: 80px;
+}
+
+input[type="range"].rotation{
+     bottom: 4px;
+     left: 80px;
+}
+
+input[type="range"]{
+  -webkit-appearance:none;
+  width:100px;
+  height:1px;
+  background: $secondary-color;
+  background-position:center;
+  background-repeat:no-repeat;
+  position: absolute;
+  outline:none;
+  cursor:pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:5px;
+  height:5px;
+  border-radius: 100%;
+  background: $secondary-color;
+  position:relative;
+  z-index:3;
+  cursor: hand;
 }
 
 

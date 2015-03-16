@@ -52,7 +52,7 @@
 
 	::-webkit-scrollbar-thumb {
 		background: $primary;
-        border-radius: 10px;
+        border-radius: 0px;
 	}
 
 	::-webkit-scrollbar-track {
@@ -63,7 +63,7 @@
   body {
     scrollbar-face-color: $primary;
     scrollbar-track-color: $secondary;
-    border-radius: 8px;
+    border-radius: 0px;
   }
 }
 

@@ -1972,7 +1972,7 @@ ENGINE = function() {
                 classie.toggleClass(initLoadingScreen, 'hide');
                 setTimeout(function() {
                     //start background AUDIO
-                    myPortfolio.SoundFx.backgroundMusic.play(0);
+                    // myPortfolio.SoundFx.backgroundMusic.play(0);
                 }, 500);
                 // start init loading screen
                 /*setTimeout(function() {
@@ -2216,6 +2216,11 @@ ENGINE = function() {
                     } else {
                         var selectedModel = currentItem.getAttribute('data-model');
                         var totalAssets = parseInt(currentItem.getAttribute('data-totalassets'));
+                        // scroll gallery container to top
+                        var tweenScrollTop = new TWEEN.Tween(galleryContainer).to({
+                            scrollTop: 0
+                        }, 1000);
+                        tweenScrollTop.easing(TWEEN.Easing.Quadratic.Out).start();
                         //hide all items
                         [].forEach.call(galleryItems, function(currentItem) {
                             classie.toggleClass(currentItem, 'hide');
@@ -2305,6 +2310,73 @@ ENGINE = function() {
                     }
                 });
             });
+            /** 
+             * Init Model Controls
+             */
+            /* rotate scene*/
+
+            function rotateScene(deg) {
+                var tweenSceneRotate = new TWEEN.Tween(layer.scene.rotation).to({
+                    x: layer.scene.rotation.x,
+                    y: layer.scene.rotation.y + deg * Math.PI / 180,
+                    z: layer.scene.rotation.z
+                }, 2000);
+                tweenSceneRotate.easing(TWEEN.Easing.Quadratic.Out).start();
+            }
+
+            function zoomScene(val) {
+                var tweenSceneZoom = new TWEEN.Tween(layer.scene.position).to({
+                    x: layer.scene.position.x,
+                    y: layer.scene.position.y,
+                    z: val
+                }, 1000);
+                tweenSceneZoom.easing(TWEEN.Easing.Quadratic.Out).start();
+            }
+            var zoomBar = document.getElementById("zoomBar");
+            var rotationBar = document.getElementById("rotationBar");
+            zoomBar.addEventListener('mouseup', function() {
+                zoomScene(parseInt(this.value));
+            });
+            rotationBar.addEventListener('mouseup', function() {
+                rotateScene(parseInt(this.value));
+            });
+            /**
+             * Mouse Wheel gallery events
+             * direction: 1:Up , -1:Down
+             * duration: ms
+             **/
+
+            function scrollGallery(direction, scrollDuration) {
+                var scrollHeight = galleryContainer.scrollHeight;
+                var scrollOffsetHeight = galleryContainer.offsetHeight;
+                var scrollTop = galleryContainer.scrollTop;
+                var numberOfItems = 6;
+                var margin = 20;
+                
+                
+                // detect scroll at the top
+                if(direction === 1 && scrollTop === 0 && direction > 0) {
+                    return;
+                }
+                // detect scroll at the bottom
+                else if (direction === -1 && (scrollHeight - scrollTop - margin <= scrollOffsetHeight)) 
+                {
+                     return;
+                }
+                
+                console.log(scrollHeight - scrollTop+10);
+                var tweenGalleryScroll = new TWEEN.Tween(galleryContainer).to({
+                    scrollTop: scrollTop + -1 * direction * (scrollHeight / numberOfItems)
+                }, 500);
+                tweenGalleryScroll.easing(TWEEN.Easing.Quadratic.Out).start();
+                
+            };
+            galleryContainer.addEventListener('mousewheel', function(event) {
+                event.preventDefault();
+                var delta = Math.max(-1, Math.min(1, (event.wheelDelta || -event.detail)));
+                
+                scrollGallery(delta, 1000);
+            }, false);
         },
         /**
          * UI Settings event handlers
@@ -2539,7 +2611,6 @@ ENGINE.prototype.init = function() {
             threejsCanvas.parentNode.removeChild(threejsCanvas);
         }
         var siteInfo = document.getElementById('siteInfo');
-
         var modelSettings = document.getElementById('modelSettings');
         if(modelSettings) {
             modelSettings.parentNode.removeChild(modelSettings);
@@ -2552,7 +2623,7 @@ ENGINE.prototype.init = function() {
         this.videoBackground = document.createElement('video');
         this.videoBackground.id = 'videoBackground';
         classie.addClass(this.videoBackground, 'video-background');
-        videoBackground.poster='../src/img/galleryItem1.png';
+        this.videoBackground.poster = '../src/img/galleryItem1.png';
         this.videoBackground.preload = true;
         this.videoBackground.loop = true;
         this.videoBackground.muted = true;
@@ -2573,17 +2644,14 @@ ENGINE.prototype.init = function() {
         classie.addClass(siteInfo, 'show');
         classie.toggleClass(initLoadingScreen, 'hide');
         classie.removeClass(menu, 'hide');
-        
-        if(!window.location.hash)
-          {
-              if(document.height < window.outerHeight)
-              {
-                  document.body.style.height = (window.outerHeight + 50) + 'px';
-              }
-
-              setTimeout( function(){ window.scrollTo(0, 1); }, 50 );
-          }
- 
+        if(!window.location.hash) {
+            if(document.height < window.outerHeight) {
+                document.body.style.height = (window.outerHeight + 50) + 'px';
+            }
+            setTimeout(function() {
+                window.scrollTo(0, 1);
+            }, 50);
+        }
     } else {
         this.SoundFx.init();
         this.World.start();
@@ -2596,4 +2664,3 @@ ENGINE.prototype.init = function() {
  **/
 var myPortfolio = new ENGINE();
 myPortfolio.init();
-

@@ -116,6 +116,7 @@
 
         <canvas id="threejsCanvas" class="threejs-canvas"></canvas>
 
+
         <!-- menu -->
         <nav id="menu" class="menu hide">
             <ul class="main-menu">
@@ -158,6 +159,14 @@
             </div>
             <div class="site-intro">
                 This site is a WebGL experiment. It all started with a spining cube, but soon i've realized that with the current technology i could achieve much more than that, so i've compiled the best WebGL experiments i achieved in the past months. Hope you enjoy.
+            </div>
+
+            <div class="model-controls">
+                <span>zoom</span>
+                <input id="zoomBar" class="zoom" type='range' min="-5" max="5" value="0" step='0.1' />
+                <br>
+                 <span>rotation</span>
+                <input id="rotationBar" class="rotation" type='range' min="-180" max="180" value="0" step='1'/>
             </div>
         </div>
 
@@ -230,6 +239,7 @@
                             </figcaption>
                         </figure>
                     </div>
+                    <div class="gallery-item-info"><div>Model<span class="highlight">#1</span></div></div>
                 </div>
                 <div data-model="2" data-totalassets="4" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
                     <div class="grid">
@@ -242,6 +252,7 @@
                             </figcaption>
                         </figure>
                     </div>
+                    <div class="gallery-item-info"><div>Model<span class="highlight">#2</span></div></div>
                 </div>
                 <div data-model="3" data-totalassets="4" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
                     <div class="grid">
@@ -254,6 +265,7 @@
                             </figcaption>
                         </figure>
                     </div>
+                    <div class="gallery-item-info"><div>Model<span class="highlight">#3</span></div></div>
                 </div>
                 <div data-model="4" data-totalassets="4" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
                     <div class="grid">
@@ -265,6 +277,31 @@
                             </figcaption>
                         </figure>
                     </div>
+                    <div class="gallery-item-info"><div>Model<span class="highlight">#4</span></div></div>
+                </div>
+                <div data-model="5" data-totalassets="4" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
+                    <div class="grid">
+                        <figure class="effect-apollo">
+                            <img src="../src/img/galleryItem4.png" alt="img18" />
+                            <figcaption>
+                                <h2>Strong <span>Apollo</span></h2>
+                                <p>Apollo's last game of pool was so strange.</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="gallery-item-info"><div>Model<span class="highlight">#5</span></div></div>
+                </div>
+                <div data-model="5" data-totalassets="4" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
+                    <div class="grid">
+                        <figure class="effect-apollo">
+                            <img src="../src/img/galleryItem4.png" alt="img18" />
+                            <figcaption>
+                                <h2>Strong <span>Apollo</span></h2>
+                                <p>Apollo's last game of pool was so strange.</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="gallery-item-info"><div>Model<span class="highlight">#6</span></div></div>
                 </div>
             </div>
             <section id="sectionContact" class="section-content main-menu contact">
