@@ -9,14 +9,14 @@
     overflow-x:hidden;
     overflow-y:hidden;
     //overflow:auto;
-    @include transition((visibility 0ms 1500ms,overflow-y 0ms 0ms));
+    @include transition((visibility 0ms 1500ms,overflow 0ms 1000ms));
 }
 
 .gallery-item-container.show
 {
     visibility:visible;
     overflow-y:visible;
-    @include transition((visibility 0ms 0ms ,overflow-y 0ms 0ms));
+    @include transition((visibility 0ms 0ms ,overflow 0ms 1000ms));
 }
 
 

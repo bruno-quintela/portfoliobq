@@ -89,7 +89,7 @@ ENGINE = function() {
         dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: true,
-            guiEnabled: false
+            guiEnabled: true
         },
         renderParams: {
             antialias: true,
@@ -104,7 +104,7 @@ ENGINE = function() {
             enableTrackball: true,
             enableMouseListener: false,
             enableGrid: false,
-            glitchType: 0,
+            glitchType: 2,
             enableGlitch: false,
             enableRGBShift: false,
             rgbValue: 0.002,
@@ -345,18 +345,18 @@ ENGINE = function() {
         },
         lightsParams: {
             fillLightEnable: true,
-            fillLightIntensity: 0.1,
+            fillLightIntensity: 0.9,
             fillLightCastShadow: true,
             fillLightShadowIntensity: 0.1,
             keyLightEnable: true,
-            keyLightIntensity: 1,
+            keyLightIntensity: 2,
             keyLightCastShadow: true,
             keyLightShadowIntensity: 0.1,
             backLightEnable: true,
             backLightIntensity: 0.01,
             backLightCastShadow: true,
             backLightShadowIntensity: 0.1,
-            shininess: 10,
+            shininess: 8,
             rotateLights: false
         },
         motionParams: {
@@ -403,7 +403,7 @@ ENGINE = function() {
             texture: 1,
             textureThreshold: 0.01,
             CurrentLayer: 'A',
-            transitionTime: 10,
+            transitionTime: 8,
             toLayerA: function() {
                 var transitionParams = this;
                 this.transitionMixRatio = 0;
@@ -1169,7 +1169,7 @@ ENGINE = function() {
                     }
                     if(world.lightsParams.keyLightEnable) {
                         var keyLight = new THREE.DirectionalLight('white', world.lightsParams.keyLightIntensity);
-                        keyLight.position.set(1, 0, 0.5);
+                        keyLight.position.set(10, 10, 7.5);
                         keyLight.castShadow = world.lightsParams.keyLightCastShadow;
                         keyLight.shadowDarkness = world.lightsParams.keyLightShadowIntensity;
                         keyLight.shadowMapWidth = 1024 * 1;
@@ -1182,11 +1182,13 @@ ENGINE = function() {
                         keyLight.shadowCameraRight = d;
                         keyLight.shadowCameraTop = d;
                         keyLight.shadowCameraBottom = -d;
+                        //keyLight.intensity = world.lightsParams.keyLightIntensity;
                         scene.add(keyLight);
+                        
                     }
                     if(world.lightsParams.backLightEnable) {
                         var backLight = new THREE.DirectionalLight('white', world.lightsParams.backLightIntensity);
-                        backLight.position.set(-1, 0, 0.5);
+                        backLight.position.set(-10, -10, 8);
                         backLight.castShadow = world.lightsParams.backLightCastShadow;
                         backLight.shadowDarkness = world.lightsParams.backLightShadowIntensity;
                         backLight.shadowMapWidth = 1024 * 1;
@@ -1199,7 +1201,7 @@ ENGINE = function() {
                         backLight.shadowCameraRight = d;
                         backLight.shadowCameraTop = d;
                         backLight.shadowCameraBottom = -d;
-                        scene.add(backLight);
+                        //scene.add(backLight);
                     }
                 };
                 /**
@@ -1255,7 +1257,7 @@ ENGINE = function() {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/male30.dae', function(collada) {
+                    loader.load('../src/collada/model01.dae', function(collada) {
                         var dae = collada.scene;
                         layer.fragments = [];
                         layer.scene.add(dae);
@@ -1377,7 +1379,7 @@ ENGINE = function() {
                                 } else if(child.name.indexOf('cell') != -1) {
                                     var mesh = child.children[0];
                                     //mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.matcapMaterial(layer, 95);
+                                    mesh.material = world.materials.matcapMaterial(layer, 1);
                                     //world.wireframeMaterial();
                                     //layer.polyWire2 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
                                     mesh.receiveShadow = false;
@@ -1431,7 +1433,7 @@ ENGINE = function() {
                                     layer.fragments[i].rotation.y += layer.rotationSpeed.y * 2;
                                     layer.fragments[i].rotation.z += layer.rotationSpeed.y * 2;
                                     //position
-                                    layer.fragments[i].position.y += layer.rotationSpeed.y * 0.5;
+                                    layer.fragments[i].position.x += layer.rotationSpeed.y * 0.5;
                                 }
                             }
                             if(world.renderParams.enableTrackball) {
@@ -1501,21 +1503,22 @@ ENGINE = function() {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/male07.dae', function(collada) {
+                    loader.load('../src/collada/model04.dae', function(collada) {
                         var dae = collada.scene;
                         layer.scene.add(dae);
                         addLights(layer.scene);
+                        addSkyDome(layer, 8, '../src/textures/background/background14.jpg');
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
                                 console.info(child.name);
-                                if(child.name === 'makehuman_Body') {
+                                if(child.name === 'head') {
                                     var mesh = child.children[0];
                                     mesh.receiveShadow = true;
                                     mesh.castShadow = false;
                                     mesh.geometry.computeTangents();
                                     var shaderParams = {
-                                        shininess: 2,
-                                        normalScale: 0.5,
+                                        shininess: 3,
+                                        normalScale: 0.8,
                                         diffuseTexture: '../src/textures/UVmaps/male07/Head_Colour.jpg',
                                         specTexture: '../src/textures/UVmaps/male07/Head_Colour_SPEC.png',
                                         AOTexture: '../src/textures/UVmaps/male07/Head_Colour_AO.png',
@@ -1526,20 +1529,20 @@ ENGINE = function() {
                                 }
                             }
                         });
-                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.0002);
+                        //init scene rotation
+                        layer.rotationFactor = document.getElementById('rotationBar');
+                        layer.scene.rotation.y += 90 * Math.PI / 180;
+                        
+                        layer.rotationSpeed = 0.0008;
                         /**
                          * Anaglyph effect
                          **/
                         layer.render = function(rtt) {
-                            layer.maleHead.rotation.z += layer.rotationSpeed.z * 1.5;
+                            layer.maleHead.rotation.z -= layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
-                            if(world.renderParams.enableMouseListener) {
-                                layer.scene.rotation.y = world.targetRotationX;
-                                layer.scene.rotation.x = world.targetRotationY;
-                            }
-                            if(rtt) {
+                              if(rtt) {
                                 //
                                 if(world.renderParams.enableAnaglyph) {
                                     this.anaglyph.render(this.scene, this.camera);
@@ -1980,7 +1983,7 @@ ENGINE = function() {
                 // start init loading screen
                 setTimeout(function() {
                     classie.addClass(initIntroSubtitle, 'show');
-                }, 1000);
+                },1000);
                 setTimeout(function() {
                     classie.removeClass(initIntroSubtitle, 'show');
                     classie.addClass(initIntroTitle, 'show');
@@ -1990,9 +1993,9 @@ ENGINE = function() {
                     classie.removeClass(initIntroTitle, 'show');
                 }, 12000);
                 //end init loading screen
-                /*setTimeout(function() {
+                setTimeout(function() {
                     classie.addClass(initIntroScreen, 'hide');
-                }, 14000);*/
+                }, 1000);
                 //show menu
                 
                 
@@ -2000,7 +2003,7 @@ ENGINE = function() {
                     var menu = document.getElementById('menu');
                     classie.removeClass(menu, 'hide');
                     //classie.addClass(siteInfo, 'show');
-                }, 10000);
+                }, 1000);
             });
             this.NextLayer = new this.Layer('initLoadingModel', 1, function() {}, function() {
                 console.log('Dummy Loaded!');
@@ -2107,6 +2110,9 @@ ENGINE = function() {
                 });
                 //hide gallery visibility
                 classie.removeClass(galleryContainer, 'show');
+                
+                //myPortfolio.World.renderParams.enableColorify = true;
+                //myPortfolio.World.refreshPostProcessing();
             };
             /* menu navigation handler*/
             aboutAnchor.addEventListener('click', function() {
@@ -2162,6 +2168,8 @@ ENGINE = function() {
                 });
                 /* menu toggle*/
                 classie.toggleClass(menu, 'toggle');
+               // myPortfolio.World.renderParams.enableColorify = false;
+               // myPortfolio.World.refreshPostProcessing();
             });
             contactAnchor.addEventListener('click', function() {
                 //tweenZoomIn.easing(TWEEN.Easing.Exponential.Out).start();
@@ -2330,6 +2338,7 @@ ENGINE = function() {
             }
 
             function zoomScene(val) {
+                var layer = myPortfolio.World.CurrentLayer;
                 var tweenSceneZoom = new TWEEN.Tween(layer.scene.position).to({
                     x: layer.scene.position.x,
                     y: layer.scene.position.y,

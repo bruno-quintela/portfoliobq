@@ -132,9 +132,10 @@
     font-family: $primary-font-family;
   	text-rendering: optimizeLegibility;
     text-transform:uppercase;
+    font-weight:100;
     font-size:25px;
     color:$text-color;
-    letter-spacing:2px;
+    letter-spacing:3px;
 }
 
 %intro-subtitle-font
