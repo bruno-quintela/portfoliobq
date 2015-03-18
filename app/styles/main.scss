@@ -91,22 +91,22 @@ $transition-effect: ease;
     text-align: right;
     right:0px;
     will-change: transform;
-    @include transition((transform 1000ms 0ms $transition-effect,  opacity 500ms 0ms $transition-effect));
+    @include transition((transform 1000ms 0ms $transition-effect));
 }
 
 
 .section-content.main-menu
 {
-    opacity:0;
+    //opacity:0;
     color:$text-color;
     background-color:$primary-color;
-    will-change: transform, opacity;
+    will-change: transform;
     @include transform(translateX(100%));
 }
 
 .section-content.main-menu.show
 {
-    opacity:1;
+    //opacity:1;
     @include transform(translateX(0));
 }
 
@@ -114,15 +114,15 @@ $transition-effect: ease;
 {
     color:$text-color;
     background-color:$primary-color;
-    opacity:0;
-    will-change: transform, opacity;
+    //opacity:0;
+    will-change: transform;
     @include transform(translateX(100%));
 }
 
 .section-content.sub-menu.show
 {
     @include transform(translateX(0));
-    opacity:1;
+    //opacity:1;
 }
 
 .about-info-container{
@@ -412,7 +412,7 @@ $transition-effect: ease;
 
 .init-loading-screen
 {
-    z-index:2;
+    z-index:3;
     display: inline-block;
     position:absolute;
     width:100%;
@@ -423,7 +423,7 @@ $transition-effect: ease;
     background: $background-pattern;
     color:#fff;
     will-change: opacity, visibility;
-    @include transition((opacity 4s 0.5s $transition-effect, visibility 0s 4.5s)); 
+    @include transition((opacity 1s 0s $transition-effect, visibility 0s 2.5s)); 
 }
 
 .init-loading-screen.hide
@@ -476,7 +476,7 @@ $transition-effect: ease;
     float: left;
     height:1px;
     background-color:$loading-progress-color;
-    @include transition(width 2s $transition-effect);
+    @include transition(width 3s $transition-effect);
 }
 
 
@@ -484,18 +484,19 @@ $transition-effect: ease;
  *  INTRO SCREEN 
  **/
 
-/*.init-intro-screen
+.init-intro-screen
 {
     z-index:2;
     position:absolute;
     left:0px;
-    bottom:48%;
+    //bottom:48%;
     width:100%;
-    height: 130px;
+    height: 100%;
     opacity:1;
     visibility:visible;
     text-align:center;
-    @include transition((opacity 0.5s 6s $transition-effect, visibility 0s 6.5s $transition-effect));
+    background:transparent;
+    @include transition((opacity 0.5s 18s $transition-effect, visibility 0s 19s $transition-effect));
 }
 
 .init-intro-screen.hide
@@ -504,41 +505,41 @@ $transition-effect: ease;
     opacity:0;
 }
 
-.init-intro-screen .title
+.init-intro-screen .subtitle
 {
-    @extend %model-info-font;
-    position:absolute;
-    bottom:70px;
-    height:20px;
+    @extend %absolute-center;
+    @extend %intro-subtitle-font;  
+    height:50px;
     width:100%;
     opacity:0;
     will-change: opacity;
     visibility:visible;
-    @include transition(opacity 1.5s 0s $transition-effect);
+    @include transition(opacity 4.0s 0s $transition-effect);
 }
 
 
-.init-intro-screen.show .title
+.init-intro-screen .subtitle.show
 {
     opacity:1;
 }
 
 
-.init-intro-screen .subtitle{
-    @extend %model-subtitle-font;    
-	position:absolute;
-    bottom:50px;
-    height:20px;
+.init-intro-screen .title{
+    @extend %absolute-center;
+    @extend %intro-title-font;  
+    height:50px;
     width:100%;
     opacity:0;
-    will-change: opacity;
-    @include transition(opacity 1.5s 2s $transition-effect);
+    will-change: opacity, transform;
+     @include transform(scale(1,1));
+    @include transition((opacity 4.0s 4.0s $transition-effect, transform 4.0s 3.5s $transition-effect));
 }
 
-.init-intro-screen.show .subtitle{
+.init-intro-screen .title.show{
     opacity:1;
+    @include transform(scale(1.2,1.2));
 }
-*/
+
 
 /**
  * Model Loading
@@ -556,14 +557,14 @@ $transition-effect: ease;
     visibility:hidden;
     background-color:$loading-model-background;
     will-change:opacity, visibility;
-    @include transition((opacity 0.5s 0s $transition-effect, visibility 0s 0.5s));
+    @include transition((opacity 1s 0s $transition-effect, visibility 0s 1s));
 }
 
 .model-loading-screen.show
 {
     opacity:1;
     visibility:visible;
-    @include transition((opacity 0.5s 1.5s $transition-effect, visibility 0s 1.5s));
+    @include transition((opacity 1s 1s $transition-effect, visibility 0s 2s));
     
 }
 

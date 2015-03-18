@@ -401,8 +401,9 @@ ENGINE = function() {
             clock: new THREE.Clock(false),
             transitionMixRatio: 1,
             texture: 1,
-            textureThreshold: 0.3,
+            textureThreshold: 0.01,
             CurrentLayer: 'A',
+            transitionTime: 10,
             toLayerA: function() {
                 var transitionParams = this;
                 this.transitionMixRatio = 0;
@@ -457,7 +458,6 @@ ENGINE = function() {
                 }, transitionParams.transitionTime * 1000).onUpdate(update);
                 tweenLayerTransition.start();
             },
-            transitionTime: 3,
             tweenVertices: function() {
                 var source = myPortfolio.World.CurrentLayer.lowpoly.geometry;
                 var source2 = myPortfolio.World.CurrentLayer.lowpoly2.geometry;
@@ -1410,11 +1410,17 @@ ENGINE = function() {
                                 }
                             }
                         });
-                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.0002);
+                        
+                        //init scene rotation
+                        layer.scene.rotation.y += 90 * Math.PI / 180;
+                    
+                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.001);
+                        layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
                             //layer.scene.position.y += layer.rotationSpeed.y * 0.1;
                             //                            layer.lowpoly2.rotation.x += layer.rotationSpeed.z*5;
-                            layer.scene.rotation.y += layer.rotationSpeed.z * 2;
+                            layer.scene.rotation.y -= layer.rotationSpeed.z * parseFloat(layer.rotationFactor.value);
+                            //console.log(parseFloat(layer.rotationFactor.value));
                             /*layer.lowpoly2.rotation.x += layer.rotationSpeed.z;
                             layer.lowpoly2.rotation.y += layer.rotationSpeed.z;
                             layer.lowpoly2.rotation.z += layer.rotationSpeed.z;*/
@@ -1455,6 +1461,7 @@ ENGINE = function() {
                  * Import INIT LOADING ON PROGRESS MODEL collada(.dae)
                  **/
                 var loadInitModel = function(layer) {
+                    layer.fragments = [];
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
@@ -1463,35 +1470,15 @@ ENGINE = function() {
                         layer.scene.add(dae);
                         addLights(layer.scene);
                         collada.scene.traverse(function(child) {
-                            if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
-                                if(child.name === 'Cube') {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    //mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.matcapMaterial(layer, 53);
-                                    layer.spinner = mesh;
-                                }
-                            }
-                        });
-                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.005);
+                       });
                         /**
                          * Anaglyph effect
                          **/
                         layer.render = function(rtt) {
-                            //layer.spinner.rotation.x += layer.rotationSpeed.z * 1.5;
-                            layer.spinner.rotation.y += layer.rotationSpeed.z * 1.5;
-                            //layer.spinner.rotation.z += layer.rotationSpeed.z;
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
-                            if(world.renderParams.enableMouseListener) {
-                                layer.scene.rotation.y = world.targetRotationX;
-                                layer.scene.rotation.x = world.targetRotationY;
-                            }
                             if(rtt) {
-                                //
                                 if(world.renderParams.enableAnaglyph) {
                                     this.anaglyph.render(this.scene, this.camera);
                                 } else {
@@ -1966,43 +1953,59 @@ ENGINE = function() {
                 console.log('MainModel Loaded!');
                 var layer = myPortfolio.World.CurrentLayer;
                 var initLoadingScreen = document.getElementById('initLoadingScreen');
-                //var initIntroScreen = document.getElementById('initIntroScreen');
+                var initIntroScreen = document.getElementById('initIntroScreen');
+                var initIntroTitle = document.getElementById('initIntroTitle');
+                var initIntroSubtitle = document.getElementById('initIntroSubtitle');
                 var siteInfo = document.getElementById('siteInfo');
                 //hide init loading screen
-                classie.toggleClass(initLoadingScreen, 'hide');
+                classie.addClass(initLoadingScreen, 'hide');
                 setTimeout(function() {
+                    //transition layer
+                    myPortfolio.World.transitionParams.transitionMixRatio = 1;
+                    var update = function() {
+                        myPortfolio.World.transitionParams.transitionMixRatio = current.x;
+                    };
+                    var current = {
+                        x: 1
+                    };
+                    // remove previous tweens if needed:TODO use same instanciated tween
+                    var tweenLayerTransition = new TWEEN.Tween(current).to({
+                        x: 0
+                    }, myPortfolio.World.transitionParams.transitionTime * 1000).onUpdate(update);
+                    tweenLayerTransition.start();
                     //start background AUDIO
-                    // myPortfolio.SoundFx.backgroundMusic.play(0);
+                    myPortfolio.SoundFx.backgroundMusic.play(0);
                 }, 500);
+
                 // start init loading screen
-                /*setTimeout(function() {
-                    classie.addClass(initIntroScreen, 'show');
-                    // rotate lowpoly when name is showing
-                    setTimeout(function() {
-                        var tweenScene90 = new TWEEN.Tween(layer.lowpoly.rotation).to({
-                            x: layer.scene.rotation.x + 90 * Math.PI / 180,
-                            y: layer.scene.rotation.y + 90 * Math.PI / 180,
-                            z: layer.scene.rotation.z
-                        }, 2000);
-                        tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();
-                    }, 1500);
-                }, 5000);
-                //end init loading screen
                 setTimeout(function() {
-                    classie.removeClass(initIntroScreen, 'show');
-                }, 10000);*/
+                    classie.addClass(initIntroSubtitle, 'show');
+                }, 1000);
+                setTimeout(function() {
+                    classie.removeClass(initIntroSubtitle, 'show');
+                    classie.addClass(initIntroTitle, 'show');
+                }, 5000);
+                
+                setTimeout(function() {
+                    classie.removeClass(initIntroTitle, 'show');
+                }, 12000);
+                //end init loading screen
+                /*setTimeout(function() {
+                    classie.addClass(initIntroScreen, 'hide');
+                }, 14000);*/
                 //show menu
+                
+                
                 setTimeout(function() {
                     var menu = document.getElementById('menu');
                     classie.removeClass(menu, 'hide');
-                    classie.addClass(siteInfo, 'show');
-                    //destroy loading screen to prevent opacity animation 
-                }, 5000);
+                    //classie.addClass(siteInfo, 'show');
+                }, 10000);
             });
             this.NextLayer = new this.Layer('initLoadingModel', 1, function() {}, function() {
                 console.log('Dummy Loaded!');
             });
-            this.transition = new this.Transition(this.CurrentLayer, this.NextLayer);
+            this.transition = new this.Transition(this.NextLayer, this.CurrentLayer);
             /**/
             var animate = function() {
                 requestAnimationFrame(animate);
@@ -2214,6 +2217,7 @@ ENGINE = function() {
                         classie.removeClass(currentItem, 'show');
                         closeSubmenu();
                     } else {
+                        classie.removeClass(siteInfo, 'show');
                         var selectedModel = currentItem.getAttribute('data-model');
                         var totalAssets = parseInt(currentItem.getAttribute('data-totalassets'));
                         // scroll gallery container to top
@@ -2305,6 +2309,7 @@ ENGINE = function() {
                                 classie.toggleClass(currentItem, 'show');
                                 //classie.toggleClass(galleryLoader, 'show');
                                 closeSubmenu();
+                                classie.addClass(siteInfo, 'show');
                             });
                         }, 1500);
                     }
@@ -2316,12 +2321,12 @@ ENGINE = function() {
             /* rotate scene*/
 
             function rotateScene(deg) {
-                var tweenSceneRotate = new TWEEN.Tween(layer.scene.rotation).to({
+                /*var tweenSceneRotate = new TWEEN.Tween(layer.scene.rotation).to({
                     x: layer.scene.rotation.x,
                     y: layer.scene.rotation.y + deg * Math.PI / 180,
                     z: layer.scene.rotation.z
                 }, 2000);
-                tweenSceneRotate.easing(TWEEN.Easing.Quadratic.Out).start();
+                tweenSceneRotate.easing(TWEEN.Easing.Quadratic.Out).start();*/
             }
 
             function zoomScene(val) {
@@ -2352,29 +2357,23 @@ ENGINE = function() {
                 var scrollTop = galleryContainer.scrollTop;
                 var numberOfItems = 6;
                 var margin = 20;
-                
-                
                 // detect scroll at the top
                 if(direction === 1 && scrollTop === 0 && direction > 0) {
                     return;
                 }
                 // detect scroll at the bottom
-                else if (direction === -1 && (scrollHeight - scrollTop - margin <= scrollOffsetHeight)) 
-                {
-                     return;
+                else if(direction === -1 && (scrollHeight - scrollTop - margin <= scrollOffsetHeight)) {
+                    return;
                 }
-                
-                console.log(scrollHeight - scrollTop+10);
+                console.log(scrollHeight - scrollTop + 10);
                 var tweenGalleryScroll = new TWEEN.Tween(galleryContainer).to({
                     scrollTop: scrollTop + -1 * direction * (scrollHeight / numberOfItems)
                 }, 500);
                 tweenGalleryScroll.easing(TWEEN.Easing.Quadratic.Out).start();
-                
             };
             galleryContainer.addEventListener('mousewheel', function(event) {
                 event.preventDefault();
                 var delta = Math.max(-1, Math.min(1, (event.wheelDelta || -event.detail)));
-                
                 scrollGallery(delta, 1000);
             }, false);
         },

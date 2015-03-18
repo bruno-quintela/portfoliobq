@@ -35,7 +35,7 @@
   	text-rendering: optimizeLegibility;
     color:$text-color;
     font-weight: 300;
-    font-size: 6vh;
+    font-size: 6vh; 
     letter-spacing: 5px;
     text-transform: uppercase;
 }
@@ -126,4 +126,24 @@
     letter-spacing: 5px;
 }
 
+
+%intro-title-font
+{
+    font-family: $primary-font-family;
+  	text-rendering: optimizeLegibility;
+    text-transform:uppercase;
+    font-size:25px;
+    color:$text-color;
+    letter-spacing:2px;
+}
+
+%intro-subtitle-font
+{
+    font-family: $primary-font-family;
+  	text-rendering: optimizeLegibility;
+    text-transform:uppercase;
+    font-size:11px;
+    color:$text-color; 
+    letter-spacing:5px;
+}
 
