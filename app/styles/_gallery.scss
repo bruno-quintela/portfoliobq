@@ -48,8 +48,8 @@
 {
     position:absolute;
     top:0px;
-    left:-1px;
-    width:80px;
+    right:0px;
+    width:75px;
     height:100%;
     background:#000;
 }
@@ -283,7 +283,7 @@ figure.effect-apollo figcaption::before {
 }
 
 figure.effect-apollo p {
-    margin-left: 60px;
+    margin-left: 0px;
 	max-width: 150px;
 	//border-left: 2px solid $secondary-color;
 	text-align: left;
@@ -294,7 +294,7 @@ figure.effect-apollo p {
 
 figure.effect-apollo h2 {
 	text-align:left;
-    margin-left:60px;
+    margin-left:0px;
     opacity: 0;
 }
 

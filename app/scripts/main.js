@@ -403,7 +403,7 @@ ENGINE = function() {
             texture: 1,
             textureThreshold: 0.01,
             CurrentLayer: 'A',
-            transitionTime: 8,
+            transitionTime: 1,
             toLayerA: function() {
                 var transitionParams = this;
                 this.transitionMixRatio = 0;
@@ -1023,9 +1023,13 @@ ENGINE = function() {
                 var material = new THREE.ShaderMaterial(parameters);
                 return material;
             };
-            this.bakedMaterial = function(texturePath) {
+            this.bakedMaterial = function(layer, texturePath) {
                 var material = new THREE.MeshLambertMaterial({
-                    map: THREE.ImageUtils.loadTexture(texturePath),
+                    map: THREE.ImageUtils.loadTexture(texturePath, new THREE.UVMapping(), function() {
+                        layer.numberAssetsLoaded++;
+                        console.log(layer.numberAssetsLoaded);
+                        layer.loadProgressCallback();
+                    })
                 });
                 return material;
             };
@@ -1169,7 +1173,7 @@ ENGINE = function() {
                     }
                     if(world.lightsParams.keyLightEnable) {
                         var keyLight = new THREE.DirectionalLight('white', world.lightsParams.keyLightIntensity);
-                        keyLight.position.set(10, 10, 7.5);
+                        keyLight.position.set(20, 10, 10);
                         keyLight.castShadow = world.lightsParams.keyLightCastShadow;
                         keyLight.shadowDarkness = world.lightsParams.keyLightShadowIntensity;
                         keyLight.shadowMapWidth = 1024 * 1;
@@ -1184,11 +1188,10 @@ ENGINE = function() {
                         keyLight.shadowCameraBottom = -d;
                         //keyLight.intensity = world.lightsParams.keyLightIntensity;
                         scene.add(keyLight);
-                        
                     }
                     if(world.lightsParams.backLightEnable) {
                         var backLight = new THREE.DirectionalLight('white', world.lightsParams.backLightIntensity);
-                        backLight.position.set(-10, -10, 8);
+                        backLight.position.set(-20, -10, -10);
                         backLight.castShadow = world.lightsParams.backLightCastShadow;
                         backLight.shadowDarkness = world.lightsParams.backLightShadowIntensity;
                         backLight.shadowMapWidth = 1024 * 1;
@@ -1405,17 +1408,15 @@ ENGINE = function() {
                                     //layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 1.031, 1);
                                 } else if(child.name === 'ground') {
                                     var mesh = child.children[0];
-                                    mesh.material = world.materials.bakedMaterial('../src/textures/UVmaps/uvmapground.png');
+                                    mesh.material = world.materials.bakedMaterial(layer, '../src/textures/UVmaps/uvmapground.png');
                                     mesh.receiveShadow = true;
                                     mesh.castShadow = false;
                                     layer.ground = mesh;
                                 }
                             }
                         });
-                        
                         //init scene rotation
                         layer.scene.rotation.y += 90 * Math.PI / 180;
-                    
                         layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.001);
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
@@ -1471,8 +1472,7 @@ ENGINE = function() {
                         var dae = collada.scene;
                         layer.scene.add(dae);
                         addLights(layer.scene);
-                        collada.scene.traverse(function(child) {
-                       });
+                        collada.scene.traverse(function(child) {});
                         /**
                          * Anaglyph effect
                          **/
@@ -1507,7 +1507,8 @@ ENGINE = function() {
                         var dae = collada.scene;
                         layer.scene.add(dae);
                         addLights(layer.scene);
-                        addSkyDome(layer, 8, '../src/textures/background/background14.jpg');
+                        addSkyDome(layer, 8, '../src/textures/background/background22.jpg');
+                        //layer.backgroundImage = addBackgroundImage(layer, '../src/textures/background/background22.jpg');
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
                                 console.info(child.name);
@@ -1517,7 +1518,7 @@ ENGINE = function() {
                                     mesh.castShadow = false;
                                     mesh.geometry.computeTangents();
                                     var shaderParams = {
-                                        shininess: 3,
+                                        shininess: 5,
                                         normalScale: 0.8,
                                         diffuseTexture: '../src/textures/UVmaps/male07/Head_Colour.jpg',
                                         specTexture: '../src/textures/UVmaps/male07/Head_Colour_SPEC.png',
@@ -1532,7 +1533,6 @@ ENGINE = function() {
                         //init scene rotation
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.scene.rotation.y += 90 * Math.PI / 180;
-                        
                         layer.rotationSpeed = 0.0008;
                         /**
                          * Anaglyph effect
@@ -1542,7 +1542,76 @@ ENGINE = function() {
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
-                              if(rtt) {
+                            if(rtt) {
+                                //
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
+                                }
+                            } else {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    this.composer.render(0.01);
+                                }
+                            }
+                        };
+                    });
+                };
+                /**
+                 * Import lowpoly collada(.dae) object and corresponding UVmap into scene
+                 **/
+                var loadLowpolyModel = function(layer) {
+                    // load collada assets
+                    var loader = new THREE.ColladaLoader();
+                    loader.options.convertUpAxis = false;
+                    loader.load('../src/collada/model02.dae', function(collada) {
+                        var dae = collada.scene;
+                        layer.scene.add(dae);
+                        //addLights(layer.scene);
+                        addSkyDome(layer, 7, '../src/textures/background/background11.jpg');
+                        //layer.backgroundImage = addBackgroundImage(layer, '../src/textures/background/background22.jpg');
+                        collada.scene.traverse(function(child) {
+                            if(child instanceof THREE.Object3D) {
+                                console.info(child.name);
+                                if(child.name === 'lowpoly') {
+                                    var mesh = child.children[0];
+                                    var modifier = new THREE.SubdivisionModifier(1);
+                                    modifier.modify(mesh.geometry);
+                                    mesh.material = world.materials.matcapMaterial(layer, 89);
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    layer.lowpoly = mesh;
+                                }else if(child.name === 'Ground') {
+                                    var mesh = child.children[0];
+                                    mesh.material = world.materials.bakedMaterial(layer, '../src/textures/UVmaps/model01/plane-bake.png');
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    layer.ground = mesh;
+                                }
+                            }
+                        });
+                        //init scene rotation
+                        layer.rotationFactor = document.getElementById('rotationBar');
+                        layer.scene.rotation.x += 10 * Math.PI / 180;
+                        //layer.scene.rotation.y += 180 * Math.PI / 180;
+                        layer.rotationSpeed = 0.0008;
+                        /**
+                         * Anaglyph effect
+                         **/
+                        layer.render = function(rtt) {
+                            //layer.lowpoly.rotation.z -= layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            //layer.sphere.rotation.x -= layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            //layer.sphere.rotation.y -= layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            //layer.sphere.rotation.z -= layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            //layer.lowpoly2.rotation.z -= layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            //layer.lowpoly3.rotation.z -= layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            layer.scene.rotation.y -= layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            if(world.renderParams.enableTrackball) {
+                                layer.trackball.update();
+                            }
+                            if(rtt) {
                                 //
                                 if(world.renderParams.enableAnaglyph) {
                                     this.anaglyph.render(this.scene, this.camera);
@@ -1717,7 +1786,7 @@ ENGINE = function() {
                 } else if(this.name === 'GalleryModel2') {
                     loadMaleHeadModel(this);
                 } else if(this.name === 'GalleryModel3') {
-                    loadNMSModel(this);
+                    loadLowpolyModel(this);
                 } else if(this.name === 'GalleryModel4') {
                     loadNMSModel(this);
                 }
@@ -1965,6 +2034,7 @@ ENGINE = function() {
                 setTimeout(function() {
                     //transition layer
                     myPortfolio.World.transitionParams.transitionMixRatio = 1;
+                    var transitionTimeInterval = 10000;
                     var update = function() {
                         myPortfolio.World.transitionParams.transitionMixRatio = current.x;
                     };
@@ -1974,31 +2044,27 @@ ENGINE = function() {
                     // remove previous tweens if needed:TODO use same instanciated tween
                     var tweenLayerTransition = new TWEEN.Tween(current).to({
                         x: 0
-                    }, myPortfolio.World.transitionParams.transitionTime * 1000).onUpdate(update);
+                    }, transitionTimeInterval).onUpdate(update);
                     tweenLayerTransition.start();
                     //start background AUDIO
-                    myPortfolio.SoundFx.backgroundMusic.play(0);
+                    //myPortfolio.SoundFx.backgroundMusic.play(0);
                 }, 500);
-
                 // start init loading screen
                 setTimeout(function() {
                     classie.addClass(initIntroSubtitle, 'show');
-                },1000);
+                }, 1000);
                 setTimeout(function() {
                     classie.removeClass(initIntroSubtitle, 'show');
                     classie.addClass(initIntroTitle, 'show');
                 }, 5000);
-                
                 setTimeout(function() {
                     classie.removeClass(initIntroTitle, 'show');
                 }, 12000);
                 //end init loading screen
                 setTimeout(function() {
                     classie.addClass(initIntroScreen, 'hide');
-                }, 1000);
+                }, 14000);
                 //show menu
-                
-                
                 setTimeout(function() {
                     var menu = document.getElementById('menu');
                     classie.removeClass(menu, 'hide');
@@ -2110,7 +2176,6 @@ ENGINE = function() {
                 });
                 //hide gallery visibility
                 classie.removeClass(galleryContainer, 'show');
-                
                 //myPortfolio.World.renderParams.enableColorify = true;
                 //myPortfolio.World.refreshPostProcessing();
             };
@@ -2168,8 +2233,8 @@ ENGINE = function() {
                 });
                 /* menu toggle*/
                 classie.toggleClass(menu, 'toggle');
-               // myPortfolio.World.renderParams.enableColorify = false;
-               // myPortfolio.World.refreshPostProcessing();
+                // myPortfolio.World.renderParams.enableColorify = false;
+                // myPortfolio.World.refreshPostProcessing();
             });
             contactAnchor.addEventListener('click', function() {
                 //tweenZoomIn.easing(TWEEN.Easing.Exponential.Out).start();
@@ -2255,7 +2320,7 @@ ENGINE = function() {
                                         layer.onLoadedCallback();
                                         classie.toggleClass(loadingScreen, 'show');
                                         layer.loadReset();
-                                    }, 4500);
+                                    }, 2000);
                                 }
                                 console.info(loadProgression);
                             }, function() {

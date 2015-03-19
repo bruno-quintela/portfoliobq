@@ -555,14 +555,14 @@ $transition-effect: ease;
     visibility:hidden;
     background-color:$loading-model-background;
     will-change:opacity, visibility;
-    @include transition((opacity 1s 0s $transition-effect, visibility 0s 1s));
+    @include transition((opacity 1s 0s $transition-effect, visibility 0s 0s));
 }
 
 .model-loading-screen.show
 {
     opacity:1;
     visibility:visible;
-    @include transition((opacity 1s 1s $transition-effect, visibility 0s 2s));
+    @include transition((opacity 1s 0s $transition-effect, visibility 0s 0s));
     
 }
 
