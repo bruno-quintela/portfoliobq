@@ -983,6 +983,7 @@ ENGINE = function() {
                 uniforms.enableSpecular.value = true;
                 uniforms.enableReflection.value = false;
                 uniforms.enableDisplacement.value = false;
+                
                 uniforms.tDiffuse.value = THREE.ImageUtils.loadTexture(shaderParams.diffuseTexture, new THREE.UVMapping(), function() {
                     layer.numberAssetsLoaded++;
                     console.log(layer.numberAssetsLoaded);
@@ -1582,6 +1583,109 @@ ENGINE = function() {
                     });
                 };
                 /**
+                 * Import Vase collada(.dae) object and corresponding UVmap into scene
+                 **/
+                var loadJarModel = function(layer) {
+                    // load collada assets
+                    var loader = new THREE.ColladaLoader();
+                    loader.options.convertUpAxis = false;
+                    loader.load('../src/collada/model05.dae', function(collada) {
+                        var dae = collada.scene;
+                        layer.scene.add(dae);
+                        //addLights(layer.scene);
+                        addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
+                        //layer.backgroundImage = addBackgroundImage(layer, '../src/textures/background/background22.jpg');
+                        collada.scene.traverse(function(child) {
+                            if(child instanceof THREE.Object3D) {
+                                console.info(child.name);
+                                if(child.name.indexOf('branch') !== -1) {
+                                    var mesh = child.children[0];
+                               //var modifier = new THREE.SubdivisionModifier(2);
+                                 //   modifier.modify(mesh.geometry);
+                                    //mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.matcapMaterial(layer, 111);
+                                    //mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap80.png', '../src/textures/UVmaps/model05/terrain-texture_NORM.png', 1, true);
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    layer.lowpoly = mesh;
+                                }if(child.name === 'lowpoly2') {
+                                    var mesh = child.children[0];
+                                    var modifier = new THREE.SubdivisionModifier(2);
+                                    modifier.modify(mesh.geometry);
+                                    mesh.material = world.materials.matcapMaterial(layer, 60);
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    layer.lowpoly2 = mesh;
+                                }
+                                if(child.name.indexOf('Icosphere') !== -1) {
+                                    var mesh = child.children[0];
+                                    //var modifier = new THREE.SubdivisionModifier(2);
+                                    //modifier.modify(mesh.geometry);
+                                    
+                                    mesh.material = world.materials.matcapMaterial(layer, 3);
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    layer.lowpoly3 = mesh;
+                                }
+                                else if(child.name === 'terrain'){
+                                     var mesh = child.children[0];
+                                    mesh.receiveShadow = true;
+                                    mesh.castShadow = true;
+                                    mesh.geometry.computeTangents();
+                                    var shaderParams = {
+                                        shininess: 5,
+                                        normalScale: 0.8,
+                                        diffuseTexture: '../src/textures/UVmaps/model05/terrain-texture.jpg',
+                                        specTexture: '../src/textures/UVmaps/model05/terrain-texture_SPEC.png',
+                                        AOTexture: '../src/textures/UVmaps/model05/terrain-texture_AO.png',
+                                        normalTexture: '../src/textures/UVmaps/model05/terrain-texture_NORM.png'
+                                    }
+                                    //mesh.material = world.materials.shaderNormalMaterial(layer, shaderParams);
+                                    //mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap80.png', '../src/textures/UVmaps/model05/terrain-texture_NORM.png', 1, true);
+                                    mesh.material = world.materials.matcapMaterial(layer, 67);
+                                    layer.makehumanBody = mesh;
+                                }
+                                    else if(child.name === 'Ground') {
+                                    var mesh = child.children[0];
+                                    mesh.material = world.materials.bakedMaterial(layer, '../src/textures/UVmaps/model05/plane-bake1.png');
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    layer.ground = mesh;
+                                }
+                            }
+                        });
+                        //init scene rotation
+                        layer.rotationFactor = document.getElementById('rotationBar');
+                        layer.scene.rotation.x += 0 * Math.PI / 180;
+                        //layer.scene.rotation.y += 180 * Math.PI / 180;
+                        layer.rotationSpeed = 0.0008;
+                        /**
+                         * Anaglyph effect
+                         **/
+                        layer.render = function(rtt) {
+
+                            layer.scene.rotation.y -= layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            if(world.renderParams.enableTrackball) {
+                                layer.trackball.update();
+                            }
+                            if(rtt) {
+                                //
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
+                                }
+                            } else {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    this.composer.render(0.01);
+                                }
+                            }
+                        };
+                    });
+                };
+                /**
                  * Import No Man Sky's collada(.dae) object and corresponding UVmap into scene
                  **/
                 var loadNMSModel = function(layer) {
@@ -1743,6 +1847,12 @@ ENGINE = function() {
                     
                 } else if(this.name === 'GalleryModel4') {
                     loadMaleHeadModel(this);
+                }
+                 else if(this.name === 'GalleryModel5') {
+                    loadJarModel(this);
+                }
+                 else if(this.name === 'GalleryModel6') {
+                    loadNMSModel(this);
                 }
                 /*******************************/
                 world.postprocess.apply(this);
