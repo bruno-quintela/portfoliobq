@@ -880,6 +880,7 @@ ENGINE = function() {
                 var material = new THREE.MeshBasicMaterial({
                     map: THREE.ImageUtils.loadTexture(texture),
                     blending: THREE.NormalBlending,
+                    side: THREE.DoubleSide,
                     depthTest: true,
                     transparent: true
                 });
@@ -983,7 +984,6 @@ ENGINE = function() {
                 uniforms.enableSpecular.value = true;
                 uniforms.enableReflection.value = false;
                 uniforms.enableDisplacement.value = false;
-                
                 uniforms.tDiffuse.value = THREE.ImageUtils.loadTexture(shaderParams.diffuseTexture, new THREE.UVMapping(), function() {
                     layer.numberAssetsLoaded++;
                     console.log(layer.numberAssetsLoaded);
@@ -1254,7 +1254,6 @@ ENGINE = function() {
                     layer.scene.add(backgroundImage);
                     return backgroundImage;
                 };
-                
                 /**
                  * Import INIT LOADING ON PROGRESS MODEL collada(.dae)
                  **/
@@ -1291,7 +1290,6 @@ ENGINE = function() {
                         };
                     });
                 };
-                
                 /**
                  * Import init model collada(.dae) object and corresponding UVmap into scene
                  **/
@@ -1328,7 +1326,7 @@ ENGINE = function() {
                                     layer.lowpoly = mesh;
                                     //layer.polyWire = addWireframe(layer.scene, mesh.geometry, 0x000000, 1, 1);
                                     //layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 1.031, 1);
-                                } 
+                                }
                             }
                         });
                         //init scene rotation
@@ -1360,7 +1358,6 @@ ENGINE = function() {
                         };
                     });
                 };
-                
                 /**
                  * Import model01 female body collada(.dae) object and corresponding UVmap into scene
                  **/
@@ -1384,7 +1381,6 @@ ENGINE = function() {
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     mesh.geometry.computeTangents();
-                                    
                                     mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap80.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
                                     layer.makehumanBody = mesh;
                                 } else if(child.name === 'makehuman_Hair') {
@@ -1415,7 +1411,7 @@ ENGINE = function() {
                                         transparent: true
                                     });
                                     layer.makehumanEyelashes = mesh;
-                                } 
+                                }
                             }
                         });
                         //init scene rotation
@@ -1426,11 +1422,9 @@ ENGINE = function() {
                             //layer.scene.position.y += layer.rotationSpeed.y * 0.1;
                             //layer.lowpoly2.rotation.x += layer.rotationSpeed.z*5;
                             layer.scene.rotation.y += layer.rotationSpeed.z * parseFloat(layer.rotationFactor.value);
-
                             /*layer.lowpoly2.rotation.x += layer.rotationSpeed.z;
                             layer.lowpoly2.rotation.y += layer.rotationSpeed.z;
                             layer.lowpoly2.rotation.z += layer.rotationSpeed.z;*/
-                            
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
@@ -1454,7 +1448,6 @@ ENGINE = function() {
                         };
                     });
                 };
-                
                 /**
                  * Import MALE HEAD collada(.dae) object and corresponding UVmap into scene
                  **/
@@ -1465,7 +1458,14 @@ ENGINE = function() {
                     loader.load('../src/collada/model04.dae', function(collada) {
                         var dae = collada.scene;
                         layer.scene.add(dae);
-                        addLights(layer.scene);
+                        /*add scene lights*/
+                        var fillLight = new THREE.DirectionalLight('white', world.lightsParams.fillLightIntensity);
+                        fillLight.position.set(0, 0, 20);
+                        layer.scene.add(fillLight);
+                        var keyLight = new THREE.DirectionalLight('white', world.lightsParams.keyLightIntensity);
+                        keyLight.position.set(20, 10, 10);
+                        layer.scene.add(keyLight);
+                        /* add scene skydome */
                         addSkyDome(layer, 8, '../src/textures/background/background22.jpg');
                         //layer.backgroundImage = addBackgroundImage(layer, '../src/textures/background/background22.jpg');
                         collada.scene.traverse(function(child) {
@@ -1542,7 +1542,7 @@ ENGINE = function() {
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     layer.lowpoly = mesh;
-                                }else if(child.name === 'Ground') {
+                                } else if(child.name === 'Ground') {
                                     var mesh = child.children[0];
                                     mesh.material = world.materials.bakedMaterial(layer, '../src/textures/UVmaps/model03/plane-bake.png');
                                     mesh.receiveShadow = false;
@@ -1560,7 +1560,6 @@ ENGINE = function() {
                          * Anaglyph effect
                          **/
                         layer.render = function(rtt) {
-
                             layer.scene.rotation.y -= layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
@@ -1600,15 +1599,12 @@ ENGINE = function() {
                                 console.info(child.name);
                                 if(child.name.indexOf('branch') !== -1) {
                                     var mesh = child.children[0];
-                               //var modifier = new THREE.SubdivisionModifier(2);
-                                 //   modifier.modify(mesh.geometry);
-                                    //mesh.geometry.computeTangents();
                                     mesh.material = world.materials.matcapMaterial(layer, 111);
-                                    //mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap80.png', '../src/textures/UVmaps/model05/terrain-texture_NORM.png', 1, true);
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     layer.lowpoly = mesh;
-                                }if(child.name === 'lowpoly2') {
+                                }
+                                if(child.name === 'lowpoly2') {
                                     var mesh = child.children[0];
                                     var modifier = new THREE.SubdivisionModifier(2);
                                     modifier.modify(mesh.geometry);
@@ -1621,14 +1617,12 @@ ENGINE = function() {
                                     var mesh = child.children[0];
                                     //var modifier = new THREE.SubdivisionModifier(2);
                                     //modifier.modify(mesh.geometry);
-                                    
                                     mesh.material = world.materials.matcapMaterial(layer, 3);
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     layer.lowpoly3 = mesh;
-                                }
-                                else if(child.name === 'terrain'){
-                                     var mesh = child.children[0];
+                                } else if(child.name === 'terrain') {
+                                    var mesh = child.children[0];
                                     mesh.receiveShadow = true;
                                     mesh.castShadow = true;
                                     mesh.geometry.computeTangents();
@@ -1644,8 +1638,7 @@ ENGINE = function() {
                                     //mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap80.png', '../src/textures/UVmaps/model05/terrain-texture_NORM.png', 1, true);
                                     mesh.material = world.materials.matcapMaterial(layer, 67);
                                     layer.makehumanBody = mesh;
-                                }
-                                    else if(child.name === 'Ground') {
+                                } else if(child.name === 'Ground') {
                                     var mesh = child.children[0];
                                     mesh.material = world.materials.bakedMaterial(layer, '../src/textures/UVmaps/model05/plane-bake1.png');
                                     mesh.receiveShadow = false;
@@ -1663,7 +1656,6 @@ ENGINE = function() {
                          * Anaglyph effect
                          **/
                         layer.render = function(rtt) {
-
                             layer.scene.rotation.y -= layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
@@ -1692,82 +1684,78 @@ ENGINE = function() {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/nms-logo.dae', function(collada) {
+                    loader.load('../src/collada/model06.dae', function(collada) {
                         var dae = collada.scene;
                         layer.scene.add(dae);
-                        //layer.backgroundImage = addBackgroundImage(layer, '../src/textures/background/background' + world.renderParams.backgroundImage + '.jpg');
-                        //addSkyDome(layer, 19, '../src/textures/background/background16.jpg');
-                        addLights(layer.scene);
-                        layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 300, 7, '../src/textures/sprites/WhiteDot.svg', 0.08);
+                        
+                        //addSkyDome(layer, 5.5, '../src/textures/UVmaps/model06/universe_skydome.png');
+                        // add atmosphere
+                        var atmosphereTexture = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/model06/universe_skydome.png', new THREE.UVMapping(), function() {
+                            layer.atmosphere = new THREE.Mesh(new THREE.SphereGeometry(3.5, 100, 60), new THREE.MeshBasicMaterial({
+                                map: atmosphereTexture,
+                                blending: THREE.AdditiveAlphaBlending,
+                                side: THREE.DoubleSide,
+                                depthTest: true,
+                                transparent: true
+                            }));
+                            layer.atmosphere.scale.x = -1;
+                            
+                            layer.scene.add(layer.atmosphere);
+                        });
+                        layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 1000, 7, '../src/textures/sprites/WhiteDot.svg', 0.10);
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
                                 console.info(child.name);
                                 if(child.name === 'Planet1') {
                                     var mesh = child.children[0];
                                     mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
+                                    mesh.castShadow = true;
                                     mesh.geometry.computeTangents();
                                     var shaderParams = {
-                                        shininess: 1,
+                                        shininess: 0.5,
                                         normalScale: 0.5,
-                                        diffuseTexture: '../src/textures/nms/planet_Arnessk.png',
-                                        specTexture: '../src/textures/nms/planet_Arnessk_SPEC.png',
-                                        AOTexture: '../src/textures/nms/planet_Arnessk_AO.png',
-                                        normalTexture: '../src/textures/nms/planet_Arnessk_NORM.png'
+                                        diffuseTexture: '../src/textures/UVmaps/model06/planet_Arnessk.png',
+                                        specTexture: '../src/textures/UVmaps/model06/planet_Arnessk_SPEC.png',
+                                        AOTexture: '../src/textures/UVmaps/model06/planet_Arnessk_AO.png',
+                                        normalTexture: '../src/textures/UVmaps/model06/planet_Arnessk_NORM.png'
                                     }
                                     //mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap50.png', '../src/textures/nms/planet_Arnessk_NORM.png', 1);
                                     mesh.material = world.materials.shaderNormalMaterial(layer, shaderParams);
                                     layer.planet = mesh;
+                                }
+                                if(child.name === 'planet2') {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = true;
+                                    mesh.castShadow = false;
+                                    mesh.geometry.computeTangents();
+                                    
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap30.png', '../src/textures/normalMaps/normal5.jpg', 1, true);
+                                    layer.planet2 = mesh;
                                     layer.makehumanBody = mesh;
                                 } else if(child.name === 'Clouds') {
                                     var mesh = child.children[0];
-                                    mesh.material = world.materials.transparentTextureMaterial('../src/textures/nms/clouds.png');
+                                    mesh.material = world.materials.transparentTextureMaterial('../src/textures/UVmaps/model06/universe_skydome.png');
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     layer.clouds = mesh;
-                                } else if(child.name === 'Piramid_wireframe') {
-                                    var mesh = child.children[0];
-                                    mesh.material = world.materials.matcapMaterial(layer, 10); //world.materials.shaderNormalMaterial(layer);
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    layer.piramidWireframe = mesh;
-                                    layer.lowpoly3 = mesh;
-                                } else if(child.name === 'Piramid') {
-                                    var mesh = child.children[0];
-                                    mesh.material = world.materials.matcapMaterial(layer, 15); //world.materials.shaderNormalMaterial(layer);
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    layer.piramid = mesh;
-                                    layer.lowpoly = mesh;
-                                } else if(child.name === 'Inner_sphere') {
-                                    var mesh = child.children[0];
-                                    mesh.material = world.materials.matcapMaterial(layer, 85); //world.materials.shaderNormalMaterial(layer);
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    layer.innerSphere = mesh;
-                                    layer.lowpoly2 = mesh;
-                                } else if(child.name === 'Landscape') {
-                                    var mesh = child.children[0];
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap72.png', '../src/textures/nms/planet_Arnessk_NORM.png', 1, false);
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    layer.landscape = mesh;
                                 }
                             }
                         });
+                        layer.rotationFactor = document.getElementById('rotationBar');
                         layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.0002);
+                        layer.scene.rotation.y += 50 * Math.PI / 180;
+                        layer.scene.rotation.x += 90 * Math.PI / 180;
+                        
                         /**
                          * Anaglyph effect
                          **/
                         layer.render = function(rtt) {
                             layer.planet.rotation.z += layer.rotationSpeed.z * 1.5;
+                            layer.planet2.rotation.y += layer.rotationSpeed.z * 5.5;
                             //layer.clouds.rotation.x += layer.rotationSpeed.z;
-                            //layer.clouds.rotation.y += layer.rotationSpeed.z;
-                            layer.clouds.rotation.z += layer.rotationSpeed.z;
-                            layer.piramid.rotation.z -= layer.rotationSpeed.z * 5;
-                            layer.piramidWireframe.rotation.z -= layer.rotationSpeed.z * 5;
-                            layer.innerSphere.rotation.z += layer.rotationSpeed.z * 15;
+                            //layer.skydome.rotation.x += layer.rotationSpeed.z * 5.5;
+                            layer.atmosphere.rotation.x += layer.rotationSpeed.z;
+                            layer.scene.rotation.x -= layer.rotationSpeed.z * parseFloat(layer.rotationFactor.value);
                             layer.sphericalCloud.rotation.z += layer.rotationSpeed.z / 2;
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
@@ -1841,17 +1829,14 @@ ENGINE = function() {
                 } else if(this.name === 'GalleryModel1') {
                     loadMainModel(this);
                 } else if(this.name === 'GalleryModel2') {
-                   loadFemaleModel(this);
+                    loadFemaleModel(this);
                 } else if(this.name === 'GalleryModel3') {
-                   loadLowpolyModel(this);
-                    
+                    loadLowpolyModel(this);
                 } else if(this.name === 'GalleryModel4') {
                     loadMaleHeadModel(this);
-                }
-                 else if(this.name === 'GalleryModel5') {
+                } else if(this.name === 'GalleryModel5') {
                     loadJarModel(this);
-                }
-                 else if(this.name === 'GalleryModel6') {
+                } else if(this.name === 'GalleryModel6') {
                     loadNMSModel(this);
                 }
                 /*******************************/
