@@ -1774,8 +1774,120 @@ ENGINE = function() {
                             //layer.skydome.rotation.x += layer.rotationSpeed.z * 5.5;
                             layer.atmosphere1.rotation.x += layer.rotationSpeed.z;
                             //layer.atmosphere2.rotation.x += layer.rotationSpeed.z;
-                            //layer.scene.rotation.y -= layer.rotationSpeed.z * parseFloat(layer.rotationFactor.value);
+                            layer.scene.rotation.y -= layer.rotationSpeed.z * parseFloat(layer.rotationFactor.value);
                             layer.sphericalCloud.rotation.x -= layer.rotationSpeed.z / 2;
+                            if(world.renderParams.enableTrackball) {
+                                layer.trackball.update();
+                            }
+                            if(world.renderParams.enableMouseListener) {
+                                layer.scene.rotation.y = world.targetRotationX;
+                                layer.scene.rotation.x = world.targetRotationY;
+                            }
+                            if(rtt) {
+                                //
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
+                                }
+                            } else {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    this.composer.render(0.01);
+                                }
+                            }
+                        };
+                    });
+                };
+                
+                 /**
+                 * Import Particles collada(.dae) object and corresponding UVmap into scene
+                 **/
+                var loadParticlesModel = function(layer) {
+                    // load collada assets
+                    var loader = new THREE.ColladaLoader();
+                    loader.options.convertUpAxis = false;
+                    loader.load('../src/collada/model07.dae', function(collada) {
+                        var dae = collada.scene;
+                        layer.scene.add(dae);
+                        
+                        //addSkyDome(layer, 5.5, '../src/textures/UVmaps/model06/universe_skydome.png');
+                        // add atmosphere
+                        /*var atmosphereTexture1 = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/model06/universe_skydome5.png', new THREE.UVMapping(), function() {
+                            layer.atmosphere1 = new THREE.Mesh(new THREE.SphereGeometry(10, 100, 100), new THREE.MeshBasicMaterial({
+                                map: atmosphereTexture1,
+                                blending: THREE.AdditiveAlphaBlending,
+                                side: THREE.DoubleSide,
+                                depthTest: true,
+                                transparent: true
+                            }));
+                            layer.atmosphere1.scale.x = -1;
+                            layer.atmosphere1.rotation.z = 90 * Math.PI / 180;
+                            
+                            layer.scene.add(layer.atmosphere1);
+                        });*/
+                        /*var atmosphereTexture2 = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/model06/universe_skydome.png', new THREE.UVMapping(), function() {
+                            layer.atmosphere2 = new THREE.Mesh(new THREE.SphereGeometry(4, 100, 60), new THREE.MeshBasicMaterial({
+                                map: atmosphereTexture2,
+                                blending: THREE.AdditiveAlphaBlending,
+                                side: THREE.DoubleSide,
+                                depthTest: true,
+                                transparent: true
+                            }));
+                            layer.atmosphere2.scale.x = -1;
+                            
+                            layer.scene.add(layer.atmosphere2);
+                        });*/
+                        //layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 4000, 5.5, '../src/textures/sprites/WhiteDot.svg', 0.06);
+                        collada.scene.traverse(function(child) {
+                            if(child instanceof THREE.Object3D) {
+                                console.info(child.name);
+                               if(child.name.indexOf('cell') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.material = world.materials.matcapMaterial(layer, 1);
+                                    layer.lowpoly = mesh;
+                                } else if(child.name.indexOf('petal') != -1) {
+                                    var mesh = child.children[0];
+                                   
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.material = world.materials.matcapMaterial(layer, 1);
+                                    layer.lowpoly2 = mesh;
+                                } else if(child.name === 'Planet1_001') {
+                                    var mesh = child.children[0];
+                                    mesh.material = world.materials.transparentTextureMaterial('../src/textures/UVmaps/model06/clouds.png');
+                                    mesh.material.side= THREE.DoubleSide;
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    layer.clouds = mesh;
+                                }
+                            }
+                        });
+                        layer.rotationFactor = document.getElementById('rotationBar');
+                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.0002);
+                        
+                        
+                        //layer.scene.rotation.y += 230 * Math.PI / 180;
+                        //layer.scene.rotation.x += 10 * Math.PI / 180;
+                        //layer.scene.rotation.z += 70 * Math.PI / 180;
+                        
+    
+                        /**
+                         * Anaglyph effect
+                         **/
+                        layer.render = function(rtt) {
+                           // layer.planet.rotation.x -= layer.rotationSpeed.z * 1.5;
+                            //layer.planet.rotation.y -= layer.rotationSpeed.z * 1.5;
+                            //layer.planet2.rotation.x -= layer.rotationSpeed.z * 4.5;
+                            //layer.clouds.rotation.x += layer.rotationSpeed.z;
+                            //layer.skydome.rotation.x += layer.rotationSpeed.z * 5.5;
+                            //layer.atmosphere1.rotation.x += layer.rotationSpeed.z;
+                            //layer.atmosphere2.rotation.x += layer.rotationSpeed.z;
+                            layer.scene.rotation.y -= layer.rotationSpeed.z * parseFloat(layer.rotationFactor.value);
+                            //layer.sphericalCloud.rotation.x -= layer.rotationSpeed.z / 2;
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
@@ -1857,6 +1969,7 @@ ENGINE = function() {
                     loadJarModel(this);
                 } else if(this.name === 'GalleryModel6') {
                     loadNMSModel(this);
+                    //loadParticlesModel(this);
                 }
                 /*******************************/
                 world.postprocess.apply(this);
