@@ -121,9 +121,9 @@ ENGINE = function() {
             bleachOpacity: 1,
             technicolor: false,
             enableTiltShift: true,
-            tiltBlur: 1.5,
+            tiltBlur: 2.5,
             enableVignette: true,
-            vignetteStrengh: 5,
+            vignetteStrengh: 8,
             disableEffects: false
         },
         materialParams: {
@@ -1381,7 +1381,7 @@ ENGINE = function() {
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap80.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap36.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
                                     layer.makehumanBody = mesh;
                                 } else if(child.name === 'makehuman_Hair') {
                                     var mesh = child.children[0];
@@ -1690,19 +1690,31 @@ ENGINE = function() {
                         
                         //addSkyDome(layer, 5.5, '../src/textures/UVmaps/model06/universe_skydome.png');
                         // add atmosphere
-                        var atmosphereTexture = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/model06/universe_skydome.png', new THREE.UVMapping(), function() {
-                            layer.atmosphere = new THREE.Mesh(new THREE.SphereGeometry(3.5, 100, 60), new THREE.MeshBasicMaterial({
-                                map: atmosphereTexture,
+                        var atmosphereTexture1 = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/model06/universe_skydome.png', new THREE.UVMapping(), function() {
+                            layer.atmosphere1 = new THREE.Mesh(new THREE.SphereGeometry(5.5, 100, 100), new THREE.MeshBasicMaterial({
+                                map: atmosphereTexture1,
                                 blending: THREE.AdditiveAlphaBlending,
                                 side: THREE.DoubleSide,
                                 depthTest: true,
                                 transparent: true
                             }));
-                            layer.atmosphere.scale.x = -1;
+                            layer.atmosphere1.scale.x = -1;
                             
-                            layer.scene.add(layer.atmosphere);
+                            layer.scene.add(layer.atmosphere1);
                         });
-                        layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 1000, 7, '../src/textures/sprites/WhiteDot.svg', 0.10);
+                        /*var atmosphereTexture2 = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/model06/universe_skydome.png', new THREE.UVMapping(), function() {
+                            layer.atmosphere2 = new THREE.Mesh(new THREE.SphereGeometry(4, 100, 60), new THREE.MeshBasicMaterial({
+                                map: atmosphereTexture2,
+                                blending: THREE.AdditiveAlphaBlending,
+                                side: THREE.DoubleSide,
+                                depthTest: true,
+                                transparent: true
+                            }));
+                            layer.atmosphere2.scale.x = -1;
+                            
+                            layer.scene.add(layer.atmosphere2);
+                        });*/
+                        layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 4000, 5.5, '../src/textures/sprites/WhiteDot.svg', 0.06);
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
                                 console.info(child.name);
@@ -1713,7 +1725,7 @@ ENGINE = function() {
                                     mesh.geometry.computeTangents();
                                     var shaderParams = {
                                         shininess: 0.5,
-                                        normalScale: 0.5,
+                                        normalScale: 0.3,
                                         diffuseTexture: '../src/textures/UVmaps/model06/planet_Arnessk.png',
                                         specTexture: '../src/textures/UVmaps/model06/planet_Arnessk_SPEC.png',
                                         AOTexture: '../src/textures/UVmaps/model06/planet_Arnessk_AO.png',
@@ -1729,12 +1741,13 @@ ENGINE = function() {
                                     mesh.castShadow = false;
                                     mesh.geometry.computeTangents();
                                     
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap30.png', '../src/textures/normalMaps/normal5.jpg', 1, true);
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap95.png', '../src/textures/normalMaps/normal5.jpg', 1, true);
                                     layer.planet2 = mesh;
                                     layer.makehumanBody = mesh;
-                                } else if(child.name === 'Clouds') {
+                                } else if(child.name === 'Planet1_001') {
                                     var mesh = child.children[0];
-                                    mesh.material = world.materials.transparentTextureMaterial('../src/textures/UVmaps/model06/universe_skydome.png');
+                                    mesh.material = world.materials.transparentTextureMaterial('../src/textures/UVmaps/model06/clouds.png');
+                                    mesh.material.side= THREE.DoubleSide;
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     layer.clouds = mesh;
@@ -1743,20 +1756,26 @@ ENGINE = function() {
                         });
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.0002);
-                        layer.scene.rotation.y += 50 * Math.PI / 180;
-                        layer.scene.rotation.x += 90 * Math.PI / 180;
                         
+                        
+                        layer.scene.rotation.y += 230 * Math.PI / 180;
+                        //layer.scene.rotation.x += 10 * Math.PI / 180;
+                        layer.scene.rotation.z += 70 * Math.PI / 180;
+                        
+    
                         /**
                          * Anaglyph effect
                          **/
                         layer.render = function(rtt) {
-                            layer.planet.rotation.z += layer.rotationSpeed.z * 1.5;
-                            layer.planet2.rotation.y += layer.rotationSpeed.z * 5.5;
+                            layer.planet.rotation.x -= layer.rotationSpeed.z * 1.5;
+                            //layer.planet.rotation.y -= layer.rotationSpeed.z * 1.5;
+                            layer.planet2.rotation.x -= layer.rotationSpeed.z * 4.5;
                             //layer.clouds.rotation.x += layer.rotationSpeed.z;
                             //layer.skydome.rotation.x += layer.rotationSpeed.z * 5.5;
-                            layer.atmosphere.rotation.x += layer.rotationSpeed.z;
-                            layer.scene.rotation.x -= layer.rotationSpeed.z * parseFloat(layer.rotationFactor.value);
-                            layer.sphericalCloud.rotation.z += layer.rotationSpeed.z / 2;
+                            layer.atmosphere1.rotation.x += layer.rotationSpeed.z;
+                            //layer.atmosphere2.rotation.x += layer.rotationSpeed.z;
+                            //layer.scene.rotation.y -= layer.rotationSpeed.z * parseFloat(layer.rotationFactor.value);
+                            layer.sphericalCloud.rotation.x -= layer.rotationSpeed.z / 2;
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
