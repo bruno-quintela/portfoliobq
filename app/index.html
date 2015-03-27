@@ -89,7 +89,45 @@
     <script src="scripts/vendor/classiejs/classie.js"></script>
 
     <div id="bodyWrapper" class="body-wrapper">
+        <div class="landing-page">
+            <div class="top">
+                <div class="settings-top">
+                    <div class="span-bottom">Please choose your settings_</div>
+                </div>
+                <div class="settings-bottom"></div>
+            </div>
+            <div class="bottom-left">
 
+                <a id="startWorld3D" class="active" href="#"><h2>Rendering</h2></a>
+                <p>Background will be real time rendered, this requires a computer with a good GPU to insure the
+                    <br>best user experience.</p>
+                <div class="rule right"></div>
+                <div class="settings">
+                    <div class="postprocessing">
+                        Quality
+                    </div>
+                    <span id="settingsQualityHigh" class="settings-quality ">High</span>
+                    <span id="settingsQualityMedium" class="settings-quality active">Medium</span>
+                    <span id="settingsQualityLow" class="settings-quality off">Low</span>
+                </div>
+
+            </div>
+            <div class="bottom-right">
+
+                <a id="startWorld2D" href="#"><h2><span>WEBGL</span> VIDEO</h2></a>
+                <p>Background animations are pre recorded webgl rendered videos
+                    <br>best performance for old computers.</p>
+                <div class="rule left"></div>
+                <div class="postprocessing left">
+                    Generic Settings
+                </div>
+                <span class="settings-name">Fullscreen</span><span id="settingsFullscreenOn" class="settings-toggle ">on</span><span id="settingsFullscreenOff" class="settings-toggle active">off</span>
+                
+                <span class="settings-name">Audio</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
+                <span class="settings-name">Anaglyph 3D</span><span id="settingsStereoscopicOn" class="settings-toggle">on</span><span id="settingsStereoscopicOff" class="settings-toggle active">off</span>
+               
+            </div>
+        </div>
         <div id="initLoadingScreen" class="init-loading-screen">
             <div class="title">NOW LOADING</div>
             <div class="init-loading-bar">
@@ -164,8 +202,8 @@
                 <span>zoom</span>
                 <input id="zoomBar" class="zoom" type='range' min="-5" max="5" value="0" step='0.1' />
                 <br>
-                 <span>rotation</span>
-                <input id="rotationBar" class="rotation" type='range' min="-2" max="2" value="0.5" step='0.1'/>
+                <span>rotation</span>
+                <input id="rotationBar" class="rotation" type='range' min="-2" max="2" value="0.5" step='0.1' />
             </div>
         </div>
 
@@ -238,7 +276,10 @@
                             </figcaption>
                         </figure>
                     </div>
-                    <div class="gallery-item-info"><div>Model<span class="highlight">#1</span></div></div>
+                    <div class="gallery-item-info">
+                        <div>Model<span class="highlight">#1</span>
+                        </div>
+                    </div>
                 </div>
                 <div data-model="2" data-totalassets="5" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
                     <div class="grid">
@@ -248,10 +289,13 @@
                                 <h2>Organic <span>Object</span></h2>
                                 <p>baked
                                     <br>shadows</p>
-                            </figcaption>
+                                </figcaption>
                         </figure>
                     </div>
-                    <div class="gallery-item-info"><div>Model<span class="highlight">#2</span></div></div>
+                    <div class="gallery-item-info">
+                        <div>Model<span class="highlight">#2</span>
+                        </div>
+                    </div>
                 </div>
                 <div data-model="3" data-totalassets="1" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
                     <div class="grid">
@@ -264,7 +308,10 @@
                             </figcaption>
                         </figure>
                     </div>
-                    <div class="gallery-item-info"><div>Model<span class="highlight">#3</span></div></div>
+                    <div class="gallery-item-info">
+                        <div>Model<span class="highlight">#3</span>
+                        </div>
+                    </div>
                 </div>
                 <div data-model="4" data-totalassets="2" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
                     <div class="grid">
@@ -276,7 +323,10 @@
                             </figcaption>
                         </figure>
                     </div>
-                    <div class="gallery-item-info"><div>Model<span class="highlight">#4</span></div></div>
+                    <div class="gallery-item-info">
+                        <div>Model<span class="highlight">#4</span>
+                        </div>
+                    </div>
                 </div>
                 <div data-model="5" data-totalassets="2" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
                     <div class="grid">
@@ -288,7 +338,10 @@
                             </figcaption>
                         </figure>
                     </div>
-                    <div class="gallery-item-info"><div>Model<span class="highlight">#5</span></div></div>
+                    <div class="gallery-item-info">
+                        <div>Model<span class="highlight">#5</span>
+                        </div>
+                    </div>
                 </div>
                 <div data-model="6" data-totalassets="4" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
                     <div class="grid">
@@ -300,7 +353,10 @@
                             </figcaption>
                         </figure>
                     </div>
-                    <div class="gallery-item-info"><div>Model<span class="highlight">#6</span></div></div>
+                    <div class="gallery-item-info">
+                        <div>Model<span class="highlight">#6</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <section id="sectionContact" class="section-content main-menu contact">

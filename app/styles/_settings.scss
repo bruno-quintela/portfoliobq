@@ -1,11 +1,32 @@
+.settings-left
+{
+    position:absolute;
+    bottom:0px;
+    right:50px;
+    height:100px;
+}
+
+.settings-right
+{
+    position:absolute;
+    bottom:0px;
+    left:50px;
+    height:100px;
+}
 
 .settings-name
 {
-    margin-top:5px;
+    @extend %model-settings-font;
+    text-transform:uppercase;
     display: inline-block;
-    width: 100px;
-    text-align:right;
-    font-weight:500;
+    float:left;
+    width:100px;
+    text-align:left;
+    color:grey;
+    will-change:color;
+    clear:both;
+    margin-top:5px;
+    @include transition(color 0.5s);
 }
 
 .settings-performance
@@ -21,6 +42,10 @@
 
 .settings-toggle
 {
+    @extend %model-settings-font;
+    text-transform:uppercase;
+    float:left;
+    margin-top:5px;
     margin-left:10px;
     color:grey;
     font-weight:100;
@@ -39,35 +64,19 @@
     font-weight:500;
 }
 
-.settings-quality-name
-{
-    margin-top:15px;
-    display: inline-block;
-    width: 100px;
-    text-align:right;
-    font-weight:500;
-}
 
-
-.settings-quality-container
-{
-    cursor:pointer;
-    width: 20px;
-    float:right;
-    text-align:right;
-    margin-top:15px;
-}
 
 .settings-quality
 {
-    margin-right: 20px;
-    margin-bottom: 3px;
+    @extend %model-settings-font;
+    text-transform:uppercase;
     cursor:pointer;
     display: inline-block;
-    width: 20px;
     float:right;
     color:grey;
     will-change:color;
+    clear:both;
+    margin-top:5px;
     @include transition(color 0.5s);
 }
 
