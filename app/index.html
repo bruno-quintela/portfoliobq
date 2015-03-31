@@ -1,9 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js">
 
 <head>
     <meta charset="utf-8">
-    <title>workspace</title>
+    <title>BrunoQuintela</title>
     <meta name="description" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="shortcut icon" href="/favicon.ico">
@@ -88,47 +88,52 @@
     <!-- CLASSIE JS Plugin  -->
     <script src="scripts/vendor/classiejs/classie.js"></script>
 
-    <div id="bodyWrapper" class="body-wrapper">
-        <div class="landing-page">
+    <div id="bodyWrapper" class="body-wrapper hide">
+        <div id="landingPage" class="landing-page hide">
             <div class="top">
-                <div class="settings-top">
-                    <div class="span-bottom">Please choose your settings_</div>
-                </div>
-                <div class="settings-bottom"></div>
+                <div id="settingsTop" class="settings-top"></div>
             </div>
             <div class="bottom-left">
 
-                <a id="startWorld3D" class="active" href="#"><h2>Rendering</h2></a>
-                <p>Background will be real time rendered, this requires a computer with a good GPU to insure the
-                    <br>best user experience.</p>
-                <div class="rule right"></div>
-                <div class="settings">
-                    <div class="postprocessing">
-                        Quality
+                <span id="startWorld3D" class="settings-title" href="#">Settings</span>
+                <div class="render-info">
+                </div>
+                <div id="postprocessingWrapper" class="postprocessing-wrapper">
+                    <div class="rule right"></div>
+                    <div class="settings">
+                        <div class="postprocessing">
+                            Quality
+                        </div>
+                        <span id="settingsQualityHigh" class="settings-quality ">High</span>
+                        <span id="settingsQualityMedium" class="settings-quality active">Medium</span>
+                        <span id="settingsQualityLow" class="settings-quality off">Low</span>
                     </div>
-                    <span id="settingsQualityHigh" class="settings-quality ">High</span>
-                    <span id="settingsQualityMedium" class="settings-quality active">Medium</span>
-                    <span id="settingsQualityLow" class="settings-quality off">Low</span>
                 </div>
 
             </div>
             <div class="bottom-right">
 
-                <a id="startWorld2D" href="#"><h2><span>WEBGL</span> VIDEO</h2></a>
-                <p>Background animations are pre recorded webgl rendered videos
-                    <br>best performance for old computers.</p>
+                <span class="settings-name render-type">Render</span><a id="renderRealTime" class="settings-toggle render-type active" href="#">WebGL </a><a id="renderRecorded" class="settings-toggle render-type" href="#"> Static</a>
+
+                <div id="renderInfo" class="render-info show">
+                    Background will be real time rendered, this requires a computer with a good GPU to insure the,best user experience.
+                </div>
+
+
                 <div class="rule left"></div>
                 <div class="postprocessing left">
                     Generic Settings
                 </div>
                 <span class="settings-name">Fullscreen</span><span id="settingsFullscreenOn" class="settings-toggle ">on</span><span id="settingsFullscreenOff" class="settings-toggle active">off</span>
-                
+
                 <span class="settings-name">Audio</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
-                <span class="settings-name">Anaglyph 3D</span><span id="settingsStereoscopicOn" class="settings-toggle">on</span><span id="settingsStereoscopicOff" class="settings-toggle active">off</span>
-               
+                <div id="anaglyph3DWrapper" class="anaglyph3D-wrapper">
+                    <span class="settings-name">Anaglyph 3D</span><span id="settingsStereoscopicOn" class="settings-toggle">on</span><span id="settingsStereoscopicOff" class="settings-toggle active">off</span>
+                </div>
             </div>
+            <button id="initPageButton" class="init-page-button">Enter</button>
         </div>
-        <div id="initLoadingScreen" class="init-loading-screen">
+        <div id="initLoadingScreen" class="init-loading-screen hide">
             <div class="title">NOW LOADING</div>
             <div class="init-loading-bar">
                 <div id="initProgressBar" class="init-loading-progress"></div>
@@ -137,7 +142,7 @@
         </div>
 
         <div id="initIntroScreen" class="init-intro-screen">
-            <div id="initIntroSubtitle" class="subtitle">a website by_</div>
+            <div id="initIntroSubtitle" class="subtitle">a website by</div>
             <div id="initIntroTitle" class="title">Bruno <b>Quintela</b>
             </div>
         </div>

@@ -1,3 +1,8 @@
+body
+{
+    background-color:#000;
+}
+
 *, *:before, *:after {
   box-sizing: border-box;
  }
@@ -5,6 +10,7 @@
 a {
 	text-decoration: none;
 	outline: none;
+    color:#fff;
 }
 
 textarea {

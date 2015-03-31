@@ -1,3 +1,40 @@
+.init-page-button
+{
+    @extend%submenu-title-font;
+    position:absolute;
+    bottom:50%;
+    left:0px;
+    right:0px;
+    margin:auto;
+    width:200px;
+    height:50px;
+    color:#fff;
+    background-color:transparent;
+    text-align:center;
+    border:1px solid #fff;
+    @include transition(opacity 300ms 0ms $transition-effect);
+}
+
+.landing-page.hide .init-page-button
+{
+    opacity:0;
+}
+
+.landing-page .render-info {
+	letter-spacing: 1px;
+	font-size: 11px;
+    max-width:350px;
+    height:50px;
+    clear:both;
+    opacity:0;
+    text-transform:none;
+    @include transition(opacity 300ms 0ms $transition-effect);
+}
+
+.landing-page .render-info.show {
+    opacity:1;
+}
+
 .landing-page
 {
     z-index:100;
@@ -6,42 +43,16 @@
     width:100%;
     height:100%;
     color:#fff;
+    opacity:1;
     @extend %model-subtitle-font;
-    
+    @include transition(opacity 1000ms 0ms $transition-effect);
 }
 
-.landing-page h2 {
-	font-weight: 300;
-    font-size: 40px;
-    clear:both;
-    padding-bottom:20px;
-    color:#fff;
-}
 
-.landing-page h2 span {
-	font-weight: 500;
-}
 
-.landing-page .bottom-left h2,
-.landing-page .bottom-left p {
-	float:right;
-    text-align:right;
-    margin:0;
-}
-
-.landing-page .bottom-right h2,
-.landing-page .bottom-right p {
-	float:left;
-    text-align:left;
-    margin:0;
-}
-
-.landing-page p {
-	letter-spacing: 1px;
-	font-size: 11px;
-    max-width:450px;
-    height:50px;
-    clear:both;
+.landing-page.hide 
+{
+    //opacity:0;
 }
 
 
@@ -52,6 +63,13 @@
     width:100%;
     height:50%;
     text-align:center;
+    @include transform(translateY(0%));
+    @include transition(transform 1000ms 0ms $transition-effect);
+}
+
+.landing-page.hide .top
+{
+    //@include transform(translateY(-100%));
 }
 
 .landing-page .top .content
@@ -71,8 +89,16 @@
     height:50%;
     padding:50px;
     padding-right:25px;
-    border-top:1px solid grey;
-    background-color:#000;
+    background-color:rgba(0,0,0,0.9);
+    @include transform(translateY(0%));
+    @include transition(transform 1000ms 0ms $transition-effect);
+}
+
+.settings-title
+{
+   float:right;
+   height:30px;
+   margin-bottom:5px;
 }
 
 .landing-page .bottom-right
@@ -84,29 +110,105 @@
     height:50%;
     padding:50px;
     padding-left:25px;
-    border-top:1px solid grey;
-    background-color:#000;
+    background-color:rgba(0,0,0,0.9);
+    @include transform(translateY(0%));
+    @include transition(transform 1000ms 0ms $transition-effect); 
 }
 
+.landing-page .bottom-right a
+{
+   float:left;
+   color:grey;
+   @include transition(color 500ms 0ms $transition-effect); 
+}
+
+.landing-page .bottom-right a:hover
+{
+    color:#FFF;
+}
+
+.landing-page.hide .bottom-left
+{
+    @include transform(translateY(100%));
+}
+
+.landing-page.hide .bottom-right
+{
+    @include transform(translateY(100%));
+}
 
 .settings-top
 {
     position:absolute;
     top:0px;
     width:100%;
-    height:50%;
-    background-color:#000;
-    border-bottom:1px solid grey;
+    height:50px;
+    background-color:rgba(0,0,0,0.9);
+    //border-bottom:1px solid grey;
 }
-
 .settings-bottom
 {
     position:absolute;
     bottom:0px;
-    background-color:rgba(255,0,0,0.2);
+    background-color:$secondary-color;
+    opacity:0;
+    width:100%;
+    height:70%;
+    @include transition(opacity 1000ms 0ms $transition-effect);
+}
+
+.landing-page.hide  .settings-bottom
+{
+    opacity:0;
+}
+
+
+/*********/
+
+
+.landing-page h2 {
+	font-weight: 300;
+    font-size: 40px;
+    clear:both;
+    padding-bottom:20px;
+    color:#fff;
+}
+
+.landing-page h2 span {
+	font-weight: 500;
+}
+
+.landing-page .bottom-left .render-info {
+	float:right;
+    text-align:right;
+}
+
+.landing-page .bottom-right .render-info {
+	float:left;
+    text-align:left;
+}
+
+
+
+
+.landing-page .top
+{
+    position:absolute;
+    top:0px;
     width:100%;
     height:50%;
+    text-align:center;
 }
+
+.landing-page .top .content
+{
+    position:absolute;
+    bottom:0px;
+    width:100%;
+    
+}
+
+
 
 .span-bottom
 {
@@ -137,4 +239,30 @@
     width:100%;
     text-align:left;
     margin-bottom:5px;
+}
+
+.postprocessing-wrapper
+{
+    opacity:1;
+    @include transition(opacity 300ms 0ms $transition-effect);
+}
+.postprocessing-wrapper.hide
+{
+    opacity:0;
+}
+
+.anaglyph3D-wrapper
+{
+    opacity:1;
+    @include transition(opacity 300ms 0ms $transition-effect);
+}
+.anaglyph3D-wrapper.hide
+{
+    opacity:0;
+}
+
+.render-type{
+    font-size:13px;
+//    margin-top: 5px;
+    height:30px;
 }
