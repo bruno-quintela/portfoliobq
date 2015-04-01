@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>BrunoQuintela</title>
+    <title>Bruno Quintela 2015</title>
     <meta name="description" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="shortcut icon" href="/favicon.ico">
@@ -91,46 +91,32 @@
     <div id="bodyWrapper" class="body-wrapper hide">
         <div id="landingPage" class="landing-page hide">
             <div class="top">
-                <div id="settingsTop" class="settings-top"></div>
-            </div>
-            <div class="bottom-left">
-
-                <span id="startWorld3D" class="settings-title" href="#">Settings</span>
-                <div class="render-info">
-                </div>
-                <div id="postprocessingWrapper" class="postprocessing-wrapper">
-                    <div class="rule right"></div>
-                    <div class="settings">
-                        <div class="postprocessing">
-                            Quality
+                <div class="top-left">
+                    <div id="postprocessingWrapper" class="postprocessing-wrapper">
+                        <div class="settings">
+                            <div class="postprocessing">
+                                Quality
+                            </div>
+                            <span id="settingsQualityHigh" class="settings-quality ">High</span>
+                            <span id="settingsQualityMedium" class="settings-quality active">Medium</span>
+                            <span id="settingsQualityLow" class="settings-quality off">Low</span>
                         </div>
-                        <span id="settingsQualityHigh" class="settings-quality ">High</span>
-                        <span id="settingsQualityMedium" class="settings-quality active">Medium</span>
-                        <span id="settingsQualityLow" class="settings-quality off">Low</span>
+                    </div>
+
+                </div>
+                <div class="top-right">
+                     <div class="postprocessing left">
+                        Generic Settings
+                    </div>
+                    <span class="settings-name">Fullscreen</span><span id="settingsFullscreenOn" class="settings-toggle ">on</span><span id="settingsFullscreenOff" class="settings-toggle active">off</span>
+
+                    <span class="settings-name">Audio</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
+                    <div id="anaglyph3DWrapper" class="anaglyph3D-wrapper">
+                        <span class="settings-name">Anaglyph 3D</span><span id="settingsStereoscopicOn" class="settings-toggle">on</span><span id="settingsStereoscopicOff" class="settings-toggle active">off</span>
                     </div>
                 </div>
-
             </div>
-            <div class="bottom-right">
 
-                <span class="settings-name render-type">Render</span><a id="renderRealTime" class="settings-toggle render-type active" href="#">WebGL </a><a id="renderRecorded" class="settings-toggle render-type" href="#"> Static</a>
-
-                <div id="renderInfo" class="render-info show">
-                    Background will be real time rendered, this requires a computer with a good GPU to insure the,best user experience.
-                </div>
-
-
-                <div class="rule left"></div>
-                <div class="postprocessing left">
-                    Generic Settings
-                </div>
-                <span class="settings-name">Fullscreen</span><span id="settingsFullscreenOn" class="settings-toggle ">on</span><span id="settingsFullscreenOff" class="settings-toggle active">off</span>
-
-                <span class="settings-name">Audio</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
-                <div id="anaglyph3DWrapper" class="anaglyph3D-wrapper">
-                    <span class="settings-name">Anaglyph 3D</span><span id="settingsStereoscopicOn" class="settings-toggle">on</span><span id="settingsStereoscopicOff" class="settings-toggle active">off</span>
-                </div>
-            </div>
             <button id="initPageButton" class="init-page-button">Enter</button>
         </div>
         <div id="initLoadingScreen" class="init-loading-screen hide">
@@ -190,480 +176,505 @@
 
         <!-- MODEL INFO -->
         <div id="siteInfo" class="site-info">
-            <div class="subtitle">Bruno <b>Quintela</b>
-            </div>
-            <div class="title"><b>Portfolio</b><span class="highlight"> #2015 </span>
-            </div>
-
-
-            <div id="modelSettings" class="model-settings">
-                <img src="../src/img/settings2.png" alt=""><a id="settings" href="#" class="settings-anchor">Settings</a>
-            </div>
-            <div class="site-intro">
-                This site is a WebGL experiment. It all started with a spining cube, but soon i've realized that with the current technology i could achieve much more than that, so i've compiled the best WebGL experiments i achieved in the past months. Hope you enjoy.
-            </div>
-
-            <div class="model-controls">
-                <span>zoom</span>
-                <input id="zoomBar" class="zoom" type='range' min="-5" max="5" value="0" step='0.1' />
-                <br>
-                <span>rotation</span>
-                <input id="rotationBar" class="rotation" type='range' min="-2" max="2" value="0.5" step='0.1' />
-            </div>
-        </div>
-
-
-        <!-- SETTINGS TAB -->
-        <section id="sectionSettings" class="section-content main-menu settings">
-            <div class="settings-performance">Performance</div>
-            <div class="section-info">
-
-                <span class="settings-name">Background Music</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
-                <br>
-                <span class="settings-name">Fullscreen</span><span id="settingsFullscreenOn" class="settings-toggle">on</span><span id="settingsFullscreenOff" class="settings-toggle active">off</span>
-                <br>
-                <span class="settings-name">Stereoscopic 3D</span><span id="settingsStereoscopicOn" class="settings-toggle">on</span><span id="settingsStereoscopicOff" class="settings-toggle active">off</span>
-                <br>
-                <span class="settings-quality-name">Postprocessing</span>
-                <div class="settings-quality-container"><span id="settingsQualityHigh" class="settings-quality active">High</span>
-                    <br><span id="settingsQualityMedium" class="settings-quality">Medium</span>
-                    <br><span id="settingsQualityLow" class="settings-quality off">Low</span>
+            <div class="content-left">
+                <div class="title">Model
+                    <br> <span class="highlight">#01</span>
                 </div>
             </div>
-        </section>
+            <div class="content-center">
+                <div class="title">Human Hybrid</div>
+                <div class="subtitle">
+                    <div class="settings-title">
+                        Credits
+                    </div>
+                    <div class="credits-item">Human Mesh created in Makehuman</div>
+                    <div class="credits-item">Lowpoly Mesh created in Blender</div>
+                </div>
 
+                <!--div class="settings-title">
+                    Settings
+                </div>
+                <span class="settings-name">Fullscreen</span><span id="settingsFullscreenOn" class="settings-toggle ">on</span><span id="settingsFullscreenOff" class="settings-toggle active">off</span>
 
-        <section id="sectionGallery" class="section-content main-menu gallery">
-            <div class="gallery-summary">
-                <div class="title-top">
-                    _digital
-                </div>
-                <div class="title-container">
-                    <span class="title">Gallery </span>
-                </div>
-                <div class="rule right"></div>
-                <div class="section-info">
-                    In this section you can chose which model to render in the backround. Note that in order to achieve the intended level of detail, some of the 3D objects amd textures are quite big, so they may take a while to load. Please be Patient. If your frame rate is to low, try to change the graphics quality in this webpage settings panel.
-                </div>
+                <span class="settings-name">Audio</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
+                <div id="anaglyph3DWrapper" class="anaglyph3D-wrapper">
+                    <span class="settings-name">Anaglyph 3D</span><span id="settingsStereoscopicOn" class="settings-toggle">on</span><span id="settingsStereoscopicOff" class="settings-toggle active">off</span>
+                </div-->
             </div>
-        </section>
-        <div class="section-wrapper">
 
-            <!--Single page scroll navigation -->
-
-            <section id="sectionAbout" class="section-content main-menu about">
-
-                <div class="title-container">
-                    <span class="title">About </span>
-                    <div class="title-top right">
-                        <div class="about-info-container">
-                            <span class="highlight">#01 </span><b>name</b> Bruno Quintela
-                            <span class="highlight">#02 </span><b>Age</b> 32
-                            <span class="highlight">#03 </span><b>Location</b> Portugal
-                            <span class="highlight">#04 </span><b>Job</b> Web Developer
-                        </div>
-                    </div>
-                    <div class="rule right"></div>
-
-                </div>
-            </section>
+            <div class="content-right">
 
 
-            <div id="galleryContainer" class="gallery-item-container">
-                <div data-model="1" data-totalassets="3" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
-                    <div class="grid">
-                        <figure class="effect-apollo">
-                            <img src="../src/img/galleryItem1.png" alt="img18" />
-                            <figcaption>
-                                <h2>Human <span>Female</span></h2>
-                                <p>Portrait of a female
-                                    <br>mude posing.</p>
-                            </figcaption>
-                        </figure>
-                    </div>
-                    <div class="gallery-item-info">
-                        <div>Model<span class="highlight">#1</span>
-                        </div>
-                    </div>
-                </div>
-                <div data-model="2" data-totalassets="5" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
-                    <div class="grid">
-                        <figure class="effect-apollo">
-                            <img src="../src/img/galleryItem2.png" alt="img18" />
-                            <<figcaption>
-                                <h2>Organic <span>Object</span></h2>
-                                <p>baked
-                                    <br>shadows</p>
-                                </figcaption>
-                        </figure>
-                    </div>
-                    <div class="gallery-item-info">
-                        <div>Model<span class="highlight">#2</span>
-                        </div>
-                    </div>
-                </div>
-                <div data-model="3" data-totalassets="1" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
-                    <div class="grid">
-                        <figure class="effect-apollo">
-                            <img src="../src/img/galleryItem3.png" alt="img18" />
-                            <figcaption>
-                                <h2>Organic <span>Object</span></h2>
-                                <p>baked
-                                    <br>shadows</p>
-                            </figcaption>
-                        </figure>
-                    </div>
-                    <div class="gallery-item-info">
-                        <div>Model<span class="highlight">#3</span>
-                        </div>
-                    </div>
-                </div>
-                <div data-model="4" data-totalassets="2" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
-                    <div class="grid">
-                        <figure class="effect-apollo">
-                            <img src="../src/img/galleryItem4.png" alt="img18" />
-                            <figcaption>
-                                <h2>Photorealistic <span> Male</span></h2>
-                                <p>Real Time shadow casting and light environment.</p>
-                            </figcaption>
-                        </figure>
-                    </div>
-                    <div class="gallery-item-info">
-                        <div>Model<span class="highlight">#4</span>
-                        </div>
-                    </div>
-                </div>
-                <div data-model="5" data-totalassets="2" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
-                    <div class="grid">
-                        <figure class="effect-apollo">
-                            <img src="../src/img/galleryItem4.png" alt="img18" />
-                            <figcaption>
-                                <h2>Vase <span>Apollo</span></h2>
-                                <p>Apollo's last game of pool was so strange.</p>
-                            </figcaption>
-                        </figure>
-                    </div>
-                    <div class="gallery-item-info">
-                        <div>Model<span class="highlight">#5</span>
-                        </div>
-                    </div>
-                </div>
-                <div data-model="6" data-totalassets="4" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
-                    <div class="grid">
-                        <figure class="effect-apollo">
-                            <img src="../src/img/galleryItem4.png" alt="img18" />
-                            <figcaption>
-                                <h2>asdasd <span>Apollo</span></h2>
-                                <p>Apollo's last game of pool was so strange.</p>
-                            </figcaption>
-                        </figure>
-                    </div>
-                    <div class="gallery-item-info">
-                        <div>Model<span class="highlight">#6</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <section id="sectionContact" class="section-content main-menu contact">
-                <!-- LEFT -->
-                <div class="title-top right">
-                    <b>Contact</b> Me
-                </div>
-                <div class="rule right"></div>
 
-                <div class="section-info">
-                    If you want to share ideas, hire my services, or simply talk about stuff, web related or not, feel free to sent me a message to <a class="email" href="mailto:bruno.quintela.bastos@gmail.com<">bruno.quintela.bastos@gmail.com</a>. I will try to message you back as soon as possible.
+
+                <div id="modelSettings" class="model-settings">
+                    <img src="../src/img/settings2.png" alt=""><a id="settings" href="#" class="settings-anchor">Settings</a>
+                </div>
+                <div class="site-intro">
+                    This site is a WebGL experiment. It all started with a spining cube, but soon i've realized that with the current technology i could achieve much more than that, so i've compiled the best WebGL experiments i achieved in the past months. Hope you enjoy.
+                </div>
+
+                <div class="model-controls">
+                    <span>zoom</span>
+                    <input id="zoomBar" class="zoom" type='range' min="-5" max="5" value="0" step='0.1' />
                     <br>
-                    <br>I am also available at the following social networks.
+                    <span>rotation</span>
+                    <input id="rotationBar" class="rotation" type='range' min="-2" max="2" value="0.5" step='0.1' />
+                </div>
+            </div>
 
-                </div>
-                <div class="social-container">
-                    <div class="social__item">
-                        <a target="_blank" href="https://twitter.com/bruno_quintela" class="social__icon--twitter"><i class="icon--twitter"></i></a>
-                    </div>
-                    <div class="social__item">
-                        <a target="_blank" href="https://pt.linkedin.com/pub/bruno-quintela/85/750/614/" class="social__icon--linkedin"><i class="icon--linkedin"></i></a>
-                    </div>
-                    <div class="social__item">
-                        <a target="_blank" href="https://www.behance.net/bruno_quintela" class="social__icon--behance"><i class="icon--behance"></i></a>
-                    </div>
-                    <div class="social__item">
-                        <a target="_blank" href="https://soundcloud.com/bruno-quintela" class="social__icon--soundcloud"><i class="icon--soundcloud"></i></a>
-                    </div>
-                </div>
-            </section>
-            <section id="sectionCredits" class="section-content main-menu credits">
-                <!-- LEFT -->
-                <div class="title-top left">
-                    <b>Communities</b> knowledge
-                </div>
-                <div class="rule left"></div>
+
+            <!-- SETTINGS TAB -->
+            <section id="sectionSettings" class="section-content main-menu settings">
+                <div class="settings-performance">Performance</div>
                 <div class="section-info">
-                    <div class="left">
-                        This were the main online sources of knowledge i ended up using in the making of this website. Thank you all, keep up the good work and keep sharing.
-                    </div>
-                    <div class="right">
-                        <ul class="list">
-                            <li><a class="anchor-link" target="_blank" href="http://blendernation.com/">BlenderNation</a>
-                            </li>
-                            <li><a class="anchor-link" target="_blank" href="http://cgcookie.com/">CGcookie</a>
-                            </li>
-                            <li><a class="anchor-link" target="_blank" href="http://codepen.io/">Codepen</a>
-                            </li>
-                            <li><a class="anchor-link" target="_blank" href="http://tympanus.net/codrops/">Codrops</a>
-                            </li>
-                        </ul>
+
+                    <span class="settings-name">Background Music</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
+                    <br>
+                    <span class="settings-name">Fullscreen</span><span id="settingsFullscreenOn" class="settings-toggle">on</span><span id="settingsFullscreenOff" class="settings-toggle active">off</span>
+                    <br>
+                    <span class="settings-name">Stereoscopic 3D</span><span id="settingsStereoscopicOn" class="settings-toggle">on</span><span id="settingsStereoscopicOff" class="settings-toggle active">off</span>
+                    <br>
+                    <span class="settings-quality-name">Postprocessing</span>
+                    <div class="settings-quality-container"><span id="settingsQualityHigh" class="settings-quality active">High</span>
+                        <br><span id="settingsQualityMedium" class="settings-quality">Medium</span>
+                        <br><span id="settingsQualityLow" class="settings-quality off">Low</span>
                     </div>
                 </div>
             </section>
 
 
-
-
-
-            <!-- submenu1 content -->
-            <section id="creditsSubmenu1" class="section-content sub-menu submenu1">
-                <div class="title-container">
-                    <span class="title">Credits </span>
+            <section id="sectionGallery" class="section-content main-menu gallery">
+                <div class="gallery-summary">
+                    <div class="title-top">
+                        _digital
+                    </div>
+                    <div class="title-container">
+                        <span class="title">Gallery </span>
+                    </div>
                     <div class="rule right"></div>
                     <div class="section-info">
-                        This site woudn't exist if it wasn't for the previous pionering work made by the amazing webdevelopers that inspired me and made this kind of technology available.
+                        In this section you can chose which model to render in the backround. Note that in order to achieve the intended level of detail, some of the 3D objects amd textures are quite big, so they may take a while to load. Please be Patient. If your frame rate is to low, try to change the graphics quality in this webpage settings panel.
                     </div>
                 </div>
             </section>
+            <div class="section-wrapper">
 
-            <!-- submenu2 content -->
-            <section id="aboutSubmenu2" class="section-content sub-menu submenu2">
-                <div class="title-top left">
-                    who <b>am I</b>
-                </div>
-                <div class="rule left"></div>
-                <div class="section-info">
-                    I'm a web developer who recently got into computer graphics. I love music, videogames (MMORPG and JRPG addicted), and digital art, specially lowpoly, procedural and generative.
-                </div>
-            </section>
+                <!--Single page scroll navigation -->
 
-            <section id="creditsSubmenu2" class="section-content sub-menu submenu2">
-                <div class="title-top left">
-                    <b>Open Source</b> Software
-                </div>
-                <div class="rule left"></div>
-                <div class="section-info">
-                    <div class="left">
-                        Open source software i used to create the 3D models assets and audio. Kudos to all the respective contributors.
+                <section id="sectionAbout" class="section-content main-menu about">
+
+                    <div class="title-container">
+                        <span class="title">About </span>
+                        <div class="title-top right">
+                            <div class="about-info-container">
+                                <span class="highlight">#01 </span><b>name</b> Bruno Quintela
+                                <span class="highlight">#02 </span><b>Age</b> 32
+                                <span class="highlight">#03 </span><b>Location</b> Portugal
+                                <span class="highlight">#04 </span><b>Job</b> Web Developer
+                            </div>
+                        </div>
+                        <div class="rule right"></div>
+
                     </div>
-                    <div class="right">
-                        <ul class="list">
-                            <li><a class="anchor-link" target="_blank" href="http://www.blender.org/">Blender</a>
-                            </li>
-                            <li><a class="anchor-link" target="_blank" href="http://www.makehuman.org/">Makehuman</a>
-                            </li>
-                            <li><a class="anchor-link" target="_blank" href="http://www.gimp.org/">Gimp</a>
-                            </li>
-                            <li><a class="anchor-link" target="_blank" href="http://audacity.sourceforge.net/">Audacity</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <!-- submenu3 content -->
-
-            <section id="aboutSubmenu3" class="section-content sub-menu submenu3">
-                <div class="title-top left">
-                    What <b>i do</b>
-                </div>
-                <div class="rule left"></div>
-                <div class="section-info">
-                    <div class="left">
-                        I create unique content for the web. To achieve a perfect ballance between visual delivery and performance is allways my pripority.
-                    </div>
-                    <div class="right">
-                        <ul class="list">
-                            <li>Front end Developer</li>
-                            <li>UI/UX Designer</li>
-                            <li>Web Designer</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <section id="creditsSubmenu3" class="section-content sub-menu submenu3">
-                <div class="title-top left">
-                    <b>Javascript</b> librarys
-                </div>
-                <div class="rule left"></div>
-                <div class="section-info">
-                    <div class="left">
-                        Javascript librarys i used to build this website. Special thanks to <b><a class="anchor-link" target="_blank" href="https://twitter.com/mrdoob">Ricardo Cabello</a></b> and <b><a class="anchor-link" target="_blank" href="https://twitter.com/alteredq">AlteredQualia</a></b>, for making WebGL accessible to common mortals.
-                    </div>
-                    <div class="right">
-                        <ul class="list">
-                            <li><a class="anchor-link" target="_blank" href="http://threejs.org/">ThreeJS</a>
-                            </li>
-                            <li><a class="anchor-link" target="_blank" href="https://github.com/desandro/classie">Classie</a>
-                            </li>
-                            <li><a class="anchor-link" target="_blank" href="https://github.com/mrdoob/stats.js/">StatsJs</a>
-                            </li>
-                            <li><a class="anchor-link" target="_blank" href="https://github.com/tweenjs/">TweenJs</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
+                </section>
 
 
-            <!-- submenu4 content -->
-            <section id="aboutSubmenu4" class="section-content sub-menu submenu4">
-                <div class="title-top left">
-                    what's <b>next</b>
+                <div id="galleryContainer" class="gallery-item-container">
+                    <div data-model="1" data-totalassets="3" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
+                        <div class="grid">
+                            <figure class="effect-apollo">
+                                <img src="../src/img/galleryItem1.png" alt="img18" />
+                                <figcaption>
+                                    <h2>Human <span>Female</span></h2>
+                                    <p>Portrait of a female
+                                        <br>mude posing.</p>
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <div class="gallery-item-info">
+                            <div>Model<span class="highlight">#1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-model="2" data-totalassets="5" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
+                        <div class="grid">
+                            <figure class="effect-apollo">
+                                <img src="../src/img/galleryItem2.png" alt="img18" />
+                                <<figcaption>
+                                    <h2>Organic <span>Object</span></h2>
+                                    <p>baked
+                                        <br>shadows</p>
+                                    </figcaption>
+                            </figure>
+                        </div>
+                        <div class="gallery-item-info">
+                            <div>Model<span class="highlight">#2</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-model="3" data-totalassets="1" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
+                        <div class="grid">
+                            <figure class="effect-apollo">
+                                <img src="../src/img/galleryItem3.png" alt="img18" />
+                                <figcaption>
+                                    <h2>Organic <span>Object</span></h2>
+                                    <p>baked
+                                        <br>shadows</p>
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <div class="gallery-item-info">
+                            <div>Model<span class="highlight">#3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-model="4" data-totalassets="2" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
+                        <div class="grid">
+                            <figure class="effect-apollo">
+                                <img src="../src/img/galleryItem4.png" alt="img18" />
+                                <figcaption>
+                                    <h2>Photorealistic <span> Male</span></h2>
+                                    <p>Real Time shadow casting and light environment.</p>
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <div class="gallery-item-info">
+                            <div>Model<span class="highlight">#4</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-model="5" data-totalassets="2" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
+                        <div class="grid">
+                            <figure class="effect-apollo">
+                                <img src="../src/img/galleryItem4.png" alt="img18" />
+                                <figcaption>
+                                    <h2>Vase <span>Apollo</span></h2>
+                                    <p>Apollo's last game of pool was so strange.</p>
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <div class="gallery-item-info">
+                            <div>Model<span class="highlight">#5</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-model="6" data-totalassets="4" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item hide">
+                        <div class="grid">
+                            <figure class="effect-apollo">
+                                <img src="../src/img/galleryItem4.png" alt="img18" />
+                                <figcaption>
+                                    <h2>asdasd <span>Apollo</span></h2>
+                                    <p>Apollo's last game of pool was so strange.</p>
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <div class="gallery-item-info">
+                            <div>Model<span class="highlight">#6</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="rule left"></div>
-                <div class="section-info">
-                    In the next five years we will enter into the age of Virtual Reality, and that will have a massive impact in the way you surf the web, so i expect to be in a vanguard project related to that, as a web developer or creative director.
-                </div>
-            </section>
+                <section id="sectionContact" class="section-content main-menu contact">
+                    <!-- LEFT -->
+                    <div class="title-top right">
+                        <b>Contact</b> Me
+                    </div>
+                    <div class="rule right"></div>
+
+                    <div class="section-info">
+                        If you want to share ideas, hire my services, or simply talk about stuff, web related or not, feel free to sent me a message to <a class="email" href="mailto:bruno.quintela.bastos@gmail.com<">bruno.quintela.bastos@gmail.com</a>. I will try to message you back as soon as possible.
+                        <br>
+                        <br>I am also available at the following social networks.
+
+                    </div>
+                    <div class="social-container">
+                        <div class="social__item">
+                            <a target="_blank" href="https://twitter.com/bruno_quintela" class="social__icon--twitter"><i class="icon--twitter"></i></a>
+                        </div>
+                        <div class="social__item">
+                            <a target="_blank" href="https://pt.linkedin.com/pub/bruno-quintela/85/750/614/" class="social__icon--linkedin"><i class="icon--linkedin"></i></a>
+                        </div>
+                        <div class="social__item">
+                            <a target="_blank" href="https://www.behance.net/bruno_quintela" class="social__icon--behance"><i class="icon--behance"></i></a>
+                        </div>
+                        <div class="social__item">
+                            <a target="_blank" href="https://soundcloud.com/bruno-quintela" class="social__icon--soundcloud"><i class="icon--soundcloud"></i></a>
+                        </div>
+                    </div>
+                </section>
+                <section id="sectionCredits" class="section-content main-menu credits">
+                    <!-- LEFT -->
+                    <div class="title-top left">
+                        <b>Communities</b> knowledge
+                    </div>
+                    <div class="rule left"></div>
+                    <div class="section-info">
+                        <div class="left">
+                            This were the main online sources of knowledge i ended up using in the making of this website. Thank you all, keep up the good work and keep sharing.
+                        </div>
+                        <div class="right">
+                            <ul class="list">
+                                <li><a class="anchor-link" target="_blank" href="http://blendernation.com/">BlenderNation</a>
+                                </li>
+                                <li><a class="anchor-link" target="_blank" href="http://cgcookie.com/">CGcookie</a>
+                                </li>
+                                <li><a class="anchor-link" target="_blank" href="http://codepen.io/">Codepen</a>
+                                </li>
+                                <li><a class="anchor-link" target="_blank" href="http://tympanus.net/codrops/">Codrops</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+
+
+
+
+                <!-- submenu1 content -->
+                <section id="creditsSubmenu1" class="section-content sub-menu submenu1">
+                    <div class="title-container">
+                        <span class="title">Credits </span>
+                        <div class="rule right"></div>
+                        <div class="section-info">
+                            This site woudn't exist if it wasn't for the previous pionering work made by the amazing webdevelopers that inspired me and made this kind of technology available.
+                        </div>
+                    </div>
+                </section>
+
+                <!-- submenu2 content -->
+                <section id="aboutSubmenu2" class="section-content sub-menu submenu2">
+                    <div class="title-top left">
+                        who <b>am I</b>
+                    </div>
+                    <div class="rule left"></div>
+                    <div class="section-info">
+                        I'm a web developer who recently got into computer graphics. I love music, videogames (MMORPG and JRPG addicted), and digital art, specially lowpoly, procedural and generative.
+                    </div>
+                </section>
+
+                <section id="creditsSubmenu2" class="section-content sub-menu submenu2">
+                    <div class="title-top left">
+                        <b>Open Source</b> Software
+                    </div>
+                    <div class="rule left"></div>
+                    <div class="section-info">
+                        <div class="left">
+                            Open source software i used to create the 3D models assets and audio. Kudos to all the respective contributors.
+                        </div>
+                        <div class="right">
+                            <ul class="list">
+                                <li><a class="anchor-link" target="_blank" href="http://www.blender.org/">Blender</a>
+                                </li>
+                                <li><a class="anchor-link" target="_blank" href="http://www.makehuman.org/">Makehuman</a>
+                                </li>
+                                <li><a class="anchor-link" target="_blank" href="http://www.gimp.org/">Gimp</a>
+                                </li>
+                                <li><a class="anchor-link" target="_blank" href="http://audacity.sourceforge.net/">Audacity</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- submenu3 content -->
+
+                <section id="aboutSubmenu3" class="section-content sub-menu submenu3">
+                    <div class="title-top left">
+                        What <b>i do</b>
+                    </div>
+                    <div class="rule left"></div>
+                    <div class="section-info">
+                        <div class="left">
+                            I create unique content for the web. To achieve a perfect ballance between visual delivery and performance is allways my pripority.
+                        </div>
+                        <div class="right">
+                            <ul class="list">
+                                <li>Front end Developer</li>
+                                <li>UI/UX Designer</li>
+                                <li>Web Designer</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="creditsSubmenu3" class="section-content sub-menu submenu3">
+                    <div class="title-top left">
+                        <b>Javascript</b> librarys
+                    </div>
+                    <div class="rule left"></div>
+                    <div class="section-info">
+                        <div class="left">
+                            Javascript librarys i used to build this website. Special thanks to <b><a class="anchor-link" target="_blank" href="https://twitter.com/mrdoob">Ricardo Cabello</a></b> and <b><a class="anchor-link" target="_blank" href="https://twitter.com/alteredq">AlteredQualia</a></b>, for making WebGL accessible to common mortals.
+                        </div>
+                        <div class="right">
+                            <ul class="list">
+                                <li><a class="anchor-link" target="_blank" href="http://threejs.org/">ThreeJS</a>
+                                </li>
+                                <li><a class="anchor-link" target="_blank" href="https://github.com/desandro/classie">Classie</a>
+                                </li>
+                                <li><a class="anchor-link" target="_blank" href="https://github.com/mrdoob/stats.js/">StatsJs</a>
+                                </li>
+                                <li><a class="anchor-link" target="_blank" href="https://github.com/tweenjs/">TweenJs</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- submenu4 content -->
+                <section id="aboutSubmenu4" class="section-content sub-menu submenu4">
+                    <div class="title-top left">
+                        what's <b>next</b>
+                    </div>
+                    <div class="rule left"></div>
+                    <div class="section-info">
+                        In the next five years we will enter into the age of Virtual Reality, and that will have a massive impact in the way you surf the web, so i expect to be in a vanguard project related to that, as a web developer or creative director.
+                    </div>
+                </section>
+
+            </div>
+            <!-- end sectionWrapper -->
 
         </div>
-        <!-- end sectionWrapper -->
 
-    </div>
+        <script id="sem-vs" type="x-shader/x-vertex">
+            varying vec3 e;
+            varying vec3 n;
+            void main() {
+                e = normalize(vec3(modelViewMatrix * vec4(position, 1.0)));
+                n = normalize(normalMatrix * normal);
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
+            }
+        </script>
 
-    <script id="sem-vs" type="x-shader/x-vertex">
-        varying vec3 e;
-        varying vec3 n;
-        void main() {
-            e = normalize(vec3(modelViewMatrix * vec4(position, 1.0)));
-            n = normalize(normalMatrix * normal);
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
-        }
-    </script>
+        <script id="sem-fs" type="x-shader/x-vertex">
+            uniform sampler2D tMatCap;
+            varying vec3 e;
+            varying vec3 n;
+            void main() {
+                vec3 r = reflect(e, n);
+                float m = 2. * sqrt(pow(r.x, 2.) + pow(r.y, 2.) + pow(r.z + 1., 2.));
+                vec2 vN = r.xy / m + .5;
+                vec3 base = texture2D(tMatCap, vN).rgb;
+                gl_FragColor = vec4(base, 1.);
+            }
+        </script>
 
-    <script id="sem-fs" type="x-shader/x-vertex">
-        uniform sampler2D tMatCap;
-        varying vec3 e;
-        varying vec3 n;
-        void main() {
-            vec3 r = reflect(e, n);
-            float m = 2. * sqrt(pow(r.x, 2.) + pow(r.y, 2.) + pow(r.z + 1., 2.));
-            vec2 vN = r.xy / m + .5;
-            vec3 base = texture2D(tMatCap, vN).rgb;
-            gl_FragColor = vec4(base, 1.);
-        }
-    </script>
+        <script type="x-shader/x-vertex" id="vertexShader">
+            attribute vec4 tangent;
+            uniform float time;
+            uniform vec2 repeat;
+            uniform float useNormal;
+            uniform float useRim;
+            varying vec2 vUv;
+            varying vec3 vTangent;
+            varying vec3 vBinormal;
+            varying vec3 vNormal;
+            varying vec3 vEye;
+            varying vec3 vU;
+            varying vec2 vN;
+            void main() {
+                vU = normalize(vec3(modelViewMatrix * vec4(position, 1.0)));
+                if(useNormal == 0.) {
+                    vec3 n = normalize(normalMatrix * normal);
+                    vec3 r = reflect(vU, n);
+                    float m = 2.0 * sqrt(r.x * r.x + r.y * r.y + (r.z + 1.0) * (r.z + 1.0));
+                    vN = vec2(r.x / m + 0.5, r.y / m + 0.5);
+                } else {
+                    vN = vec2(0.);
+                }
+                vUv = repeat * uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                vNormal = normalize(normalMatrix * normal);
+                if(useNormal == 1.) {
+                    vTangent = normalize(normalMatrix * tangent.xyz);
+                    vBinormal = normalize(cross(vNormal, vTangent) * tangent.w);
+                } else {
+                    vTangent = vec3(0.);
+                    vBinormal = vec3(0.);
+                }
+                if(useRim > 0.) {
+                    vEye = (modelViewMatrix * vec4(position, 1.0)).xyz;
+                } else {
+                    vEye = vec3(0.);
+                }
+            }
+        </script>
 
-    <script type="x-shader/x-vertex" id="vertexShader">
-        attribute vec4 tangent;
-        uniform float time;
-        uniform vec2 repeat;
-        uniform float useNormal;
-        uniform float useRim;
-        varying vec2 vUv;
-        varying vec3 vTangent;
-        varying vec3 vBinormal;
-        varying vec3 vNormal;
-        varying vec3 vEye;
-        varying vec3 vU;
-        varying vec2 vN;
-        void main() {
-            vU = normalize(vec3(modelViewMatrix * vec4(position, 1.0)));
-            if(useNormal == 0.) {
-                vec3 n = normalize(normalMatrix * normal);
-                vec3 r = reflect(vU, n);
-                float m = 2.0 * sqrt(r.x * r.x + r.y * r.y + (r.z + 1.0) * (r.z + 1.0));
-                vN = vec2(r.x / m + 0.5, r.y / m + 0.5);
-            } else {
-                vN = vec2(0.);
+        <script type="x-shader/x-vertex" id="fragmentShader">
+            uniform float time;
+            uniform float bump;
+            uniform sampler2D tNormal;
+            uniform sampler2D tMatCap;
+            uniform float noise;
+            uniform float useNormal;
+            uniform float useRim;
+            uniform float rimPower;
+            uniform float useScreen;
+            uniform float normalScale;
+            uniform float normalRepeat;
+            varying vec2 vUv;
+            varying vec3 vTangent;
+            varying vec3 vBinormal;
+            varying vec3 vNormal;
+            varying vec3 vEye;
+            varying vec3 vU;
+            varying vec2 vN;
+            float random(vec3 scale, float seed) {
+                return fract(sin(dot(gl_FragCoord.xyz + seed, scale)) * 43758.5453 + seed);
             }
-            vUv = repeat * uv;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-            vNormal = normalize(normalMatrix * normal);
-            if(useNormal == 1.) {
-                vTangent = normalize(normalMatrix * tangent.xyz);
-                vBinormal = normalize(cross(vNormal, vTangent) * tangent.w);
-            } else {
-                vTangent = vec3(0.);
-                vBinormal = vec3(0.);
+            void main() {
+                vec3 finalNormal = vNormal;
+                vec2 calculatedNormal = vN;
+                if(useNormal == 1.) {
+                    vec3 normalTex = texture2D(tNormal, vUv * normalRepeat).xyz * 2.0 - 1.0;
+                    normalTex.xy *= normalScale;
+                    normalTex.y *= -1.;
+                    normalTex = normalize(normalTex);
+                    mat3 tsb = mat3(normalize(vTangent), normalize(vBinormal), normalize(vNormal));
+                    finalNormal = tsb * normalTex;
+                    vec3 r = reflect(vU, normalize(finalNormal));
+                    float m = 2.0 * sqrt(r.x * r.x + r.y * r.y + (r.z + 1.0) * (r.z + 1.0));
+                    calculatedNormal = vec2(r.x / m + 0.5, r.y / m + 0.5);
+                }
+                vec3 base = texture2D(tMatCap, calculatedNormal).rgb;
+                // rim lighting
+                if(useRim > 0.) {
+                    float f = rimPower * abs(dot(vNormal, normalize(vEye)));
+                    f = useRim * (1. - smoothstep(0.0, 1., f));
+                    base += vec3(f);
+                }
+                // screen blending
+                if(useScreen == 1.) {
+                    base = vec3(1.) - (vec3(1.) - base) * (vec3(1.) - base);
+                }
+                // noise 
+                base += noise * (.5 - random(vec3(1.), length(gl_FragCoord)));
+                gl_FragColor = vec4(base, 1.);
             }
-            if(useRim > 0.) {
-                vEye = (modelViewMatrix * vec4(position, 1.0)).xyz;
-            } else {
-                vEye = vec3(0.);
-            }
-        }
-    </script>
-
-    <script type="x-shader/x-vertex" id="fragmentShader">
-        uniform float time;
-        uniform float bump;
-        uniform sampler2D tNormal;
-        uniform sampler2D tMatCap;
-        uniform float noise;
-        uniform float useNormal;
-        uniform float useRim;
-        uniform float rimPower;
-        uniform float useScreen;
-        uniform float normalScale;
-        uniform float normalRepeat;
-        varying vec2 vUv;
-        varying vec3 vTangent;
-        varying vec3 vBinormal;
-        varying vec3 vNormal;
-        varying vec3 vEye;
-        varying vec3 vU;
-        varying vec2 vN;
-        float random(vec3 scale, float seed) {
-            return fract(sin(dot(gl_FragCoord.xyz + seed, scale)) * 43758.5453 + seed);
-        }
-        void main() {
-            vec3 finalNormal = vNormal;
-            vec2 calculatedNormal = vN;
-            if(useNormal == 1.) {
-                vec3 normalTex = texture2D(tNormal, vUv * normalRepeat).xyz * 2.0 - 1.0;
-                normalTex.xy *= normalScale;
-                normalTex.y *= -1.;
-                normalTex = normalize(normalTex);
-                mat3 tsb = mat3(normalize(vTangent), normalize(vBinormal), normalize(vNormal));
-                finalNormal = tsb * normalTex;
-                vec3 r = reflect(vU, normalize(finalNormal));
-                float m = 2.0 * sqrt(r.x * r.x + r.y * r.y + (r.z + 1.0) * (r.z + 1.0));
-                calculatedNormal = vec2(r.x / m + 0.5, r.y / m + 0.5);
-            }
-            vec3 base = texture2D(tMatCap, calculatedNormal).rgb;
-            // rim lighting
-            if(useRim > 0.) {
-                float f = rimPower * abs(dot(vNormal, normalize(vEye)));
-                f = useRim * (1. - smoothstep(0.0, 1., f));
-                base += vec3(f);
-            }
-            // screen blending
-            if(useScreen == 1.) {
-                base = vec3(1.) - (vec3(1.) - base) * (vec3(1.) - base);
-            }
-            // noise 
-            base += noise * (.5 - random(vec3(1.), length(gl_FragCoord)));
-            gl_FragColor = vec4(base, 1.);
-        }
-    </script>
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-    <script>
-        (function(b, o, i, l, e, r) {
-            b.GoogleAnalyticsObject = l;
-            b[l] || (b[l] = function() {
-                (b[l].q = b[l].q || []).push(arguments)
-            });
-            b[l].l = +new Date;
-            e = o.createElement(i);
-            r = o.getElementsByTagName(i)[0];
-            e.src = '//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e, r)
-        }(window, document, 'script', 'ga'));
-        ga('create', 'UA-XXXXX-X');
-        ga('send', 'pageview');
-    </script>
-    <!-- build:js({app,.tmp}) scripts/main.js -->
-    <script src="scripts/main.js"></script>
-    <!-- endbuild -->
+        </script>
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b, o, i, l, e, r) {
+                b.GoogleAnalyticsObject = l;
+                b[l] || (b[l] = function() {
+                    (b[l].q = b[l].q || []).push(arguments)
+                });
+                b[l].l = +new Date;
+                e = o.createElement(i);
+                r = o.getElementsByTagName(i)[0];
+                e.src = '//www.google-analytics.com/analytics.js';
+                r.parentNode.insertBefore(e, r)
+            }(window, document, 'script', 'ga'));
+            ga('create', 'UA-XXXXX-X');
+            ga('send', 'pageview');
+        </script>
+        <!-- build:js({app,.tmp}) scripts/main.js -->
+        <script src="scripts/main.js"></script>
+        <!-- endbuild -->
 </body>
 
 </html>

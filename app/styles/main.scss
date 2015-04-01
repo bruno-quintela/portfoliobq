@@ -300,98 +300,151 @@ $transition-effect: ease;
 
 .site-info
 {
-    @extend %model-info-font;
     z-index: 1;
     position:absolute;
-    left:35px;
-    bottom:50px;
-    width:300px;
-    height:50px;
-    text-align:left;
-    opacity:0;
+    left:0px;
+    bottom:0px;
+    width:100%;
+    height:25%;
+    background-color:rgba(0,0,0,0.9);
+    opacity:1;
     will-change: transform, opacity;
     @include transition((transform 1s 0s $transition-effect, opacity 1.5s 0s $transition-effect));
 }
-.site-info.show
-{
-    opacity:1;
-}
-
-.site-info.open
-{
-    @include transform(translateX(200px));
-}
-
-.site-info .title
-{
-    @extend %model-info-font;
-    opacity:0;
-    will-change: transform, opacity;
-    @include transform(translateX(-20%));
-    @include transition((transform 2s 1s $transition-effect, opacity 2s 1s $transition-effect));
-}
-
-.site-info.show .title
-{
-    opacity:1;
-    @include transform(translateX(0%));
-}
 
 
-.site-info .subtitle
-{
-    @extend %model-subtitle-font;
-    opacity:0;
-    will-change: transform, opacity;
-    @include transform(translateX(-20%));
-    @include transition((transform 2s 0s $transition-effect, opacity 2s 0s $transition-effect));
-}
-
-.site-info.show .subtitle
-{
-    opacity:1;
-    @include transform(translateX(0));
-}
-
-.site-intro{
-    @extend %model-credits-font;
+/***/
+.site-info .content-left{
     position:absolute;
-    top:0px;
-    left:300px;
-    border-left: 2px solid $text-color;
-    width:500px;
+    left:0px;
+    width:15%;
     height:100%;
-    padding-left:20px;
-    //opacity:0;
-    will-change: transform, opacity;
-    @include transform(translateY(-100%));
-    @include transition((transform 1.5s 1s $transition-effect, opacity 1.5s 1s $transition-effect));
+    padding:50px;
+    text-align:right;
+    
 }
 
-.site-info.show .site-intro
-{
-    opacity:1;
-    @include transform(translateY(0));
+.site-info .content-left .title{
+    display:block;
+    width:100%;
+    font-weight: 300;
+    font-size: 40px;
+    text-transform:uppercase;
+    clear:both;
+    color:#fff;
 }
 
-.model-settings
-{
-    opacity:0;
+.site-info .content-left .subtitle{
+    display:block;
+    width:100%;
+    height:50px;
+    letter-spacing: 1px;
+	font-size: 11px;
+    text-transform:uppercase;
+    clear:both;
+    color:#fff;
+    margin-top:10px;
+}
+
+/****/
+
+.site-info .content-center{
     position:absolute;
-    left:-20px;
-    margin-top: 10px;
-    will-change: transform, opacity;
-    @include transform(translateX(-20%));
-    @include transition((transform 0.5s 4s $transition-effect, opacity 0.5s 4s $transition-effect));
+    right:0px;
+    width:85%;
+    height:100%;
+    padding:50px;
+    padding-left:0px;
+    text-align:left;
+    
 }
 
-.site-info.show .model-settings
+.site-info .content-center .title{
+    display:block;
+    width:100%;
+    font-weight: 300;
+    font-size: 40px;
+    text-transform:uppercase;
+    clear:both;
+    color:#fff;
+}
+
+.site-info .content-center .subtitle{
+    display:block;
+    max-width:400px;
+    height:50px;
+    letter-spacing: 1px;
+	font-size: 11px;
+    text-transform:uppercase;
+    clear:both;
+    color:#fff;
+    margin-top:10px;
+}
+
+/****/
+
+.site-info .content-right{
+    position:absolute;
+    right:0px;
+    width:55%;
+    height:100%;
+    padding:50px;
+    padding-left:0px;
+    text-align:left;
+    
+}
+
+.site-info .content-right .title{
+    display:block;
+    width:100%;
+    font-weight: 300;
+    font-size: 40px;
+    text-transform:uppercase;
+    clear:both;
+    color:#fff;
+}
+
+.site-info .content-right .subtitle{
+    display:block;
+    max-width:400px;
+    height:50px;
+    letter-spacing: 1px;
+	font-size: 11px;
+    text-transform:uppercase;
+    clear:both;
+    color:#fff;
+    margin-top:10px;
+}
+
+
+
+.settings-title
 {
-    opacity:1;
-    @include transform(translatex(0));
+    display:block;
+    letter-spacing: 3px;
+    font-size: 11px;
+    color:#fff;
+    text-transform:uppercase;
+    clear:both;
 }
 
+.site-info .content-left .settings-title{
+    float:right;
+}
+.site-info .content-center .settings-title{
+    float:left;
+}
 
+.credits-item{
+    color:grey;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform:none;
+    clear:both;
+    float:left;
+}
+
+/****************/
 .model-settings img
 {
     position:absolute;

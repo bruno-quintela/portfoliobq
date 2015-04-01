@@ -101,7 +101,7 @@ ENGINE = function(renderType) {
         dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: true,
-            guiEnabled: true
+            guiEnabled: false
         },
         renderParams: {
             antialias: true,
@@ -413,7 +413,7 @@ ENGINE = function(renderType) {
             clock: new THREE.Clock(false),
             transitionMixRatio: 1,
             texture: 1,
-            textureThreshold: 0.02,
+            textureThreshold: 0.001,
             CurrentLayer: 'A',
             transitionTime: 1,
             toLayerA: function() {
@@ -865,12 +865,12 @@ ENGINE = function(renderType) {
                 this.fpsStats.domElement.style.right = '20px';
                 this.fpsStats.domElement.style.top = '20px';
                 this.fpsStats.domElement.style.width = '110px';
-                document.getElementById('settingsTop').appendChild(this.fpsStats.domElement);
+                /*document.getElementById('settingsTop').appendChild(this.fpsStats.domElement);
                 document.getElementById('fps').style.background = 'transparent';
                 document.getElementById('fpsText').style.color = '#fff';
                 document.getElementById('fpsText').style.fontWeight = '500';
                 document.getElementById('fpsText').style.fontFamily = "Open Sans";
-                document.getElementById('fpsGraph').style.display = 'none';
+                document.getElementById('fpsGraph').style.display = 'none';*/
                 //add threex.renderstats WEBGL render
                 /*this.gpuStats = new THREEx.RendererStats();
                 this.gpuStats.domElement.id = 'gpuStats';
@@ -1311,29 +1311,39 @@ ENGINE = function(renderType) {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/empty.dae', function(collada) {
+                    loader.load('../src/collada/model01.dae', function(collada) {
                         var dae = collada.scene;
                         layer.scene.add(dae);
                         
-                        //layer.plane = new THREE.Mesh(new THREE.PlaneGeometry(100, 100));
-                        //layer.scene.add(layer.plane);
-                        //layer.plane.material.side = THREE.DoubleSide;
-                        //layer.plane.position.x = 0;
-                        //addLights(layer.scene);
-                        /*layer.lowpoly = new THREE.Mesh(new THREE.SphereGeometry(1.9, 50, 50));
-                        layer.lowpoly.material = world.materials.matcapMaterial(layer, 11);
-                        layer.scene.add(layer.lowpoly);
-                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.0001);*/
-                        
-                        /* TODO*/
-                        layer.onLoadedCallback();
-                        /**
-                         * Anaglyph effect
-                         **/
+                         collada.scene.traverse(function(child) {
+                            if(child instanceof THREE.Object3D) {
+                                console.info(child.name);
+                                if(child.name.indexOf('make') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.wireframeMaterial(0xffffff, 1);
+                                    layer.makehumanBody = mesh;
+                                } else if(child.name === 'lowpoly') {
+                                    var mesh = child.children[0];
+                                    //mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.wireframeMaterial(0xffffff, 1);
+                                    //world.normalMaterial('../src/textures/matcaps/matcap15.png', '../src/textures/normalMaps/normal11.jpg', 1);
+                                    //layer.polyWire1 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    layer.lowpoly = mesh;
+                                    //layer.polyWire = addWireframe(layer.scene, mesh.geometry, 0x000000, 1, 1);
+                                    //layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 1.031, 1);
+                                }
+                            }
+                        });
+                        //init scene rotation
+                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.001);
+                        layer.scene.rotation.y += 80 * Math.PI / 180;
                         layer.render = function(rtt) {
-                            //layer.scene.rotation.y -= layer.rotationSpeed.z;
-                            //layer.lowpoly.rotation.x -= layer.rotationSpeed.z;
-                            //layer.lowpoly.rotation.y -= layer.rotationSpeed.z;
+                            //layer.scene.rotation.y -= layer.rotationSpeed.z *0.5;
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
@@ -1365,7 +1375,7 @@ ENGINE = function(renderType) {
                         layer.fragments = [];
                         layer.scene.add(dae);
                         //layer.backgroundImage = addBackgroundImage(layer, '../src/textures/background/background' + world.renderParams.backgroundImage + '.jpg');
-                        addSkyDome(layer, 8, '../src/textures/background/background16.jpg');
+                        addSkyDome(layer, 8, '../src/textures/background/background6.jpg');
                         //layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 1000, 4, '../src/textures/sprites/WhiteDot.svg', 0.03);
                         //layer.spheres = [];
                         collada.scene.traverse(function(child) {
@@ -1376,12 +1386,12 @@ ENGINE = function(renderType) {
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap68.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap16.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
                                     layer.makehumanBody = mesh;
                                 } else if(child.name === 'lowpoly') {
                                     var mesh = child.children[0];
                                     //mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.matcapMaterial(layer, 107);
+                                    mesh.material = world.materials.matcapMaterial(layer, 109);
                                     //world.normalMaterial('../src/textures/matcaps/matcap15.png', '../src/textures/normalMaps/normal11.jpg', 1);
                                     //layer.polyWire1 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
                                     mesh.receiveShadow = false;
@@ -1393,11 +1403,12 @@ ENGINE = function(renderType) {
                             }
                         });
                         //init scene rotation
-                        layer.scene.rotation.y -= 95 * Math.PI / 180;
+                        layer.scene.rotation.y += 80 * Math.PI / 180;
+                        //layer.scene.position.z += 7.5;
                         layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.001);
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
-                            layer.scene.rotation.y -= layer.rotationSpeed.z * parseFloat(layer.rotationFactor.value);
+                            layer.scene.rotation.y -= layer.rotationSpeed.z * parseFloat(layer.rotationFactor.value)*0.5;
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
@@ -2131,11 +2142,15 @@ ENGINE = function(renderType) {
                     if(world.renderParams.enableAnaglyph) {
                         this.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, world.renderParams.focus);
                     }
-                     if(world.renderParams.enableVignette) {
-                        var vignettePass = new THREE.ShaderPass(THREE.VignetteShader);
-                        vignettePass.uniforms.darkness.value = world.renderParams.vignetteStrengh;
-                        vignettePass.uniforms.offset.value = 0.3;
-                        this.composer.addPass(vignettePass);
+                    if(world.renderParams.enableTiltShift) {
+                        var hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
+                        var vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
+                        var bluriness = world.renderParams.tiltBlur;
+                        hblur.uniforms.h.value = bluriness / world.width;
+                        vblur.uniforms.v.value = bluriness / world.height;
+                        hblur.uniforms.r.value = vblur.uniforms.r.value = 0.5;
+                        this.composer.addPass(hblur);
+                        this.composer.addPass(vblur);
                     }
                     if(world.renderParams.enableGlitch) {
                         var glitchPass = new THREE.GlitchPass(world.renderParams.glitchType);
@@ -2182,19 +2197,16 @@ ENGINE = function(renderType) {
                         var effectTechnicolor = new THREE.ShaderPass(THREE.Technicolor3Shader);
                         this.composer.addPass(effectTechnicolor);
                     }
-                    if(world.renderParams.enableTiltShift) {
-                        var hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
-                        var vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
-                        var bluriness = world.renderParams.tiltBlur;
-                        hblur.uniforms.h.value = bluriness / world.width;
-                        vblur.uniforms.v.value = bluriness / world.height;
-                        hblur.uniforms.r.value = vblur.uniforms.r.value = 0.5;
-                        this.composer.addPass(hblur);
-                        this.composer.addPass(vblur);
-                    }
+                   
                     if(world.renderParams.enableSepia) {
                         var effectSepia = new THREE.ShaderPass(THREE.SepiaShader);
                         this.composer.addPass(effectSepia);
+                    }
+                    if(world.renderParams.enableVignette) {
+                        var vignettePass = new THREE.ShaderPass(THREE.VignetteShader);
+                        vignettePass.uniforms.darkness.value = world.renderParams.vignetteStrengh;
+                        vignettePass.uniforms.offset.value = 0.3;
+                        this.composer.addPass(vignettePass);
                     }
                    
                 }
@@ -2760,6 +2772,7 @@ ENGINE = function(renderType) {
                         myPortfolio.World.renderParams.enableRGBShift = false;
                         myPortfolio.World.renderParams.enableVignette = true;
                         myPortfolio.World.renderParams.bleach = true;
+                        myPortfolio.World.renderParams.enableColorify = true;
                         myPortfolio.World.refreshPostProcessing();
                     }
                 });
@@ -2770,8 +2783,8 @@ ENGINE = function(renderType) {
                         classie.removeClass(settingsQualityLow, 'active');
                         myPortfolio.World.renderParams.enableFXAA = false;
                         myPortfolio.World.renderParams.enableTiltShift = false;
-                        //myPortfolio.World.renderParams.enableRGBShift = false;
-                        myPortfolio.World.renderParams.enableVignette = true;
+                        myPortfolio.World.renderParams.enableColorify = true;
+                        myPortfolio.World.renderParams.enableVignette = false;
                         myPortfolio.World.renderParams.bleach = true;
                         myPortfolio.World.refreshPostProcessing();
                     }
@@ -2784,7 +2797,8 @@ ENGINE = function(renderType) {
                         myPortfolio.World.renderParams.enableFXAA = false;
                         myPortfolio.World.renderParams.enableTiltShift = false;
                         myPortfolio.World.renderParams.enableRGBShift = false;
-                        myPortfolio.World.renderParams.enableVignette = true;
+                        myPortfolio.World.renderParams.enableVignette = false;
+                        myPortfolio.World.renderParams.enableColorify = false;
                         myPortfolio.World.renderParams.bleach = false;
                         myPortfolio.World.refreshPostProcessing();
                     }
@@ -2949,7 +2963,7 @@ initPageButton.addEventListener('click', function() {
         myPortfolio.World.transitionParams.transitionMixRatio = 1;
         var transitionTimeInterval = 1000;
         classie.removeClass(initLoadingScreen, 'hide');
-        classie.addClass(landingPage, 'hide');
+        //classie.addClass(landingPage, 'hide');
         console.log('start3D');
         myPortfolio.World.CurrentLayer = new myPortfolio.World.Layer('initMainModel', 3, function() {
             var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
@@ -2961,7 +2975,7 @@ initPageButton.addEventListener('click', function() {
             console.info(loadProgression);
         }, function() {
             console.log('MainModel Loaded!');
-            landingPage.parentNode.removeChild(landingPage);
+            //landingPage.parentNode.removeChild(landingPage);
             setTimeout(function() {
                 initLoadingScreen.parentNode.removeChild(initLoadingScreen);
             }, 1000);
@@ -3016,7 +3030,7 @@ initPageButton.addEventListener('click', function() {
         console.log('InitRenderVideo');
     }
 });
-renderRealTime.addEventListener('click', function() {
+/*renderRealTime.addEventListener('click', function() {
     renderType = 'webgl';
     classie.removeClass(renderInfo, 'show');
     classie.removeClass(renderRecorded, 'active');
@@ -3037,7 +3051,7 @@ renderRecorded.addEventListener('click', function() {
     renderInfo.innerHTML = "Background animations are pre recorded webgl rendered videos, recomended for old computers or browsers.";
     classie.addClass(renderInfo, 'show');
     console.log('renderRecorded');
-});
+});*/
 classie.removeClass(bodyWrapper, 'hide');
 classie.removeClass(landingPage, 'hide');
 console.log('start');
