@@ -1314,8 +1314,7 @@ ENGINE = function(renderType) {
                     loader.load('../src/collada/model01.dae', function(collada) {
                         var dae = collada.scene;
                         layer.scene.add(dae);
-                        
-                         collada.scene.traverse(function(child) {
+                        collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
                                 console.info(child.name);
                                 if(child.name.indexOf('make') != -1) {
@@ -1408,7 +1407,7 @@ ENGINE = function(renderType) {
                         layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.001);
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
-                            layer.scene.rotation.y -= layer.rotationSpeed.z * parseFloat(layer.rotationFactor.value)*0.5;
+                            layer.scene.rotation.y -= layer.rotationSpeed.z * parseFloat(layer.rotationFactor.value) * 0.5;
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
@@ -2197,7 +2196,6 @@ ENGINE = function(renderType) {
                         var effectTechnicolor = new THREE.ShaderPass(THREE.Technicolor3Shader);
                         this.composer.addPass(effectTechnicolor);
                     }
-                   
                     if(world.renderParams.enableSepia) {
                         var effectSepia = new THREE.ShaderPass(THREE.SepiaShader);
                         this.composer.addPass(effectSepia);
@@ -2208,7 +2206,6 @@ ENGINE = function(renderType) {
                         vignettePass.uniforms.offset.value = 0.3;
                         this.composer.addPass(vignettePass);
                     }
-                   
                 }
                 var copyPass = new THREE.ShaderPass(THREE.CopyShader);
                 this.composer.addPass(copyPass);
@@ -2319,290 +2316,22 @@ ENGINE = function(renderType) {
                 galleryAnchor = document.getElementById('galleryAnchor'),
                 contactAnchor = document.getElementById('contactAnchor'),
                 creditsAnchor = document.getElementById('creditsAnchor'),
-                sectionAbout = document.getElementById('sectionAbout'),
-                sectionGallery = document.getElementById('sectionGallery'),
-                sectionContact = document.getElementById('sectionContact'),
-                sectionCredits = document.getElementById('sectionCredits');
-            var submenu1Anchor = document.getElementById('submenuAnchor1');
-            var submenu2Anchor = document.getElementById('submenuAnchor2');
-            var submenu3Anchor = document.getElementById('submenuAnchor3');
-            var submenu4Anchor = document.getElementById('submenuAnchor4');
-            var aboutSubmenu2 = document.getElementById('aboutSubmenu2');
-            var aboutSubmenu3 = document.getElementById('aboutSubmenu3');
-            var aboutSubmenu4 = document.getElementById('aboutSubmenu4');
-            var creditsSubmenu1 = document.getElementById('creditsSubmenu1');
-            var creditsSubmenu2 = document.getElementById('creditsSubmenu2');
-            var creditsSubmenu3 = document.getElementById('creditsSubmenu3');
+                settingsAnchor = document.getElementById('settingsAnchor'),
+                settingsSection = document.getElementById('settingsSection');
             var galleryContainer = document.getElementById('galleryContainer');
             var galleryLoader = document.getElementById('galleryLoader');
             var layer = myPortfolio.World.CurrentLayer;
-            /* Scene tweens init buffers */
-            /*model to left tween*/
-            /*var tweenZoomIn = new TWEEN.Tween(layer.scene.position).to({
-                x: layer.scene.position.x,
-                y: layer.scene.position.y,
-                z: layer.scene.position.z + 2.5
-            }, 1000);
-            var tweenZoomOut = new TWEEN.Tween(layer.scene.position).to({
-                x: layer.scene.position.x,
-                y: layer.scene.position.y,
-                z: layer.scene.position.z - 2.5
-            }, 1000);*/
-            /*event listeners handlers*/
-            /* handle the submenu BACK event*/
-
-            function closeSubmenu() {
-                //tweenZoomOut.easing(TWEEN.Easing.Exponential.Out).start();
-                /*remove all event listeners*/
-                submenu1Anchor.removeEventListener('click', closeSubmenu, false);
-                submenu2Anchor.removeEventListener('click', closeSubmenu, false);
-                submenu3Anchor.removeEventListener('click', closeSubmenu, false);
-                submenu4Anchor.removeEventListener('click', closeSubmenu, false);
-                // toggle section active state
-                classie.removeClass(sectionAbout, 'show');
-                classie.removeClass(sectionGallery, 'show');
-                classie.removeClass(sectionContact, 'show');
-                classie.removeClass(sectionCredits, 'show');
-                classie.toggleClass(menu, 'toggle');
-                /* close submenus active */
-                classie.removeClass(aboutSubmenu2, 'show');
-                classie.removeClass(aboutSubmenu3, 'show');
-                classie.removeClass(aboutSubmenu4, 'show');
-                classie.removeClass(creditsSubmenu1, 'show');
-                classie.removeClass(creditsSubmenu2, 'show');
-                classie.removeClass(creditsSubmenu3, 'show');
-                /* gallery items hide*/
-                var galleryItems = document.querySelectorAll('.gallery-item');
-                [].forEach.call(galleryItems, function(currentItem) {
-                    classie.addClass(currentItem, 'hide');
-                });
-                //hide gallery visibility
-                classie.removeClass(galleryContainer, 'show');
-                //myPortfolio.World.renderParams.enableColorify = true;
-                //myPortfolio.World.refreshPostProcessing();
-            };
             /* menu navigation handler*/
-            aboutAnchor.addEventListener('click', function() {
-                //tweenZoomIn.easing(TWEEN.Easing.Exponential.Out).start();
-                //rotate scene*/
-                /*var tweenScene90 = new TWEEN.Tween(layer.lowpoly.rotation).to({
-                    x: layer.lowpoly.rotation.x,
-                    y: layer.lowpoly.rotation.y + 20 * Math.PI / 180,
-                    z: layer.lowpoly.rotation.z
-                }, 1000);
-                tweenScene90.easing(TWEEN.Easing.Quadratic.Out).start();*/
-                //add on close submenu event handler
-                submenu1Anchor.addEventListener('click', closeSubmenu);
-                classie.toggleClass(aboutSubmenu2, 'show');
-                classie.toggleClass(aboutSubmenu3, 'show');
-                classie.toggleClass(aboutSubmenu4, 'show');
-                /** active item style **/
-                submenu1Anchor.innerHTML = "<span>back</span>";
-                classie.addClass(submenu1Anchor, 'active');
-                /** inactive items style, content and event handlers **/
-                classie.removeClass(submenu2Anchor, 'active');
-                classie.removeClass(submenu3Anchor, 'active');
-                classie.removeClass(submenu4Anchor, 'active');
-                submenu2Anchor.innerHTML = '';
-                submenu3Anchor.innerHTML = '';
-                submenu4Anchor.innerHTML = '';
-                /* section animation handler */
-                classie.addClass(sectionAbout, 'show');
-                classie.toggleClass(menu, 'toggle');
-            });
-            galleryAnchor.addEventListener('click', function() {
-                //tweenZoomIn.easing(TWEEN.Easing.Exponential.Out).start();
-                //show gallery
-                classie.addClass(galleryContainer, 'show');
-                //add on close submenu event handler
-                submenu2Anchor.addEventListener('click', closeSubmenu);
-                /** active item style **/
-                submenu2Anchor.innerHTML = "<span>back</span>";
-                classie.addClass(submenu2Anchor, 'active');
-                /** inactive items style and content **/
-                classie.removeClass(submenu1Anchor, 'active');
-                classie.removeClass(submenu3Anchor, 'active');
-                classie.removeClass(submenu4Anchor, 'active');
-                submenu1Anchor.innerHTML = '';
-                submenu3Anchor.innerHTML = '';
-                submenu4Anchor.innerHTML = '';
-                /* section animation handler */
-                classie.addClass(sectionGallery, 'show');
-                /* gallery items show */
-                var galleryItems = document.querySelectorAll('.gallery-item');
-                [].forEach.call(galleryItems, function(currentItem) {
-                    classie.toggleClass(currentItem, 'hide');
-                });
-                /* menu toggle*/
-                classie.toggleClass(menu, 'toggle');
-                // myPortfolio.World.renderParams.enableColorify = false;
-                // myPortfolio.World.refreshPostProcessing();
-            });
-            contactAnchor.addEventListener('click', function() {
-                //tweenZoomIn.easing(TWEEN.Easing.Exponential.Out).start();
-                //add on close submenu event handler
-                submenu3Anchor.addEventListener('click', closeSubmenu);
-                //submenu anchors on click event handlers
-                //submenu1Anchor.addEventListener('click', displayLocation);
-                //submenu2Anchor.addEventListener('click', displaySocial);
-                /** active item style **/
-                submenu3Anchor.innerHTML = "<span>back</span>";
-                classie.addClass(submenu3Anchor, 'active');
-                /** inactive items style and content **/
-                classie.removeClass(submenu1Anchor, 'active');
-                classie.removeClass(submenu2Anchor, 'active');
-                classie.removeClass(submenu4Anchor, 'active');
-                submenu1Anchor.innerHTML = "";
-                submenu2Anchor.innerHTML = "";
-                submenu4Anchor.innerHTML = "";
-                /* section animation handler */
-                setTimeout(function() {
-                    classie.addClass(sectionContact, 'show');
-                }, 500);
-                classie.toggleClass(menu, 'toggle');
-            });
-            creditsAnchor.addEventListener('click', function() {
-                //tweenZoomIn.easing(TWEEN.Easing.Exponential.Out).start();
-                submenu4Anchor.addEventListener('click', closeSubmenu);
-                classie.toggleClass(creditsSubmenu1, 'show');
-                classie.toggleClass(creditsSubmenu2, 'show');
-                classie.toggleClass(creditsSubmenu3, 'show');
-                /** active item style **/
-                submenu4Anchor.innerHTML = "<span>back</span>";
-                classie.addClass(submenu4Anchor, 'active');
-                /** inactive items style, content and event handlers **/
-                classie.removeClass(submenu1Anchor, 'active');
-                classie.removeClass(submenu2Anchor, 'active');
-                classie.removeClass(submenu3Anchor, 'active');
-                submenu1Anchor.innerHTML = '';
-                submenu2Anchor.innerHTML = '';
-                submenu3Anchor.innerHTML = '';
-                /* section animation handler */
-                classie.addClass(sectionCredits, 'show');
-                classie.toggleClass(menu, 'toggle');
-            });
-            /**** galley item click handler */
-            var galleryItems = document.querySelectorAll('.gallery-item');
-            [].forEach.call(galleryItems, function(currentItem) {
-                currentItem.addEventListener('click', function() {
-                    if(!myPortfolio.system.useWebGL()) {
-                        var selectedVideo = currentItem.getAttribute('data-video');
-                        myPortfolio.videoBackground.src = selectedVideo;
-                        myPortfolio.videoBackground.play();
-                        classie.removeClass(currentItem, 'show');
-                        closeSubmenu();
-                    } else {
-                        classie.removeClass(siteInfo, 'show');
-                        var selectedModel = currentItem.getAttribute('data-model');
-                        var totalAssets = parseInt(currentItem.getAttribute('data-totalassets'));
-                        // scroll gallery container to top
-                        var tweenScrollTop = new TWEEN.Tween(galleryContainer).to({
-                            scrollTop: 0
-                        }, 1000);
-                        tweenScrollTop.easing(TWEEN.Easing.Quadratic.Out).start();
-                        //hide all items
-                        [].forEach.call(galleryItems, function(currentItem) {
-                            classie.toggleClass(currentItem, 'hide');
-                        });
-                        // show clicked one
-                        classie.toggleClass(currentItem, 'hide');
-                        classie.toggleClass(currentItem, 'show');
-                        //show loading model progress
-                        classie.removeClass(progressBar, 'reset');
-                        classie.toggleClass(loadingScreen, 'show');
-                        setTimeout(function() {
-                            // create next model layer
-                            myPortfolio.World.NextLayer = new myPortfolio.World.Layer('GalleryModel' + selectedModel, totalAssets, function() {
-                                var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
-                                document.getElementById('progressBar').style.width = loadProgression + '%';
-                                console.log(this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
-                                if(this.numberAssetsLoaded == this.totalAssetsToLoad) {
-                                    var layer = this;
-                                    setTimeout(function() {
-                                        layer.onLoadedCallback();
-                                        classie.toggleClass(loadingScreen, 'show');
-                                        layer.loadReset();
-                                    }, 2000);
-                                }
-                                console.info(loadProgression);
-                            }, function() {
-                                console.log('newSceneLoaded');
-                                myPortfolio.World.transitionParams.transitionMixRatio = 0;
-                                myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
-                                myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
-                                var update = function() {
-                                    myPortfolio.World.transitionParams.transitionMixRatio = current.x;
-                                };
-                                var current = {
-                                    x: 1
-                                };
-                                // remove previous tweens if needed:TODO use same instanciated tween
-                                var tweenLayerTransition = new TWEEN.Tween(current).to({
-                                    x: 0
-                                }, myPortfolio.World.transitionParams.transitionTime * 1000).onUpdate(update);
-                                tweenLayerTransition.start();
-                                /*myPortfolio.World.renderParams = {
-                                antialias: true,
-                                alpha: false,
-                                showStats: true,
-                                backgroundColor: [34, 34, 34],
-                                backgroundImage: 20,
-                                skydomeImage: 1,
-                                fog: 0.001,
-                                enableAnaglyph: false,
-                                focus: 12,
-                                enableTrackball: true,
-                                enableMouseListener: false,
-                                enableGrid: false,
-                                glitchType: 0,
-                                enableGlitch: false,
-                                enableRGBShift: true,
-                                rgbValue: 0.002,
-                                enableFXAA: true,
-                                enableBloom: false,
-                                bloomStrengh: 0.3,
-                                enableSepia: false,
-                                enableColorify: false,
-                                enableFilm: false,
-                                enableFilmBW: false,
-                                filmStrengh: 0.3,
-                                enableDotFilter: false,
-                                bleach: true,
-                                bleachOpacity: 1,
-                                technicolor: false,
-                                enableTiltShift: true,
-                                tiltBlur: 5.5,
-                                enableVignette: true,
-                                vignetteStrengh: 5,
-                                disableEffects: false
-                            };
-                            setTimeout(function(){
-                                myPortfolio.World.refreshPostProcessing();
-                            },myPortfolio.World.transitionParams.transitionTime * 1000);*/
-                                // show clicked one
-                                //classie.toggleClass(currentItem, 'hide');
-                                classie.toggleClass(currentItem, 'show');
-                                //classie.toggleClass(galleryLoader, 'show');
-                                closeSubmenu();
-                                classie.addClass(siteInfo, 'show');
-                            });
-                        }, 1500);
-                    }
-                });
+            aboutAnchor.addEventListener('click', function() {});
+            galleryAnchor.addEventListener('click', function() {});
+            contactAnchor.addEventListener('click', function() {});
+            creditsAnchor.addEventListener('click', function() {});
+            settingsAnchor.addEventListener('click', function() {
+                classie.toggleClass(settingsSection, 'show');
             });
             /** 
              * Init Model Controls
              */
-            /* rotate scene*/
-
-            function rotateScene(deg) {
-                /*var tweenSceneRotate = new TWEEN.Tween(layer.scene.rotation).to({
-                    x: layer.scene.rotation.x,
-                    y: layer.scene.rotation.y + deg * Math.PI / 180,
-                    z: layer.scene.rotation.z
-                }, 2000);
-                tweenSceneRotate.easing(TWEEN.Easing.Quadratic.Out).start();*/
-            }
 
             function zoomScene(val) {
                 var layer = myPortfolio.World.CurrentLayer;
@@ -2613,45 +2342,14 @@ ENGINE = function(renderType) {
                 }, 1000);
                 tweenSceneZoom.easing(TWEEN.Easing.Quadratic.Out).start();
             }
-            var zoomBar = document.getElementById("zoomBar");
+            /*var zoomBar = document.getElementById("zoomBar");
             var rotationBar = document.getElementById("rotationBar");
             zoomBar.addEventListener('mouseup', function() {
                 zoomScene(parseInt(this.value));
             });
             rotationBar.addEventListener('mouseup', function() {
                 rotateScene(parseInt(this.value));
-            });
-            /**
-             * Mouse Wheel gallery events
-             * direction: 1:Up , -1:Down
-             * duration: ms
-             **/
-
-            function scrollGallery(direction, scrollDuration) {
-                var scrollHeight = galleryContainer.scrollHeight;
-                var scrollOffsetHeight = galleryContainer.offsetHeight;
-                var scrollTop = galleryContainer.scrollTop;
-                var numberOfItems = 6;
-                var margin = 20;
-                // detect scroll at the top
-                if(direction === 1 && scrollTop === 0 && direction > 0) {
-                    return;
-                }
-                // detect scroll at the bottom
-                else if(direction === -1 && (scrollHeight - scrollTop - margin <= scrollOffsetHeight)) {
-                    return;
-                }
-                console.log(scrollHeight - scrollTop + 10);
-                var tweenGalleryScroll = new TWEEN.Tween(galleryContainer).to({
-                    scrollTop: scrollTop + -1 * direction * (scrollHeight / numberOfItems)
-                }, 500);
-                tweenGalleryScroll.easing(TWEEN.Easing.Quadratic.Out).start();
-            };
-            galleryContainer.addEventListener('mousewheel', function(event) {
-                event.preventDefault();
-                var delta = Math.max(-1, Math.min(1, (event.wheelDelta || -event.detail)));
-                scrollGallery(delta, 1000);
-            }, false);
+            });*/
         },
         /**
          * UI Settings event handlers
@@ -2701,9 +2399,6 @@ ENGINE = function(renderType) {
             }
             /** settings event handlers */
             if(myPortfolio.system.useWebGL()) {
-                settings.addEventListener('click', function() {
-                    classie.toggleClass(sectionSettings, 'show');
-                });
                 /* AUDIO */
                 settingsAudioOn.addEventListener('click', function() {
                     if(!classie.hasClass(settingsAudioOn, 'active')) {
@@ -2957,7 +2652,7 @@ var myPortfolio = myPortfolio || {};
  **/
 myPortfolio = new ENGINE('3D');
 myPortfolio.init();
-initPageButton.addEventListener('click', function() {
+/*initPageButton.addEventListener('click', function() {
     if(renderType === 'webgl') {
         //transition layer
         myPortfolio.World.transitionParams.transitionMixRatio = 1;
@@ -3029,7 +2724,7 @@ initPageButton.addEventListener('click', function() {
         myPortfolio.init();
         console.log('InitRenderVideo');
     }
-});
+});*/
 /*renderRealTime.addEventListener('click', function() {
     renderType = 'webgl';
     classie.removeClass(renderInfo, 'show');
@@ -3053,7 +2748,15 @@ renderRecorded.addEventListener('click', function() {
     console.log('renderRecorded');
 });*/
 classie.removeClass(bodyWrapper, 'hide');
-classie.removeClass(landingPage, 'hide');
+//classie.removeClass(landingPage, 'hide');
+var galleryContainer = document.getElementById("galleryContainer");
+var gallery = new Dragend(galleryContainer, {
+    pageClass: 'gallery-item',
+    afterInitialize: function() {
+        galleryContainer.style.visibility = "visible";
+        console.log('galeery');
+    }
+});
 console.log('start');
 /*startWorld3D.addEventListener('click', function() {
 

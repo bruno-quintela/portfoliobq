@@ -1,14 +1,23 @@
 
 /*********************************************************************************/
+header
+{
+    z-index:13;
+    position: fixed;
+	width:100%;
+	height: 50px;
+	bottom: 0;
+	left: 0;
+    background-color:$main-menu-background;
+}
 /* Main menu overlay style */
 .menu {
-
-    z-index:13;
-	position: fixed;
-	width:50px;
+    position: absolute;
+    top:0;
+    right:50px;
+	width:800px;
 	height: 100%;
-	top: 0;
-	right: 0;
+    background-color:transparent;
 }
 
 
@@ -18,52 +27,22 @@
 	padding: 0;
 	margin: 0 auto;
 	display: inline-block;
+    width:100%;
 	height: 100%;
+    background-color:transparent;
 }
 
 .menu ul li {
     cursor:pointer;
-	width: 50px;
+	width: calc(100%/5);
     position: relative;
-    height:$content-height;
+    float:left;
+    height:100%;
+    background-color:transparent;
     will-change: transform, background-color;
     @include transition((transform 0.5s 0s $transition-effect,background-color 0.5s 0s $transition-effect));
 }
 
-.menu ul.main-menu li:hover span{
-    color:$secondary-color;
-}
-
-.menu ul.main-menu li {
-    background-color:$main-menu-background;
-    z-index:2;
-    @include transform((rotateY(0) translateX(0)));
-}
-
-.menu.hide ul.main-menu li {
-    transform: translateX(100%);
-}
-
-.menu ul.sub-menu li {
-    background-color:$sub-menu-background;
-    z-index:1;
-    @include transform((rotateY(90deg) translateX(100%)));
-}
-.menu.hide ul.sub-menu li {
-    transform: translateX(100%);
-}
-
-.menu.toggle ul.main-menu li {
-    background-color:$secondary-color;
-    z-index:1;
-    @include transform((rotateY(-90deg) translateX(-100%)));
-}
-
-.menu.toggle ul.sub-menu li {
-    z-index:2;
-    @include transform((rotateY(0deg) translateX(0)));
-   
-}
 
 
 .menu.toggle ul.sub-menu li.active {
@@ -102,11 +81,11 @@
 
 .menu ul li span {
     @extend %menu-font;
-    position: absolute;
-    top: 50%;
-    left: 50%;
+    display:inline-block;
+    width:100%;
+    text-align:center;
+    margin-top:20px;
     will-change: color;
-    @include transform((translateX(-50%) translateY(-50%) rotate(-90deg)));
     @include transition(color 0.5s);
 }
 
