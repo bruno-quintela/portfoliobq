@@ -2771,14 +2771,14 @@ var gallery = new Dragend(galleryContainer, {
     },
     onSwipeStart: function() {
         var page = this.page;
-        var currentModelInfo = this.activeElement.getElementsByClassName('model-info')[0];
+        var currentModelInfo = this.activeElement.getElementsByClassName('section-content')[0];
         classie.addClass(currentModelInfo, 'hide');
         console.log('onSwipeStart,page:' + page);
     },
     onSwipeEnd: function() {
         var currentThumbIndex = parseInt(this.page);
         var currentThumb = galleryThumbs[currentThumbIndex];
-        var currentModelInfo = this.activeElement.getElementsByClassName('model-info')[0];
+        var currentModelInfo = this.activeElement.getElementsByClassName('section-content')[0];
         classie.removeClass(currentModelInfo, 'hide');
         
         [].forEach.call(galleryThumbs, function(thumbnail) {

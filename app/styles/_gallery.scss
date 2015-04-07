@@ -19,7 +19,7 @@
 {
     z-index:2;
     position:absolute;
-    bottom:50px;
+    bottom:0px;
     width:100%;
     height:95px;
     padding-top:10px;
@@ -67,7 +67,7 @@
 
 .gallery-thumb.active
 {
-    //border:2px solid red;
+    border:2px solid red;
 }
 
 .model-thumb-img{
@@ -75,33 +75,6 @@
     height: 85px;
 }
 
-/*.gallery-thumb
-{
-    &:nth-child(1)
-    {
-        @include transform(translateX(0)); 
-    }
-    &:nth-child(2)
-    {
-        @include transform(translateX(100%));
-    }
-    &:nth-child(3)
-    {
-        @include transform(translateX(200%));
-    }
-    &:nth-child(4)
-    {
-        @include transform(translateX(300%));
-    }
-    &:nth-child(5)
-    {
-        @include transform(translateX(400%));
-    }
-    &:nth-child(6)
-    {
-        @include transform(translateX(500%));
-    }
-}*/
 
 .gallery-item-container
 {
@@ -119,14 +92,19 @@
   cursor: grab;
 }
 
-.current-info{
-    float:right;
-    clear:both;
-}
+
 
 /**
 * Current model Info
 **/
+
+.model-info-wrapper{
+    z-index: 1;
+    position:relative;
+    width:100%;
+    height:100%;
+    background-color:transparent;
+}
 
 .model-background-img{
     position:absolute;
@@ -137,128 +115,7 @@
 }
 
 
-.model-info-wrapper{
-    z-index: 2;
-    position:relative;
-    width:100%;
-    height:100%;
-    background-color:transparent;
-}
-
-.model-info 
-{
-    position:absolute;
-    left:0px;
-    bottom:100px;
-    width:100%;
-    height:230px;
-    padding:50px;
-    background-color:rgba(0,0,0,0.9);
-    opacity:1;
-    will-change: transform;
-    @include transform(translateX(-100%));
-    @include transition(transform 1000ms 300ms $transition-effect);
-}
-
-.section-gallery.show .model-info
-{
-    @include transform(translateX(0));
-    @include transition(transform 1000ms 600ms $transition-effect);
-}
 
 
-.model-title{
-    display:block;
-    width:100%;
-    font-weight: 300;
-    font-size: 40px;
-    text-transform:uppercase;
-    clear:both;
-    color:#fff;
-    letter-spacing:3px;
-}
 
-
-/***/
-.model-info  .content-left{
-    float:left;
-    width:200px;
-    height:100%;
-    text-align:right;
-    margin-right:50px;
-    opacity:1;
-    will-change: transform, opacity;
-    @include transform(translateX(0));
-    @include transition((opacity 1000ms 0ms $transition-effect, transform 1000ms 0ms $transition-effect));
-}
-
-.model-info.hide  .content-left{
-    opacity:0;
-    @include transform(translateX(-20%));
-}
-
-
-.model-info  .content-left .subtitle{
-    display:block;
-    width:100%;
-    height:50px;
-    letter-spacing: 1px;
-	font-size: 11px;
-    text-transform:uppercase;
-    clear:both;
-    color:#fff;
-    margin-top:10px;
-}
-
-/****/
-
-.model-info  .content-right{
-    float:left;
-    width:400px;
-    height:100%;
-    padding-left:0px;
-    text-align:left;
-
-    
-}
-
-.model-info  .content-right .model-title{
-    display:block;
-    width:100%;
-    font-weight: 300;
-    font-size: 40px;
-    text-transform:uppercase;
-    clear:both;
-    color:#fff;
-    opacity:1;
-    will-change: opacity;
-    @include transition(opacity 1000ms 500ms $transition-effect);
-}
-
-.model-info.hide  .content-right .model-title{
-    opacity:0;
-}
-
-
-.model-info  .content-right .subtitle{
-    display:block;
-    max-width:400px;
-    height:50px;
-    letter-spacing: 1px;
-	font-size: 11px;
-    text-transform:uppercase;
-    clear:both;
-    color:#fff;
-    margin-top:10px;
-    opacity:1;
-    will-change: transform, opacity;
-    @include transform(translateY(0));
-    @include transition((opacity 1000ms 1000ms $transition-effect, transform 1000ms 1000ms $transition-effect));
-}
-
-.model-info.hide  .content-right .subtitle{
-    opacity:0;
-    @include transform(translateY(30%));
-    
-}
 

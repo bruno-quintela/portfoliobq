@@ -94,8 +94,16 @@ $primary-color: rgba(0,0,0,0.9);
     height:$section-content-height;
     padding-top:50px;
     background-color:$primary-color;
+    will-change: transform;
+    @include transform(translateX(0));
+    @include transition(transform 1000ms 0ms $transition-effect);
 }
 
+
+.section-content.hide{
+    @include transform(translateX(-100%));
+    @include transition(transform 1000ms 0ms $transition-effect);
+}
 .section-content .content-left{
     float:left;
     width:$section-left-width;
@@ -143,6 +151,10 @@ $primary-color: rgba(0,0,0,0.9);
     padding-right: 30px;
 }
 
+.current-info{
+    float:right;
+    clear:both;
+}
 
 .credits-list
 {
@@ -159,6 +171,13 @@ $primary-color: rgba(0,0,0,0.9);
 {
     color:$secondary-color;
 }
+
+/* ANIMATIONS **/
+
+
+
+
+
 
 /*****************/
 .section-content.settings
