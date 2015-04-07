@@ -4,7 +4,6 @@ $content-height:calc(100%/4);
 $content-padding:30px;
 $gallery-width:100%;
 
-$primary-color: rgba(0,0,0,0.9);
 $secondary-color: rgba(255,0,0,1);
 $background-color: rgba(0,0,0,1);
 $text-color: rgba(255,255,255,1);
@@ -14,7 +13,7 @@ $loading-progress-color: #fff;
 $loading-bar-color: #333;
 $loading-model-background: rgba(0,0,0,0.7);
 
-$main-menu-background: rgba(0,0,0,0.9);
+$main-menu-background: rgba(0,0,0,1);
 $sub-menu-background: rgba(0,0,0,0.9);
 
 $background-pattern: url(data:image/gif;base64,R0lGODlhKAAoAIAAABISEiIiIiH5BAAHAP8ALAAAAAAoACgAAAJzDA6Gepz4FnSzyttsxq7ruIWgh4EmGaLnpzItC5ex+JbuvNpaTeO3DuxxfERZMCdM8pDMX7I5W0p3xaeqCg1Oj6itlcrFOrNfY/mM9JJH4qra+8a2w0M6ehzXzs959H6N99clGEWoZwcIYci3mNY4iOhVAAA7) 0 0;
@@ -23,13 +22,20 @@ $primary-font-family: Open Sans;
 
 $transition-effect: ease;
 
+/*****/
+
+$section-content-height:350px;
+$section-left-width: 300px;
+$primary-color: rgba(0,0,0,0.9);
+
+
 
 
 @import 'mixins';
 @import 'reset';
 @import 'typography';
 @import 'gridComposer';
-@include scrollbar(.2em, $secondary-color);
+//@include scrollbar(.2em, $secondary-color);
 
 /**
 * Wrappers and Container 
@@ -80,132 +86,81 @@ $transition-effect: ease;
 * Sections 
 **/
 
-.section-wrapper{
+.section-content{
     position:absolute;
-    top:0;
+    bottom:0;
     right:0;
-    width:$content-width;
-    //overflow:hidden;
+    width:100%;
+    height:$section-content-height;
+    padding-top:50px;
+    background-color:$primary-color;
+}
+
+.section-content .content-left{
+    float:left;
+    width:$section-left-width;
     height:100%;
+    text-align:right;
+    padding-right:30px;
 }
 
-.section-content
-{
-    @extend %main-font;
-    z-index:2;
-    position:absolute;
-    width:100%;
-    height: $content-height;
-    padding:$content-padding;
-    padding-right: $menu-width + $content-padding;
-    text-align: right;
-    right:0px;
-    will-change: transform;
-    @include transition((transform 1000ms 0ms $transition-effect));
+.section-content .content-right{
+    float:left;
+    width:calc(100% - 400px);
+    height:100%;
+    text-align:left;
 }
 
-
-.section-content.main-menu
-{
-    //opacity:0;
-    color:$text-color;
-    background-color:$primary-color;
-    will-change: transform;
-    @include transform(translateX(100%));
+.content-title{
+    @extend %content-title-font;
+    height:70px;
 }
 
-.section-content.main-menu.show
-{
-    //opacity:1;
-    @include transform(translateX(0));
+.content-subtitle{
+    @extend %content-subtitle-font;
 }
 
-.section-content.sub-menu
-{
-    color:$text-color;
-    background-color:$primary-color;
-    //opacity:0;
-    will-change: transform;
-    @include transform(translateX(100%));
-}
-
-.section-content.sub-menu.show
-{
-    @include transform(translateX(0));
-    //opacity:1;
-}
-
-.about-info-container{
+.section-content .content-left .item{
+    @extend %content-item;
     float:right;
-    width:100%;
-    margin-top:10px;
-    margin-bottom:10px;
-    font-size: 8px;
+    margin-bottom:3px;
+}
+
+
+.section-content .content-right .content-info{
+    float:left;
+    width:33%;
+}
+
+.section-content .content-right .content-info-list{
+    float:left;
+    width:200px;
+}
+
+.section-content .content-right .description{
+    @extend %content-description;
+    display:block;
+    padding-right: 30px;
+}
+
+
+.credits-list
+{
     clear:both;
 }
 
-
-
-/**
-* Submenus
-**/
-
-
-.submenu1
+.anchor-link
 {
-    top:0%;
-    @include transition((transform 1000ms 0ms $transition-effect,  opacity 500ms 0ms $transition-effect));
+    @extend %anchor-link;
+    @include transition(color 500ms $transition-effect);
 }
 
-
-.submenu2
+.anchor-link:hover
 {
-    top:25%;    
-    @include transition((transform 1000ms 100ms $transition-effect,  opacity 500ms 100ms $transition-effect));
+    color:$secondary-color;
 }
 
-.submenu3
-{
-    top:50%;
-    @include transition((transform 1000ms 200ms $transition-effect,  opacity 500ms 200ms $transition-effect));
-}
-
-.submenu4
-{
-    top:75%;    
-    @include transition((transform 1000ms 300ms $transition-effect,  opacity 500ms 300ms $transition-effect));
-}
-
-
-
-.section-content.gallery
-{
-    top:25%;
-    width: 100%;
-    background-color:$background-color;
-    will-change: transform;
-    @include transform(translateX(-100%));
-    @include transition((transform 1000ms 0ms $transition-effect,  opacity 1000ms 0ms $transition-effect));
-}
-
-
-
-.section-content.gallery.show
-{
-    @include transform(translateX(-33%));
-}
-
-.section-content.contact
-{
-    top:50%;
-}
-
-.section-content.credits
-{
-    top:75%;
-    @include transition((transform 1000ms 300ms $transition-effect,  opacity 500ms 300ms $transition-effect));
-}
-
+/*****************/
 .section-content.settings
 {
     position:absolute;
@@ -223,76 +178,6 @@ $transition-effect: ease;
     @include transform(translateX(0));
 }
 
-
-.email
-{
-    color:$secondary-color;
-}
-
-.anchor-link
-{
-    color:$text-color;
-    @include transition(color 500ms $transition-effect);
-}
-
-.anchor-link:hover
-{
-    color:$secondary-color;
-}
-
-/**
-* Title
-**/
-
-
-.title-top{
-    @extend %submenu-title-font;
-}
-
-.title-top.left{
-    text-align:left;
-}
-
-.title-top.right{
-    text-align:right;
-}
-
-
-.title-container{
-    width:100%;
-    float:left;
-}
-
-.title-container .title{
-    @extend %menu-title-font;
-    width:100%;
-    float:right;
-    clear:both;
-}
-
-
-.section-info{
-    @extend %section-info-font;
-    float: right;
-    width: 100%;
-    text-align: left;
-    margin-top:20px;
-    margin-bottom:20px;
-   
-}
-
-
-.section-info .left{
-    float:left;
-    width:65%;
-    height:100%;
-}
-
-.section-info .right{
-    float:right;
-    width:35%;
-    height:100%;
-}
 
 
 /**

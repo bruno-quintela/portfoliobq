@@ -17,6 +17,7 @@
     height:150px;
     color:#fff;
     padding:50px;
+    padding-top:20px;
     will-change: transform;
     @extend %model-subtitle-font;
     @include transform(translateX(-100%));

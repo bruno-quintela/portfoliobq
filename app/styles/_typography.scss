@@ -29,6 +29,69 @@
   	text-rendering: optimizeLegibility;
 }
 
+
+%content-title-font
+{
+    @extend %main-font;
+    font-weight: 300;
+    letter-spacing: 0px;
+    font-size: 40px;
+    text-transform:uppercase;
+    color:#fff;
+    clear:both;
+}
+
+%content-subtitle-font
+{
+    @extend %main-font;
+    font-weight: 300;
+    letter-spacing: 3px;
+	font-size: 11px;
+    text-transform:uppercase;
+    clear:both;
+    color:#fff;
+}
+
+%content-item
+{
+    @extend %main-font;
+    font-weight: 300;
+    letter-spacing: 1px;
+	font-size: 11px;
+    text-transform:uppercase;
+    clear:both;
+    color:grey;
+}
+
+%content-description
+{
+    @extend %main-font;
+    font-weight: 300;
+    letter-spacing: 1px;
+	font-size: 11px;
+    text-transform:none;
+    clear:both;
+    color:#fff;
+}
+
+%anchor-link
+{
+    @extend %main-font;
+    font-weight: 300;
+    letter-spacing: 1px;
+	font-size: 11px;
+    text-transform:uppercase;
+    clear:both;
+    color:grey;
+}
+
+
+
+
+/*****************/
+
+
+
 %menu-title-font
 {
     font-family: $primary-font-family;

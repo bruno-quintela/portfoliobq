@@ -2317,13 +2317,16 @@ ENGINE = function(renderType) {
                 contactAnchor = document.getElementById('contactAnchor'),
                 creditsAnchor = document.getElementById('creditsAnchor'),
                 settingsAnchor = document.getElementById('settingsAnchor'),
-                settingsSection = document.getElementById('settingsSection');
+                settingsSection = document.getElementById('settingsSection'),
+                gallerySection = document.getElementById('gallerySection');
             var galleryContainer = document.getElementById('galleryContainer');
             var galleryLoader = document.getElementById('galleryLoader');
             var layer = myPortfolio.World.CurrentLayer;
             /* menu navigation handler*/
             aboutAnchor.addEventListener('click', function() {});
-            galleryAnchor.addEventListener('click', function() {});
+            galleryAnchor.addEventListener('click', function() {
+                classie.toggleClass(gallerySection, 'show');
+            });
             contactAnchor.addEventListener('click', function() {});
             creditsAnchor.addEventListener('click', function() {});
             settingsAnchor.addEventListener('click', function() {
@@ -2750,12 +2753,54 @@ renderRecorded.addEventListener('click', function() {
 classie.removeClass(bodyWrapper, 'hide');
 //classie.removeClass(landingPage, 'hide');
 var galleryContainer = document.getElementById("galleryContainer");
+var galleryItems = document.querySelectorAll('.gallery-item');
+var galleryThumbs = document.querySelectorAll('.gallery-thumb');
 var gallery = new Dragend(galleryContainer, {
     pageClass: 'gallery-item',
+    duration: 500,
+    direction: 'horizontal',
     afterInitialize: function() {
         galleryContainer.style.visibility = "visible";
         console.log('galeery');
+    },
+    onDrag: function() {
+        console.log('onDrag');
+    },
+    onDragEnd: function() {
+        console.log('dragEnd');
+    },
+    onSwipeStart: function() {
+        var page = this.page;
+        var currentModelInfo = this.activeElement.getElementsByClassName('model-info')[0];
+        classie.addClass(currentModelInfo, 'hide');
+        console.log('onSwipeStart,page:' + page);
+    },
+    onSwipeEnd: function() {
+        var currentThumbIndex = parseInt(this.page);
+        var currentThumb = galleryThumbs[currentThumbIndex];
+        var currentModelInfo = this.activeElement.getElementsByClassName('model-info')[0];
+        classie.removeClass(currentModelInfo, 'hide');
+        
+        [].forEach.call(galleryThumbs, function(thumbnail) {
+            classie.removeClass(thumbnail,'active');
+        });
+        
+        classie.addClass(currentThumb,'active');
+        
+        
+        console.log('onSwipeEnd,currentThumbIndex:' + currentThumbIndex);
     }
+});
+[].forEach.call(galleryThumbs, function(currentThumb) {
+    currentThumb.addEventListener('click', function() {
+        var selectedModel = parseInt(currentThumb.getAttribute('data-model'))-1;
+        gallery._jumpToPage("page", selectedModel);
+        [].forEach.call(galleryThumbs, function(thumbnail) {
+            classie.removeClass(thumbnail,'active');
+        });
+        
+        classie.addClass(currentThumb,'active');
+    });
 });
 console.log('start');
 /*startWorld3D.addEventListener('click', function() {

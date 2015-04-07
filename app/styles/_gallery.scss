@@ -1,3 +1,108 @@
+.section-gallery
+{
+    position:absolute;
+    top:0px;
+    width:100%;
+    height:100%;
+    opacity:0;
+    will-change: opacity;
+    @include transition(opacity 1000ms 1000ms $transition-effect);
+}
+
+.section-gallery.show
+{
+    opacity:1;
+    @include transition(opacity 1000ms 0ms $transition-effect);
+}
+
+.gallery-thumb-container
+{
+    z-index:2;
+    position:absolute;
+    bottom:50px;
+    width:100%;
+    height:95px;
+    padding-top:10px;
+    background-color:#000;
+    opacity:1;
+    will-change: transform;
+    @include transform(translateX(-100%));
+    @include transition(transform 1000ms 600ms $transition-effect);
+}
+
+.section-gallery.show .gallery-thumb-container
+{
+    @include transform(translateX(0));
+    @include transition(transform 1000ms 300ms $transition-effect);
+}
+
+.gallery-thumb-container .content-left
+{
+    z-index:2;
+    position:absolute;
+    left:0px;
+    width:250px;
+    height:100%;
+    text-align:right;
+}
+
+.gallery-thumb-container .content-right
+{
+    z-index:2;
+    position:absolute;
+    left:300px;
+    width:100%;
+    height:100%;
+}
+
+.gallery-thumb
+{
+    float:left;
+    width:160px;
+    height:100%;
+    padding:5px;
+    cursor:pointer;
+    will-change:transform;
+}
+
+.gallery-thumb.active
+{
+    //border:2px solid red;
+}
+
+.model-thumb-img{
+    width:  auto;
+    height: 85px;
+}
+
+/*.gallery-thumb
+{
+    &:nth-child(1)
+    {
+        @include transform(translateX(0)); 
+    }
+    &:nth-child(2)
+    {
+        @include transform(translateX(100%));
+    }
+    &:nth-child(3)
+    {
+        @include transform(translateX(200%));
+    }
+    &:nth-child(4)
+    {
+        @include transform(translateX(300%));
+    }
+    &:nth-child(5)
+    {
+        @include transform(translateX(400%));
+    }
+    &:nth-child(6)
+    {
+        @include transform(translateX(500%));
+    }
+}*/
+
 .gallery-item-container
 {
     position:absolute;
@@ -7,40 +112,30 @@
 
 }
 
-.gallery-item
-{
-    background: no-repeat;
-    background-size: cover;
-}
-
 .gallery-item{
   cursor: hand;
   cursor: -moz-grab;
   cursor: -webkit-grab;
   cursor: grab;
-  &:nth-child(1){
-    background: url(../src/img/galleryItem1.png);
-  }
-  &:nth-child(2){
-      background: url(../src/img/galleryItem2.png);
-  }
-  &:nth-child(3){
-      background: url(../src/img/galleryItem3.png);
-  }
-  &:nth-child(4){
-      background: url(../src/img/galleryItem4.png);
-  }
-  &:nth-child(5){
-      background: url(../src/img/galleryItem1.png);
-  }
-  &:nth-child(6){
-      background: url(../src/img/galleryItem1.png);
-  }
+}
+
+.current-info{
+    float:right;
+    clear:both;
 }
 
 /**
 * Current model Info
 **/
+
+.model-background-img{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+}
+
 
 .model-info-wrapper{
     z-index: 2;
@@ -52,18 +147,23 @@
 
 .model-info 
 {
-    
     position:absolute;
     left:0px;
-    bottom:0px;
+    bottom:100px;
     width:100%;
-    height:250px;
+    height:230px;
     padding:50px;
     background-color:rgba(0,0,0,0.9);
     opacity:1;
-    will-change: transform, opacity;
-    @include transition((transform 1s 0s $transition-effect, opacity 1.5s 0s $transition-effect));
-    
+    will-change: transform;
+    @include transform(translateX(-100%));
+    @include transition(transform 1000ms 300ms $transition-effect);
+}
+
+.section-gallery.show .model-info
+{
+    @include transform(translateX(0));
+    @include transition(transform 1000ms 600ms $transition-effect);
 }
 
 
@@ -86,6 +186,15 @@
     height:100%;
     text-align:right;
     margin-right:50px;
+    opacity:1;
+    will-change: transform, opacity;
+    @include transform(translateX(0));
+    @include transition((opacity 1000ms 0ms $transition-effect, transform 1000ms 0ms $transition-effect));
+}
+
+.model-info.hide  .content-left{
+    opacity:0;
+    @include transform(translateX(-20%));
 }
 
 
@@ -109,10 +218,11 @@
     height:100%;
     padding-left:0px;
     text-align:left;
+
     
 }
 
-.model-info  .content-right .title{
+.model-info  .content-right .model-title{
     display:block;
     width:100%;
     font-weight: 300;
@@ -120,7 +230,15 @@
     text-transform:uppercase;
     clear:both;
     color:#fff;
+    opacity:1;
+    will-change: opacity;
+    @include transition(opacity 1000ms 500ms $transition-effect);
 }
+
+.model-info.hide  .content-right .model-title{
+    opacity:0;
+}
+
 
 .model-info  .content-right .subtitle{
     display:block;
@@ -132,5 +250,15 @@
     clear:both;
     color:#fff;
     margin-top:10px;
+    opacity:1;
+    will-change: transform, opacity;
+    @include transform(translateY(0));
+    @include transition((opacity 1000ms 1000ms $transition-effect, transform 1000ms 1000ms $transition-effect));
+}
+
+.model-info.hide  .content-right .subtitle{
+    opacity:0;
+    @include transform(translateY(30%));
+    
 }
 
