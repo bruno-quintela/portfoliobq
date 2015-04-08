@@ -1,3 +1,22 @@
+.section-settings{
+    position:absolute;
+    top:0;
+    right:0;
+    width:100%;
+    height:180px;
+    padding-top:$menu-height;
+    background-color:$primary-color;
+    will-change: transform;
+    @include transform(translateX(100%));
+    @include transition(transform 1000ms 0ms $transition-effect);
+}
+
+.section-settings.show{
+    will-change: transform;
+    @include transform(translateX(0));
+    @include transition(transform 1000ms 0ms $transition-effect);
+}
+
 .settings-title
 {
     display:block;
@@ -7,86 +26,6 @@
     text-transform:uppercase;
     clear:both;
 }
-
-.settings-section
-{
-    z-index:1;
-    background-color:rgba(0,0,0,0.9);
-    position:absolute;
-    width:100%;
-    height:150px;
-    color:#fff;
-    padding:50px;
-    padding-top:20px;
-    will-change: transform;
-    @extend %model-subtitle-font;
-    @include transform(translateX(-100%));
-    @include transition(transform 1000ms 0ms $transition-effect);
-}
-
-.settings-section.show 
-{
-    @include transform(translateX(0));
-}
-
-
-.settings-title
-{
-    
-}
-
-.settings-section .top-left
-{
-    float:left;   
-    width:200px;
-    height:100%;
-
-
-
-}
-
-
-.settings-section .top-right
-{
-    float:left;
-    width:200px;
-    height:100%;
-    padding-left:25px;
-    @include transform(translateY(0%));
-    @include transition(transform 1000ms 0ms $transition-effect); 
-}
-
-.settings-section .top-right a
-{
-   float:left;
-   color:grey;
-   @include transition(color 500ms 0ms $transition-effect); 
-}
-
-/*********/
-
-
-.settings-section h2 {
-	font-weight: 300;
-    font-size: 40px;
-    clear:both;
-    padding-bottom:20px;
-    color:#fff;
-}
-
-.settings-section h2 span {
-	font-weight: 500;
-}
-
-.render-type{
-    font-weight: 300;
-    font-size: 40px;
-    margin-right:15px;
-}
-
-
-/************************/
-
 
 .settings-name
 {

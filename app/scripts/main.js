@@ -861,16 +861,17 @@ ENGINE = function(renderType) {
                 //add setting stats FPS
                 this.fpsStats = new Stats();
                 this.fpsStats.setMode(0); // 0: fps, 1: ms
-                this.fpsStats.domElement.style.position = 'absolute';
-                this.fpsStats.domElement.style.right = '20px';
-                this.fpsStats.domElement.style.top = '20px';
-                this.fpsStats.domElement.style.width = '110px';
-                /*document.getElementById('settingsTop').appendChild(this.fpsStats.domElement);
+                this.fpsStats.domElement.style.float = 'right';
+                this.fpsStats.domElement.style.clear = 'both';
+                /*this.fpsStats.domElement.style.top = '20px';
+                this.fpsStats.domElement.style.width = '110px';*/
+                document.getElementById('statsContainer').appendChild(this.fpsStats.domElement);
                 document.getElementById('fps').style.background = 'transparent';
                 document.getElementById('fpsText').style.color = '#fff';
-                document.getElementById('fpsText').style.fontWeight = '500';
+                document.getElementById('fpsText').style.fontWeight = '300';
+                document.getElementById('fpsText').style.textAlign = 'right';
                 document.getElementById('fpsText').style.fontFamily = "Open Sans";
-                document.getElementById('fpsGraph').style.display = 'none';*/
+                document.getElementById('fpsGraph').style.display = 'none';
                 //add threex.renderstats WEBGL render
                 /*this.gpuStats = new THREEx.RendererStats();
                 this.gpuStats.domElement.id = 'gpuStats';
@@ -2317,18 +2318,37 @@ ENGINE = function(renderType) {
                 contactAnchor = document.getElementById('contactAnchor'),
                 creditsAnchor = document.getElementById('creditsAnchor'),
                 settingsAnchor = document.getElementById('settingsAnchor'),
+                aboutSection = document.getElementById('aboutSection'),
+                contactSection = document.getElementById('contactSection'),
+                creditsSection = document.getElementById('creditsSection'),
                 settingsSection = document.getElementById('settingsSection'),
                 gallerySection = document.getElementById('gallerySection');
             var galleryContainer = document.getElementById('galleryContainer');
             var galleryLoader = document.getElementById('galleryLoader');
             var layer = myPortfolio.World.CurrentLayer;
             /* menu navigation handler*/
-            aboutAnchor.addEventListener('click', function() {});
+            function hideAllSections(){
+                classie.addClass(aboutSection, 'hide');
+                classie.addClass(contactSection, 'hide');
+                classie.addClass(creditsSection, 'hide');
+                classie.removeClass(gallerySection, 'show');
+            }
+            aboutAnchor.addEventListener('click', function() {
+                hideAllSections();
+                classie.toggleClass(aboutSection, 'hide');
+            });
             galleryAnchor.addEventListener('click', function() {
+                hideAllSections();
                 classie.toggleClass(gallerySection, 'show');
             });
-            contactAnchor.addEventListener('click', function() {});
-            creditsAnchor.addEventListener('click', function() {});
+            contactAnchor.addEventListener('click', function() {
+                hideAllSections();
+                classie.toggleClass(contactSection, 'hide');
+            });
+            creditsAnchor.addEventListener('click', function() {
+                hideAllSections();
+                classie.toggleClass(creditsSection, 'hide');
+            });
             settingsAnchor.addEventListener('click', function() {
                 classie.toggleClass(settingsSection, 'show');
             });
@@ -2795,6 +2815,12 @@ var gallery = new Dragend(galleryContainer, {
     currentThumb.addEventListener('click', function() {
         var selectedModel = parseInt(currentThumb.getAttribute('data-model'))-1;
         gallery._jumpToPage("page", selectedModel);
+        
+        /* start gallery model-info show*/
+        var currentModelInfo = gallery.activeElement.getElementsByClassName('section-content')[0];
+        classie.removeClass(currentModelInfo, 'hide');
+        
+        /* update current active thumnail */
         [].forEach.call(galleryThumbs, function(thumbnail) {
             classie.removeClass(thumbnail,'active');
         });

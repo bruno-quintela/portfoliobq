@@ -146,8 +146,8 @@
 
         <!--SECTION ABOUT START -->
 
-        <!--section id="aboutSection" class="section-content">
-
+        <section id="aboutSection" class="section-content hide">
+            <div class="border-top"></div>
             <div class="content-left">
                 <div class="content-title">
                     <span class="">About</span>
@@ -175,7 +175,7 @@
                         What i do
                     </div>
                     <div class="rule left"></div>
-                    <span class="description">I create state of the art visuals for the web. To achieve a perfect ballance between visual delivery and performance is allways my pripority.</span>
+                    <span class="description">My current focus isto create state of the art visuals for the web. To achieve a perfect ballance between visual delivery and performance is allways my pripority.</span>
                 </div>
                 <div class="content-info">
                     <div class="content-subtitle">
@@ -186,11 +186,60 @@
                 </div>
 
             </div>
-        </section-->
+        </section>
         <!-- SECTION ABOUT END-->
-        <!--SECTION CREDITS START -->
-        <section id="creditsSection" class="section-content">
+        <!-- SECTION CONTACT START -->
+        <section id="contactSection" class="section-content section-contact hide">
+            <div class="border-top"></div>
+            <div class="content-left">
+                <div class="content-title">
+                    <span class="highlight">Contact</span>
+                </div>
+                <div class="content-subtitle">
+                    get in touch
+                </div>
+                <div class="rule right"></div>
+            </div>
+            <div class="content-right">
+                <div class="content-title">#</div>
+                <div class="content-info-list">
+                    <div class="content-subtitle">
+                        Social
+                    </div>
+                    <div class="rule left"></div>
+                    <ul class="credits-list">
+                        <li>
+                            <a target="_blank" href="https://twitter.com/bruno_quintela" class="settings-name">Twitter</a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://pt.linkedin.com/pub/bruno-quintela/85/750/614/" class="settings-name">LinkedIn</a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://www.behance.net/bruno_quintela" class="settings-name">Behance</a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://soundcloud.com/bruno-quintela" class="settings-name">Soundcloud</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-info-list">
+                    <div class="content-subtitle">
+                        email
+                    </div>
+                    <div class="rule left"></div>
+                    <ul class="credits-list">
+                        <li>
+                            <span class="settings-name">bruno.quintela.bastos@gmail.com</span>
+                        </li>
+                    </ul>
+                </div>
 
+            </div>
+        </section>
+        <!-- SECTION CONTACT END -->
+        <!--SECTION CREDITS START -->
+        <section id="creditsSection" class="section-content hide">
+            <div class="border-top"></div>
             <div class="content-left">
                 <div class="content-title">
                     <span class="highlight">Credits</span>
@@ -268,35 +317,79 @@
             </div>
         </section>
         <!--SECTION CREDITS END -->
-
-        <section id="gallerySection" class="section-gallery">
-            <div class="gallery-thumb-container">
-                <div class="content-left">
-
+        <!-- SECTION SETTINGS START -->
+        <section id="settingsSection" class="section-content section-settings">
+            <div class="content-left">
+                <div class="content-subtitle">
+                    Settings
                 </div>
-
-                <div class="content-right">
-                    <ul>
-                        <li data-model="1" class="gallery-thumb active">
-                            <img src="../src/img/galleryItem1.png" alt="" class="model-thumb-img">
+                <div class="rule right"></div>
+                <div id="statsContainer" class="content-subtitle">
+                </div>
+            </div>
+            <div class="content-right">
+                <div class="content-info-list">
+                    <div class="content-subtitle">
+                        Generic
+                    </div>
+                    <div class="rule left"></div>
+                    <ul class="credits-list">
+                        <li>
+                            <span class="settings-name">Audio</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
                         </li>
-                        <li data-model="2" class="gallery-thumb">
-                            <img src="../src/img/galleryItem2.png" alt="" class="model-thumb-img">
-                        </li>
-                        <li data-model="3" class="gallery-thumb">
-                            <img src="../src/img/galleryItem3.png" alt="" class="model-thumb-img">
-                        </li>
-                        <li data-model="4" class="gallery-thumb">
-                            <img src="../src/img/galleryItem4.png" alt="" class="model-thumb-img">
-                        </li>
-                        <li data-model="5" class="gallery-thumb">
-                            <img src="../src/img/galleryItem5.png" alt="" class="model-thumb-img">
-                        </li>
-                        <li data-model="6" class="gallery-thumb">
-                            <img src="../src/img/galleryItem5.png" alt="" class="model-thumb-img">
+                        <li>
+                            <span class="settings-name">Fullscreen</span><span id="settingsFullscreenOn" class="settings-toggle ">on</span><span id="settingsFullscreenOff" class="settings-toggle active">off</span>
                         </li>
                     </ul>
-
+                </div>
+                <div class="content-info-list">
+                    <div class="content-subtitle">
+                        Anaglyph 3D
+                    </div>
+                    <div class="rule left"></div>
+                    <ul class="credits-list">
+                        <li>
+                            <span class="settings-name">stereo</span><span id="settingsStereoscopicOn" class="settings-toggle">on</span><span id="settingsStereoscopicOff" class="settings-toggle active">off</span>
+                        </li>
+                        <li>
+                            <span class="settings-name">(unstable)</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-info-list">
+                    <div class="content-subtitle">
+                        Postprocessing
+                    </div>
+                    <div class="rule left"></div>
+                    <ul class="credits-list">
+                        <li>
+                            <span id="settingsQualityHigh" class="settings-quality ">High</span>
+                        </li>
+                        <li>
+                            <span id="settingsQualityMedium" class="settings-quality active">Medium</span>
+                        </li>
+                        <li>
+                            <span id="settingsQualityLow" class="settings-quality off">Low</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!--SECTION SETTINGS END -->
+        <!--SECTION GALEERY START -->
+        <section id="gallerySection" class="section-gallery">
+            <div class="gallery-thumb-container">
+                <div data-model="1" class="gallery-thumb active">
+                </div>
+                <div data-model="2" class="gallery-thumb">
+                </div>
+                <div data-model="3" class="gallery-thumb">
+                </div>
+                <div data-model="4" class="gallery-thumb">
+                </div>
+                <div data-model="5" class="gallery-thumb">
+                </div>
+                <div data-model="6" class="gallery-thumb">
                 </div>
             </div>
             <div id="galleryContainer" class="gallery-item-container">
@@ -307,6 +400,7 @@
                             <img src="../src/img/galleryItem1.png" alt="" class="model-background-img">
 
                             <div class="section-content">
+                                <div class="border-top"></div>
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -342,6 +436,8 @@
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem2.png" alt="" class="model-background-img">
                             <div class="section-content hide">
+
+                                <div class="border-top"></div>
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -376,6 +472,7 @@
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem3.png" alt="" class="model-background-img">
                             <div class="section-content hide">
+                                <div class="border-top"></div>
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -410,6 +507,7 @@
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem4.png" alt="" class="model-background-img">
                             <div class="section-content hide">
+                                <div class="border-top"></div>
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -444,6 +542,7 @@
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem5.png" alt="" class="model-background-img">
                             <div class="section-content hide">
+                                <div class="border-top"></div>
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -478,6 +577,7 @@
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem2.png" alt="" class="model-background-img">
                             <div class="section-content hide">
+                                <div class="border-top"></div>
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -512,6 +612,7 @@
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem2.png" alt="" class="model-background-img">
                             <div class="section-content hide">
+                                <div class="border-top"></div>
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -545,85 +646,8 @@
                 </ul>
             </div>
         </section>
+        <!--SECTION GALEERY END -->
 
-
-
-        <!--section id="sectionContact" class="section-content main-menu contact">
-      
-            <div class="title-top right">
-                <b>Contact</b> Me
-            </div>
-            <div class="rule right"></div>
-
-            <div class="section-info">
-                If you want to share ideas, hire my services, or simply talk about stuff, web related or not, feel free to sent me a message to <a class="email" href="mailto:bruno.quintela.bastos@gmail.com<">bruno.quintela.bastos@gmail.com</a>. I will try to message you back as soon as possible.
-                <br>
-                <br>I am also available at the following social networks.
-
-            </div>
-            <div class="social-container">
-                <div class="social__item">
-                    <a target="_blank" href="https://twitter.com/bruno_quintela" class="social__icon--twitter"><i class="icon--twitter"></i></a>
-                </div>
-                <div class="social__item">
-                    <a target="_blank" href="https://pt.linkedin.com/pub/bruno-quintela/85/750/614/" class="social__icon--linkedin"><i class="icon--linkedin"></i></a>
-                </div>
-                <div class="social__item">
-                    <a target="_blank" href="https://www.behance.net/bruno_quintela" class="social__icon--behance"><i class="icon--behance"></i></a>
-                </div>
-                <div class="social__item">
-                    <a target="_blank" href="https://soundcloud.com/bruno-quintela" class="social__icon--soundcloud"><i class="icon--soundcloud"></i></a>
-                </div>
-            </div>
-        </section>
-        <section id="sectionCredits" class="section-content main-menu credits">
-
-            <div class="title-top left">
-                <b>Communities</b> knowledge
-            </div>
-            <div class="rule left"></div>
-            <div class="section-info">
-                <div class="left">
-                    This were the main online sources of knowledge i ended up using in the making of this website. Thank you all, keep up the good work and keep sharing.
-                </div>
-                <div class="right">
-                    <ul class="list">
-                        <li><a class="anchor-link" target="_blank" href="http://blendernation.com/">BlenderNation</a>
-                        </li>
-                        <li><a class="anchor-link" target="_blank" href="http://cgcookie.com/">CGcookie</a>
-                        </li>
-                        <li><a class="anchor-link" target="_blank" href="http://codepen.io/">Codepen</a>
-                        </li>
-                        <li><a class="anchor-link" target="_blank" href="http://tympanus.net/codrops/">Codrops</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section-->
-
-        <!-- SETTINGS SECTION -->
-        <section id="settingsSection" class="settings-section">
-            <div class="top-left">
-                <div class="settings-title">
-                    Generic
-                </div>
-                <span class="settings-name">Fullscreen</span><span id="settingsFullscreenOn" class="settings-toggle ">on</span><span id="settingsFullscreenOff" class="settings-toggle active">off</span>
-
-                <span class="settings-name">Audio</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
-                <span class="settings-name">Anaglyph 3D</span><span id="settingsStereoscopicOn" class="settings-toggle">on</span><span id="settingsStereoscopicOff" class="settings-toggle active">off</span>
-
-            </div>
-            <div class="top-right">
-                <div class="settings-title">
-                    Quality
-                </div>
-                <span id="settingsQualityHigh" class="settings-quality ">High</span>
-                <span id="settingsQualityMedium" class="settings-quality active">Medium</span>
-                <span id="settingsQualityLow" class="settings-quality off">Low</span>
-
-            </div>
-
-        </section>
 
     </div>
     <!-- end sectionWrapper -->

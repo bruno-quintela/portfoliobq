@@ -24,6 +24,7 @@ $transition-effect: ease;
 
 /*****/
 
+$menu-height:50px;
 $section-content-height:350px;
 $section-left-width: 300px;
 $primary-color: rgba(0,0,0,0.9);
@@ -97,19 +98,34 @@ $primary-color: rgba(0,0,0,0.9);
     will-change: transform;
     @include transform(translateX(0));
     @include transition(transform 1000ms 0ms $transition-effect);
+    
 }
 
-
-.section-content.hide{
+.section-content.hide {
     @include transform(translateX(-100%));
     @include transition(transform 1000ms 0ms $transition-effect);
 }
+
+
+.section-content.hide .content-left{
+    @include transform(translateX(-100%));
+    @include transition(transform 1000ms 0ms $transition-effect);
+}
+
+.section-content.hide .content-right{
+    opacity:0;
+    @include transition(opacity 1000ms 0ms $transition-effect);
+}
+
 .section-content .content-left{
     float:left;
     width:$section-left-width;
     height:100%;
     text-align:right;
     padding-right:30px;
+    will-change: transform;
+    @include transform(translateX(0));
+    @include transition(transform 1000ms 500ms $transition-effect);
 }
 
 .section-content .content-right{
@@ -117,6 +133,9 @@ $primary-color: rgba(0,0,0,0.9);
     width:calc(100% - 400px);
     height:100%;
     text-align:left;
+    opacity:1;
+    will-change: opacity;
+    @include transition(opacity 1000ms 1000ms $transition-effect);
 }
 
 .content-title{
@@ -149,6 +168,14 @@ $primary-color: rgba(0,0,0,0.9);
     @extend %content-description;
     display:block;
     padding-right: 30px;
+}
+
+.section-content .border-top{
+    position:absolute;
+    width:100%;
+    height:5px;
+    top:-5px;
+    background-color:rgba(255,0,0,0.3);
 }
 
 .current-info{

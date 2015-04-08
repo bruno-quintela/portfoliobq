@@ -19,11 +19,10 @@
 {
     z-index:2;
     position:absolute;
-    bottom:0px;
+    top:$menu-height;
     width:100%;
-    height:95px;
-    padding-top:10px;
-    background-color:#000;
+    height:5px;
+    background-color:rgba(255,0,0,0.3);
     opacity:1;
     will-change: transform;
     @include transform(translateX(-100%));
@@ -58,21 +57,17 @@
 .gallery-thumb
 {
     float:left;
-    width:160px;
+    width:calc(100%/6);
     height:100%;
-    padding:5px;
     cursor:pointer;
-    will-change:transform;
+    will-change:background-color;
+    background-color:transparent;
+    @include transition(background-color 1000ms 0ms $transition-effect);
 }
 
 .gallery-thumb.active
 {
-    border:2px solid red;
-}
-
-.model-thumb-img{
-    width:  auto;
-    height: 85px;
+    background-color:red;
 }
 
 
