@@ -4,65 +4,52 @@
     top:0px;
     width:100%;
     height:100%;
-    opacity:0;
-    will-change: opacity;
-    @include transition(opacity 1000ms 1000ms $transition-effect);
+    will-change: transform;
+    @include transform(translateX(100%));
+    @include transition(transform 1000ms 0ms $transition-effect);
 }
 
 .section-gallery.show
 {
-    opacity:1;
-    @include transition(opacity 1000ms 0ms $transition-effect);
+    @include transform(translateX(0));
+    @include transition(transform 1000ms 0ms $transition-effect);
 }
 
 .gallery-thumb-container
 {
     z-index:2;
     position:absolute;
-    top:$menu-height;
+    top:$menu-height + 25px;
     width:100%;
-    height:5px;
-    background-color:rgba(255,0,0,0.3);
-    opacity:1;
-    will-change: transform;
-    @include transform(translateX(-100%));
-    @include transition(transform 1000ms 600ms $transition-effect);
+    height:15px;
+    margin-left:25px;
+    background-color:transparent;
+    opacity:0;
+    will-change: opacity;
+    @include transition(opacity 1000ms 0ms $transition-effect);
 }
 
 .section-gallery.show .gallery-thumb-container
 {
-    @include transform(translateX(0));
-    @include transition(transform 1000ms 300ms $transition-effect);
-}
-
-.gallery-thumb-container .content-left
-{
-    z-index:2;
-    position:absolute;
-    left:0px;
-    width:250px;
-    height:100%;
-    text-align:right;
-}
-
-.gallery-thumb-container .content-right
-{
-    z-index:2;
-    position:absolute;
-    left:300px;
-    width:100%;
-    height:100%;
+    opacity:1;
 }
 
 .gallery-thumb
 {
     float:left;
-    width:calc(100%/6);
-    height:100%;
+    width:10px;
+    height:10px;
+    margin-right:10px;
+    border-radius:5px;
     cursor:pointer;
     will-change:background-color;
-    background-color:transparent;
+    background-color:rgba(255,0,0,0.3);
     @include transition(background-color 1000ms 0ms $transition-effect);
+}
+
+.gallery-thumb:hover
+{
+   background-color:red;
 }
 
 .gallery-thumb.active
@@ -88,6 +75,16 @@
 }
 
 
+.load-model-container
+{
+    position:absolute;
+    top:0px;
+    right:0px;
+    width:400px;
+    height:100%;
+    padding:50px;
+}
+
 
 /**
 * Current model Info
@@ -109,8 +106,20 @@
     height:100%;
 }
 
+.load-model-button
+{
+    @extend %menu-font;
+    padding:7px 20px 7px 20px;
+    text-align:center;
+    float: right;
+    border: 1px solid red;
+    margin-top:5px;
+    margin-left:10px;
+    will-change: background-color;
+    @include transition(background-color 200ms 0s $transition-effect);
+}
 
-
-
-
-
+.load-model-button:hover
+{
+    background-color:rgba(255,0,0,0.3);
+}

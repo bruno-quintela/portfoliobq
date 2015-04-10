@@ -127,16 +127,19 @@
                 <ul class="main-menu">
                     <li id="aboutAnchor"><span>About</span>
                     </li>
-                    <li id="galleryAnchor"><span href="#">Gallery</span>
+                    <li id="galleryAnchor"><span href="#gallerySection">Gallery</span>
                     </li>
-                    <li id="contactAnchor"><span href="#">Contact</span>
+                    <li id="contactAnchor"><span href="#contactSection">Contact</span>
                     </li>
-                    <li id="creditsAnchor"><span href="#">Credits</span>
-                    </li>
-                    <li id="settingsAnchor"><span href="#">Settings</span>
+                    <li id="creditsAnchor"><span href="#creditsSection">Credits</span>
                     </li>
                 </ul>
+                <div id="menuItemActive" class="item-active-bottom"></div>
             </nav>
+            <div id="settingsAnchor" class="menu-settings">
+                    <img class="settings-icon" src="http://pasqualevitiello.github.io/Tumblr-Style-Cog-Spinners/cogs/cog23.svg">
+            </div>
+            <div class="border-bottom"></div>
         </header>
 
 
@@ -321,7 +324,7 @@
         <section id="settingsSection" class="section-content section-settings">
             <div class="content-left">
                 <div class="content-subtitle">
-                    Settings
+                     performance
                 </div>
                 <div class="rule right"></div>
                 <div id="statsContainer" class="content-subtitle">
@@ -342,20 +345,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="content-info-list">
-                    <div class="content-subtitle">
-                        Anaglyph 3D
-                    </div>
-                    <div class="rule left"></div>
-                    <ul class="credits-list">
-                        <li>
-                            <span class="settings-name">stereo</span><span id="settingsStereoscopicOn" class="settings-toggle">on</span><span id="settingsStereoscopicOff" class="settings-toggle active">off</span>
-                        </li>
-                        <li>
-                            <span class="settings-name">(unstable)</span>
-                        </li>
-                    </ul>
-                </div>
+               
                 <div class="content-info-list">
                     <div class="content-subtitle">
                         Postprocessing
@@ -373,34 +363,47 @@
                         </li>
                     </ul>
                 </div>
+                
+                 <div class="content-info-list">
+                    <div class="content-subtitle">
+                        Anaglyph 3D
+                    </div>
+                    <div class="rule left"></div>
+                    <ul class="credits-list">
+                        <li>
+                            <span class="settings-name">stereo</span><span id="settingsStereoscopicOn" class="settings-toggle">on</span><span id="settingsStereoscopicOff" class="settings-toggle active">off</span>
+                        </li>
+                        <li>
+                            <span class="settings-name">(unstable)</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </section>
         <!--SECTION SETTINGS END -->
         <!--SECTION GALEERY START -->
         <section id="gallerySection" class="section-gallery">
             <div class="gallery-thumb-container">
-                <div data-model="1" class="gallery-thumb active">
-                </div>
-                <div data-model="2" class="gallery-thumb">
-                </div>
-                <div data-model="3" class="gallery-thumb">
-                </div>
-                <div data-model="4" class="gallery-thumb">
-                </div>
-                <div data-model="5" class="gallery-thumb">
-                </div>
-                <div data-model="6" class="gallery-thumb">
-                </div>
+                    <div data-model="1" class="gallery-thumb active">
+                    </div>
+                    <div data-model="2" class="gallery-thumb">
+                    </div>
+                    <div data-model="3" class="gallery-thumb">
+                    </div>
+                    <div data-model="4" class="gallery-thumb">
+                    </div>
+                    <div data-model="5" class="gallery-thumb">
+                    </div>
+                    <div data-model="6" class="gallery-thumb">
+                    </div>
             </div>
+            
             <div id="galleryContainer" class="gallery-item-container">
                 <ul>
-                    <li data-model="1" data-totalassets="5" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item">
-
+                    <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem1.png" alt="" class="model-background-img">
-
                             <div class="section-content">
-                                <div class="border-top"></div>
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -425,6 +428,20 @@
                                         <div class="description">
                                             <div class="credits-item">Human Mesh created in Makehuman</div>
                                             <div class="credits-item">Lowpoly Mesh created in Blender</div>
+                                        </div>
+                                    </div>
+                                    <div class="load-model-container">
+                                        <div class="content-left">
+                                            <div class="content-title">
+                                            </div>
+                                            <div class="content-subtitle">
+                                                View turntable
+                                            </div>
+                                            <div class="rule right"></div>
+                                            <div class="current-info">
+                                                <a data-model="1" data-assets="3" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                                <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -464,11 +481,25 @@
                                             <div class="credits-item">Lowpoly Mesh created in Blender</div>
                                         </div>
                                     </div>
+                                    <div class="load-model-container">
+                                        <div class="content-left">
+                                            <div class="content-title">
+                                            </div>
+                                            <div class="content-subtitle">
+                                                View turntable
+                                            </div>
+                                            <div class="rule right"></div>
+                                            <div class="current-info">
+                                                <a data-model="2" data-assets="4" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                                <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </li>
-                    <li data-model="2" data-totalassets="5" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item">
+                    <li data-model="3" data-totalassets="5" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item">
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem3.png" alt="" class="model-background-img">
                             <div class="section-content hide">
@@ -497,6 +528,20 @@
                                         <div class="description">
                                             <div class="credits-item">Human Mesh created in Makehuman</div>
                                             <div class="credits-item">Lowpoly Mesh created in Blender</div>
+                                        </div>
+                                    </div>
+                                    <div class="load-model-container">
+                                        <div class="content-left">
+                                            <div class="content-title">
+                                            </div>
+                                            <div class="content-subtitle">
+                                                View turntable
+                                            </div>
+                                            <div class="rule right"></div>
+                                            <div class="current-info">
+                                                <a data-model="3" data-assets="4" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                                <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -863,8 +863,8 @@ ENGINE = function(renderType) {
                 this.fpsStats.setMode(0); // 0: fps, 1: ms
                 this.fpsStats.domElement.style.float = 'right';
                 this.fpsStats.domElement.style.clear = 'both';
-                /*this.fpsStats.domElement.style.top = '20px';
-                this.fpsStats.domElement.style.width = '110px';*/
+                /*this.fpsStats.domElement.style.top = '20px';*/
+                this.fpsStats.domElement.style.width = '60px';
                 document.getElementById('statsContainer').appendChild(this.fpsStats.domElement);
                 document.getElementById('fps').style.background = 'transparent';
                 document.getElementById('fpsText').style.color = '#fff';
@@ -2325,38 +2325,164 @@ ENGINE = function(renderType) {
                 gallerySection = document.getElementById('gallerySection');
             var galleryContainer = document.getElementById('galleryContainer');
             var galleryLoader = document.getElementById('galleryLoader');
+            var menuItemActive = document.getElementById('menuItemActive');
             var layer = myPortfolio.World.CurrentLayer;
             /* menu navigation handler*/
-            function hideAllSections(){
+
+            function hideAllSections() {
                 classie.addClass(aboutSection, 'hide');
                 classie.addClass(contactSection, 'hide');
                 classie.addClass(creditsSection, 'hide');
                 classie.removeClass(gallerySection, 'show');
             }
+
+            function resetMenuItemActive() {
+                classie.removeClass(menuItemActive, 'pos1');
+                classie.removeClass(menuItemActive, 'pos2');
+                classie.removeClass(menuItemActive, 'pos3');
+                classie.removeClass(menuItemActive, 'pos4');
+            }
             aboutAnchor.addEventListener('click', function() {
                 hideAllSections();
                 classie.toggleClass(aboutSection, 'hide');
+                resetMenuItemActive();
+                classie.addClass(menuItemActive, 'pos1');
             });
             galleryAnchor.addEventListener('click', function() {
                 hideAllSections();
                 classie.toggleClass(gallerySection, 'show');
+                resetMenuItemActive();
+                classie.addClass(menuItemActive, 'pos2');
             });
             contactAnchor.addEventListener('click', function() {
                 hideAllSections();
                 classie.toggleClass(contactSection, 'hide');
+                resetMenuItemActive();
+                classie.addClass(menuItemActive, 'pos3');
             });
             creditsAnchor.addEventListener('click', function() {
                 hideAllSections();
                 classie.toggleClass(creditsSection, 'hide');
+                resetMenuItemActive();
+                classie.addClass(menuItemActive, 'pos4');
             });
             settingsAnchor.addEventListener('click', function() {
                 classie.toggleClass(settingsSection, 'show');
             });
+            /********* GALLERY *************/
+            var galleryContainer = document.getElementById("galleryContainer");
+            var galleryItems = document.querySelectorAll('.gallery-item');
+            var galleryThumbs = document.querySelectorAll('.gallery-thumb');
+            var gallery = new Dragend(galleryContainer, {
+                pageClass: 'gallery-item',
+                duration: 500,
+                direction: 'horizontal',
+                afterInitialize: function() {
+                    galleryContainer.style.visibility = "visible";
+                    console.log('galeery');
+                },
+                onDrag: function() {
+                    console.log('onDrag');
+                },
+                onDragEnd: function() {
+                    console.log('dragEnd');
+                },
+                onSwipeStart: function() {
+                    var page = this.page;
+                    var currentModelInfo = this.activeElement.getElementsByClassName('section-content')[0];
+                    classie.addClass(currentModelInfo, 'hide');
+                    console.log('onSwipeStart,page:' + page);
+                },
+                onSwipeEnd: function() {
+                    var currentThumbIndex = parseInt(this.page);
+                    var currentThumb = galleryThumbs[currentThumbIndex];
+                    var currentModelInfo = this.activeElement.getElementsByClassName('section-content')[0];
+                    classie.removeClass(currentModelInfo, 'hide');
+                    [].forEach.call(galleryThumbs, function(thumbnail) {
+                        classie.removeClass(thumbnail, 'active');
+                    });
+                    classie.addClass(currentThumb, 'active');
+                    console.log('onSwipeEnd,currentThumbIndex:' + currentThumbIndex);
+                }
+            });
+            [].forEach.call(galleryThumbs, function(currentThumb) {
+                currentThumb.addEventListener('click', function() {
+                    var selectedModel = parseInt(currentThumb.getAttribute('data-model')) - 1;
+                    gallery._jumpToPage("page", selectedModel);
+                    /* start gallery model-info show*/
+                    var currentModelInfo = gallery.activeElement.getElementsByClassName('section-content')[0];
+                    classie.removeClass(currentModelInfo, 'hide');
+                    /* update current active thumnail */
+                    [].forEach.call(galleryThumbs, function(thumbnail) {
+                        classie.removeClass(thumbnail, 'active');
+                    });
+                    classie.addClass(currentThumb, 'active');
+                });
+            });
             /** 
-             * Init Model Controls
+             * Init Model load buttons
              */
 
-            function zoomScene(val) {
+            function loadWebgl(modelNumber, totalAssets) {
+                //transition layer
+                myPortfolio.World.transitionParams.transitionMixRatio = 1;
+                var transitionTimeInterval = 1000;
+                var loadingScreen = document.getElementById('loadingScreen');
+                console.log('start3D');
+                classie.addClass(loadingScreen, 'show');
+                myPortfolio.World.NextLayer = new myPortfolio.World.Layer('GalleryModel' + modelNumber, totalAssets, function() {
+                    var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
+                    document.getElementById('progressBar').style.width = loadProgression + '%';
+                    console.log(this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
+                    if(this.numberAssetsLoaded == this.totalAssetsToLoad) {
+                        var layer = this;
+                        layer.onLoadedCallback();
+                        classie.removeClass(loadingScreen, 'show');
+                        layer.loadReset();
+                    }
+                    console.info(loadProgression);
+                }, function() {
+                    console.log('newSceneLoaded');
+                    myPortfolio.World.transitionParams.transitionMixRatio = 0;
+                    myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
+                    myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
+                    var update = function() {
+                        myPortfolio.World.transitionParams.transitionMixRatio = current.x;
+                    };
+                    var current = {
+                        x: 1
+                    };
+                    // remove previous tweens if needed:TODO use same instanciated tween
+                    var tweenLayerTransition = new TWEEN.Tween(current).to({
+                        x: 0
+                    }, myPortfolio.World.transitionParams.transitionTime * 1000).onUpdate(update);
+                    tweenLayerTransition.start();
+                });
+            }
+
+            function loadVideo(videoSrc) {
+                myPortfolio.videoBackground.src = videoSrc;
+                myPortfolio.videoBackground.play();
+            }
+            var webglLoadItems = document.querySelectorAll('.load-webgl');
+            [].forEach.call(webglLoadItems, function(currentModel) {
+                console.log(currentModel.getAttribute('data-model'));
+                currentModel.addEventListener('click', function(event) {
+                    var targetModel = parseInt(currentModel.getAttribute('data-model'));
+                    var targetTotalAssets = parseInt(currentModel.getAttribute('data-assets'));
+                    loadWebgl(targetModel, targetTotalAssets);
+                    console.log('loadwebgl');
+                });
+            });
+            var videoLoadItems = document.querySelectorAll('.load-video');
+            [].forEach.call(videoLoadItems, function(currentModel) {
+                currentModel.addEventListener('click', function(event) {
+                    var targetVideo = parseInt(currentModel.getAttribute('data-video'));
+                    loadVideo(targetVideo);
+                    console.log('loadvideo');
+                });
+            });
+            /*function zoomScene(val) {
                 var layer = myPortfolio.World.CurrentLayer;
                 var tweenSceneZoom = new TWEEN.Tween(layer.scene.position).to({
                     x: layer.scene.position.x,
@@ -2365,7 +2491,7 @@ ENGINE = function(renderType) {
                 }, 1000);
                 tweenSceneZoom.easing(TWEEN.Easing.Quadratic.Out).start();
             }
-            /*var zoomBar = document.getElementById("zoomBar");
+            var zoomBar = document.getElementById("zoomBar");
             var rotationBar = document.getElementById("rotationBar");
             zoomBar.addEventListener('mouseup', function() {
                 zoomScene(parseInt(this.value));
@@ -2593,88 +2719,72 @@ ENGINE = function(renderType) {
             this.backgroundMusic.src = this.backgroundAudioFile;
             this.backgroundMusic.loop = true;
         }
+    },
+    this.init = function() {
+        this.system.init();
+        if(!this.system.useWebGL()) {
+            // remove Threejs canvas
+            var threejsCanvas = document.getElementById('threejsCanvas');
+            if(threejsCanvas) {
+                threejsCanvas.parentNode.removeChild(threejsCanvas);
+            }
+            var siteInfo = document.getElementById('siteInfo');
+            var modelSettings = document.getElementById('modelSettings');
+            if(modelSettings) {
+                modelSettings.parentNode.removeChild(modelSettings);
+            }
+            var settings = document.getElementById('sectionSettings');
+            if(settings) {
+                settings.parentNode.removeChild(settings);
+            }
+            //add video as background
+            this.videoBackground = document.createElement('video');
+            this.videoBackground.id = 'videoBackground';
+            classie.addClass(this.videoBackground, 'video-background');
+            this.videoBackground.poster = '../src/img/galleryItem1.png';
+            this.videoBackground.preload = true;
+            this.videoBackground.loop = true;
+            this.videoBackground.muted = true;
+            /// now, add sources:
+            var sourceMP4 = document.createElement("source");
+            sourceMP4.type = 'video/mp4';
+            sourceMP4.src = 'http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04';
+            this.videoBackground.appendChild(sourceMP4);
+            var bodyWrapper = document.getElementById('bodyWrapper');
+            bodyWrapper.appendChild(this.videoBackground);
+            this.videoBackground.play();
+            /********************/
+            var menu = document.getElementById('menu');
+            var initLoadingScreen = document.getElementById('initLoadingScreen');
+            //var initIntroScreen = document.getElementById('initIntroScreen');
+            //hide init loading screen
+            //classie.addClass(initIntroScreen, 'show');
+            classie.addClass(initLoadingScreen, 'hide');
+            classie.addClass(landingPage, 'hide');
+            classie.removeClass(menu, 'hide');
+            initLoadingScreen.parentNode.removeChild(initLoadingScreen);
+            setTimeout(function() {
+                landingPage.parentNode.removeChild(landingPage);
+            }, 1000);
+        } else {
+            this.SoundFx.init();
+            this.World.start();
+            this.UI.start();
+        }
+        console.log('Page init completed');
     }
-};
-/**
- * Page Init
- **/
-ENGINE.prototype.init = function() {
-    this.system.init();
-    if(!this.system.useWebGL()) {
-        // remove Threejs canvas
-        var threejsCanvas = document.getElementById('threejsCanvas');
-        if(threejsCanvas) {
-            threejsCanvas.parentNode.removeChild(threejsCanvas);
-        }
-        var siteInfo = document.getElementById('siteInfo');
-        var modelSettings = document.getElementById('modelSettings');
-        if(modelSettings) {
-            modelSettings.parentNode.removeChild(modelSettings);
-        }
-        var settings = document.getElementById('sectionSettings');
-        if(settings) {
-            settings.parentNode.removeChild(settings);
-        }
-        //add video as background
-        this.videoBackground = document.createElement('video');
-        this.videoBackground.id = 'videoBackground';
-        classie.addClass(this.videoBackground, 'video-background');
-        this.videoBackground.poster = '../src/img/galleryItem1.png';
-        this.videoBackground.preload = true;
-        this.videoBackground.loop = true;
-        this.videoBackground.muted = true;
-        /// now, add sources:
-        var sourceMP4 = document.createElement("source");
-        sourceMP4.type = 'video/mp4';
-        sourceMP4.src = 'http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04';
-        this.videoBackground.appendChild(sourceMP4);
-        var bodyWrapper = document.getElementById('bodyWrapper');
-        bodyWrapper.appendChild(this.videoBackground);
-        this.videoBackground.play();
-        /********************/
-        var menu = document.getElementById('menu');
-        var initLoadingScreen = document.getElementById('initLoadingScreen');
-        //var initIntroScreen = document.getElementById('initIntroScreen');
-        //hide init loading screen
-        //classie.addClass(initIntroScreen, 'show');
-        classie.addClass(initLoadingScreen, 'hide');
-        classie.addClass(landingPage, 'hide');
-        classie.removeClass(menu, 'hide');
-        initLoadingScreen.parentNode.removeChild(initLoadingScreen);
-        setTimeout(function() {
-            landingPage.parentNode.removeChild(landingPage);
-        }, 1000);
-        //this.SoundFx.init();
-        //this.World.start();
-        //this.UI.start();
-    } else {
-        this.SoundFx.init();
-        this.World.start();
-        this.UI.start();
-    }
-    console.log('Page init completed');
 };
 /**/
-var initPageButton = document.getElementById('initPageButton');
-var startWorld3D = document.getElementById('startWorld3D');
-var startWorld2D = document.getElementById('startWorld2D');
-var renderType = 'webgl';
-var renderRealTime = document.getElementById('renderRealTime');
-var renderRecorded = document.getElementById('renderRecorded');
-var renderInfo = document.getElementById('renderInfo');
-var renderRealtimeInfo = document.getElementById('renderRealtimeInfo');
-var renderRecordedInfo = document.getElementById('renderRecordedInfo');
-var postprocessingWrapper = document.getElementById('postprocessingWrapper');
-var anaglyph3DWrapper = document.getElementById('anaglyph3DWrapper');
-var bodyWrapper = document.getElementById('bodyWrapper');
-var landingPage = document.getElementById('landingPage');
-var initLoadingScreen = document.getElementById('initLoadingScreen');
 var myPortfolio = myPortfolio || {};
 /**
  * On Ready Init Page Prototype TODO
  **/
-myPortfolio = new ENGINE('3D');
-myPortfolio.init();
+window.addEventListener("load", function() {
+    myPortfolio = new ENGINE('3D');
+    myPortfolio.init();
+    classie.removeClass(bodyWrapper, 'hide');
+    console.log('Engine started.');
+});
 /*initPageButton.addEventListener('click', function() {
     if(renderType === 'webgl') {
         //transition layer
@@ -2770,65 +2880,6 @@ renderRecorded.addEventListener('click', function() {
     classie.addClass(renderInfo, 'show');
     console.log('renderRecorded');
 });*/
-classie.removeClass(bodyWrapper, 'hide');
-//classie.removeClass(landingPage, 'hide');
-var galleryContainer = document.getElementById("galleryContainer");
-var galleryItems = document.querySelectorAll('.gallery-item');
-var galleryThumbs = document.querySelectorAll('.gallery-thumb');
-var gallery = new Dragend(galleryContainer, {
-    pageClass: 'gallery-item',
-    duration: 500,
-    direction: 'horizontal',
-    afterInitialize: function() {
-        galleryContainer.style.visibility = "visible";
-        console.log('galeery');
-    },
-    onDrag: function() {
-        console.log('onDrag');
-    },
-    onDragEnd: function() {
-        console.log('dragEnd');
-    },
-    onSwipeStart: function() {
-        var page = this.page;
-        var currentModelInfo = this.activeElement.getElementsByClassName('section-content')[0];
-        classie.addClass(currentModelInfo, 'hide');
-        console.log('onSwipeStart,page:' + page);
-    },
-    onSwipeEnd: function() {
-        var currentThumbIndex = parseInt(this.page);
-        var currentThumb = galleryThumbs[currentThumbIndex];
-        var currentModelInfo = this.activeElement.getElementsByClassName('section-content')[0];
-        classie.removeClass(currentModelInfo, 'hide');
-        
-        [].forEach.call(galleryThumbs, function(thumbnail) {
-            classie.removeClass(thumbnail,'active');
-        });
-        
-        classie.addClass(currentThumb,'active');
-        
-        
-        console.log('onSwipeEnd,currentThumbIndex:' + currentThumbIndex);
-    }
-});
-[].forEach.call(galleryThumbs, function(currentThumb) {
-    currentThumb.addEventListener('click', function() {
-        var selectedModel = parseInt(currentThumb.getAttribute('data-model'))-1;
-        gallery._jumpToPage("page", selectedModel);
-        
-        /* start gallery model-info show*/
-        var currentModelInfo = gallery.activeElement.getElementsByClassName('section-content')[0];
-        classie.removeClass(currentModelInfo, 'hide');
-        
-        /* update current active thumnail */
-        [].forEach.call(galleryThumbs, function(thumbnail) {
-            classie.removeClass(thumbnail,'active');
-        });
-        
-        classie.addClass(currentThumb,'active');
-    });
-});
-console.log('start');
 /*startWorld3D.addEventListener('click', function() {
 
     //transition layer

@@ -4,7 +4,7 @@
     right:0;
     width:100%;
     height:180px;
-    padding-top:$menu-height;
+    padding-top:$menu-height+20px;
     background-color:$primary-color;
     will-change: transform;
     @include transform(translateX(100%));
