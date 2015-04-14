@@ -14,8 +14,8 @@ header
 .menu {
     position: absolute;
     top:0;
-    right:50px;
-	width:800px;
+    right:0px;
+	width:600px;
 	height: 100%;
     background-color:transparent;
 }
@@ -61,10 +61,10 @@ header
 
 .menu .item-active-bottom{
     position:absolute;
-    bottom:-5px;
+    bottom:-2px;
     left:0;
     width: calc(100%/4);
-    height:5px;
+    height:2px;
     background-color:$secondary-color;
     will-change: transform;
     @include transform(translateX(500%));

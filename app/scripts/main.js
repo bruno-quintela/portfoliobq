@@ -1098,10 +1098,12 @@ ENGINE = function(renderType) {
                 // frame buffer object
                 this.fbo = new THREE.WebGLRenderTarget(world.width, world.height);
                 this.loadReset = function() {
-                    var loadProgression = 0;
                     var progressBar = document.getElementById('progressBar');
                     classie.addClass(progressBar, 'reset');
-                    progressBar.style.width = loadProgression + '%';
+                    progressBar.style.width = '0%';
+                    setTimeout(function() {
+                        classie.removeClass(progressBar, 'reset');
+                    }, 2000);
                 }
                 /**
                  * Add vertices sprites to scene
@@ -1386,7 +1388,7 @@ ENGINE = function(renderType) {
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap16.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap16.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, false);
                                     layer.makehumanBody = mesh;
                                 } else if(child.name === 'lowpoly') {
                                     var mesh = child.children[0];
@@ -2121,6 +2123,11 @@ ENGINE = function(renderType) {
                         world.transitionParams.CurrentLayer = NextLayer.name;
                         NextLayer.render(false);
                     }
+                     // Stop Render
+                    else if(world.transitionParams.transitionMixRatio === -1) {
+                        world.transitionParams.CurrentLayer = NextLayer.name;
+                        NextLayer.render(false);
+                    }
                     // Render both scenes and transition frame buffer object
                     else {
                         // When 0<transition<1 render transition between two scenes
@@ -2307,7 +2314,7 @@ ENGINE = function(renderType) {
         /**
          * Open/close menu trigger handlers
          **/
-        initMenu: function() {
+        initUI: function() {
             var UI = this;
             /**
              * Menu navigation anchors triggers handler
@@ -2327,46 +2334,55 @@ ENGINE = function(renderType) {
             var galleryLoader = document.getElementById('galleryLoader');
             var menuItemActive = document.getElementById('menuItemActive');
             var layer = myPortfolio.World.CurrentLayer;
+            
+            this.webglCanvas =  document.getElementById('threejsCanvas');
+             //add video as background
+            this.videoBackground = document.getElementById('videoBackground');
+            //this.videoBackground.poster = '../src/img/galleryItem1.png';
+            this.videoBackground.preload = true;
+            this.videoBackground.loop = true;
+            this.videoBackground.muted = true;
+            
             /* menu navigation handler*/
-
-            function hideAllSections() {
+            this.hideAllSections = function() {
                 classie.addClass(aboutSection, 'hide');
                 classie.addClass(contactSection, 'hide');
                 classie.addClass(creditsSection, 'hide');
                 classie.removeClass(gallerySection, 'show');
             }
-
-            function resetMenuItemActive() {
+            this.resetMenuItemActive = function() {
                 classie.removeClass(menuItemActive, 'pos1');
                 classie.removeClass(menuItemActive, 'pos2');
                 classie.removeClass(menuItemActive, 'pos3');
                 classie.removeClass(menuItemActive, 'pos4');
             }
             aboutAnchor.addEventListener('click', function() {
-                hideAllSections();
+                UI.hideAllSections();
                 classie.toggleClass(aboutSection, 'hide');
-                resetMenuItemActive();
+                UI.resetMenuItemActive();
                 classie.addClass(menuItemActive, 'pos1');
             });
             galleryAnchor.addEventListener('click', function() {
-                hideAllSections();
+                UI.hideAllSections();
                 classie.toggleClass(gallerySection, 'show');
-                resetMenuItemActive();
+                UI.resetMenuItemActive();
                 classie.addClass(menuItemActive, 'pos2');
             });
             contactAnchor.addEventListener('click', function() {
-                hideAllSections();
+                UI.hideAllSections();
                 classie.toggleClass(contactSection, 'hide');
-                resetMenuItemActive();
+                UI.resetMenuItemActive();
                 classie.addClass(menuItemActive, 'pos3');
             });
             creditsAnchor.addEventListener('click', function() {
-                hideAllSections();
+                UI.hideAllSections();
                 classie.toggleClass(creditsSection, 'hide');
-                resetMenuItemActive();
+                UI.resetMenuItemActive();
                 classie.addClass(menuItemActive, 'pos4');
             });
             settingsAnchor.addEventListener('click', function() {
+                UI.hideAllSections();
+                UI.resetMenuItemActive();
                 classie.toggleClass(settingsSection, 'show');
             });
             /********* GALLERY *************/
@@ -2427,47 +2443,56 @@ ENGINE = function(renderType) {
                 //transition layer
                 myPortfolio.World.transitionParams.transitionMixRatio = 1;
                 var transitionTimeInterval = 1000;
-                var loadingScreen = document.getElementById('loadingScreen');
+                var modelLoadingScreen = document.getElementById('modelLoadingScreen');
                 console.log('start3D');
-                classie.addClass(loadingScreen, 'show');
+                classie.addClass(modelLoadingScreen, 'show');
                 myPortfolio.World.NextLayer = new myPortfolio.World.Layer('GalleryModel' + modelNumber, totalAssets, function() {
                     var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
                     document.getElementById('progressBar').style.width = loadProgression + '%';
                     console.log(this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
                     if(this.numberAssetsLoaded == this.totalAssetsToLoad) {
                         var layer = this;
-                        layer.onLoadedCallback();
-                        classie.removeClass(loadingScreen, 'show');
-                        layer.loadReset();
+                        setTimeout(function() {
+                            classie.removeClass(modelLoadingScreen, 'show');
+                            layer.onLoadedCallback();
+                            myPortfolio.UI.hideAllSections();
+                            myPortfolio.UI.resetMenuItemActive();
+                        }, 2000);
+                        setTimeout(function() {
+                            layer.loadReset();
+                        }, 4000);
                     }
                     console.info(loadProgression);
                 }, function() {
                     console.log('newSceneLoaded');
-                    myPortfolio.World.transitionParams.transitionMixRatio = 0;
+                    classie.removeClass(myPortfolio.UI.webglCanvas, 'hide');
                     myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
                     myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
-                    var update = function() {
-                        myPortfolio.World.transitionParams.transitionMixRatio = current.x;
-                    };
-                    var current = {
-                        x: 1
-                    };
-                    // remove previous tweens if needed:TODO use same instanciated tween
-                    var tweenLayerTransition = new TWEEN.Tween(current).to({
-                        x: 0
-                    }, myPortfolio.World.transitionParams.transitionTime * 1000).onUpdate(update);
-                    tweenLayerTransition.start();
+                    myPortfolio.World.transitionParams.transitionMixRatio = 0;
                 });
             }
 
             function loadVideo(videoSrc) {
-                myPortfolio.videoBackground.src = videoSrc;
-                myPortfolio.videoBackground.play();
+               // var sourceMP4 = document.createElement("source");
+                //sourceMP4.type = 'video/mp4';
+                //sourceMP4.src = 'http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04';
+               // myPortfolio.UI.videoBackground.appendChild(sourceMP4);
+                myPortfolio.World.transitionParams.transitionMixRatio = -1;
+                classie.addClass(myPortfolio.UI.webglCanvas, 'hide');
+                myPortfolio.UI.hideAllSections();
+                myPortfolio.UI.resetMenuItemActive();
+                myPortfolio.UI.videoBackground.play();
+                myPortfolio.UI.videoBackground.src = videoSrc;
+                myPortfolio.UI.videoBackground.play();
             }
             var webglLoadItems = document.querySelectorAll('.load-webgl');
             [].forEach.call(webglLoadItems, function(currentModel) {
+                classie.removeClass(threejsCanvas, 'hide');
+                
+                
                 console.log(currentModel.getAttribute('data-model'));
                 currentModel.addEventListener('click', function(event) {
+                    myPortfolio.UI.videoBackground.src="";
                     var targetModel = parseInt(currentModel.getAttribute('data-model'));
                     var targetTotalAssets = parseInt(currentModel.getAttribute('data-assets'));
                     loadWebgl(targetModel, targetTotalAssets);
@@ -2477,12 +2502,13 @@ ENGINE = function(renderType) {
             var videoLoadItems = document.querySelectorAll('.load-video');
             [].forEach.call(videoLoadItems, function(currentModel) {
                 currentModel.addEventListener('click', function(event) {
-                    var targetVideo = parseInt(currentModel.getAttribute('data-video'));
+                    var targetVideo = currentModel.getAttribute('data-video');
                     loadVideo(targetVideo);
                     console.log('loadvideo');
                 });
             });
-            /*function zoomScene(val) {
+
+            function zoomScene(val) {
                 var layer = myPortfolio.World.CurrentLayer;
                 var tweenSceneZoom = new TWEEN.Tween(layer.scene.position).to({
                     x: layer.scene.position.x,
@@ -2498,7 +2524,7 @@ ENGINE = function(renderType) {
             });
             rotationBar.addEventListener('mouseup', function() {
                 rotateScene(parseInt(this.value));
-            });*/
+            });
         },
         /**
          * UI Settings event handlers
@@ -2696,8 +2722,9 @@ ENGINE = function(renderType) {
          * Start UI events handler
          **/
         start: function() {
-            this.initMenu();
+            this.initUI();
             this.initSettings();
+           
             //this.initMap();
         }
     },
@@ -2722,6 +2749,7 @@ ENGINE = function(renderType) {
     },
     this.init = function() {
         this.system.init();
+        
         if(!this.system.useWebGL()) {
             // remove Threejs canvas
             var threejsCanvas = document.getElementById('threejsCanvas');
@@ -2737,21 +2765,12 @@ ENGINE = function(renderType) {
             if(settings) {
                 settings.parentNode.removeChild(settings);
             }
-            //add video as background
-            this.videoBackground = document.createElement('video');
-            this.videoBackground.id = 'videoBackground';
-            classie.addClass(this.videoBackground, 'video-background');
-            this.videoBackground.poster = '../src/img/galleryItem1.png';
-            this.videoBackground.preload = true;
-            this.videoBackground.loop = true;
-            this.videoBackground.muted = true;
+
             /// now, add sources:
             var sourceMP4 = document.createElement("source");
             sourceMP4.type = 'video/mp4';
             sourceMP4.src = 'http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04';
             this.videoBackground.appendChild(sourceMP4);
-            var bodyWrapper = document.getElementById('bodyWrapper');
-            bodyWrapper.appendChild(this.videoBackground);
             this.videoBackground.play();
             /********************/
             var menu = document.getElementById('menu');

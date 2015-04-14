@@ -109,15 +109,16 @@
             </div>
         </div>
 
-        <div id="loadingScreen" class="model-loading-screen">
-            <div class="init-loading-bar">
-                <div id="progressBar" class="model-loading-progress"></div>
+        <div id="modelLoadingScreen" class="model-loading-screen">
+            <div class="loading-info-top">
+                now Loading 3D Model assets, please wait...
             </div>
-            <div class="loading-info">
-                now Loading
+            <div class="model-loading-bar">
+                <div id="progressBar" class="model-loading-progress"></div>
             </div>
         </div>
 
+        <video src="" id="videoBackground" class="video-background"></video>
         <canvas id="threejsCanvas" class="threejs-canvas"></canvas>
 
 
@@ -136,14 +137,9 @@
                 </ul>
                 <div id="menuItemActive" class="item-active-bottom"></div>
             </nav>
-            <div id="settingsAnchor" class="menu-settings">
-                    <img class="settings-icon" src="http://pasqualevitiello.github.io/Tumblr-Style-Cog-Spinners/cogs/cog23.svg">
-            </div>
             <div class="border-bottom"></div>
         </header>
 
-
-        <!-- MODEL INFO -->
 
 
 
@@ -324,7 +320,7 @@
         <section id="settingsSection" class="section-content section-settings">
             <div class="content-left">
                 <div class="content-subtitle">
-                     performance
+                    performance
                 </div>
                 <div class="rule right"></div>
                 <div id="statsContainer" class="content-subtitle">
@@ -345,7 +341,7 @@
                         </li>
                     </ul>
                 </div>
-               
+
                 <div class="content-info-list">
                     <div class="content-subtitle">
                         Postprocessing
@@ -363,8 +359,8 @@
                         </li>
                     </ul>
                 </div>
-                
-                 <div class="content-info-list">
+
+                <div class="content-info-list">
                     <div class="content-subtitle">
                         Anaglyph 3D
                     </div>
@@ -384,20 +380,20 @@
         <!--SECTION GALEERY START -->
         <section id="gallerySection" class="section-gallery">
             <div class="gallery-thumb-container">
-                    <div data-model="1" class="gallery-thumb active">
-                    </div>
-                    <div data-model="2" class="gallery-thumb">
-                    </div>
-                    <div data-model="3" class="gallery-thumb">
-                    </div>
-                    <div data-model="4" class="gallery-thumb">
-                    </div>
-                    <div data-model="5" class="gallery-thumb">
-                    </div>
-                    <div data-model="6" class="gallery-thumb">
-                    </div>
+                <div data-model="1" class="gallery-thumb active">
+                </div>
+                <div data-model="2" class="gallery-thumb">
+                </div>
+                <div data-model="3" class="gallery-thumb">
+                </div>
+                <div data-model="4" class="gallery-thumb">
+                </div>
+                <div data-model="5" class="gallery-thumb">
+                </div>
+                <div data-model="6" class="gallery-thumb">
+                </div>
             </div>
-            
+
             <div id="galleryContainer" class="gallery-item-container">
                 <ul>
                     <li class="gallery-item">
@@ -448,7 +444,7 @@
                             </div>
                         </div>
                     </li>
-                    <li data-model="2" data-totalassets="5" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item">
+                    <li class="gallery-item">
 
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem2.png" alt="" class="model-background-img">
@@ -499,7 +495,7 @@
                             </div>
                         </div>
                     </li>
-                    <li data-model="3" data-totalassets="5" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item">
+                    <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem3.png" alt="" class="model-background-img">
                             <div class="section-content hide">
@@ -548,7 +544,7 @@
                             </div>
                         </div>
                     </li>
-                    <li data-model="3" data-totalassets="1" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item">
+                    <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem4.png" alt="" class="model-background-img">
                             <div class="section-content hide">
@@ -583,7 +579,7 @@
                             </div>
                         </div>
                     </li>
-                    <li data-model="4" data-totalassets="2" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item">
+                    <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem5.png" alt="" class="model-background-img">
                             <div class="section-content hide">
@@ -618,7 +614,7 @@
                             </div>
                         </div>
                     </li>
-                    <li data-model="5" data-totalassets="2" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item">
+                    <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem2.png" alt="" class="model-background-img">
                             <div class="section-content hide">
@@ -653,7 +649,7 @@
                             </div>
                         </div>
                     </li>
-                    <li data-model="6" data-totalassets="4" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="gallery-item">
+                    <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem2.png" alt="" class="model-background-img">
                             <div class="section-content hide">
@@ -692,6 +688,35 @@
             </div>
         </section>
         <!--SECTION GALEERY END -->
+        <!--CURRENT MODEL INFO START -->
+        <section id="modelInfoSection" class="section-content section-modelInfo">
+            <div class="border-top"></div>
+            <div class="current-modelInfo-title">
+                <span class="">model</span>
+                <span class="highlight">_01</span>
+            </div>
+            <div class="current-modelInfo-title">
+                <span class="">lowpoly</span>
+                <span class="highlight">Hybrid</span>
+            </div>
+            <div class="model-controls">
+                <div class="control-field">
+                    <span>zoom</span>
+                    <input id="zoomBar" class="zoom" type='range' min="-5" max="5" value="0" step='0.1' />
+                </div>
+                <div class="control-field">
+                    <span>rotation</span>
+                    <input id="rotationBar" class="rotation" type='range' min="-2" max="2" value="0.5" step='0.1' />
+                </div>
+                 <div class="settings-label">
+                    settings
+                </div>
+                
+            </div>
+            <div id="settingsAnchor" class="menu-settings">
+                <img class="settings-icon" src="http://pasqualevitiello.github.io/Tumblr-Style-Cog-Spinners/cogs/cog23.svg">
+            </div>
+        </section>
 
 
     </div>

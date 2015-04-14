@@ -65,7 +65,14 @@ $primary-color: rgba(0,0,0,0.9);
   position:absolute;
   width:100%;
   height:100%;
+  display:block;
 }
+
+.threejs-canvas.hide
+{
+  display:none;
+}
+
 
 .video-background
 {
@@ -194,8 +201,8 @@ $primary-color: rgba(0,0,0,0.9);
 .border-bottom{
     position:absolute;
     width:100%;
-    height:5px;
-    bottom:-5px;
+    height:2px;
+    bottom:-2px;
     background-color:rgba(255,0,0,0.3);
 }
 .border-top{
@@ -203,9 +210,54 @@ $primary-color: rgba(0,0,0,0.9);
     width:100%;
     height:2px;
     top:-2px;
+    right:0;
     background-color:rgba(255,0,0,0.3);
 }
 
+
+.section-modelInfo
+{
+    
+    height:$menu-height;
+    padding-top:20px;
+    padding-left:50px;
+   
+    //display:none;
+}
+
+.current-modelInfo-title
+{
+    @extend %menu-font;
+    color:#fff;
+    float:left;
+    margin-right:10px;
+}
+
+/** 
+ * model controls
+**/
+
+.model-controls{
+    @extend %model-settings-font;
+    float:right;
+    text-transform:uppercase;
+    width:700px;
+}
+
+.control-field
+{
+    float:left;
+    width:200px;
+    
+}
+
+.settings-label
+{
+    float:right;
+    text-align:right;
+    margin-right:50px;
+    
+}
 
 
 
@@ -289,7 +341,7 @@ $primary-color: rgba(0,0,0,0.9);
     left: 0;
     width:100%;
     height:1px;
-    background-color:$loading-bar-color;
+    background-color:transparent;
     @include transition((transform 0.5s 0s $transition-effect, opacity 0.5s 0s $transition-effect));
 }
 
@@ -382,71 +434,67 @@ $primary-color: rgba(0,0,0,0.9);
     padding-right:$menu-width;
     width:100%;
     height: 100%;
-    opacity:0;
-    visibility:hidden;
+    opacity:1;
     background-color:$loading-model-background;
-    will-change:opacity, visibility;
-    @include transition((opacity 1s 0s $transition-effect, visibility 0s 0s));
+    will-change:opacity, transform;
+    @include transform(translateX(100%));
+    @include transition((opacity 1s 2s $transition-effect, transform 1s 0s $transition-effect));
 }
 
 .model-loading-screen.show
 {
     opacity:1;
-    visibility:visible;
-    @include transition((opacity 1s 0s $transition-effect, visibility 0s 0s));
-    
+    @include transform(translateX(0));
+    @include transition((opacity 1s 0s $transition-effect, transform 1s 0s $transition-effect));
 }
 
-.loading-info
+.loading-info-top
 {
     @extend %model-loading-font; 
     position:absolute;
-    bottom:46%;
-    right:$menu-width;
+    bottom:$section-content-height;
+    right:0;
     width:100%;
     height:30px;
-    padding-right:10px;
-    text-align: right;
+    text-align: center;
     opacity:0;
     will-change:opacity;
     @include transition(opacity 0.5s $transition-effect);
 }
 
-.model-loading-screen.show .loading-info
+
+.model-loading-screen.show .loading-info-top
 {
-    -webkit-animation: fade-transition 1s infinite alternate ; /* Safari 4+ */
-    -moz-animation:    fade-transition 1s infinite alternate; /* Fx 5+ */
-    -o-animation:      fade-transition 1s infinite alternate; /* Opera 12+ */
-    animation:         fade-transition 1s infinite alternate ; /* IE 10+, Fx 29+ */
+    -webkit-animation: fade-transition 1s 1s infinite alternate ; /* Safari 4+ */
+    -moz-animation:    fade-transition 1s 1s infinite alternate; /* Fx 5+ */
+    -o-animation:      fade-transition 1s 1s infinite alternate; /* Opera 12+ */
+    animation:         fade-transition 1s 1s infinite alternate ; /* IE 10+, Fx 29+ */
 }
 
 .model-loading-bar{
     position:absolute;
-    bottom:50%;
+    bottom:$section-content-height;
     left: 0;
     width:100%;
     height:1px;
     background-color:transparent;
-    transform: translateX(100%);
-    will-change: transform;
-    @include transition(transform 0.5s 0s $transition-effect);
 }
 
 .model-loading-progress{
     position:absolute;
     width:0%;
-    bottom:0px;
+    bottom:-3px;
     right:0px;
-    height:1px;
+    height:3px;
     background-color:$secondary-color;
     will-change: width;
-    @include transition(width 2s $transition-effect);
+    @include transition(width 2s 0s $transition-effect);
 }
 
 .model-loading-progress.reset{
     position:absolute;
     width:0%;
-    @include transition(width 0s $transition-effect);
+    @include transition(width 0s 0s);
 }
 
 
@@ -516,31 +564,21 @@ $primary-color: rgba(0,0,0,0.9);
   100% { opacity: 1; }
 }
 
-/** 
- * model controls
-**/
 
-.model-controls{
-    position: absolute;
-    left: 820px;
-    bottom:10px;
-    font-size:9px;
-    text-transform:none;
-}
 
 input[type="range"].zoom{
-     top: 5px;
-     left: 80px;
+     float:left;
 }
 
 input[type="range"].rotation{
-     bottom: 4px;
-     left: 80px;
+     float:left;
 }
 
 input[type="range"]{
   -webkit-appearance:none;
   width:100px;
+  margin-top: 6px;
+  margin-left: 20px;
   height:1px;
   background: $secondary-color;
   background-position:center;
@@ -552,13 +590,15 @@ input[type="range"]{
 
 input[type="range"]::-webkit-slider-thumb{
   -webkit-appearance:none;
-  width:5px;
+  width:2px;
   height:5px;
-  border-radius: 100%;
   background: $secondary-color;
   position:relative;
   z-index:3;
   cursor: hand;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab;
 }
 
 
