@@ -91,11 +91,11 @@
     <!-- DRAGEND JS Plugin  -->
     <script src="scripts/vendor/dragendjs/dragend.min.js"></script>
 
-    <div id="bodyWrapper" class="body-wrapper hide">
+    <div id="bodyWrapper" class="body-wrapper">
 
 
         <!--button id="initPageButton" class="init-page-button">Enter</button-->
-        <div id="initLoadingScreen" class="init-loading-screen hide">
+        <div id="initLoadingScreen" class="init-loading-screen">
             <div class="title">NOW LOADING</div>
             <div class="init-loading-bar">
                 <div id="initProgressBar" class="init-loading-progress"></div>
@@ -123,7 +123,7 @@
 
 
         <!-- menu -->
-        <header>
+        <header id="headerMenu" class="hide">
             <nav id="menu" class="menu hide">
                 <ul class="main-menu">
                     <li id="aboutAnchor"><span>About</span>
@@ -153,7 +153,7 @@
                     <span class="highlight">Me</span>
                 </div>
                 <div class="content-subtitle">
-                    Web Developer
+                    what i do
                 </div>
                 <div class="rule right"></div>
                 <span class="item">Frontend</span>
@@ -161,7 +161,7 @@
                 <span class="item">Designer</span>
             </div>
             <div class="content-right">
-                <div class="content-title">Bruno Quintela</div>
+                <div class="content-title"></div>
                 <div class="content-info">
                     <div class="content-subtitle">
                         Who am I
@@ -171,14 +171,14 @@
                 </div>
                 <div class="content-info">
                     <div class="content-subtitle">
-                        What i do
+                        
                     </div>
                     <div class="rule left"></div>
                     <span class="description">My current focus isto create state of the art visuals for the web. To achieve a perfect ballance between visual delivery and performance is allways my pripority.</span>
                 </div>
                 <div class="content-info">
                     <div class="content-subtitle">
-                        What's next
+                       
                     </div>
                     <div class="rule left"></div>
                     <span class="description">In the next five years we will enter into the age of Virtual Reality, and that will have a massive impact in the way you surf the web, so i expect to be in a vanguard project related to that, as a web developer or creative director.</span>
@@ -240,17 +240,12 @@
         <section id="creditsSection" class="section-content hide">
             <div class="border-top"></div>
             <div class="content-left">
-                <div class="content-title">
-                    <span class="highlight">Credits</span>
-                </div>
                 <div class="content-subtitle">
                     To all contributors
                 </div>
                 <div class="rule right"></div>
             </div>
             <div class="content-right">
-                <div class="content-title"></div>
-
                 <div class="content-info-list">
                     <div class="content-subtitle">
                         Software
@@ -305,7 +300,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="content-info">
+                <div class="content-info-list">
                     <div class="content-subtitle">
                         Special thanks
                     </div>
@@ -318,15 +313,9 @@
         <!--SECTION CREDITS END -->
         <!-- SECTION SETTINGS START -->
         <section id="settingsSection" class="section-content section-settings">
-            <div class="content-left">
-                <div class="content-subtitle">
-                    performance
-                </div>
-                <div class="rule right"></div>
-                <div id="statsContainer" class="content-subtitle">
-                </div>
-            </div>
+            <div class="border-top"></div>
             <div class="content-right">
+
                 <div class="content-info-list">
                     <div class="content-subtitle">
                         Generic
@@ -374,6 +363,30 @@
                         </li>
                     </ul>
                 </div>
+                <div class="content-info-list">
+                    <div class="content-subtitle">
+                        Model
+                    </div>
+                    <div class="rule left"></div>
+                    <ul class="credits-list">
+                        <li>
+                            <span class="settings-name">Zoom</span>
+                            <input id="zoomBar" class="zoom" type='range' min="-5" max="5" value="0" step='0.1' />
+                        </li>
+                        <li>
+                            <span class="settings-name">Rotation</span>
+                            <input id="rotationBar" class="rotation" type='range' min="-2" max="2" value="0.5" step='0.1' />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content-left">
+                <div class="content-subtitle">
+                    current performance
+                </div>
+                <div class="rule right"></div>
+                <div id="statsContainer" class="content-subtitle">
+                </div>
             </div>
         </section>
         <!--SECTION SETTINGS END -->
@@ -400,6 +413,7 @@
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem1.png" alt="" class="model-background-img">
                             <div class="section-content">
+                                <div class="border-top"></div>
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -689,36 +703,23 @@
         </section>
         <!--SECTION GALEERY END -->
         <!--CURRENT MODEL INFO START -->
-        <section id="modelInfoSection" class="section-content section-modelInfo">
+        <section id="modelInfoSection" class="section-model-info hide">
             <div class="border-top"></div>
-            <div class="current-modelInfo-title">
-                <span class="">model</span>
-                <span class="highlight">_01</span>
+            <div class="current-model-title">
+                <span class="">Portfolio</span>
+                <span class="highlight">2015</span>
             </div>
-            <div class="current-modelInfo-title">
-                <span class="">lowpoly</span>
-                <span class="highlight">Hybrid</span>
+            <div class="current-model-title">
+                Bruno Quintela
             </div>
-            <div class="model-controls">
-                <div class="control-field">
-                    <span>zoom</span>
-                    <input id="zoomBar" class="zoom" type='range' min="-5" max="5" value="0" step='0.1' />
-                </div>
-                <div class="control-field">
-                    <span>rotation</span>
-                    <input id="rotationBar" class="rotation" type='range' min="-2" max="2" value="0.5" step='0.1' />
-                </div>
-                 <div class="settings-label">
+
+            <div id="settingsAnchor" class="menu-settings">
+                <div class="settings-label">
                     settings
                 </div>
-                
-            </div>
-            <div id="settingsAnchor" class="menu-settings">
-                <img class="settings-icon" src="http://pasqualevitiello.github.io/Tumblr-Style-Cog-Spinners/cogs/cog23.svg">
+                <img id="settingsIcon" class="settings-icon" src="http://pasqualevitiello.github.io/Tumblr-Style-Cog-Spinners/cogs/cog23.svg">
             </div>
         </section>
-
-
     </div>
     <!-- end sectionWrapper -->
 

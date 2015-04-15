@@ -3,7 +3,7 @@
     bottom:$menu-height;
     right:0;
     width:100%;
-    height:180px;
+    height:200px;
     background-color:$primary-color;
     will-change: transform;
     @include transform(translateX(100%));
@@ -15,6 +15,46 @@
     @include transform(translateX(0));
     @include transition(transform 1000ms 0ms $transition-effect);
 }
+
+
+.section-settings .content-left{
+    float:right;
+}
+.section-settings .content-right{
+    margin-left:50px;
+}
+
+.menu-settings{
+    position:absolute;
+    top:0px;
+    right:10px;
+    width:50px;
+    height:100%;
+}
+
+.settings-icon
+{
+    @extend %absolute-center;
+    width:25px;
+    height:25px;
+    cursor:pointer; 
+    will-change: opacity, transform;
+    opacity:0.5;
+    @include transform(rotateZ(0deg));
+    @include transition((opacity 500ms 0ms $transition-effect, transform 1000ms 0ms $transition-effect));
+}
+
+.settings-icon.active
+{
+    @include transform(rotateZ(-180deg));
+    opacity:1;
+}
+
+.settings-icon:hover
+{
+    opacity:1;
+}
+
 
 .settings-title
 {

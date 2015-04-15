@@ -28,6 +28,7 @@ $menu-height:50px;
 $section-content-height:250px;
 $section-left-width: 300px;
 $primary-color: rgba(0,0,0,0.9);
+$secondary-color-opaque: rgba(255,0,0,0.3);
 
 
 
@@ -53,11 +54,6 @@ $primary-color: rgba(0,0,0,0.9);
   overflow:hidden;
   will-change:opacity;
   @include transition((opacity 3000ms 0ms $transition-effect));
-}
-
-.body-wrapper.hide
-{
-    opacity:0;
 }
 
 .threejs-canvas
@@ -152,6 +148,8 @@ $primary-color: rgba(0,0,0,0.9);
 
 .content-subtitle{
     @extend %content-subtitle-font;
+    height: 15px;
+
 }
 
 .section-content .content-left .item{
@@ -168,7 +166,7 @@ $primary-color: rgba(0,0,0,0.9);
 
 .section-content .content-right .content-info-list{
     float:left;
-    width:200px;
+    width:300px;
 }
 
 .section-content .content-right .description{
@@ -215,17 +213,27 @@ $primary-color: rgba(0,0,0,0.9);
 }
 
 
-.section-modelInfo
+.section-model-info
 {
-    
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
     height:$menu-height;
+    background-color:#000;
     padding-top:20px;
     padding-left:50px;
-   
-    //display:none;
+    will-change: transform;
+    @include transform(translateY(0));
+    @include transition(transform 1000ms 0ms $transition-effect);
 }
 
-.current-modelInfo-title
+.section-model-info.hide
+{
+    @include transform(translateY(100%));
+}
+
+.current-model-title
 {
     @extend %menu-font;
     color:#fff;
@@ -239,23 +247,34 @@ $primary-color: rgba(0,0,0,0.9);
 
 .model-controls{
     @extend %model-settings-font;
-    float:right;
+    position:absolute;
+    bottom:70px;
+    left:50px;
     text-transform:uppercase;
-    width:700px;
+    width:250px;
 }
 
 .control-field
 {
     float:left;
     width:200px;
-    
+    margin-bottom:5px;
+}
+
+.control-field span
+{
+    display:inline-block;
+    width:70px;
 }
 
 .settings-label
 {
+    @extend %model-settings-font;
+    text-transform:uppercase;
     float:right;
     text-align:right;
     margin-right:50px;
+    margin-top:20px;
     
 }
 
@@ -290,19 +309,18 @@ $primary-color: rgba(0,0,0,0.9);
 
 .init-loading-screen
 {
-    z-index:3;
+    z-index:20;
     display: inline-block;
     position:absolute;
     width:100%;
     height: 100%;
     line-height: 100%;
-    //opacity:0;
+    opacity:1;
     visibility:visible;
-    background: transparent;
+    background: #000;
     color:#fff;
     will-change: opacity, visibility;
     @include transition(opacity 1s 0s $transition-effect); 
-    display:none;
 }
 
 .init-loading-screen.hide
@@ -341,7 +359,7 @@ $primary-color: rgba(0,0,0,0.9);
     left: 0;
     width:100%;
     height:1px;
-    background-color:transparent;
+    background-color:#fff;
     @include transition((transform 0.5s 0s $transition-effect, opacity 0.5s 0s $transition-effect));
 }
 
@@ -356,8 +374,8 @@ $primary-color: rgba(0,0,0,0.9);
     margin:auto;
     float: left;
     height:1px;
-    background-color:$loading-progress-color;
-    @include transition(width 3s $transition-effect);
+    background-color:red;
+    @include transition(width 2s $transition-effect);
 }
 
 
@@ -369,21 +387,19 @@ $primary-color: rgba(0,0,0,0.9);
 {
     z-index:2;
     position:absolute;
-    left:0px;
-    //bottom:48%;
+    left:0;
+    top:0;
     width:100%;
     height: 100%;
     opacity:1;
     visibility:visible;
     text-align:center;
     background:transparent;
-    //@include transition((opacity 0.5s 18s $transition-effect, visibility 0s 19s $transition-effect));
-    display:none;
+    @include transition(opacity 1s 0s $transition-effect);
 }
 
 .init-intro-screen.hide
 {
-    visibility:hidden;
     opacity:0;
 }
 
@@ -577,21 +593,20 @@ input[type="range"].rotation{
 input[type="range"]{
   -webkit-appearance:none;
   width:100px;
-  margin-top: 6px;
-  margin-left: 20px;
-  height:1px;
-  background: $secondary-color;
+  margin-top: 7px;
+  margin-left: 10px;
+  height:10px;
+  background: $secondary-color-opaque;
   background-position:center;
   background-repeat:no-repeat;
-  position: absolute;
   outline:none;
   cursor:pointer;
 }
 
 input[type="range"]::-webkit-slider-thumb{
   -webkit-appearance:none;
-  width:2px;
-  height:5px;
+  width:10px;
+  height:10px;
   background: $secondary-color;
   position:relative;
   z-index:3;

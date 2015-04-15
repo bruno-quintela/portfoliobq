@@ -9,7 +9,15 @@ header
 	top: 0;
 	left: 0;
     background-color:$main-menu-background;
+    @include transform(translateY(0));
+    @include transition(transform 1000ms 0ms $transition-effect);
 }
+
+header.hide
+{
+    @include transform(translateY(-100%));
+}
+
 /* Main menu overlay style */
 .menu {
     position: absolute;
@@ -19,6 +27,8 @@ header
 	height: 100%;
     background-color:transparent;
 }
+
+
 
 
 .menu ul {
@@ -91,27 +101,4 @@ header
     @include transform(translateX(300%));
 }
 
-.menu-settings{
-    position:absolute;
-    top:0px;
-    right:0px;
-    width:50px;
-    height:100%;
-}
-
-.settings-icon
-{
-    @extend %absolute-center;
-    width:20px;
-    height:20px;
-    cursor:pointer; 
-    will-change: opacity;
-    opacity:0.5;
-    @include transition(opacity 500ms 0ms $transition-effect);
-}
-
-.settings-icon:hover
-{
-    opacity:1;
-}
 

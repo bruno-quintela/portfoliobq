@@ -864,7 +864,7 @@ ENGINE = function(renderType) {
                 this.fpsStats.domElement.style.float = 'right';
                 this.fpsStats.domElement.style.clear = 'both';
                 /*this.fpsStats.domElement.style.top = '20px';*/
-                this.fpsStats.domElement.style.width = '60px';
+                this.fpsStats.domElement.style.width = '150px';
                 document.getElementById('statsContainer').appendChild(this.fpsStats.domElement);
                 document.getElementById('fps').style.background = 'transparent';
                 document.getElementById('fpsText').style.color = '#fff';
@@ -2123,7 +2123,7 @@ ENGINE = function(renderType) {
                         world.transitionParams.CurrentLayer = NextLayer.name;
                         NextLayer.render(false);
                     }
-                     // Stop Render
+                    // Stop Render
                     else if(world.transitionParams.transitionMixRatio === -1) {
                         world.transitionParams.CurrentLayer = NextLayer.name;
                         NextLayer.render(false);
@@ -2268,20 +2268,67 @@ ENGINE = function(renderType) {
             this.CurrentLayer = new this.Layer('emptyModel', 1, function() {}, function() {
                 console.log('empty Loaded!');
             });
-            this.NextLayer = new this.Layer('settingsModel', 2, function() {
-                console.log(this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
-                if(this.numberAssetsLoaded === this.totalAssetsToLoad) {
-                    var layer = this;
-                    layer.onLoadedCallback();
+            this.NextLayer = new myPortfolio.World.Layer('initMainModel', 3, function() {
+                var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
+                document.getElementById('initProgressBar').style.width = loadProgression + '%';
+                console.log(loadProgression + ":" + this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
+                if(this.numberAssetsLoaded == this.totalAssetsToLoad) {
+                    this.onLoadedCallback();
                 }
+                console.info(loadProgression);
             }, function() {
-                console.log('settings1 Loaded!');
+                console.log('MainModel Loaded!');
+                //landingPage.parentNode.removeChild(landingPage);
+                setTimeout(function() {
+                    classie.addClass(initLoadingScreen, 'hide');
+                }, 2000);
+                var headerMenu = document.getElementById('headerMenu');
+                var initLoadingScreen = document.getElementById('initLoadingScreen');
+                var initIntroScreen = document.getElementById('initIntroScreen');
+                var initIntroTitle = document.getElementById('initIntroTitle');
+                var initIntroSubtitle = document.getElementById('initIntroSubtitle');
+                var modelInfoSection = document.getElementById('modelInfoSection');
+                //hide init loading screen
+                setTimeout(function() {
+                    myPortfolio.World.transitionParams.transitionMixRatio = 1;
+                    myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.NextLayer,myPortfolio.World.CurrentLayer);
+                    var update = function() {
+                        myPortfolio.World.transitionParams.transitionMixRatio = current.x;
+                    };
+                    var current = {
+                        x: 0
+                    };
+                    // remove previous tweens if needed:TODO use same instanciated tween
+                    var tweenLayerTransition = new TWEEN.Tween(current).to({
+                        x: 1
+                    }, 9000).onUpdate(update);
+                    tweenLayerTransition.start();
+                    //myPortfolio.SoundFx.backgroundMusic.play(0);
+                }, 2000);
+                setTimeout(function() {
+                    classie.addClass(initIntroSubtitle, 'show');
+                }, 5000);
+                setTimeout(function() {
+                    classie.removeClass(initIntroSubtitle, 'show');
+                    classie.addClass(initIntroTitle, 'show');
+                }, 8000);
+                setTimeout(function() {
+                    classie.removeClass(initIntroTitle, 'show');
+                }, 12000);
+                //end init loading screen
+                setTimeout(function() {
+                    classie.addClass(initIntroScreen, 'hide');
+                }, 16000);
+                //show menu
+                setTimeout(function() {
+                    classie.removeClass(headerMenu, 'hide');
+                    classie.removeClass(modelInfoSection, 'hide');
+                    initLoadingScreen.parentNode.removeChild(initLoadingScreen);
+                    initIntroScreen.parentNode.removeChild(initIntroScreen);
+                }, 17000);
             });
-            /* this.EmptyLayer = new this.Layer('emptyModel', 1, function() {}, function() {
-                console.log('empty Loaded!');
-            });*/
             this.transition = new this.Transition(this.NextLayer, this.CurrentLayer);
-            myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
+
             /**/
             var animate = function() {
                 requestAnimationFrame(animate);
@@ -2330,24 +2377,25 @@ ENGINE = function(renderType) {
                 creditsSection = document.getElementById('creditsSection'),
                 settingsSection = document.getElementById('settingsSection'),
                 gallerySection = document.getElementById('gallerySection');
+            var modelInfoSection = document.getElementById('modelInfoSection');
             var galleryContainer = document.getElementById('galleryContainer');
             var galleryLoader = document.getElementById('galleryLoader');
             var menuItemActive = document.getElementById('menuItemActive');
+            var settingsIcon = document.getElementById('settingsIcon');
             var layer = myPortfolio.World.CurrentLayer;
-            
-            this.webglCanvas =  document.getElementById('threejsCanvas');
-             //add video as background
+            this.webglCanvas = document.getElementById('threejsCanvas');
+            //add video as background
             this.videoBackground = document.getElementById('videoBackground');
             //this.videoBackground.poster = '../src/img/galleryItem1.png';
             this.videoBackground.preload = true;
             this.videoBackground.loop = true;
             this.videoBackground.muted = true;
-            
             /* menu navigation handler*/
             this.hideAllSections = function() {
                 classie.addClass(aboutSection, 'hide');
                 classie.addClass(contactSection, 'hide');
                 classie.addClass(creditsSection, 'hide');
+                classie.addClass(modelInfoSection, 'hide');
                 classie.removeClass(gallerySection, 'show');
             }
             this.resetMenuItemActive = function() {
@@ -2361,29 +2409,32 @@ ENGINE = function(renderType) {
                 classie.toggleClass(aboutSection, 'hide');
                 UI.resetMenuItemActive();
                 classie.addClass(menuItemActive, 'pos1');
+                classie.removeClass(settingsSection, 'show');
             });
             galleryAnchor.addEventListener('click', function() {
                 UI.hideAllSections();
                 classie.toggleClass(gallerySection, 'show');
                 UI.resetMenuItemActive();
                 classie.addClass(menuItemActive, 'pos2');
+                classie.removeClass(settingsSection, 'show');
             });
             contactAnchor.addEventListener('click', function() {
                 UI.hideAllSections();
                 classie.toggleClass(contactSection, 'hide');
                 UI.resetMenuItemActive();
                 classie.addClass(menuItemActive, 'pos3');
+                classie.removeClass(settingsSection, 'show');
             });
             creditsAnchor.addEventListener('click', function() {
                 UI.hideAllSections();
                 classie.toggleClass(creditsSection, 'hide');
                 UI.resetMenuItemActive();
                 classie.addClass(menuItemActive, 'pos4');
+                classie.removeClass(settingsSection, 'show');
             });
             settingsAnchor.addEventListener('click', function() {
-                UI.hideAllSections();
-                UI.resetMenuItemActive();
                 classie.toggleClass(settingsSection, 'show');
+                classie.toggleClass(settingsIcon, 'active');
             });
             /********* GALLERY *************/
             var galleryContainer = document.getElementById("galleryContainer");
@@ -2454,9 +2505,9 @@ ENGINE = function(renderType) {
                         var layer = this;
                         setTimeout(function() {
                             classie.removeClass(modelLoadingScreen, 'show');
-                            layer.onLoadedCallback();
                             myPortfolio.UI.hideAllSections();
                             myPortfolio.UI.resetMenuItemActive();
+                            layer.onLoadedCallback();
                         }, 2000);
                         setTimeout(function() {
                             layer.loadReset();
@@ -2466,6 +2517,7 @@ ENGINE = function(renderType) {
                 }, function() {
                     console.log('newSceneLoaded');
                     classie.removeClass(myPortfolio.UI.webglCanvas, 'hide');
+                    classie.removeClass(modelInfoSection, 'hide');
                     myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
                     myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
                     myPortfolio.World.transitionParams.transitionMixRatio = 0;
@@ -2473,26 +2525,20 @@ ENGINE = function(renderType) {
             }
 
             function loadVideo(videoSrc) {
-               // var sourceMP4 = document.createElement("source");
-                //sourceMP4.type = 'video/mp4';
-                //sourceMP4.src = 'http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04';
-               // myPortfolio.UI.videoBackground.appendChild(sourceMP4);
                 myPortfolio.World.transitionParams.transitionMixRatio = -1;
                 classie.addClass(myPortfolio.UI.webglCanvas, 'hide');
                 myPortfolio.UI.hideAllSections();
                 myPortfolio.UI.resetMenuItemActive();
-                myPortfolio.UI.videoBackground.play();
+                classie.removeClass(modelInfoSection, 'hide');
                 myPortfolio.UI.videoBackground.src = videoSrc;
                 myPortfolio.UI.videoBackground.play();
             }
             var webglLoadItems = document.querySelectorAll('.load-webgl');
             [].forEach.call(webglLoadItems, function(currentModel) {
                 classie.removeClass(threejsCanvas, 'hide');
-                
-                
                 console.log(currentModel.getAttribute('data-model'));
                 currentModel.addEventListener('click', function(event) {
-                    myPortfolio.UI.videoBackground.src="";
+                    myPortfolio.UI.videoBackground.src = "";
                     var targetModel = parseInt(currentModel.getAttribute('data-model'));
                     var targetTotalAssets = parseInt(currentModel.getAttribute('data-assets'));
                     loadWebgl(targetModel, targetTotalAssets);
@@ -2724,7 +2770,6 @@ ENGINE = function(renderType) {
         start: function() {
             this.initUI();
             this.initSettings();
-           
             //this.initMap();
         }
     },
@@ -2749,7 +2794,6 @@ ENGINE = function(renderType) {
     },
     this.init = function() {
         this.system.init();
-        
         if(!this.system.useWebGL()) {
             // remove Threejs canvas
             var threejsCanvas = document.getElementById('threejsCanvas');
@@ -2765,7 +2809,6 @@ ENGINE = function(renderType) {
             if(settings) {
                 settings.parentNode.removeChild(settings);
             }
-
             /// now, add sources:
             var sourceMP4 = document.createElement("source");
             sourceMP4.type = 'video/mp4';
@@ -2801,7 +2844,6 @@ var myPortfolio = myPortfolio || {};
 window.addEventListener("load", function() {
     myPortfolio = new ENGINE('3D');
     myPortfolio.init();
-    classie.removeClass(bodyWrapper, 'hide');
     console.log('Engine started.');
 });
 /*initPageButton.addEventListener('click', function() {
