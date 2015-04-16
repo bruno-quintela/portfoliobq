@@ -113,7 +113,7 @@ ENGINE = function(renderType) {
             fog: 0.001,
             enableAnaglyph: false,
             focus: 15,
-            enableTrackball: true,
+            enableTrackball: false,
             enableMouseListener: false,
             enableGrid: false,
             glitchType: 2,
@@ -135,7 +135,7 @@ ENGINE = function(renderType) {
             enableTiltShift: false,
             tiltBlur: 1.5,
             enableVignette: false,
-            vignetteStrengh: 8,
+            vignetteStrengh: 4,
             disableEffects: false
         },
         materialParams: {
@@ -580,20 +580,7 @@ ENGINE = function(renderType) {
                     myPortfolio.World.CurrentLayer.scene.fog = new THREE.FogExp2(0x000000, value);
                 });
                 guiRender.add(this.renderParams, 'enableTrackball');
-                guiRender.add(this.renderParams, 'enableMouseListener').onChange(function(value) {
-                    function onDocumentMouseMove(event) {
-                        var mouseX = event.clientX - myPortfolio.World.width / 2;
-                        var mouseY = event.clientY - myPortfolio.World.height / 2;
-                        myPortfolio.World.targetRotationX = mouseX * 0.00005;
-                        myPortfolio.World.targetRotationY = mouseY * 0.0001;
-                    }
-                    if( !! value) {
-                        document.addEventListener('mousemove', onDocumentMouseMove, false);
-                    } else {
-                        document.World.renderer.domElement.removeEventListener('mousemove', onDocumentMouseMove, false);
-                    }
-                    world.refreshPostProcessing();
-                });
+                guiRender.add(this.renderParams, 'enableMouseListener');
                 guiRender.add(this.renderParams, 'enableGrid').onChange(function(value) {
                     //add compositing 3rd rule grid
                     if(!document.getElementById('gridContainer')) {
@@ -1083,6 +1070,71 @@ ENGINE = function(renderType) {
             this.renderer.shadowMapHeight = 1024 * 1;
             this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
             /**
+             * Mouse Events for model rotation
+             **/
+            this.targetRotation = 0;
+            var targetRotationOnMouseDown = 0;
+            var mouseX = 0;
+            var mouseXOnMouseDown = 0;
+            var windowHalfX = window.innerWidth / 2;
+            var windowHalfY = window.innerHeight / 2;
+            threejsCanvas.addEventListener('mousedown', onDocumentMouseDown, false);
+            threejsCanvas.addEventListener('touchstart', onDocumentTouchStart, false);
+            threejsCanvas.addEventListener('touchmove', onDocumentTouchMove, false);
+
+            function onDocumentMouseDown(event) {
+                world.renderParams.enableMouseListener = true;
+                event.preventDefault();
+                threejsCanvas.addEventListener('mousemove', onDocumentMouseMove, false);
+                threejsCanvas.addEventListener('mouseup', onDocumentMouseUp, false);
+                threejsCanvas.addEventListener('mouseout', onDocumentMouseOut, false);
+                mouseXOnMouseDown = event.clientX - windowHalfX;
+                targetRotationOnMouseDown = world.targetRotation;
+            }
+
+            function onDocumentMouseMove(event) {
+                mouseX = event.clientX - windowHalfX;
+                world.targetRotation = targetRotationOnMouseDown + (mouseX - mouseXOnMouseDown) * 0.001;
+                console.log(world.targetRotation);
+            }
+
+            function onDocumentMouseUp(event) {
+                threejsCanvas.removeEventListener('mousemove', onDocumentMouseMove, false);
+                threejsCanvas.removeEventListener('mouseup', onDocumentMouseUp, false);
+                threejsCanvas.removeEventListener('mouseout', onDocumentMouseOut, false);
+                 setTimeout(function(){
+                    world.renderParams.enableMouseListener = false;
+                },300);
+                console.log('mouseOut');
+                console.log('mouseUp');
+            }
+
+            function onDocumentMouseOut(event) {
+                threejsCanvas.removeEventListener('mousemove', onDocumentMouseMove, false);
+                threejsCanvas.removeEventListener('mouseup', onDocumentMouseUp, false);
+                threejsCanvas.removeEventListener('mouseout', onDocumentMouseOut, false);
+                setTimeout(function(){
+                    world.renderParams.enableMouseListener = false;
+                },300);
+                console.log('mouseOut');
+            }
+
+            function onDocumentTouchStart(event) {
+                if(event.touches.length === 1) {
+                    event.preventDefault();
+                    mouseXOnMouseDown = event.touches[0].pageX - windowHalfX;
+                    targetRotationOnMouseDown = world.targetRotation;
+                }
+            }
+
+            function onDocumentTouchMove(event) {
+                if(event.touches.length === 1) {
+                    event.preventDefault();
+                    mouseX = event.touches[0].pageX - windowHalfX;
+                    world.targetRotation = targetRotationOnMouseDown + (mouseX - mouseXOnMouseDown) * 0.05;
+                }
+            }
+            /**
              * Scene
              **/
             this.Layer = function(name, totalAssetsToLoad, loadProgressCallback, onLoadedCallback) {
@@ -1407,16 +1459,16 @@ ENGINE = function(renderType) {
                         //init scene rotation
                         layer.scene.rotation.y += 80 * Math.PI / 180;
                         //layer.scene.position.z += 7.5;
-                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.001);
+                        layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
-                            layer.scene.rotation.y -= layer.rotationSpeed.z * parseFloat(layer.rotationFactor.value) * 0.5;
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
                             if(world.renderParams.enableMouseListener) {
-                                layer.scene.rotation.y = world.targetRotationX;
-                                layer.scene.rotation.x = world.targetRotationY;
+                                layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
+                            } else {
+                                layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
                             }
                             if(rtt) {
                                 if(world.renderParams.enableAnaglyph) {
@@ -2149,16 +2201,6 @@ ENGINE = function(renderType) {
                     if(world.renderParams.enableAnaglyph) {
                         this.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, world.renderParams.focus);
                     }
-                    if(world.renderParams.enableTiltShift) {
-                        var hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
-                        var vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
-                        var bluriness = world.renderParams.tiltBlur;
-                        hblur.uniforms.h.value = bluriness / world.width;
-                        vblur.uniforms.v.value = bluriness / world.height;
-                        hblur.uniforms.r.value = vblur.uniforms.r.value = 0.5;
-                        this.composer.addPass(hblur);
-                        this.composer.addPass(vblur);
-                    }
                     if(world.renderParams.enableGlitch) {
                         var glitchPass = new THREE.GlitchPass(world.renderParams.glitchType);
                         this.composer.addPass(glitchPass);
@@ -2167,11 +2209,6 @@ ENGINE = function(renderType) {
                         var effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
                         effectFXAA.uniforms.resolution.value.set(1 / world.width, 1 / world.height);
                         this.composer.addPass(effectFXAA);
-                    }
-                    if(world.renderParams.enableRGBShift) {
-                        var rgbShift = new THREE.ShaderPass(THREE.RGBShiftShader);
-                        rgbShift.uniforms.amount.value = world.renderParams.rgbValue;
-                        this.composer.addPass(rgbShift);
                     }
                     if(world.renderParams.enableFilm) {
                         var effectFilm = new THREE.FilmPass(world.renderParams.filmStrengh, 0, 0, false);
@@ -2213,6 +2250,21 @@ ENGINE = function(renderType) {
                         vignettePass.uniforms.darkness.value = world.renderParams.vignetteStrengh;
                         vignettePass.uniforms.offset.value = 0.3;
                         this.composer.addPass(vignettePass);
+                    }
+                    if(world.renderParams.enableRGBShift) {
+                        var rgbShift = new THREE.ShaderPass(THREE.RGBShiftShader);
+                        rgbShift.uniforms.amount.value = world.renderParams.rgbValue;
+                        this.composer.addPass(rgbShift);
+                    }
+                    if(world.renderParams.enableTiltShift) {
+                        var hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
+                        var vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
+                        var bluriness = world.renderParams.tiltBlur;
+                        hblur.uniforms.h.value = bluriness / world.width;
+                        vblur.uniforms.v.value = bluriness / world.height;
+                        hblur.uniforms.r.value = vblur.uniforms.r.value = 0.5;
+                        this.composer.addPass(hblur);
+                        this.composer.addPass(vblur);
                     }
                 }
                 var copyPass = new THREE.ShaderPass(THREE.CopyShader);
@@ -2291,7 +2343,8 @@ ENGINE = function(renderType) {
                 //hide init loading screen
                 setTimeout(function() {
                     myPortfolio.World.transitionParams.transitionMixRatio = 1;
-                    myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.NextLayer,myPortfolio.World.CurrentLayer);
+                    myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.NextLayer, myPortfolio.World.CurrentLayer);
+                    myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
                     var update = function() {
                         myPortfolio.World.transitionParams.transitionMixRatio = current.x;
                     };
@@ -2318,17 +2371,16 @@ ENGINE = function(renderType) {
                 //end init loading screen
                 setTimeout(function() {
                     classie.addClass(initIntroScreen, 'hide');
-                }, 16000);
+                }, 1000);
                 //show menu
                 setTimeout(function() {
                     classie.removeClass(headerMenu, 'hide');
                     classie.removeClass(modelInfoSection, 'hide');
                     initLoadingScreen.parentNode.removeChild(initLoadingScreen);
                     initIntroScreen.parentNode.removeChild(initIntroScreen);
-                }, 17000);
+                }, 1000);
             });
             this.transition = new this.Transition(this.NextLayer, this.CurrentLayer);
-
             /**/
             var animate = function() {
                 requestAnimationFrame(animate);
@@ -2367,6 +2419,7 @@ ENGINE = function(renderType) {
              * Menu navigation anchors triggers handler
              **/
             var menu = document.getElementById('menu'),
+                homeAnchor = document.getElementById('homeAnchor'),
                 aboutAnchor = document.getElementById('aboutAnchor'),
                 galleryAnchor = document.getElementById('galleryAnchor'),
                 contactAnchor = document.getElementById('contactAnchor'),
@@ -2395,41 +2448,49 @@ ENGINE = function(renderType) {
                 classie.addClass(aboutSection, 'hide');
                 classie.addClass(contactSection, 'hide');
                 classie.addClass(creditsSection, 'hide');
-                classie.addClass(modelInfoSection, 'hide');
+                //classie.addClass(modelInfoSection, 'hide');
                 classie.removeClass(gallerySection, 'show');
             }
             this.resetMenuItemActive = function() {
-                classie.removeClass(menuItemActive, 'pos1');
+                classie.addClass(menuItemActive, 'pos1');
                 classie.removeClass(menuItemActive, 'pos2');
                 classie.removeClass(menuItemActive, 'pos3');
                 classie.removeClass(menuItemActive, 'pos4');
+                classie.removeClass(menuItemActive, 'pos5');
             }
+            homeAnchor.addEventListener('click', function() {
+                UI.hideAllSections();
+                UI.resetMenuItemActive();
+                classie.removeClass(settingsSection, 'show');
+                classie.removeClass(modelInfoSection, 'hide');
+            });
             aboutAnchor.addEventListener('click', function() {
                 UI.hideAllSections();
                 classie.toggleClass(aboutSection, 'hide');
                 UI.resetMenuItemActive();
-                classie.addClass(menuItemActive, 'pos1');
+                classie.addClass(menuItemActive, 'pos2');
                 classie.removeClass(settingsSection, 'show');
             });
             galleryAnchor.addEventListener('click', function() {
                 UI.hideAllSections();
+                classie.addClass(modelInfoSection, 'hide');
                 classie.toggleClass(gallerySection, 'show');
                 UI.resetMenuItemActive();
-                classie.addClass(menuItemActive, 'pos2');
+                classie.addClass(menuItemActive, 'pos3');
                 classie.removeClass(settingsSection, 'show');
             });
             contactAnchor.addEventListener('click', function() {
                 UI.hideAllSections();
                 classie.toggleClass(contactSection, 'hide');
                 UI.resetMenuItemActive();
-                classie.addClass(menuItemActive, 'pos3');
+                classie.addClass(menuItemActive, 'pos4');
                 classie.removeClass(settingsSection, 'show');
             });
             creditsAnchor.addEventListener('click', function() {
                 UI.hideAllSections();
                 classie.toggleClass(creditsSection, 'hide');
                 UI.resetMenuItemActive();
-                classie.addClass(menuItemActive, 'pos4');
+                classie.addClass(menuItemActive, 'pos5');
                 classie.removeClass(settingsSection, 'show');
             });
             settingsAnchor.addEventListener('click', function() {

@@ -85,6 +85,17 @@
     padding:50px;
 }
 
+.current-index{
+    @extend %menu-font;
+    color:#fff;
+    width: 50px;
+    height: 20px;
+    position: absolute;
+    top: 91px;
+    left: 25px;
+    z-index: 3;
+}
+
 
 /**
 * Current model Info

@@ -61,7 +61,10 @@ $secondary-color-opaque: rgba(255,0,0,0.3);
   position:absolute;
   width:100%;
   height:100%;
-  display:block;
+  display:block; cursor: hand;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab;
 }
 
 .threejs-canvas.hide
@@ -230,7 +233,7 @@ $secondary-color-opaque: rgba(255,0,0,0.3);
 
 .section-model-info.hide
 {
-    @include transform(translateY(100%));
+    @include transform(translateY(103%));
 }
 
 .current-model-title

@@ -7,11 +7,8 @@
     <meta name="description" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="shortcut icon" href="/favicon.ico">
-    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,500,700,900,300' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,300,600,800,400' rel='stylesheet' type='text/css'>
-    <link href='http://weloveiconfonts.com/api/?family=entypo' rel='stylesheet' type='text/css'>
+    <link href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
@@ -123,9 +120,11 @@
 
 
         <!-- menu -->
-        <header id="headerMenu" class="hide">
+        <header id="headerMenu">
             <nav id="menu" class="menu hide">
-                <ul class="main-menu">
+                <ul>
+                    <li id="homeAnchor"><span>Home</span>
+                    </li>
                     <li id="aboutAnchor"><span>About</span>
                     </li>
                     <li id="galleryAnchor"><span href="#gallerySection">Gallery</span>
@@ -135,15 +134,13 @@
                     <li id="creditsAnchor"><span href="#creditsSection">Credits</span>
                     </li>
                 </ul>
-                <div id="menuItemActive" class="item-active-bottom"></div>
+                <div id="menuItemActive" class="item-active-bottom pos1"></div>
             </nav>
             <div class="border-bottom"></div>
         </header>
 
 
 
-
-        <!--SECTION ABOUT START -->
 
         <section id="aboutSection" class="section-content hide">
             <div class="border-top"></div>
@@ -159,6 +156,7 @@
                 <span class="item">Frontend</span>
                 <span class="item">UI&UX</span>
                 <span class="item">Designer</span>
+
             </div>
             <div class="content-right">
                 <div class="content-title"></div>
@@ -168,17 +166,18 @@
                     </div>
                     <div class="rule left"></div>
                     <span class="description">I'm a web developer who recently got into computer graphics. I love music, videogames (MMORPG and JRPG addicted), and digital art, specially lowpoly, procedural and generative.</span>
+
                 </div>
                 <div class="content-info">
                     <div class="content-subtitle">
-                        
+
                     </div>
                     <div class="rule left"></div>
                     <span class="description">My current focus isto create state of the art visuals for the web. To achieve a perfect ballance between visual delivery and performance is allways my pripority.</span>
                 </div>
                 <div class="content-info">
                     <div class="content-subtitle">
-                       
+
                     </div>
                     <div class="rule left"></div>
                     <span class="description">In the next five years we will enter into the age of Virtual Reality, and that will have a massive impact in the way you surf the web, so i expect to be in a vanguard project related to that, as a web developer or creative director.</span>
@@ -192,47 +191,38 @@
             <div class="border-top"></div>
             <div class="content-left">
                 <div class="content-title">
-                    <span class="highlight">Contact</span>
+                    <span class="highlight">get in</span>
                 </div>
-                <div class="content-subtitle">
-                    get in touch
-                </div>
-                <div class="rule right"></div>
             </div>
             <div class="content-right">
-                <div class="content-title">#</div>
-                <div class="content-info-list">
+                <div class="content-info">
+                    <div class="content-title">
+                        touch
+                        
+                    </div>
                     <div class="content-subtitle">
-                        Social
+                        @bruno_quintela
                     </div>
                     <div class="rule left"></div>
-                    <ul class="credits-list">
-                        <li>
-                            <a target="_blank" href="https://twitter.com/bruno_quintela" class="settings-name">Twitter</a>
-                        </li>
-                        <li>
-                            <a target="_blank" href="https://pt.linkedin.com/pub/bruno-quintela/85/750/614/" class="settings-name">LinkedIn</a>
-                        </li>
-                        <li>
-                            <a target="_blank" href="https://www.behance.net/bruno_quintela" class="settings-name">Behance</a>
-                        </li>
-                        <li>
-                            <a target="_blank" href="https://soundcloud.com/bruno-quintela" class="settings-name">Soundcloud</a>
-                        </li>
-                    </ul>
+                    <span class="description">My current focus isto create state of the art visuals for the web. To achieve a perfect ballance between visual delivery and performance is allways my pripority.</span>
                 </div>
-                <div class="content-info-list">
+                 <div class="content-info">
+                    <div class="content-title">
+                        
+                        
+                    </div>
                     <div class="content-subtitle">
-                        email
+                       social
                     </div>
                     <div class="rule left"></div>
-                    <ul class="credits-list">
-                        <li>
-                            <span class="settings-name">bruno.quintela.bastos@gmail.com</span>
-                        </li>
-                    </ul>
+                    <div class="footer-social-links">
+                        <a href="#" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a>
+                        <a href="https://twitter.com/bruno_quintela" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+                        <a href="https://www.behance.net/bruno_quintela" title="Google+" target="_blank"><i class="fa fa-google-plus"></i></a>
+                        <a href="https://pt.linkedin.com/pub/bruno-quintela/85/750/614/" title="LinkedIn+" target="_blank"><i class="fa fa-linkedin"></i></a>
+                        <a href="https://soundcloud.com/bruno-quintela" title="Dribbble" target="_blank"><i class="fa fa-dribbble"></i></a>
+                    </div>
                 </div>
-
             </div>
         </section>
         <!-- SECTION CONTACT END -->
@@ -411,6 +401,7 @@
                 <ul>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
+                            <div class="current-index">1/7</div>
                             <img src="../src/img/galleryItem1.png" alt="" class="model-background-img">
                             <div class="section-content">
                                 <div class="border-top"></div>
@@ -461,6 +452,7 @@
                     <li class="gallery-item">
 
                         <div class="model-info-wrapper">
+                            <div class="current-index">2/7</div>
                             <img src="../src/img/galleryItem2.png" alt="" class="model-background-img">
                             <div class="section-content hide">
 
@@ -511,6 +503,7 @@
                     </li>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
+                            <div class="current-index">3/7</div>
                             <img src="../src/img/galleryItem3.png" alt="" class="model-background-img">
                             <div class="section-content hide">
                                 <div class="border-top"></div>
@@ -560,6 +553,7 @@
                     </li>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
+                            <div class="current-index">4/7</div>
                             <img src="../src/img/galleryItem4.png" alt="" class="model-background-img">
                             <div class="section-content hide">
                                 <div class="border-top"></div>
@@ -720,6 +714,7 @@
                 <img id="settingsIcon" class="settings-icon" src="http://pasqualevitiello.github.io/Tumblr-Style-Cog-Spinners/cogs/cog23.svg">
             </div>
         </section>
+
     </div>
     <!-- end sectionWrapper -->
 

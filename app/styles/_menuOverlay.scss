@@ -15,7 +15,7 @@ header
 
 header.hide
 {
-    @include transform(translateY(-100%));
+    @include transform(translateY(-101%));
 }
 
 /* Main menu overlay style */
@@ -23,7 +23,7 @@ header.hide
     position: absolute;
     top:0;
     right:0px;
-	width:600px;
+	width:100%;
 	height: 100%;
     background-color:transparent;
 }
@@ -44,13 +44,17 @@ header.hide
 
 .menu ul li {
     cursor:pointer;
-	width: calc(100%/4);
+	width: calc(100%/5);
     position: relative;
     float:left;
     height:100%;
     background-color:transparent;
     will-change: transform, background-color;
     @include transition((transform 0.5s 0s $transition-effect,background-color 0.5s 0s $transition-effect));
+}
+
+.menu ul li:hover {
+    background-color:rgba(255,0,0,0.5);
 }
 
 .menu ul li span {
@@ -60,24 +64,17 @@ header.hide
     text-align:center;
     margin-top:20px;
     color:$text-color;
-    will-change: color;
-    @include transition(color 0.5s);
-}
-
-.menu ul li:hover span {
-    @extend %menu-font;
-    color:$secondary-color;
 }
 
 .menu .item-active-bottom{
     position:absolute;
     bottom:-2px;
     left:0;
-    width: calc(100%/4);
+    width: calc(100%/5);
     height:2px;
     background-color:$secondary-color;
     will-change: transform;
-    @include transform(translateX(500%));
+    @include transform(translateX(600%));
     @include transition(transform 1000ms 0ms $transition-effect);
 }
 
@@ -99,6 +96,11 @@ header.hide
 .menu .item-active-bottom.pos4{
     will-change: transform;
     @include transform(translateX(300%));
+}
+
+.menu .item-active-bottom.pos5{
+    will-change: transform;
+    @include transform(translateX(400%));
 }
 
 
