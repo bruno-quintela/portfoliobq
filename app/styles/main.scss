@@ -13,7 +13,7 @@ $loading-progress-color: #fff;
 $loading-bar-color: #333;
 $loading-model-background: rgba(0,0,0,0.7);
 
-$main-menu-background: rgba(0,0,0,1);
+
 $sub-menu-background: rgba(0,0,0,0.9);
 
 $background-pattern: url(data:image/gif;base64,R0lGODlhKAAoAIAAABISEiIiIiH5BAAHAP8ALAAAAAAoACgAAAJzDA6Gepz4FnSzyttsxq7ruIWgh4EmGaLnpzItC5ex+JbuvNpaTeO3DuxxfERZMCdM8pDMX7I5W0p3xaeqCg1Oj6itlcrFOrNfY/mM9JJH4qra+8a2w0M6ehzXzs959H6N99clGEWoZwcIYci3mNY4iOhVAAA7) 0 0;
@@ -29,6 +29,7 @@ $section-content-height:250px;
 $section-left-width: 300px;
 $primary-color: rgba(0,0,0,0.9);
 $secondary-color-opaque: rgba(255,0,0,0.3);
+$main-menu-background: rgba(0,0,0,0.9);
 
 
 
@@ -223,7 +224,7 @@ $secondary-color-opaque: rgba(255,0,0,0.3);
     left:0;
     width:100%;
     height:$menu-height;
-    background-color:#000;
+    background-color:$main-menu-background;
     padding-top:20px;
     padding-left:50px;
     will-change: transform;
@@ -413,7 +414,7 @@ $secondary-color-opaque: rgba(255,0,0,0.3);
     height:50px;
     width:100%;
     opacity:0;
-    color:#fff;
+    color:#000;
     will-change: opacity;
     visibility:visible;
     @include transition(opacity 3s 0s $transition-effect);
