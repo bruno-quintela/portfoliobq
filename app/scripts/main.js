@@ -1542,7 +1542,6 @@ ENGINE = function(renderType) {
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
-                            
                             if(rtt) {
                                 if(world.renderParams.enableAnaglyph) {
                                     this.anaglyph.render(this.scene, this.camera);
@@ -1573,7 +1572,7 @@ ENGINE = function(renderType) {
                         var fillLight = new THREE.DirectionalLight('white', world.lightsParams.fillLightIntensity);
                         fillLight.position.set(0, 0, 20);
                         layer.scene.add(fillLight);
-                        var keyLight = new THREE.DirectionalLight('white', world.lightsParams.keyLightIntensity/30);
+                        var keyLight = new THREE.DirectionalLight('white', world.lightsParams.keyLightIntensity / 30);
                         keyLight.position.set(20, 10, 10);
                         layer.scene.add(keyLight);
                         /* add scene skydome */
@@ -1760,7 +1759,6 @@ ENGINE = function(renderType) {
                         });
                         //init scene rotation
                         layer.rotationFactor = document.getElementById('rotationBar');
-
                         layer.rotationSpeed = 0.0005;
                         /**
                          * Anaglyph effect
@@ -1900,7 +1898,7 @@ ENGINE = function(renderType) {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/model11.dae', function(collada) {
+                    loader.load('../src/collada/model12.dae', function(collada) {
                         var dae = collada.scene;
                         layer.fragments = [];
                         layer.scene.add(dae);
@@ -1913,33 +1911,45 @@ ENGINE = function(renderType) {
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap22.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
+                                    mesh.material = world.materials.matcapMaterial(layer, 22);
+                                    // mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap34.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
                                     layer.makehumanBody = mesh;
-                                } else if(child.name.indexOf('lowpoly') != -1) {
+                                } else if(child.name === 'lowpoly') {
                                     var mesh = child.children[0];
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
-                                    mesh.material = world.materials.matcapMaterial(layer, 93);
+                                    mesh.material = world.materials.matcapMaterial(layer, 76);
                                     layer.lowpoly = mesh;
-                                } else if(child.name.indexOf('lowpoly2') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    mesh.material = world.materials.matcapMaterial(layer, 93);
-                                    layer.lowpoly2 = mesh;
-                                }else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
+                                } else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
                                     var mesh = child.children[0];
                                     mesh.geometry.computeTangents();
                                     mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/eyeball8.png', '../src/textures/normalMaps/normal1.jpg', 0, true);
                                     layer.eyes = mesh;
-                                } 
+                                } else if(child.name.indexOf('cell') != -1) {
+                                    var mesh = child.children[0];
+                                    //mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.matcapMaterial(layer, 76);
+                                    //world.wireframeMaterial();
+                                    //layer.polyWire2 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    layer.fragments.push(mesh);
+                                }
                             }
                         });
                         //init scene rotation
-                        layer.scene.rotation.y -= 90 * Math.PI / 180;
+                        layer.scene.rotation.y -= 30 * Math.PI / 180;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
+                            /*for(var i = 0; i < layer.fragments.length; i++) {
+                                //rotation
+                                layer.fragments[i].rotation.x +=  layer.rotationSpeed*2;
+                                layer.fragments[i].rotation.y +=  layer.rotationSpeed;
+                                layer.fragments[i].rotation.z +=  layer.rotationSpeed*2;
+                                //position
+                                layer.fragments[i].position.z -= layer.rotationSpeed*0.2;
+                            }*/
                             if(world.renderParams.enableMouseListener) {
                                 layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
                             } else {
@@ -1948,7 +1958,6 @@ ENGINE = function(renderType) {
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
-                            
                             if(rtt) {
                                 if(world.renderParams.enableAnaglyph) {
                                     this.anaglyph.render(this.scene, this.camera);
@@ -1999,7 +2008,7 @@ ENGINE = function(renderType) {
                                     mesh.geometry.computeTangents();
                                     mesh.material = world.materials.matcapMaterial(layer, 105);
                                     layer.lowpoly2 = mesh;
-                                }else if(child.name === 'makehuman_Hair') {
+                                } else if(child.name === 'makehuman_Hair') {
                                     var mesh = child.children[0];
                                     mesh.material = world.materials.matcapMaterial(layer, 12);
                                     layer.makehumanHair = mesh;
@@ -2033,7 +2042,6 @@ ENGINE = function(renderType) {
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
-                            
                             if(rtt) {
                                 if(world.renderParams.enableAnaglyph) {
                                     this.anaglyph.render(this.scene, this.camera);
@@ -2050,9 +2058,8 @@ ENGINE = function(renderType) {
                         };
                     });
                 };
-                
-                 /**
-                 * Import Particles collada(.dae) object and corresponding UVmap into scene
+                /**
+                 * Import model10 collada(.dae) object and corresponding UVmap into scene
                  **/
                 var loadModel10 = function(layer) {
                     // load collada assets
@@ -2088,7 +2095,7 @@ ENGINE = function(renderType) {
                                     mesh.geometry.computeTangents();
                                     mesh.material = world.materials.matcapMaterial(layer, 105);
                                     layer.lowpoly2 = mesh;
-                                }else if(child.name === 'makehuman_Hair') {
+                                } else if(child.name === 'makehuman_Hair') {
                                     var mesh = child.children[0];
                                     mesh.material = world.materials.matcapMaterial(layer, 12);
                                     layer.makehumanHair = mesh;
@@ -2122,7 +2129,163 @@ ENGINE = function(renderType) {
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
-                            
+                            if(rtt) {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
+                                }
+                            } else {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    this.composer.render(0.01);
+                                }
+                            }
+                        };
+                    });
+                };
+                /**
+                 * Import model11 collada(.dae) object and corresponding UVmap into scene
+                 **/
+                var loadModel11 = function(layer) {
+                    // load collada assets
+                    // load collada assets
+                    var loader = new THREE.ColladaLoader();
+                    loader.options.convertUpAxis = false;
+                    loader.load('../src/collada/model11.dae', function(collada) {
+                        var dae = collada.scene;
+                        layer.fragments = [];
+                        layer.scene.add(dae);
+                        addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
+                        collada.scene.traverse(function(child) {
+                            if(child instanceof THREE.Object3D) {
+                                console.info(child.name);
+                                if(child.name.indexOf('makehuman_Body') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.geometry.computeTangents();
+                                    //mesh.material = world.materials.matcapMaterial(layer, 93);
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap36.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
+                                    layer.makehumanBody = mesh;
+                                } else if(child.name.indexOf('lowpoly') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.material = world.materials.matcapMaterial(layer, 93);
+                                    layer.lowpoly = mesh;
+                                } else if(child.name.indexOf('lowpoly2') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.material = world.materials.matcapMaterial(layer, 93);
+                                    layer.lowpoly2 = mesh;
+                                } else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/eyeball8.png', '../src/textures/normalMaps/normal1.jpg', 0, true);
+                                    layer.eyes = mesh;
+                                }
+                            }
+                        });
+                        //init scene rotation
+                        layer.scene.rotation.y -= 90 * Math.PI / 180;
+                        layer.rotationSpeed = 0.0005;
+                        layer.rotationFactor = document.getElementById('rotationBar');
+                        layer.render = function(rtt) {
+                            if(world.renderParams.enableMouseListener) {
+                                layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
+                            } else {
+                                layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            }
+                            if(world.renderParams.enableTrackball) {
+                                layer.trackball.update();
+                            }
+                            if(rtt) {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
+                                }
+                            } else {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    this.composer.render(0.01);
+                                }
+                            }
+                        };
+                    });
+                };
+                 /**
+                 * Import model12 collada(.dae) object and corresponding UVmap into scene
+                 **/
+                var loadModel12 = function(layer) {
+                    // load collada assets
+                    // load collada assets
+                    var loader = new THREE.ColladaLoader();
+                    loader.options.convertUpAxis = false;
+                    loader.load('../src/collada/model12.dae', function(collada) {
+                        var dae = collada.scene;
+                        layer.fragments = [];
+                        layer.scene.add(dae);
+                        addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
+                        collada.scene.traverse(function(child) {
+                            if(child instanceof THREE.Object3D) {
+                                console.info(child.name);
+                                if(child.name.indexOf('makehuman_Body') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.matcapMaterial(layer, 22);
+                                    // mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap34.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
+                                    layer.makehumanBody = mesh;
+                                } else if(child.name === 'lowpoly') {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.material = world.materials.matcapMaterial(layer, 76);
+                                    layer.lowpoly = mesh;
+                                } else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/eyeball8.png', '../src/textures/normalMaps/normal1.jpg', 0, true);
+                                    layer.eyes = mesh;
+                                } else if(child.name.indexOf('cell') != -1) {
+                                    var mesh = child.children[0];
+                                    //mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.matcapMaterial(layer, 76);
+                                    //world.wireframeMaterial();
+                                    //layer.polyWire2 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    layer.fragments.push(mesh);
+                                }
+                            }
+                        });
+                        //init scene rotation
+                        layer.scene.rotation.y -= 30 * Math.PI / 180;
+                        layer.rotationSpeed = 0.0005;
+                        layer.rotationFactor = document.getElementById('rotationBar');
+                        layer.render = function(rtt) {
+                            /*for(var i = 0; i < layer.fragments.length; i++) {
+                                //rotation
+                                layer.fragments[i].rotation.x +=  layer.rotationSpeed*2;
+                                layer.fragments[i].rotation.y +=  layer.rotationSpeed;
+                                layer.fragments[i].rotation.z +=  layer.rotationSpeed*2;
+                                //position
+                                layer.fragments[i].position.z -= layer.rotationSpeed*0.2;
+                            }*/
+                            if(world.renderParams.enableMouseListener) {
+                                layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
+                            } else {
+                                layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            }
+                            if(world.renderParams.enableTrackball) {
+                                layer.trackball.update();
+                            }
                             if(rtt) {
                                 if(world.renderParams.enableAnaglyph) {
                                     this.anaglyph.render(this.scene, this.camera);
@@ -2199,8 +2362,7 @@ ENGINE = function(renderType) {
                     loadJarModel(this);
                 } else if(this.name === 'GalleryModel6') {
                     loadNMSModel(this);
-                }
-                else if(this.name === 'GalleryModel7') {
+                } else if(this.name === 'GalleryModel7') {
                     loadParticlesModel(this);
                 }
                 /*******************************/
@@ -2380,7 +2542,6 @@ ENGINE = function(renderType) {
                         rgbShift.uniforms.amount.value = world.renderParams.rgbValue;
                         this.composer.addPass(rgbShift);
                     }
-                    
                 }
                 var copyPass = new THREE.ShaderPass(THREE.CopyShader);
                 this.composer.addPass(copyPass);
@@ -2860,7 +3021,7 @@ ENGINE = function(renderType) {
                         classie.removeClass(settingsQualityLow, 'active');
                         myPortfolio.World.renderParams.enableFXAA = true;
                         myPortfolio.World.renderParams.enableTiltShift = false;
-                        myPortfolio.World.renderParams.enableRGBShift = true;
+                        myPortfolio.World.renderParams.enableRGBShift = false;
                         myPortfolio.World.renderParams.enableVignette = true;
                         myPortfolio.World.renderParams.bleach = true;
                         myPortfolio.World.renderParams.enableColorify = true;
