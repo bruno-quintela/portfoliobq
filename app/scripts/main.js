@@ -101,7 +101,7 @@ ENGINE = function(renderType) {
         dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: true,
-            guiEnabled: true
+            guiEnabled: false
         },
         renderParams: {
             antialias: true,
@@ -135,7 +135,7 @@ ENGINE = function(renderType) {
             enableTiltShift: false,
             tiltBlur: 1.5,
             enableVignette: false,
-            vignetteStrengh: 4,
+            vignetteStrengh: 2,
             disableEffects: false
         },
         materialParams: {
@@ -1221,62 +1221,6 @@ ENGINE = function(renderType) {
                     });
                 };
                 /**
-                 * Set 3 point light system
-                 **/
-                var addLights = function(scene) {
-                    if(world.lightsParams.fillLightEnable) {
-                        var fillLight = new THREE.DirectionalLight('white', world.lightsParams.fillLightIntensity);
-                        fillLight.position.set(0, 0, 20);
-                        fillLight.castShadow = world.lightsParams.fillLightCastShadow;
-                        fillLight.shadowDarkness = world.lightsParams.fillLightShadowIntensity;
-                        fillLight.shadowMapWidth = 1024 * 1;
-                        fillLight.shadowMapHeight = 1024 * 1;
-                        fillLight.shadowCameraNear = 0.2;
-                        fillLight.shadowCameraFar = 1500;
-                        var d = 3;
-                        fillLight.shadowCameraLeft = -d;
-                        fillLight.shadowCameraRight = d;
-                        fillLight.shadowCameraTop = d;
-                        fillLight.shadowCameraBottom = -d;
-                        scene.add(fillLight);
-                    }
-                    if(world.lightsParams.keyLightEnable) {
-                        var keyLight = new THREE.DirectionalLight('white', world.lightsParams.keyLightIntensity);
-                        keyLight.position.set(20, 10, 10);
-                        keyLight.castShadow = world.lightsParams.keyLightCastShadow;
-                        keyLight.shadowDarkness = world.lightsParams.keyLightShadowIntensity;
-                        keyLight.shadowMapWidth = 1024 * 1;
-                        keyLight.shadowMapHeight = 1024 * 1;
-                        keyLight.shadowCameraNear = 0.2;
-                        keyLight.shadowCameraFar = 1500;
-                        keyLight.shadowBias = 0.0005;
-                        var d = 3;
-                        keyLight.shadowCameraLeft = -d;
-                        keyLight.shadowCameraRight = d;
-                        keyLight.shadowCameraTop = d;
-                        keyLight.shadowCameraBottom = -d;
-                        //keyLight.intensity = world.lightsParams.keyLightIntensity;
-                        scene.add(keyLight);
-                    }
-                    if(world.lightsParams.backLightEnable) {
-                        var backLight = new THREE.DirectionalLight('white', world.lightsParams.backLightIntensity);
-                        backLight.position.set(-20, -10, -10);
-                        backLight.castShadow = world.lightsParams.backLightCastShadow;
-                        backLight.shadowDarkness = world.lightsParams.backLightShadowIntensity;
-                        backLight.shadowMapWidth = 1024 * 1;
-                        backLight.shadowMapHeight = 1024 * 1;
-                        backLight.shadowCameraNear = 0.2;
-                        backLight.shadowCameraFar = 1500;
-                        backLight.shadowBias = 0.0005;
-                        var d = 3;
-                        backLight.shadowCameraLeft = -d;
-                        backLight.shadowCameraRight = d;
-                        backLight.shadowCameraTop = d;
-                        backLight.shadowCameraBottom = -d;
-                        //scene.add(backLight);
-                    }
-                };
-                /**
                  * Add CubeMap
                  **/
                 var addCubeMap = function(layer, filePathUV) {
@@ -1325,12 +1269,12 @@ ENGINE = function(renderType) {
                 /**
                  * Import Empty MODEL collada(.dae) for transition to color
                  **/
-                var loadEmptyModel = function(layer) {
+                var loadScene0 = function(layer) {
                     layer.fragments = [];
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/empty.dae', function(collada) {
+                    loader.load('../src/collada/scene0.dae', function(collada) {
                         var dae = collada.scene;
                         layer.scene.add(dae);
                         /**
@@ -1359,11 +1303,11 @@ ENGINE = function(renderType) {
                 /**
                  * Import init model collada(.dae) object and corresponding UVmap into scene
                  **/
-                var loadMainModel = function(layer) {
+                var loadScene1 = function(layer) {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/model01.dae', function(collada) {
+                    loader.load('../src/collada/scene1.dae', function(collada) {
                         var dae = collada.scene;
                         layer.fragments = [];
                         layer.scene.add(dae);
@@ -1418,13 +1362,341 @@ ENGINE = function(renderType) {
                     });
                 };
                 /**
-                 * Import model01 female body collada(.dae) object and corresponding UVmap into scene
+                 * Import scene2 collada(.dae)
                  **/
-                var loadFemaleModel = function(layer) {
+                var loadScene2 = function(layer) {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/model02.dae', function(collada) {
+                    loader.load('../src/collada/scene2.dae', function(collada) {
+                        var dae = collada.scene;
+                        layer.fragments = [];
+                        layer.scene.add(dae);
+                        addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
+                        collada.scene.traverse(function(child) {
+                            if(child instanceof THREE.Object3D) {
+                                console.info(child.name);
+                                if(child.name.indexOf('makehuman_Body') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.matcapMaterial(layer, 22);
+                                    // mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap34.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
+                                    layer.makehumanBody = mesh;
+                                } else if(child.name === 'lowpoly') {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.material = world.materials.matcapMaterial(layer, 76);
+                                    layer.lowpoly = mesh;
+                                } else if(child.name === 'lowpoly2') {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.material = world.materials.matcapMaterial(layer, 76);
+                                    layer.lowpoly = mesh;
+                                } else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/eyeball8.png', '../src/textures/normalMaps/normal1.jpg', 0, true);
+                                    layer.eyes = mesh;
+                                } else if(child.name.indexOf('cell') != -1) {
+                                    var mesh = child.children[0];
+                                    //mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.matcapMaterial(layer, 76);
+                                    //world.wireframeMaterial();
+                                    //layer.polyWire2 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    layer.fragments.push(mesh);
+                                }
+                            }
+                        });
+                        //init scene rotation
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 30 * Math.PI / 180;
+                        layer.rotationSpeed = 0.0005;
+                        layer.rotationFactor = document.getElementById('rotationBar');
+                        layer.render = function(rtt) {
+                            for(var i = 0; i < layer.fragments.length; i++) {
+                                //rotation
+                                layer.fragments[i].rotation.x += layer.rotationSpeed * 2;
+                                layer.fragments[i].rotation.y += layer.rotationSpeed;
+                                layer.fragments[i].rotation.z += layer.rotationSpeed * 2;
+                                //position
+                                //layer.fragments[i].position.z -= layer.rotationSpeed*0.2;
+                            }
+                            if(world.renderParams.enableMouseListener) {
+                                layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
+                            } else {
+                                layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            }
+                            if(world.renderParams.enableTrackball) {
+                                layer.trackball.update();
+                            }
+                            if(rtt) {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
+                                }
+                            } else {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    this.composer.render(0.01);
+                                }
+                            }
+                        };
+                    });
+                };
+                /**
+                 * Import model11 collada(.dae) object and corresponding UVmap into scene
+                 **/
+                var loadScene3 = function(layer) {
+                    // load collada assets
+                    // load collada assets
+                    var loader = new THREE.ColladaLoader();
+                    loader.options.convertUpAxis = false;
+                    loader.load('../src/collada/scene3.dae', function(collada) {
+                        var dae = collada.scene;
+                        layer.fragments = [];
+                        layer.scene.add(dae);
+                        addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
+                        collada.scene.traverse(function(child) {
+                            if(child instanceof THREE.Object3D) {
+                                console.info(child.name);
+                                if(child.name.indexOf('makehuman_Body') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.geometry.computeTangents();
+                                    //mesh.material = world.materials.matcapMaterial(layer, 93);
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap25.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
+                                    layer.makehumanBody = mesh;
+                                } else if(child.name.indexOf('lowpoly') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.material = world.materials.matcapMaterial(layer, 67);
+                                    layer.lowpoly = mesh;
+                                } else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/eyeball8.png', '../src/textures/normalMaps/normal1.jpg', 0, true);
+                                    layer.eyes = mesh;
+                                }
+                            }
+                        });
+                        //init scene rotation
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 0 * Math.PI / 180;
+                        layer.rotationSpeed = 0.0005;
+                        layer.rotationFactor = document.getElementById('rotationBar');
+                        layer.render = function(rtt) {
+                            if(world.renderParams.enableMouseListener) {
+                                layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
+                            } else {
+                                layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            }
+                            if(world.renderParams.enableTrackball) {
+                                layer.trackball.update();
+                            }
+                            if(rtt) {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
+                                }
+                            } else {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    this.composer.render(0.01);
+                                }
+                            }
+                        };
+                    });
+                };
+                /**
+                 * Import model10 collada(.dae) object and corresponding UVmap into scene
+                 **/
+                var loadScene4 = function(layer) {
+                    // load collada assets
+                    // load collada assets
+                    var loader = new THREE.ColladaLoader();
+                    loader.options.convertUpAxis = false;
+                    loader.load('../src/collada/scene4.dae', function(collada) {
+                        var dae = collada.scene;
+                        layer.fragments = [];
+                        layer.scene.add(dae);
+                        addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
+                        collada.scene.traverse(function(child) {
+                            if(child instanceof THREE.Object3D) {
+                                console.info(child.name);
+                                if(child.name.indexOf('makehuman_Body') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap14.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
+                                    layer.makehumanBody = mesh;
+                                } else if(child.name.indexOf('lowpoly') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.matcapMaterial(layer, 77);
+                                    layer.lowpoly = mesh;
+                                } else if(child.name.indexOf('lowpoly2') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.matcapMaterial(layer, 105);
+                                    layer.lowpoly2 = mesh;
+                                } else if(child.name === 'makehuman_Hair') {
+                                    var mesh = child.children[0];
+                                    mesh.material = world.materials.matcapMaterial(layer, 12);
+                                    layer.makehumanHair = mesh;
+                                } else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/eyeball8.png', '../src/textures/normalMaps/normal1.jpg', 0, true);
+                                    layer.eyes = mesh;
+                                } else if(child.name.indexOf('makehuman_Eyelashes') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.material = new THREE.MeshBasicMaterial({
+                                        map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/eyelashesMale2.png"),
+                                        blending: THREE.NormalBlending,
+                                        depthTest: true,
+                                        transparent: true
+                                    });
+                                    layer.makehumanEyelashes = mesh;
+                                }
+                            }
+                        });
+                        //init scene rotation
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 90 * Math.PI / 180;
+                        layer.rotationSpeed = 0.0005;
+                        layer.rotationFactor = document.getElementById('rotationBar');
+                        layer.render = function(rtt) {
+                            if(world.renderParams.enableMouseListener) {
+                                layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
+                            } else {
+                                layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            }
+                            if(world.renderParams.enableTrackball) {
+                                layer.trackball.update();
+                            }
+                            if(rtt) {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
+                                }
+                            } else {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    this.composer.render(0.01);
+                                }
+                            }
+                        };
+                    });
+                };
+                /**
+                 * Import model01 female body collada(.dae) object and corresponding UVmap into scene
+                 **/
+                var loadScene5 = function(layer) {
+                    // load collada assets
+                    // load collada assets
+                    var loader = new THREE.ColladaLoader();
+                    loader.options.convertUpAxis = false;
+                    loader.load('../src/collada/scene5.dae', function(collada) {
+                        var dae = collada.scene;
+                        layer.fragments = [];
+                        layer.scene.add(dae);
+                        addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
+                        collada.scene.traverse(function(child) {
+                            if(child instanceof THREE.Object3D) {
+                                console.info(child.name);
+                                if(child.name.indexOf('makehuman_Body') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap68.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
+                                    layer.makehumanBody = mesh;
+                                } else if(child.name.indexOf('lowpoly') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.matcapMaterial(layer, 71);
+                                    layer.lowpoly = mesh;
+                                } else if(child.name.indexOf('lowpoly2') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.matcapMaterial(layer, 105);
+                                    layer.lowpoly2 = mesh;
+                                } else if(child.name === 'makehuman_Hair') {
+                                    var mesh = child.children[0];
+                                    mesh.material = world.materials.matcapMaterial(layer, 12);
+                                    layer.makehumanHair = mesh;
+                                } else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.geometry.computeTangents();
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/eyeball8.png', '../src/textures/normalMaps/normal1.jpg', 0, true);
+                                    layer.eyes = mesh;
+                                } else if(child.name.indexOf('makehuman_Eyelashes') != -1) {
+                                    var mesh = child.children[0];
+                                    mesh.material = new THREE.MeshBasicMaterial({
+                                        map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/eyelashesMale2.png"),
+                                        blending: THREE.NormalBlending,
+                                        depthTest: true,
+                                        transparent: true
+                                    });
+                                    layer.makehumanEyelashes = mesh;
+                                }
+                            }
+                        });
+                        //init scene rotation
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 90 * Math.PI / 180;
+                        layer.rotationSpeed = 0.0005;
+                        layer.rotationFactor = document.getElementById('rotationBar');
+                        layer.render = function(rtt) {
+                            if(world.renderParams.enableMouseListener) {
+                                layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
+                            } else {
+                                layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            }
+                            if(world.renderParams.enableTrackball) {
+                                layer.trackball.update();
+                            }
+                            if(rtt) {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
+                                }
+                            } else {
+                                if(world.renderParams.enableAnaglyph) {
+                                    this.anaglyph.render(this.scene, this.camera);
+                                } else {
+                                    this.composer.render(0.01);
+                                }
+                            }
+                        };
+                    });
+                };
+                /************************/
+                var loadScene6 = function(layer) {
+                    // load collada assets
+                    var loader = new THREE.ColladaLoader();
+                    loader.options.convertUpAxis = false;
+                    loader.load('../src/collada/scene6.dae', function(collada) {
                         var dae = collada.scene;
                         layer.fragments = [];
                         layer.scene.add(dae);
@@ -1501,11 +1773,11 @@ ENGINE = function(renderType) {
                 /**
                  * Import MALE HEAD collada(.dae) object and corresponding UVmap into scene
                  **/
-                var loadMaleHeadModel = function(layer) {
+                var loadScene7 = function(layer) {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/model04.dae', function(collada) {
+                    loader.load('../src/collada/scene7.dae', function(collada) {
                         var dae = collada.scene;
                         layer.scene.add(dae);
                         /*add scene lights*/
@@ -1573,79 +1845,13 @@ ENGINE = function(renderType) {
                     });
                 };
                 /**
-                 * Import lowpoly collada(.dae) object and corresponding UVmap into scene
-                 **/
-                var loadLowpolyModel = function(layer) {
-                    // load collada assets
-                    var loader = new THREE.ColladaLoader();
-                    loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/model03.dae', function(collada) {
-                        var dae = collada.scene;
-                        layer.scene.add(dae);
-                        //addLights(layer.scene);
-                        addSkyDome(layer, 7, '../src/textures/background/background11.jpg');
-                        //layer.backgroundImage = addBackgroundImage(layer, '../src/textures/background/background22.jpg');
-                        collada.scene.traverse(function(child) {
-                            if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
-                                if(child.name === 'lowpoly') {
-                                    var mesh = child.children[0];
-                                    var modifier = new THREE.SubdivisionModifier(1);
-                                    modifier.modify(mesh.geometry);
-                                    mesh.material = world.materials.matcapMaterial(layer, 89);
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    layer.lowpoly = mesh;
-                                } else if(child.name === 'Ground') {
-                                    var mesh = child.children[0];
-                                    mesh.material = world.materials.bakedMaterial(layer, '../src/textures/UVmaps/model03/plane-bake.png');
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    layer.ground = mesh;
-                                }
-                            }
-                        });
-                        //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y;
-                        layer.rotationFactor = document.getElementById('rotationBar');
-                        layer.rotationSpeed = 0.0005;
-                        /**
-                         * Anaglyph effect
-                         **/
-                        layer.render = function(rtt) {
-                            if(world.renderParams.enableMouseListener) {
-                                layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
-                            } else {
-                                layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
-                            }
-                            if(world.renderParams.enableTrackball) {
-                                layer.trackball.update();
-                            }
-                            if(rtt) {
-                                //
-                                if(world.renderParams.enableAnaglyph) {
-                                    this.anaglyph.render(this.scene, this.camera);
-                                } else {
-                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
-                                }
-                            } else {
-                                if(world.renderParams.enableAnaglyph) {
-                                    this.anaglyph.render(this.scene, this.camera);
-                                } else {
-                                    this.composer.render(0.01);
-                                }
-                            }
-                        };
-                    });
-                };
-                /**
                  * Import Vase collada(.dae) object and corresponding UVmap into scene
                  **/
-                var loadJarModel = function(layer) {
+                var loadScene8 = function(layer) {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/model05.dae', function(collada) {
+                    loader.load('../src/collada/scene8.dae', function(collada) {
                         var dae = collada.scene;
                         layer.scene.add(dae);
                         addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
@@ -1732,88 +1938,53 @@ ENGINE = function(renderType) {
                     });
                 };
                 /**
-                 * Import No Man Sky's collada(.dae) object and corresponding UVmap into scene
+                 * Import lowpoly collada(.dae) object and corresponding UVmap into scene
                  **/
-                var loadNMSModel = function(layer) {
+                var loadScene9 = function(layer) {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/model06.dae', function(collada) {
+                    loader.load('../src/collada/scene9.dae', function(collada) {
                         var dae = collada.scene;
                         layer.scene.add(dae);
-                        //addSkyDome(layer, 5.5, '../src/textures/UVmaps/model06/universe_skydome.png');
-                        // add atmosphere
-                        var atmosphereTexture1 = THREE.ImageUtils.loadTexture('../src/textures/UVmaps/model06/universe_skydome.png', new THREE.UVMapping(), function() {
-                            layer.atmosphere1 = new THREE.Mesh(new THREE.SphereGeometry(5.5, 100, 100), new THREE.MeshBasicMaterial({
-                                map: atmosphereTexture1,
-                                blending: THREE.AdditiveAlphaBlending,
-                                side: THREE.DoubleSide,
-                                depthTest: true,
-                                transparent: true
-                            }));
-                            layer.atmosphere1.scale.x = -1;
-                            layer.scene.add(layer.atmosphere1);
-                        });
-                        layer.sphericalCloud = addRandomSphericalCloud(layer.scene, 2000, 4.5, '../src/textures/sprites/star_flare.png', 0.06);
-                        layer.sphericalCloud2 = addRandomSphericalCloud(layer.scene, 2000, 6.5, '../src/textures/sprites/star_flare.png', 0.16);
+                        //addLights(layer.scene);
+                        addSkyDome(layer, 7, '../src/textures/background/background11.jpg');
+                        //layer.backgroundImage = addBackgroundImage(layer, '../src/textures/background/background22.jpg');
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
                                 console.info(child.name);
-                                if(child.name === 'Planet1') {
+                                if(child.name === 'lowpoly') {
                                     var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = true;
-                                    mesh.geometry.computeTangents();
-                                    var shaderParams = {
-                                        shininess: 0.5,
-                                        normalScale: 0.4,
-                                        diffuseTexture: '../src/textures/UVmaps/model06/planet_Arnessk.png',
-                                        specTexture: '../src/textures/UVmaps/model06/planet_Arnessk_SPEC.png',
-                                        AOTexture: '../src/textures/UVmaps/model06/planet_Arnessk_AO.png',
-                                        normalTexture: '../src/textures/UVmaps/model06/planet_Arnessk_NORM.png'
-                                    }
-                                    //mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap50.png', '../src/textures/nms/planet_Arnessk_NORM.png', 1);
-                                    mesh.material = world.materials.shaderNormalMaterial(layer, shaderParams);
-                                    layer.planet = mesh;
-                                }
-                                if(child.name === 'planet2') {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = true;
-                                    mesh.castShadow = false;
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap95.png', '../src/textures/normalMaps/normal5.jpg', 1, true);
-                                    layer.planet2 = mesh;
-                                    layer.makehumanBody = mesh;
-                                } else if(child.name === 'Planet1_001') {
-                                    var mesh = child.children[0];
-                                    mesh.material = world.materials.transparentTextureMaterial('../src/textures/UVmaps/model06/clouds.png');
-                                    mesh.material.side = THREE.DoubleSide;
+                                    var modifier = new THREE.SubdivisionModifier(1);
+                                    modifier.modify(mesh.geometry);
+                                    mesh.material = world.materials.matcapMaterial(layer, 89);
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
-                                    layer.clouds = mesh;
+                                    layer.lowpoly = mesh;
+                                } else if(child.name === 'Ground') {
+                                    var mesh = child.children[0];
+                                    mesh.material = world.materials.bakedMaterial(layer, '../src/textures/UVmaps/model03/plane-bake.png');
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    layer.ground = mesh;
                                 }
                             }
                         });
+                        //init scene rotation
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y;
                         layer.rotationFactor = document.getElementById('rotationBar');
-                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.0002);
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y += 230 * Math.PI / 180;
-                        layer.scene.rotation.z += 70 * Math.PI / 180;
+                        layer.rotationSpeed = 0.0005;
                         /**
                          * Anaglyph effect
                          **/
                         layer.render = function(rtt) {
-                            layer.planet.rotation.x -= layer.rotationSpeed.z * 1.5;
-                            layer.planet2.rotation.x -= layer.rotationSpeed.z * 4.5;
-                            layer.atmosphere1.rotation.x += layer.rotationSpeed.z;
-                            layer.scene.rotation.y -= layer.rotationSpeed.z * parseFloat(layer.rotationFactor.value);
-                            layer.sphericalCloud.rotation.x -= layer.rotationSpeed.z / 2;
-                            layer.sphericalCloud2.rotation.x -= layer.rotationSpeed.z / 3;
+                            if(world.renderParams.enableMouseListener) {
+                                layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
+                            } else {
+                                layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            }
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
-                            }
-                            if(world.renderParams.enableMouseListener) {
-                                layer.scene.rotation.y = world.targetRotationX;
-                                layer.scene.rotation.x = world.targetRotationY;
                             }
                             if(rtt) {
                                 //
@@ -1833,78 +2004,51 @@ ENGINE = function(renderType) {
                     });
                 };
                 /**
-                 * Import Particles collada(.dae) object and corresponding UVmap into scene
+                 *  collada(.dae) object and corresponding UVmap into scene
                  **/
-                var loadParticlesModel = function(layer) {
-                    // load collada assets
+                var loadScene10 = function(layer) {
                     // load collada assets
                     var loader = new THREE.ColladaLoader();
                     loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/model12.dae', function(collada) {
+                    loader.load('../src/collada/scene10.dae', function(collada) {
                         var dae = collada.scene;
                         layer.fragments = [];
                         layer.scene.add(dae);
-                        addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
+                        addSkyDome(layer, 8, '../src/textures/background/background6.jpg');
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
                                 console.info(child.name);
-                                if(child.name.indexOf('makehuman_Body') != -1) {
+                                if(child.name.indexOf('make') != -1) {
                                     var mesh = child.children[0];
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.matcapMaterial(layer, 22);
-                                    // mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap34.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap87.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, false);
                                     layer.makehumanBody = mesh;
                                 } else if(child.name === 'lowpoly') {
                                     var mesh = child.children[0];
+                                    mesh.material = world.materials.matcapMaterial(layer, 109);
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
-                                    mesh.material = world.materials.matcapMaterial(layer, 76);
                                     layer.lowpoly = mesh;
-                                } else if(child.name === 'lowpoly2') {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    mesh.material = world.materials.matcapMaterial(layer, 76);
-                                    layer.lowpoly = mesh;
-                                } else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/eyeball8.png', '../src/textures/normalMaps/normal1.jpg', 0, true);
-                                    layer.eyes = mesh;
-                                } else if(child.name.indexOf('cell') != -1) {
-                                    var mesh = child.children[0];
-                                    //mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.matcapMaterial(layer, 76);
-                                    //world.wireframeMaterial();
-                                    //layer.polyWire2 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    layer.fragments.push(mesh);
                                 }
                             }
                         });
                         //init scene rotation
                         myPortfolio.World.targetRotation = layer.scene.rotation.y -= 30 * Math.PI / 180;
+                        layer.scene.position.y += 0.6;
+                        layer.scene.position.x -= 2;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
-                            for(var i = 0; i < layer.fragments.length; i++) {
-                                //rotation
-                                layer.fragments[i].rotation.x += layer.rotationSpeed * 2;
-                                layer.fragments[i].rotation.y += layer.rotationSpeed;
-                                layer.fragments[i].rotation.z += layer.rotationSpeed * 2;
-                                //position
-                                //layer.fragments[i].position.z -= layer.rotationSpeed*0.2;
+                            if(world.renderParams.enableTrackball) {
+                                layer.trackball.update();
                             }
                             if(world.renderParams.enableMouseListener) {
                                 layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
                             } else {
                                 layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
-                            }
-                            if(world.renderParams.enableTrackball) {
-                                layer.trackball.update();
+                                //layer.scene.position.y += layer.rotationSpeed;
                             }
                             if(rtt) {
                                 if(world.renderParams.enableAnaglyph) {
@@ -1922,359 +2066,7 @@ ENGINE = function(renderType) {
                         };
                     });
                 };
-                var loadModel9 = function(layer) {
-                    // load collada assets
-                    // load collada assets
-                    var loader = new THREE.ColladaLoader();
-                    loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/model09.dae', function(collada) {
-                        var dae = collada.scene;
-                        layer.fragments = [];
-                        layer.scene.add(dae);
-                        addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
-                        collada.scene.traverse(function(child) {
-                            if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
-                                if(child.name.indexOf('makehuman_Body') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap68.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
-                                    layer.makehumanBody = mesh;
-                                } else if(child.name.indexOf('lowpoly') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.matcapMaterial(layer, 71);
-                                    layer.lowpoly = mesh;
-                                } else if(child.name.indexOf('lowpoly2') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.matcapMaterial(layer, 105);
-                                    layer.lowpoly2 = mesh;
-                                } else if(child.name === 'makehuman_Hair') {
-                                    var mesh = child.children[0];
-                                    mesh.material = world.materials.matcapMaterial(layer, 12);
-                                    layer.makehumanHair = mesh;
-                                } else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/eyeball8.png', '../src/textures/normalMaps/normal1.jpg', 0, true);
-                                    layer.eyes = mesh;
-                                } else if(child.name.indexOf('makehuman_Eyelashes') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.material = new THREE.MeshBasicMaterial({
-                                        map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/eyelashesMale2.png"),
-                                        blending: THREE.NormalBlending,
-                                        depthTest: true,
-                                        transparent: true
-                                    });
-                                    layer.makehumanEyelashes = mesh;
-                                }
-                            }
-                        });
-                        //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 90 * Math.PI / 180;
-                        layer.rotationSpeed = 0.0005;
-                        layer.rotationFactor = document.getElementById('rotationBar');
-                        layer.render = function(rtt) {
-                            if(world.renderParams.enableMouseListener) {
-                                layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
-                            } else {
-                                layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
-                            }
-                            if(world.renderParams.enableTrackball) {
-                                layer.trackball.update();
-                            }
-                            if(rtt) {
-                                if(world.renderParams.enableAnaglyph) {
-                                    this.anaglyph.render(this.scene, this.camera);
-                                } else {
-                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
-                                }
-                            } else {
-                                if(world.renderParams.enableAnaglyph) {
-                                    this.anaglyph.render(this.scene, this.camera);
-                                } else {
-                                    this.composer.render(0.01);
-                                }
-                            }
-                        };
-                    });
-                };
-                /**
-                 * Import model10 collada(.dae) object and corresponding UVmap into scene
-                 **/
-                var loadModel10 = function(layer) {
-                    // load collada assets
-                    // load collada assets
-                    var loader = new THREE.ColladaLoader();
-                    loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/model10.dae', function(collada) {
-                        var dae = collada.scene;
-                        layer.fragments = [];
-                        layer.scene.add(dae);
-                        addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
-                        collada.scene.traverse(function(child) {
-                            if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
-                                if(child.name.indexOf('makehuman_Body') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap14.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
-                                    layer.makehumanBody = mesh;
-                                } else if(child.name.indexOf('lowpoly') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.matcapMaterial(layer, 77);
-                                    layer.lowpoly = mesh;
-                                } else if(child.name.indexOf('lowpoly2') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.matcapMaterial(layer, 105);
-                                    layer.lowpoly2 = mesh;
-                                } else if(child.name === 'makehuman_Hair') {
-                                    var mesh = child.children[0];
-                                    mesh.material = world.materials.matcapMaterial(layer, 12);
-                                    layer.makehumanHair = mesh;
-                                } else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/eyeball8.png', '../src/textures/normalMaps/normal1.jpg', 0, true);
-                                    layer.eyes = mesh;
-                                } else if(child.name.indexOf('makehuman_Eyelashes') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.material = new THREE.MeshBasicMaterial({
-                                        map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/eyelashesMale2.png"),
-                                        blending: THREE.NormalBlending,
-                                        depthTest: true,
-                                        transparent: true
-                                    });
-                                    layer.makehumanEyelashes = mesh;
-                                }
-                            }
-                        });
-                        //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 90 * Math.PI / 180;
-                        layer.rotationSpeed = 0.0005;
-                        layer.rotationFactor = document.getElementById('rotationBar');
-                        layer.render = function(rtt) {
-                            if(world.renderParams.enableMouseListener) {
-                                layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
-                            } else {
-                                layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
-                            }
-                            if(world.renderParams.enableTrackball) {
-                                layer.trackball.update();
-                            }
-                            if(rtt) {
-                                if(world.renderParams.enableAnaglyph) {
-                                    this.anaglyph.render(this.scene, this.camera);
-                                } else {
-                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
-                                }
-                            } else {
-                                if(world.renderParams.enableAnaglyph) {
-                                    this.anaglyph.render(this.scene, this.camera);
-                                } else {
-                                    this.composer.render(0.01);
-                                }
-                            }
-                        };
-                    });
-                };
-                /**
-                 * Import model11 collada(.dae) object and corresponding UVmap into scene
-                 **/
-                var loadModel11 = function(layer) {
-                    // load collada assets
-                    // load collada assets
-                    var loader = new THREE.ColladaLoader();
-                    loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/model11.dae', function(collada) {
-                        var dae = collada.scene;
-                        layer.fragments = [];
-                        layer.scene.add(dae);
-                        addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
-                        collada.scene.traverse(function(child) {
-                            if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
-                                if(child.name.indexOf('makehuman_Body') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    mesh.geometry.computeTangents();
-                                    //mesh.material = world.materials.matcapMaterial(layer, 93);
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap36.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
-                                    layer.makehumanBody = mesh;
-                                } else if(child.name.indexOf('lowpoly') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    mesh.material = world.materials.matcapMaterial(layer, 93);
-                                    layer.lowpoly = mesh;
-                                } else if(child.name.indexOf('lowpoly2') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    mesh.material = world.materials.matcapMaterial(layer, 93);
-                                    layer.lowpoly2 = mesh;
-                                } else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/eyeball8.png', '../src/textures/normalMaps/normal1.jpg', 0, true);
-                                    layer.eyes = mesh;
-                                }
-                            }
-                        });
-                        //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 90 * Math.PI / 180;
-                        layer.rotationSpeed = 0.0005;
-                        layer.rotationFactor = document.getElementById('rotationBar');
-                        layer.render = function(rtt) {
-                            if(world.renderParams.enableMouseListener) {
-                                layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
-                            } else {
-                                layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
-                            }
-                            if(world.renderParams.enableTrackball) {
-                                layer.trackball.update();
-                            }
-                            if(rtt) {
-                                if(world.renderParams.enableAnaglyph) {
-                                    this.anaglyph.render(this.scene, this.camera);
-                                } else {
-                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
-                                }
-                            } else {
-                                if(world.renderParams.enableAnaglyph) {
-                                    this.anaglyph.render(this.scene, this.camera);
-                                } else {
-                                    this.composer.render(0.01);
-                                }
-                            }
-                        };
-                    });
-                };
-                /**
-                 * Import model12 collada(.dae) object and corresponding UVmap into scene
-                 **/
-                var loadModel12 = function(layer) {
-                    // load collada assets
-                    // load collada assets
-                    var loader = new THREE.ColladaLoader();
-                    loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/model12.dae', function(collada) {
-                        var dae = collada.scene;
-                        layer.fragments = [];
-                        layer.scene.add(dae);
-                        addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
-                        collada.scene.traverse(function(child) {
-                            if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
-                                if(child.name.indexOf('makehuman_Body') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.matcapMaterial(layer, 22);
-                                    // mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap34.png', '../src/textures/normalMaps/normal' + world.materialParams.bodyNormal + '.jpg', 1, true);
-                                    layer.makehumanBody = mesh;
-                                } else if(child.name === 'lowpoly') {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    mesh.material = world.materials.matcapMaterial(layer, 76);
-                                    layer.lowpoly = mesh;
-                                } else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/eyeball8.png', '../src/textures/normalMaps/normal1.jpg', 0, true);
-                                    layer.eyes = mesh;
-                                } else if(child.name.indexOf('cell') != -1) {
-                                    var mesh = child.children[0];
-                                    //mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.matcapMaterial(layer, 76);
-                                    //world.wireframeMaterial();
-                                    //layer.polyWire2 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    layer.fragments.push(mesh);
-                                }
-                            }
-                        });
-                        //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 30 * Math.PI / 180;
-                        layer.rotationSpeed = 0.0005;
-                        layer.rotationFactor = document.getElementById('rotationBar');
-                        layer.render = function(rtt) {
-                            /*for(var i = 0; i < layer.fragments.length; i++) {
-                                //rotation
-                                layer.fragments[i].rotation.x +=  layer.rotationSpeed*2;
-                                layer.fragments[i].rotation.y +=  layer.rotationSpeed;
-                                layer.fragments[i].rotation.z +=  layer.rotationSpeed*2;
-                                //position
-                                layer.fragments[i].position.z -= layer.rotationSpeed*0.2;
-                            }*/
-                            if(world.renderParams.enableMouseListener) {
-                                layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
-                            } else {
-                                layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
-                            }
-                            if(world.renderParams.enableTrackball) {
-                                layer.trackball.update();
-                            }
-                            if(rtt) {
-                                if(world.renderParams.enableAnaglyph) {
-                                    this.anaglyph.render(this.scene, this.camera);
-                                } else {
-                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
-                                }
-                            } else {
-                                if(world.renderParams.enableAnaglyph) {
-                                    this.anaglyph.render(this.scene, this.camera);
-                                } else {
-                                    this.composer.render(0.01);
-                                }
-                            }
-                        };
-                    });
-                };
-                /**
-                 * Import JSON threejs exported from blender
-                 **/
-                /*var importJSON = function(layer, filePathJSON) {
-                    var loader = new THREE.JSONLoader();
-                    loader.load(filePathJSON, function(geometry) {
-                        geometry.verticesNeedUpdate = true;
-                        geometry.normalsNeedUpdate = true;
-                        geometry.uvsNeedUpdate = true;
-                        //geometry.computeCentroids();
-                        geometry.computeFaceNormals();
-                        geometry.computeVertexNormals();
-                        geometry.computeMorphNormals();
-                        geometry.computeTangents();
-                        var modifier = new THREE.SubdivisionModifier(1);
-                        //modifier.modify(geometry);
-                        var material = world.normalMaterial(layer, '../src/textures/matcaps/matcap14.png', '../src/textures/normalMaps/normal1.jpg', 1);
-                        material.uniforms.repeat.value.set(1, 1);
-                        var mesh = new THREE.Mesh(geometry, material);
-                        layer.makehumanBody = mesh;
-                        mesh.useQuaternion = true;
-                        layer.scene.add(mesh);
-                        //callback(geometry);
-                    });
-                };*/
+
                 if(world.renderParams.enableTrackball) {
                     this.trackball = new THREE.TrackballControls(this.camera, world.renderer.domElement);
                     this.trackball.rotateSpeed = 1.0;
@@ -2287,19 +2079,55 @@ ENGINE = function(renderType) {
                     this.trackball.keys = [65, 83, 68];
                 }
                 //add scene fog
-                //this.scene.fog = new THREE.FogExp2(0x000000, 0.01);
+                //this.scene.fog = new THREE.FogExp2(0x000000, 0.04);
                 //start loader progress before importDAE is complete
                 this.numberAssetsLoaded = 1;
                 this.loadProgressCallback();
-                //TODO: switch (this.name)
-                if(this.name === 'emptyModel') {
-                    loadEmptyModel(this);
-                } else if(this.name === 'settingsModel') {
-                    settingsModel(this);
-                } else if(this.name === 'initMainModel') {
-                    loadMainModel(this);
+                /**
+                 * Load the this.name Scene
+                 **/
+                switch(this.name) {
+                    case 'scene0':
+                        loadScene0(this);
+                        break;
+                    case 'scene1':
+                        loadScene1(this);
+                        break;
+                    case 'scene2':
+                        loadScene2(this);
+                        break;
+                    case 'scene3':
+                        loadScene3(this);
+                        break;
+                    case 'scene4':
+                        loadScene4(this);
+                        break;
+                    case 'scene5':
+                        loadScene5(this);
+                        break;
+                    case 'scene6':
+                        loadScene6(this);
+                        break;
+                    case 'scene7':
+                        loadScene7(this);
+                        break;
+                    case 'scene8':
+                        loadScene8(this);
+                        break;
+                    case 'scene9':
+                        loadScene9(this);
+                        break;
+                    case 'scene10':
+                        loadScene10(this);
+                        break;
+                    default:
+                        console.error('unknow scene.')
+                        break;
+                };
+                /*if(this.name === 'emptyModel') {
+                    loadScene0(this);
                 } else if(this.name === 'GalleryModel1') {
-                    loadMainModel(this);
+                    loadScene1(this);
                 } else if(this.name === 'GalleryModel2') {
                     loadFemaleModel(this);
                 } else if(this.name === 'GalleryModel3') {
@@ -2312,7 +2140,7 @@ ENGINE = function(renderType) {
                     loadNMSModel(this);
                 } else if(this.name === 'GalleryModel7') {
                     loadParticlesModel(this);
-                }
+                }*/
                 /*******************************/
                 world.postprocess.apply(this);
                 /*this render is dummy used only until collada imports scene*/
@@ -2425,7 +2253,6 @@ ENGINE = function(renderType) {
                     if(world.renderParams.enableAnaglyph) {
                         this.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, world.renderParams.focus);
                     }
-                    
                     if(world.renderParams.enableGlitch) {
                         var glitchPass = new THREE.GlitchPass(world.renderParams.glitchType);
                         this.composer.addPass(glitchPass);
@@ -2542,10 +2369,8 @@ ENGINE = function(renderType) {
             var world = this;
             this.init();
             this.transitionParams.clock.elapsedTime = 0;
-            this.CurrentLayer = new this.Layer('emptyModel', 1, function() {}, function() {
-                console.log('empty Loaded!');
-            });
-            this.NextLayer = new myPortfolio.World.Layer('GalleryModel1', 3, function() {
+            this.CurrentLayer = new this.Layer('scene0', 1, function() {}, function() {});
+            this.NextLayer = new myPortfolio.World.Layer('scene1', 2, function() {
                 var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
                 document.getElementById('initProgressBar').style.width = loadProgression + '%';
                 console.log(loadProgression + ":" + this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
@@ -2822,7 +2647,7 @@ ENGINE = function(renderType) {
                 var modelLoadingScreen = document.getElementById('modelLoadingScreen');
                 console.log('start3D');
                 classie.addClass(modelLoadingScreen, 'show');
-                myPortfolio.World.NextLayer = new myPortfolio.World.Layer('GalleryModel' + modelNumber, totalAssets, function() {
+                myPortfolio.World.NextLayer = new myPortfolio.World.Layer('scene' + modelNumber, totalAssets, function() {
                     var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
                     document.getElementById('progressBar').style.width = loadProgression + '%';
                     console.log(this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
@@ -2901,7 +2726,7 @@ ENGINE = function(renderType) {
 
             function khandle(e) {
                 e = e || event
-                if(e.keyCode === 84 || e.keyCode === 116){
+                if(e.keyCode === 84 || e.keyCode === 116) {
                     classie.toggleClass(menu, 'hide');
                     classie.toggleClass(modelInfoSection, 'hide');
                 }
