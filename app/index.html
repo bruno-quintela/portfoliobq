@@ -101,14 +101,17 @@
         </div>
 
         <div id="initIntroScreen" class="init-intro-screen">
-            <div id="initIntroSubtitle" class="subtitle">a website by</div>
-            <div id="initIntroTitle" class="title">Bruno <b>Quintela</b>
+            <div id="initIntroSubtitle" class="subtitle">"So familiar and overwhelmingly warm</div>
+            <div id="initIntroTitle" class="title">
+                <span class="">this</span>
+                <span class="highlight">form </span>
+                <span class=""> i hold now."</span>
             </div>
         </div>
 
         <div id="modelLoadingScreen" class="model-loading-screen">
             <div class="loading-info-top">
-                now Loading 3D Model assets, please wait...
+                now Loading 3D Model assets. This may take a while, please wait...
             </div>
             <div class="model-loading-bar">
                 <div id="progressBar" class="model-loading-progress"></div>
@@ -120,30 +123,29 @@
 
 
         <!-- menu -->
-        <header id="headerMenu" class="hide">
-            <nav id="menu" class="menu">
-                <ul>
-                    <li id="homeAnchor"><span>Home</span>
-                    </li>
-                    <li id="aboutAnchor"><span>About</span>
-                    </li>
-                    <li id="galleryAnchor"><span href="#gallerySection">Gallery</span>
-                    </li>
-                    <li id="contactAnchor"><span href="#contactSection">Contact</span>
-                    </li>
-                    <li id="creditsAnchor"><span href="#creditsSection">Credits</span>
-                    </li>
-                </ul>
-                <div id="menuItemActive" class="item-active-bottom pos1"></div>
-            </nav>
-            <div class="border-bottom"></div>
-        </header>
+
+        <nav id="menu" class="menu hide">
+            <ul>
+                <li id="homeAnchor" class="active"><span>Home</span>
+                </li>
+                <li id="aboutAnchor"><span>About</span>
+                </li>
+                <li id="galleryAnchor"><span href="#gallerySection">Gallery</span>
+                </li>
+                <li id="contactAnchor"><span href="#contactSection">Contact</span>
+                </li>
+                <li id="creditsAnchor"><span href="#creditsSection">Credits</span>
+                </li>
+            </ul>
+            <div id="menuItemActive" class="item-active-bottom pos1"></div>
+        </nav>
+
 
 
 
 
         <section id="aboutSection" class="section-content hide">
-            <div class="border-top"></div>
+
             <div class="content-left">
                 <div class="content-title">
                     <span class="">About</span>
@@ -188,7 +190,7 @@
         <!-- SECTION ABOUT END-->
         <!-- SECTION CONTACT START -->
         <section id="contactSection" class="section-content section-contact hide">
-            <div class="border-top"></div>
+
             <div class="content-left">
                 <div class="content-title">
                     <span class="highlight">get in</span>
@@ -228,7 +230,7 @@
         <!-- SECTION CONTACT END -->
         <!--SECTION CREDITS START -->
         <section id="creditsSection" class="section-content hide">
-            <div class="border-top"></div>
+
             <div class="content-left">
                 <div class="content-subtitle">
                     To all contributors
@@ -295,7 +297,7 @@
                         Special thanks
                     </div>
                     <div class="rule left"></div>
-                    <span class="description">Special thanks to <b><a class="anchor-link" target="_blank" href="https://twitter.com/mrdoob">Ricardo Cabello</a></b> and <b><a class="anchor-link" target="_blank" href="https://twitter.com/alteredq">AlteredQualia</a></b>, for making WebGL accessible to common mortals.</span>
+                    <span class="description">Special thanks to <b><a class="anchor-link" target="_blank" href="https://twitter.com/mrdoob">Ricardo Cabello</a></b> and <b><a class="anchor-link" target="_blank" href="https://twitter.com/alteredq">AlteredQualia</a></b>, for making the world a better place to webgl developers.</span>
                 </div>
 
             </div>
@@ -303,7 +305,7 @@
         <!--SECTION CREDITS END -->
         <!-- SECTION SETTINGS START -->
         <section id="settingsSection" class="section-content section-settings">
-            <div class="border-top"></div>
+            <div class="border-bottom"></div>
             <div class="content-right">
 
                 <div class="content-info-list">
@@ -382,6 +384,7 @@
         <!--SECTION SETTINGS END -->
         <!--SECTION GALEERY START -->
         <section id="gallerySection" class="section-gallery">
+
             <div class="gallery-thumb-container">
                 <div data-model="1" class="gallery-thumb active">
                 </div>
@@ -397,14 +400,26 @@
                 </div>
             </div>
 
+            <button id="galleryPrevious" class="arrow left">
+                <svg width="60px" height="80px" viewBox="0 0 50 80" xml:space="preserve">
+                    <polyline fill="none" stroke="#F00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="
+	45.63,75.8 0.375,38.087 45.63,0.375 " />
+                </svg>
+            </button>
+            <button id="galleryNext" class="arrow right">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60px" height="80px" viewBox="0 0 50 80" xml:space="preserve">
+                    <polyline fill="none" stroke="#F00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="
+	0.375,0.375 45.63,38.087 0.375,75.8 " />
+                </svg>
+            </button>
+
             <div id="galleryContainer" class="gallery-item-container">
                 <ul>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
-                            <div class="current-index">1/7</div>
                             <img src="../src/img/galleryItem1.png" alt="" class="model-background-img">
-                            <div class="section-content">
-                                <div class="border-top"></div>
+                            <div class="section-content gallery-content">
+
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -452,11 +467,10 @@
                     <li class="gallery-item">
 
                         <div class="model-info-wrapper">
-                            <div class="current-index">2/7</div>
                             <img src="../src/img/galleryItem2.png" alt="" class="model-background-img">
-                            <div class="section-content hide">
+                            <div class="section-content gallery-content hide">
 
-                                <div class="border-top"></div>
+
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -503,10 +517,9 @@
                     </li>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
-                            <div class="current-index">3/7</div>
                             <img src="../src/img/galleryItem3.png" alt="" class="model-background-img">
-                            <div class="section-content hide">
-                                <div class="border-top"></div>
+                            <div class="section-content gallery-content hide">
+
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -553,10 +566,9 @@
                     </li>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
-                            <div class="current-index">4/7</div>
                             <img src="../src/img/galleryItem4.png" alt="" class="model-background-img">
-                            <div class="section-content hide">
-                                <div class="border-top"></div>
+                            <div class="section-content gallery-content hide">
+
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -584,20 +596,20 @@
                                         </div>
                                     </div>
                                     <div class="load-model-container">
-                                            <div class="content-left">
-                                                <div class="content-title">
-                                                </div>
-                                                <div class="content-subtitle">
-                                                    View turntable
-                                                </div>
-                                                <div class="rule right"></div>
-                                                <div class="current-info">
-                                                    <a data-model="4" data-assets="4" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                                    <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
-                                                </div>
+                                        <div class="content-left">
+                                            <div class="content-title">
+                                            </div>
+                                            <div class="content-subtitle">
+                                                View turntable
+                                            </div>
+                                            <div class="rule right"></div>
+                                            <div class="current-info">
+                                                <a data-model="4" data-assets="4" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                                <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                             </div>
                                         </div>
-                                    
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -605,8 +617,8 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem5.png" alt="" class="model-background-img">
-                            <div class="section-content hide">
-                                <div class="border-top"></div>
+                            <div class="section-content gallery-content hide">
+
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -634,19 +646,19 @@
                                         </div>
                                     </div>
                                     <div class="load-model-container">
-                                            <div class="content-left">
-                                                <div class="content-title">
-                                                </div>
-                                                <div class="content-subtitle">
-                                                    View turntable
-                                                </div>
-                                                <div class="rule right"></div>
-                                                <div class="current-info">
-                                                    <a data-model="5" data-assets="15" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                                    <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
-                                                </div>
+                                        <div class="content-left">
+                                            <div class="content-title">
+                                            </div>
+                                            <div class="content-subtitle">
+                                                View turntable
+                                            </div>
+                                            <div class="rule right"></div>
+                                            <div class="current-info">
+                                                <a data-model="5" data-assets="15" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                                <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                             </div>
                                         </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -655,7 +667,7 @@
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem2.png" alt="" class="model-background-img">
                             <div class="section-content hide">
-                                <div class="border-top"></div>
+
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -683,19 +695,19 @@
                                         </div>
                                     </div>
                                     <div class="load-model-container">
-                                            <div class="content-left">
-                                                <div class="content-title">
-                                                </div>
-                                                <div class="content-subtitle">
-                                                    View turntable
-                                                </div>
-                                                <div class="rule right"></div>
-                                                <div class="current-info">
-                                                    <a data-model="6" data-assets="6" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                                    <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
-                                                </div>
+                                        <div class="content-left">
+                                            <div class="content-title">
+                                            </div>
+                                            <div class="content-subtitle">
+                                                View turntable
+                                            </div>
+                                            <div class="rule right"></div>
+                                            <div class="current-info">
+                                                <a data-model="6" data-assets="6" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                                <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                             </div>
                                         </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -704,7 +716,7 @@
                         <div class="model-info-wrapper">
                             <img src="../src/img/galleryItem2.png" alt="" class="model-background-img">
                             <div class="section-content hide">
-                                <div class="border-top"></div>
+
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Model</span>
@@ -732,19 +744,19 @@
                                         </div>
                                     </div>
                                     <div class="load-model-container">
-                                            <div class="content-left">
-                                                <div class="content-title">
-                                                </div>
-                                                <div class="content-subtitle">
-                                                    View turntable
-                                                </div>
-                                                <div class="rule right"></div>
-                                                <div class="current-info">
-                                                    <a data-model="7" data-assets="2" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                                    <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
-                                                </div>
+                                        <div class="content-left">
+                                            <div class="content-title">
+                                            </div>
+                                            <div class="content-subtitle">
+                                                View turntable
+                                            </div>
+                                            <div class="rule right"></div>
+                                            <div class="current-info">
+                                                <a data-model="7" data-assets="2" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                                <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                             </div>
                                         </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -754,14 +766,13 @@
         </section>
         <!--SECTION GALEERY END -->
         <!--CURRENT MODEL INFO START -->
-        <section id="modelInfoSection" class="section-model-info hide">
-            <div class="border-top"></div>
+        <footer id="modelInfoSection" class="section-model-info hide">
             <div class="current-model-title">
                 <span class="">Portfolio</span>
                 <span class="highlight">2015</span>
             </div>
             <div class="current-model-title">
-                Bruno Quintela
+                | Bruno Quintela
             </div>
 
             <div id="settingsAnchor" class="menu-settings">
@@ -770,7 +781,7 @@
                 </div>
                 <img id="settingsIcon" class="settings-icon" src="http://pasqualevitiello.github.io/Tumblr-Style-Cog-Spinners/cogs/cog23.svg">
             </div>
-        </section>
+        </footer>
 
     </div>
     <!-- end sectionWrapper -->

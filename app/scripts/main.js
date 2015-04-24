@@ -411,7 +411,7 @@ ENGINE = function(renderType) {
         },
         transitionParams: {
             clock: new THREE.Clock(false),
-            transitionMixRatio: 1,
+            transitionMixRatio: 0,
             texture: 1,
             textureThreshold: 0.001,
             CurrentLayer: 'A',
@@ -1333,71 +1333,10 @@ ENGINE = function(renderType) {
                     loader.load('../src/collada/empty.dae', function(collada) {
                         var dae = collada.scene;
                         layer.scene.add(dae);
-                        addLights(layer.scene);
-                        collada.scene.traverse(function(child) {});
                         /**
                          * Anaglyph effect
                          **/
                         layer.render = function(rtt) {
-                            if(world.renderParams.enableTrackball) {
-                                layer.trackball.update();
-                            }
-                            if(rtt) {
-                                if(world.renderParams.enableAnaglyph) {
-                                    this.anaglyph.render(this.scene, this.camera);
-                                } else {
-                                    world.renderer.render(this.scene, this.camera, this.fbo, true);
-                                }
-                            } else {
-                                if(world.renderParams.enableAnaglyph) {
-                                    this.anaglyph.render(this.scene, this.camera);
-                                } else {
-                                    this.composer.render(0.01);
-                                }
-                            }
-                        };
-                    });
-                };
-                /**
-                 * Import INIT LOADING ON PROGRESS MODEL collada(.dae)
-                 **/
-                var settingsModel = function(layer) {
-                    layer.fragments = [];
-                    // load collada assets
-                    var loader = new THREE.ColladaLoader();
-                    loader.options.convertUpAxis = false;
-                    loader.load('../src/collada/model01.dae', function(collada) {
-                        var dae = collada.scene;
-                        layer.scene.add(dae);
-                        collada.scene.traverse(function(child) {
-                            if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
-                                if(child.name.indexOf('make') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.wireframeMaterial(0xffffff, 1);
-                                    layer.makehumanBody = mesh;
-                                } else if(child.name === 'lowpoly') {
-                                    var mesh = child.children[0];
-                                    //mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.wireframeMaterial(0xffffff, 1);
-                                    //world.normalMaterial('../src/textures/matcaps/matcap15.png', '../src/textures/normalMaps/normal11.jpg', 1);
-                                    //layer.polyWire1 = addWireframe(layer.scene, mesh.geometry, 0xffffff, 1, 1);
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    layer.lowpoly = mesh;
-                                    //layer.polyWire = addWireframe(layer.scene, mesh.geometry, 0x000000, 1, 1);
-                                    //layer.pointCloud = addPointCloud(layer.scene, mesh.geometry, '../src/textures/sprites/BlackDot.svg', 1.031, 1);
-                                }
-                            }
-                        });
-                        //init scene rotation
-                        layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.001);
-                        layer.scene.rotation.y += 80 * Math.PI / 180;
-                        layer.render = function(rtt) {
-                            //layer.scene.rotation.y -= layer.rotationSpeed.z *0.5;
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
@@ -1449,7 +1388,8 @@ ENGINE = function(renderType) {
                             }
                         });
                         //init scene rotation
-                        layer.scene.rotation.y += 80 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y += 40 * Math.PI / 180;
+                        layer.scene.position.x += 1;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
@@ -1530,7 +1470,7 @@ ENGINE = function(renderType) {
                             }
                         });
                         //init scene rotation
-                        layer.scene.rotation.y -= 35 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 35 * Math.PI / 180;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
@@ -1600,8 +1540,8 @@ ENGINE = function(renderType) {
                             }
                         });
                         //init scene rotation
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y += 90 * Math.PI / 180;
                         layer.rotationFactor = document.getElementById('rotationBar');
-                        layer.scene.rotation.y += 90 * Math.PI / 180;
                         layer.rotationSpeed = 0.0005;
                         /**
                          * Anaglyph effect
@@ -1666,6 +1606,7 @@ ENGINE = function(renderType) {
                             }
                         });
                         //init scene rotation
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.rotationSpeed = 0.0005;
                         /**
@@ -1758,6 +1699,7 @@ ENGINE = function(renderType) {
                             }
                         });
                         //init scene rotation
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y += 90;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.rotationSpeed = 0.0005;
                         /**
@@ -1854,7 +1796,7 @@ ENGINE = function(renderType) {
                         });
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.rotationSpeed = new THREE.Vector3(0.001, 0.0015, 0.0002);
-                        layer.scene.rotation.y += 230 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y += 230 * Math.PI / 180;
                         layer.scene.rotation.z += 70 * Math.PI / 180;
                         /**
                          * Anaglyph effect
@@ -1920,6 +1862,12 @@ ENGINE = function(renderType) {
                                     mesh.castShadow = false;
                                     mesh.material = world.materials.matcapMaterial(layer, 76);
                                     layer.lowpoly = mesh;
+                                } else if(child.name === 'lowpoly2') {
+                                    var mesh = child.children[0];
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    mesh.material = world.materials.matcapMaterial(layer, 76);
+                                    layer.lowpoly = mesh;
                                 } else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
                                     var mesh = child.children[0];
                                     mesh.geometry.computeTangents();
@@ -1938,18 +1886,18 @@ ENGINE = function(renderType) {
                             }
                         });
                         //init scene rotation
-                        layer.scene.rotation.y -= 30 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 30 * Math.PI / 180;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
-                            /*for(var i = 0; i < layer.fragments.length; i++) {
+                            for(var i = 0; i < layer.fragments.length; i++) {
                                 //rotation
-                                layer.fragments[i].rotation.x +=  layer.rotationSpeed*2;
-                                layer.fragments[i].rotation.y +=  layer.rotationSpeed;
-                                layer.fragments[i].rotation.z +=  layer.rotationSpeed*2;
+                                layer.fragments[i].rotation.x += layer.rotationSpeed * 2;
+                                layer.fragments[i].rotation.y += layer.rotationSpeed;
+                                layer.fragments[i].rotation.z += layer.rotationSpeed * 2;
                                 //position
-                                layer.fragments[i].position.z -= layer.rotationSpeed*0.2;
-                            }*/
+                                //layer.fragments[i].position.z -= layer.rotationSpeed*0.2;
+                            }
                             if(world.renderParams.enableMouseListener) {
                                 layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
                             } else {
@@ -2030,7 +1978,7 @@ ENGINE = function(renderType) {
                             }
                         });
                         //init scene rotation
-                        layer.scene.rotation.y -= 90 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 90 * Math.PI / 180;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
@@ -2117,7 +2065,7 @@ ENGINE = function(renderType) {
                             }
                         });
                         //init scene rotation
-                        layer.scene.rotation.y -= 90 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 90 * Math.PI / 180;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
@@ -2190,7 +2138,7 @@ ENGINE = function(renderType) {
                             }
                         });
                         //init scene rotation
-                        layer.scene.rotation.y -= 90 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 90 * Math.PI / 180;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
@@ -2218,7 +2166,7 @@ ENGINE = function(renderType) {
                         };
                     });
                 };
-                 /**
+                /**
                  * Import model12 collada(.dae) object and corresponding UVmap into scene
                  **/
                 var loadModel12 = function(layer) {
@@ -2266,7 +2214,7 @@ ENGINE = function(renderType) {
                             }
                         });
                         //init scene rotation
-                        layer.scene.rotation.y -= 30 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 30 * Math.PI / 180;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
@@ -2477,16 +2425,7 @@ ENGINE = function(renderType) {
                     if(world.renderParams.enableAnaglyph) {
                         this.anaglyph = new THREE.AnaglyphEffect(world.renderer, world.width, world.height, world.renderParams.focus);
                     }
-                    if(world.renderParams.enableTiltShift) {
-                        var hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
-                        var vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
-                        var bluriness = world.renderParams.tiltBlur;
-                        hblur.uniforms.h.value = bluriness / world.width;
-                        vblur.uniforms.v.value = bluriness / world.height;
-                        hblur.uniforms.r.value = vblur.uniforms.r.value = 0.5;
-                        this.composer.addPass(hblur);
-                        this.composer.addPass(vblur);
-                    }
+                    
                     if(world.renderParams.enableGlitch) {
                         var glitchPass = new THREE.GlitchPass(world.renderParams.glitchType);
                         this.composer.addPass(glitchPass);
@@ -2542,6 +2481,16 @@ ENGINE = function(renderType) {
                         rgbShift.uniforms.amount.value = world.renderParams.rgbValue;
                         this.composer.addPass(rgbShift);
                     }
+                    if(world.renderParams.enableTiltShift) {
+                        var hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
+                        var vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
+                        var bluriness = world.renderParams.tiltBlur;
+                        hblur.uniforms.h.value = bluriness / world.width;
+                        vblur.uniforms.v.value = bluriness / world.height;
+                        hblur.uniforms.r.value = vblur.uniforms.r.value = 0.5;
+                        this.composer.addPass(hblur);
+                        this.composer.addPass(vblur);
+                    }
                 }
                 var copyPass = new THREE.ShaderPass(THREE.CopyShader);
                 this.composer.addPass(copyPass);
@@ -2596,7 +2545,7 @@ ENGINE = function(renderType) {
             this.CurrentLayer = new this.Layer('emptyModel', 1, function() {}, function() {
                 console.log('empty Loaded!');
             });
-            this.NextLayer = new myPortfolio.World.Layer('GalleryModel7', 3, function() {
+            this.NextLayer = new myPortfolio.World.Layer('GalleryModel1', 3, function() {
                 var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
                 document.getElementById('initProgressBar').style.width = loadProgression + '%';
                 console.log(loadProgression + ":" + this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
@@ -2607,7 +2556,7 @@ ENGINE = function(renderType) {
             }, function() {
                 console.log('MainModel Loaded!');
                 //landingPage.parentNode.removeChild(landingPage);
-                var headerMenu = document.getElementById('headerMenu');
+                var menu = document.getElementById('menu');
                 var initLoadingScreen = document.getElementById('initLoadingScreen');
                 var initIntroScreen = document.getElementById('initIntroScreen');
                 var initIntroTitle = document.getElementById('initIntroTitle');
@@ -2619,6 +2568,8 @@ ENGINE = function(renderType) {
                 }, 2000);
                 setTimeout(function() {
                     myPortfolio.World.transitionParams.transitionMixRatio = 0;
+                    myPortfolio.World.transitionParams.texture = 1;
+                    myPortfolio.World.transitionParams.textureThreshold = 0.01;
                     myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.NextLayer, myPortfolio.World.CurrentLayer);
                     myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
                     var update = function() {
@@ -2630,31 +2581,32 @@ ENGINE = function(renderType) {
                     // remove previous tweens if needed:TODO use same instanciated tween
                     var tweenLayerTransition = new TWEEN.Tween(current).to({
                         x: 1
-                    }, 4000).onUpdate(update);
+                    }, 10000).onUpdate(update);
                     tweenLayerTransition.start();
-                    //myPortfolio.SoundFx.backgroundMusic.play(0);
+                    myPortfolio.SoundFx.backgroundMusic.play(0);
                 }, 2000);
                 setTimeout(function() {
                     classie.addClass(initIntroSubtitle, 'show');
-                }, 5000);
+                }, 4000);
                 setTimeout(function() {
-                    classie.removeClass(initIntroSubtitle, 'show');
+                    //classie.removeClass(initIntroSubtitle, 'show');
                     classie.addClass(initIntroTitle, 'show');
                 }, 8000);
                 setTimeout(function() {
+                    classie.removeClass(initIntroSubtitle, 'show');
                     classie.removeClass(initIntroTitle, 'show');
                 }, 12000);
                 //end init loading screen
                 setTimeout(function() {
                     classie.addClass(initIntroScreen, 'hide');
-                }, 1000);
+                }, 12000);
                 //show menu
                 setTimeout(function() {
-                    classie.removeClass(headerMenu, 'hide');
+                    classie.removeClass(menu, 'hide');
                     classie.removeClass(modelInfoSection, 'hide');
                     initLoadingScreen.parentNode.removeChild(initLoadingScreen);
                     initIntroScreen.parentNode.removeChild(initIntroScreen);
-                }, 1000);
+                }, 14000);
             });
             this.transition = new this.Transition(this.NextLayer, this.CurrentLayer);
             /**/
@@ -2709,6 +2661,8 @@ ENGINE = function(renderType) {
             var modelInfoSection = document.getElementById('modelInfoSection');
             var galleryContainer = document.getElementById('galleryContainer');
             var galleryLoader = document.getElementById('galleryLoader');
+            var galleryPrevious = document.getElementById('galleryPrevious');
+            var galleryNext = document.getElementById('galleryNext');
             var menuItemActive = document.getElementById('menuItemActive');
             var settingsIcon = document.getElementById('settingsIcon');
             var layer = myPortfolio.World.CurrentLayer;
@@ -2728,6 +2682,11 @@ ENGINE = function(renderType) {
                 classie.removeClass(gallerySection, 'show');
             }
             this.resetMenuItemActive = function() {
+                classie.removeClass(homeAnchor, 'active');
+                classie.removeClass(aboutAnchor, 'active');
+                classie.removeClass(galleryAnchor, 'active');
+                classie.removeClass(contactAnchor, 'active');
+                classie.removeClass(creditsAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos1');
                 classie.removeClass(menuItemActive, 'pos2');
                 classie.removeClass(menuItemActive, 'pos3');
@@ -2737,6 +2696,7 @@ ENGINE = function(renderType) {
             homeAnchor.addEventListener('click', function() {
                 UI.hideAllSections();
                 UI.resetMenuItemActive();
+                classie.addClass(homeAnchor, 'active');
                 classie.removeClass(settingsSection, 'show');
                 classie.removeClass(modelInfoSection, 'hide');
             });
@@ -2744,6 +2704,7 @@ ENGINE = function(renderType) {
                 UI.hideAllSections();
                 classie.toggleClass(aboutSection, 'hide');
                 UI.resetMenuItemActive();
+                classie.addClass(aboutAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos2');
                 classie.removeClass(settingsSection, 'show');
             });
@@ -2751,6 +2712,7 @@ ENGINE = function(renderType) {
                 UI.hideAllSections();
                 classie.toggleClass(gallerySection, 'show');
                 UI.resetMenuItemActive();
+                classie.addClass(galleryAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos3');
                 classie.removeClass(settingsSection, 'show');
             });
@@ -2758,6 +2720,7 @@ ENGINE = function(renderType) {
                 UI.hideAllSections();
                 classie.toggleClass(contactSection, 'hide');
                 UI.resetMenuItemActive();
+                classie.addClass(contactAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos4');
                 classie.removeClass(settingsSection, 'show');
             });
@@ -2765,6 +2728,7 @@ ENGINE = function(renderType) {
                 UI.hideAllSections();
                 classie.toggleClass(creditsSection, 'hide');
                 UI.resetMenuItemActive();
+                classie.addClass(creditsAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos5');
                 classie.removeClass(settingsSection, 'show');
             });
@@ -2778,7 +2742,7 @@ ENGINE = function(renderType) {
             var galleryThumbs = document.querySelectorAll('.gallery-thumb');
             var gallery = new Dragend(galleryContainer, {
                 pageClass: 'gallery-item',
-                duration: 500,
+                duration: 600,
                 direction: 'horizontal',
                 afterInitialize: function() {
                     galleryContainer.style.visibility = "visible";
@@ -2792,14 +2756,14 @@ ENGINE = function(renderType) {
                 },
                 onSwipeStart: function() {
                     var page = this.page;
-                    var currentModelInfo = this.activeElement.getElementsByClassName('section-content')[0];
+                    var currentModelInfo = this.activeElement.getElementsByClassName('gallery-content')[0];
                     classie.addClass(currentModelInfo, 'hide');
                     console.log('onSwipeStart,page:' + page);
                 },
                 onSwipeEnd: function() {
                     var currentThumbIndex = parseInt(this.page);
                     var currentThumb = galleryThumbs[currentThumbIndex];
-                    var currentModelInfo = this.activeElement.getElementsByClassName('section-content')[0];
+                    var currentModelInfo = this.activeElement.getElementsByClassName('gallery-content')[0];
                     classie.removeClass(currentModelInfo, 'hide');
                     [].forEach.call(galleryThumbs, function(thumbnail) {
                         classie.removeClass(thumbnail, 'active');
@@ -2810,17 +2774,42 @@ ENGINE = function(renderType) {
             });
             [].forEach.call(galleryThumbs, function(currentThumb) {
                 currentThumb.addEventListener('click', function() {
+                    var totalModelInfo = document.getElementsByClassName('gallery-content');
+                    [].forEach.call(totalModelInfo, function(currentModelInfo) {
+                        classie.addClass(currentModelInfo, 'hide');
+                    });
                     var selectedModel = parseInt(currentThumb.getAttribute('data-model')) - 1;
-                    gallery._jumpToPage("page", selectedModel);
-                    /* start gallery model-info show*/
-                    var currentModelInfo = gallery.activeElement.getElementsByClassName('section-content')[0];
-                    classie.removeClass(currentModelInfo, 'hide');
+                    gallery._scrollToPage("page", selectedModel);
+                    var nextModelInfo = document.getElementsByClassName('gallery-content')[selectedModel];
+                    classie.removeClass(nextModelInfo, 'hide');
                     /* update current active thumnail */
                     [].forEach.call(galleryThumbs, function(thumbnail) {
                         classie.removeClass(thumbnail, 'active');
                     });
                     classie.addClass(currentThumb, 'active');
                 });
+            });
+            galleryPrevious.addEventListener('click', function() {
+                var thumIndex = 0;
+                var activeThumb = 0;
+                [].forEach.call(galleryThumbs, function(currentThumb) {
+                    if(classie.hasClass(currentThumb, "active")) {
+                        activeThumb = thumIndex;
+                    }
+                    thumIndex++;
+                });
+                galleryThumbs[activeThumb - 1].click();
+            });
+            galleryNext.addEventListener('click', function() {
+                var thumIndex = 0;
+                var activeThumb = 0;
+                [].forEach.call(galleryThumbs, function(currentThumb) {
+                    if(classie.hasClass(currentThumb, "active")) {
+                        activeThumb = thumIndex;
+                    }
+                    thumIndex++;
+                });
+                galleryThumbs[activeThumb + 1].click();
             });
             /** 
              * Init Model load buttons
@@ -2907,6 +2896,16 @@ ENGINE = function(renderType) {
             rotationBar.addEventListener('mouseup', function() {
                 rotateScene(parseInt(this.value));
             });
+            /* event handler to hide UI when pressing key T*/
+            document.body.onkeypress = khandle;
+
+            function khandle(e) {
+                e = e || event
+                if(e.keyCode === 84 || e.keyCode === 116){
+                    classie.toggleClass(menu, 'hide');
+                    classie.toggleClass(modelInfoSection, 'hide');
+                }
+            }
         },
         /**
          * UI Settings event handlers
@@ -3114,13 +3113,13 @@ ENGINE = function(renderType) {
      * WEB AUDIO API
      **/
     this.SoundFx = {
-        backgroundAudioFile: '../src/audio/backgroundLoop.mp3',
-        menuOpenAudioFile: '../src/audio/IAO.mp3',
+        backgroundAudioFile: '../src/audio/soundBackground.mp3',
         init: function() {
             this.backgroundMusic = new Audio();
             this.backgroundMusic.addEventListener('loadeddata', function() {
                 myPortfolio.World.CurrentLayer.numberAssetsLoaded++;
                 myPortfolio.World.CurrentLayer.loadProgressCallback();
+                console.info('music loaded');
             }, false);
             this.backgroundMusic.addEventListener('error', function() {
                 console.error('error loading audio');
@@ -3183,178 +3182,3 @@ window.addEventListener("load", function() {
     myPortfolio.init();
     console.log('Engine started.');
 });
-/*initPageButton.addEventListener('click', function() {
-    if(renderType === 'webgl') {
-        //transition layer
-        myPortfolio.World.transitionParams.transitionMixRatio = 1;
-        var transitionTimeInterval = 1000;
-        classie.removeClass(initLoadingScreen, 'hide');
-        //classie.addClass(landingPage, 'hide');
-        console.log('start3D');
-        myPortfolio.World.CurrentLayer = new myPortfolio.World.Layer('initMainModel', 3, function() {
-            var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
-            document.getElementById('initProgressBar').style.width = loadProgression + '%';
-            console.log(loadProgression + ":" + this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
-            if(this.numberAssetsLoaded == this.totalAssetsToLoad) {
-                this.onLoadedCallback();
-            }
-            console.info(loadProgression);
-        }, function() {
-            console.log('MainModel Loaded!');
-            //landingPage.parentNode.removeChild(landingPage);
-            setTimeout(function() {
-                initLoadingScreen.parentNode.removeChild(initLoadingScreen);
-            }, 1000);
-            var initIntroScreen = document.getElementById('initIntroScreen');
-            var initIntroTitle = document.getElementById('initIntroTitle');
-            var initIntroSubtitle = document.getElementById('initIntroSubtitle');
-            var siteInfo = document.getElementById('siteInfo');
-            classie.addClass(initLoadingScreen, 'hide');
-            //hide init loading screen
-            setTimeout(function() {
-                myPortfolio.World.transitionParams.transitionMixRatio = 1;
-                myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
-                //myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
-                var update = function() {
-                    myPortfolio.World.transitionParams.transitionMixRatio = current.x;
-                };
-                var current = {
-                    x: 0
-                };
-                // remove previous tweens if needed:TODO use same instanciated tween
-                var tweenLayerTransition = new TWEEN.Tween(current).to({
-                    x: 1
-                }, 9000).onUpdate(update);
-                tweenLayerTransition.start();
-                myPortfolio.SoundFx.backgroundMusic.play(0);
-            }, 1000);
-            setTimeout(function() {
-                classie.addClass(initIntroSubtitle, 'show');
-            }, 5000);
-            setTimeout(function() {
-                classie.removeClass(initIntroSubtitle, 'show');
-                classie.addClass(initIntroTitle, 'show');
-            }, 8000);
-            setTimeout(function() {
-                classie.removeClass(initIntroTitle, 'show');
-            }, 12000);
-            //end init loading screen
-            setTimeout(function() {
-                classie.addClass(initIntroScreen, 'hide');
-            }, 16000);
-            //show menu
-            setTimeout(function() {
-                var menu = document.getElementById('menu');
-                classie.removeClass(menu, 'hide');
-                //classie.addClass(siteInfo, 'show');
-            }, 17000);
-        });
-        console.log('InitRenderRealTime');
-    } else {
-        myPortfolio = new ENGINE('2D');
-        myPortfolio.init();
-        console.log('InitRenderVideo');
-    }
-});*/
-/*renderRealTime.addEventListener('click', function() {
-    renderType = 'webgl';
-    classie.removeClass(renderInfo, 'show');
-    classie.removeClass(renderRecorded, 'active');
-    classie.addClass(renderRealTime, 'active');
-    classie.removeClass(postprocessingWrapper, 'hide');
-    classie.removeClass(anaglyph3DWrapper, 'hide');
-    renderInfo.innerHTML = "Background will be real time rendered, this requires a computer with a good GPU to insure the,best user experience.";
-    classie.addClass(renderInfo, 'show');
-    console.log('renderRealTime');
-});
-renderRecorded.addEventListener('click', function() {
-    renderType = 'video';
-    classie.removeClass(renderInfo, 'show');
-    classie.removeClass(renderRealTime, 'active');
-    classie.addClass(renderRecorded, 'active');
-    classie.addClass(postprocessingWrapper, 'hide');
-    classie.addClass(anaglyph3DWrapper, 'hide');
-    renderInfo.innerHTML = "Background animations are pre recorded webgl rendered videos, recomended for old computers or browsers.";
-    classie.addClass(renderInfo, 'show');
-    console.log('renderRecorded');
-});*/
-/*startWorld3D.addEventListener('click', function() {
-
-    //transition layer
-    myPortfolio.World.transitionParams.transitionMixRatio = 1;
-    var transitionTimeInterval = 1000;
-    var landingPage = document.getElementById('landingPage');
-    var initLoadingScreen = document.getElementById('initLoadingScreen');
-    classie.removeClass(initLoadingScreen, 'hide');
-    console.log('start3D');
-    setTimeout(function() {
-        myPortfolio.World.CurrentLayer = new myPortfolio.World.Layer('initMainModel', 3, function() {
-            var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
-            document.getElementById('initProgressBar').style.width = loadProgression + '%';
-            console.log(loadProgression + ":" + this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
-            if(this.numberAssetsLoaded == this.totalAssetsToLoad) {
-                this.onLoadedCallback();
-            }
-            console.info(loadProgression);
-        }, function() {
-            console.log('MainModel Loaded!');
-            console.log('newSceneLoaded');
-            var initIntroScreen = document.getElementById('initIntroScreen');
-            var initIntroTitle = document.getElementById('initIntroTitle');
-            var initIntroSubtitle = document.getElementById('initIntroSubtitle');
-            var siteInfo = document.getElementById('siteInfo');
-            classie.addClass(landingPage, 'hide');
-            classie.addClass(initLoadingScreen, 'hide');
-            //hide init loading screen
-            setTimeout(function() {
-                myPortfolio.World.transitionParams.transitionMixRatio = 1;
-                myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
-                myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
-                var update = function() {
-                    myPortfolio.World.transitionParams.transitionMixRatio = current.x;
-                };
-                var current = {
-                    x: 0
-                };
-                // remove previous tweens if needed:TODO use same instanciated tween
-                var tweenLayerTransition = new TWEEN.Tween(current).to({
-                    x: 1
-                }, 9000).onUpdate(update);
-                tweenLayerTransition.start();
-                myPortfolio.SoundFx.backgroundMusic.play(0);
-            }, 2000);
-            setTimeout(function() {
-                classie.addClass(initIntroSubtitle, 'show');
-            }, 5000);
-            setTimeout(function() {
-                classie.removeClass(initIntroSubtitle, 'show');
-                classie.addClass(initIntroTitle, 'show');
-            }, 8000);
-            setTimeout(function() {
-                classie.removeClass(initIntroTitle, 'show');
-            }, 12000);
-            //end init loading screen
-            setTimeout(function() {
-                classie.addClass(initIntroScreen, 'hide');
-            }, 16000);
-            //show menu
-            setTimeout(function() {
-                var menu = document.getElementById('menu');
-                classie.removeClass(menu, 'hide');
-                //classie.addClass(siteInfo, 'show');
-            }, 17000);
-        });
-    }, 1000);
-});
-startWorld2D.addEventListener('click', function() {
-
-    myPortfolio = new ENGINE('2D');
-    myPortfolio.init();
-    console.log('start2D');
-});
-startWorld3D.addEventListener('mouseover', function() {
-    console.log('hover3D');
-});
-startWorld2D.addEventListener('mouseover', function() {
-    console.log('hover2D');
-});*/

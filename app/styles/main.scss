@@ -103,20 +103,20 @@ $main-menu-background: rgba(0,0,0,0.9);
     padding-top:50px;
     background-color:$primary-color;
     will-change: transform;
-    @include transform(translateX(0));
-    @include transition(transform 1000ms 0ms $transition-effect);
+    @include transform(translateY(0));
+    @include transition(transform 1000ms 1000ms $transition-effect);
     
 }
 
 .section-content.hide {
-    @include transform(translateX(-100%));
+    @include transform(translateY(100%));
     @include transition(transform 1000ms 0ms $transition-effect);
 }
 
 
 .section-content.hide .content-left{
-    @include transform(translateX(-100%));
-    @include transition(transform 1000ms 0ms $transition-effect);
+    @include transform(translateY(100%));
+    @include transition(transform 1000ms 500ms $transition-effect);
 }
 
 .section-content.hide .content-right{
@@ -131,8 +131,8 @@ $main-menu-background: rgba(0,0,0,0.9);
     text-align:right;
     padding-right:30px;
     will-change: transform;
-    @include transform(translateX(0));
-    @include transition(transform 1000ms 500ms $transition-effect);
+    @include transform(translateY(0));
+    @include transition(transform 1000ms 1000ms $transition-effect);
 }
 
 .section-content .content-right{
@@ -142,7 +142,7 @@ $main-menu-background: rgba(0,0,0,0.9);
     text-align:left;
     opacity:1;
     will-change: opacity;
-    @include transition(opacity 1000ms 1000ms $transition-effect);
+    @include transition(opacity 1000ms 1500ms $transition-effect);
 }
 
 .content-title{
@@ -204,7 +204,7 @@ $main-menu-background: rgba(0,0,0,0.9);
     position:absolute;
     width:100%;
     height:2px;
-    bottom:-2px;
+    bottom:0px;
     background-color:rgba(255,0,0,0.3);
 }
 .border-top{
@@ -379,6 +379,7 @@ $main-menu-background: rgba(0,0,0,0.9);
     float: left;
     height:1px;
     background-color:red;
+
     @include transition(width 2s $transition-effect);
 }
 
@@ -414,7 +415,7 @@ $main-menu-background: rgba(0,0,0,0.9);
     height:50px;
     width:100%;
     opacity:0;
-    color:#000;
+    color:#fff;
     will-change: opacity;
     visibility:visible;
     @include transition(opacity 3s 0s $transition-effect);
@@ -429,12 +430,13 @@ $main-menu-background: rgba(0,0,0,0.9);
 
 .init-intro-screen .title{
     @extend %absolute-center;
-    @extend %intro-title-font;  
-    height:80px;
-    width:500px;
+    @extend %intro-subtitle-font;  
+    height:0px;
+    width:100%;
+    text-align:center;
     opacity:0;
     will-change: opacity;
-    @include transition((opacity 3.0s 2s $transition-effect));
+    @include transition((opacity 3.0s 0s $transition-effect));
 }
 
 .init-intro-screen .title.show{
@@ -507,6 +509,7 @@ $main-menu-background: rgba(0,0,0,0.9);
     right:0px;
     height:3px;
     background-color:$secondary-color;
+      box-shadow: 0px 0px 45px 2px $secondary-color;
     will-change: width;
     @include transition(width 2s 0s $transition-effect);
 }

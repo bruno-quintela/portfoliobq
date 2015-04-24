@@ -1,31 +1,20 @@
 
-/*********************************************************************************/
-header
-{
+/* Main menu overlay style */
+.menu {
     z-index:13;
     position: fixed;
+    top:0;
+    right:0px;
 	width:100%;
 	height: $menu-height;
-	top: 0;
-	left: 0;
     background-color:$main-menu-background;
     @include transform(translateY(0));
     @include transition(transform 1000ms 0ms $transition-effect);
 }
 
-header.hide
+.menu.hide
 {
-    @include transform(translateY(-101%));
-}
-
-/* Main menu overlay style */
-.menu {
-    position: absolute;
-    top:0;
-    right:0px;
-	width:100%;
-	height: 100%;
-    background-color:transparent;
+    @include transform(translateY(-100%));
 }
 
 
@@ -49,12 +38,17 @@ header.hide
     float:left;
     height:100%;
     background-color:transparent;
-    will-change: transform, background-color;
-    @include transition((transform 0.5s 0s $transition-effect,background-color 0.5s 0s $transition-effect));
+    will-change: background-color;
+    @include transition(background-color 1000ms 00s $transition-effect);
 }
 
+.menu ul li.active{
+    //background-color:rgba(255,0,0,0.3);
+}
+
+
 .menu ul li:hover {
-    background-color:rgba(0,0,0,1);
+    background-color:rgba(255,0,0,0.3);
 }
 
 .menu ul li span {
@@ -68,10 +62,12 @@ header.hide
 
 .menu .item-active-bottom{
     position:absolute;
-    bottom:-2px;
+    top:0px;
     left:0;
     width: calc(100%/5);
-    height:2px;
+    height:4px;
+    //border-radius:4px;
+    //box-shadow: 0px -4px 35px 5px red;
     background-color:$secondary-color;
     will-change: transform;
     @include transform(translateX(600%));
@@ -102,5 +98,4 @@ header.hide
     will-change: transform;
     @include transform(translateX(400%));
 }
-
 
