@@ -217,7 +217,7 @@ $main-menu-background: rgba(0,0,0,0.9);
 }
 
 
-.section-model-info
+.footer-section-info
 {
     position:absolute;
     bottom:0;
@@ -232,7 +232,7 @@ $main-menu-background: rgba(0,0,0,0.9);
     @include transition(transform 1000ms 0ms $transition-effect);
 }
 
-.section-model-info.hide
+.footer-section-info.hide
 {
     @include transform(translateY(103%));
 }

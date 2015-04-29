@@ -5,13 +5,13 @@
     width:100%;
     height:100%;
     will-change: transform;
-    @include transform(translateX(100%));
+    @include transform(translateY(-100%));
     @include transition(transform 1000ms 0ms $transition-effect);
 }
 
 .section-gallery.show
 {
-    @include transform(translateX(0));
+    @include transform(translateY(0));
     @include transition(transform 1000ms 1000ms $transition-effect);
 }
 
@@ -41,7 +41,7 @@
     opacity:1;
     will-change: opacity;
     @include transform(translateY(-100%));
-    @include transition(transform 1000ms 2000ms $transition-effect);
+    @include transition(transform 500ms 2000ms $transition-effect);
 }
 
 .section-gallery.show .gallery-thumb-container
