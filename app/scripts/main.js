@@ -2370,7 +2370,7 @@ ENGINE = function(renderType) {
             this.init();
             this.transitionParams.clock.elapsedTime = 0;
             this.CurrentLayer = new this.Layer('scene0', 1, function() {}, function() {});
-            this.NextLayer = new myPortfolio.World.Layer('scene1', 2, function() {
+            this.NextLayer = new myPortfolio.World.Layer('scene1', 3, function() {
                 var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
                 document.getElementById('initProgressBar').style.width = loadProgression + '%';
                 console.log(loadProgression + ":" + this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
@@ -2406,32 +2406,32 @@ ENGINE = function(renderType) {
                     // remove previous tweens if needed:TODO use same instanciated tween
                     var tweenLayerTransition = new TWEEN.Tween(current).to({
                         x: 1
-                    }, 10000).onUpdate(update);
+                    }, 14000).onUpdate(update);
                     tweenLayerTransition.start();
-                    myPortfolio.SoundFx.backgroundMusic.play(0);
+                    //myPortfolio.SoundFx.backgroundMusic.play(0);
                 }, 2000);
                 setTimeout(function() {
                     classie.addClass(initIntroSubtitle, 'show');
-                }, 4000);
+                    //myPortfolio.SoundFx.backgroundMusic.play(0);
+                }, 3500);
+                setTimeout(function() {
+                    classie.removeClass(initIntroSubtitle, 'show');
+                }, 6000);
                 setTimeout(function() {
                     //classie.removeClass(initIntroSubtitle, 'show');
                     classie.addClass(initIntroTitle, 'show');
-                }, 8000);
+                }, 9000);
                 setTimeout(function() {
-                    classie.removeClass(initIntroSubtitle, 'show');
                     classie.removeClass(initIntroTitle, 'show');
-                }, 12000);
+                    classie.removeClass(menu, 'hide');
+                    classie.removeClass(footerInfoSection, 'hide');
+                }, 13000);
                 //end init loading screen
                 setTimeout(function() {
                     classie.addClass(initIntroScreen, 'hide');
-                }, 12000);
-                //show menu
-                setTimeout(function() {
-                    classie.removeClass(menu, 'hide');
-                    classie.removeClass(footerInfoSection, 'hide');
                     initLoadingScreen.parentNode.removeChild(initLoadingScreen);
                     initIntroScreen.parentNode.removeChild(initIntroScreen);
-                }, 14000);
+                }, 15000);
             });
             this.transition = new this.Transition(this.NextLayer, this.CurrentLayer);
             /**/
@@ -2675,9 +2675,28 @@ ENGINE = function(renderType) {
                     console.log('newSceneLoaded');
                     classie.removeClass(myPortfolio.UI.webglCanvas, 'hide');
                     classie.removeClass(footerInfoSection, 'hide');
+                    // get previous scene rotation to match during transition, only if From this form i hold series
+                    if((myPortfolio.World.CurrentLayer.name !== 'scene1' && myPortfolio.World.CurrentLayer.name !== 'scene7' && myPortfolio.World.CurrentLayer.name !== 'scene8' && myPortfolio.World.CurrentLayer.name !== 'scene9' && myPortfolio.World.CurrentLayer.name !== 'scene10') && (myPortfolio.World.NextLayer.name !== 'scene1' && myPortfolio.World.NextLayer.name !== 'scene7' && myPortfolio.World.NextLayer.name !== 'scene8' && myPortfolio.World.NextLayer.name !== 'scene9' && myPortfolio.World.NextLayer.name !== 'scene10')) {
+                        myPortfolio.World.NextLayer.scene.rotation.y = myPortfolio.World.CurrentLayer.scene.rotation.y;
+                    }
                     myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
+                    if((myPortfolio.World.CurrentLayer.name !== 'scene1' && myPortfolio.World.CurrentLayer.name !== 'scene7' && myPortfolio.World.CurrentLayer.name !== 'scene8' && myPortfolio.World.CurrentLayer.name !== 'scene9' && myPortfolio.World.CurrentLayer.name !== 'scene10') && (myPortfolio.World.NextLayer.name !== 'scene1' && myPortfolio.World.NextLayer.name !== 'scene7' && myPortfolio.World.NextLayer.name !== 'scene8' && myPortfolio.World.NextLayer.name !== 'scene9' && myPortfolio.World.NextLayer.name !== 'scene10')) {
+                        myPortfolio.World.transitionParams.transitionMixRatio = 1;
+                        var update = function() {
+                            myPortfolio.World.transitionParams.transitionMixRatio = current.x;
+                        };
+                        var current = {
+                            x: 1
+                        };
+                        // remove previous tweens if needed:TODO use same instanciated tween
+                        var tweenLayerTransition = new TWEEN.Tween(current).to({
+                            x: 0
+                        }, 5000).onUpdate(update);
+                        tweenLayerTransition.start();
+                    } else {
+                        myPortfolio.World.transitionParams.transitionMixRatio = 0;
+                    }
                     myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
-                    myPortfolio.World.transitionParams.transitionMixRatio = 0;
                 });
             }
 
@@ -2963,6 +2982,7 @@ ENGINE = function(renderType) {
     this.init = function() {
         this.system.init();
         if(!this.system.useWebGL()) {
+            this.UI.start();
             // remove Threejs canvas
             var threejsCanvas = document.getElementById('threejsCanvas');
             if(threejsCanvas) {
@@ -2981,21 +3001,34 @@ ENGINE = function(renderType) {
             var sourceMP4 = document.createElement("source");
             sourceMP4.type = 'video/mp4';
             sourceMP4.src = 'http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04';
-            this.videoBackground.appendChild(sourceMP4);
-            this.videoBackground.play();
+            this.UI.videoBackground.appendChild(sourceMP4);
+            this.UI.videoBackground.play();
             /********************/
             var menu = document.getElementById('menu');
             var initLoadingScreen = document.getElementById('initLoadingScreen');
-            //var initIntroScreen = document.getElementById('initIntroScreen');
-            //hide init loading screen
-            //classie.addClass(initIntroScreen, 'show');
-            classie.addClass(initLoadingScreen, 'hide');
-            classie.addClass(landingPage, 'hide');
-            classie.removeClass(menu, 'hide');
+            var initIntroScreen = document.getElementById('initIntroScreen');
             initLoadingScreen.parentNode.removeChild(initLoadingScreen);
             setTimeout(function() {
-                landingPage.parentNode.removeChild(landingPage);
-            }, 1000);
+                classie.addClass(initIntroSubtitle, 'show');
+                myPortfolio.SoundFx.backgroundMusic.play(0);
+            }, 500);
+            setTimeout(function() {
+                classie.removeClass(initIntroSubtitle, 'show');
+            }, 3000);
+            setTimeout(function() {
+                //classie.removeClass(initIntroSubtitle, 'show');
+                classie.addClass(initIntroTitle, 'show');
+            }, 6000);
+            setTimeout(function() {
+                classie.removeClass(initIntroTitle, 'show');
+                classie.removeClass(menu, 'hide');
+                classie.removeClass(footerInfoSection, 'hide');
+            }, 7000);
+            //end init loading screen
+            setTimeout(function() {
+                classie.addClass(initIntroScreen, 'hide');
+                initIntroScreen.parentNode.removeChild(initIntroScreen);
+            }, 8000);
         } else {
             this.SoundFx.init();
             this.World.start();

@@ -137,7 +137,7 @@ $main-menu-background: rgba(0,0,0,0.9);
 
 .section-content .content-right{
     float:left;
-    width:calc(100% - 400px);
+    width:calc(100% - 300px);
     height:100%;
     text-align:left;
     opacity:1;
@@ -150,10 +150,13 @@ $main-menu-background: rgba(0,0,0,0.9);
     height:70px;
 }
 
+.content-title-fake{
+    height:70px;
+}
+
 .content-subtitle{
     @extend %content-subtitle-font;
     height: 15px;
-
 }
 
 .section-content .content-left .item{
@@ -170,7 +173,14 @@ $main-menu-background: rgba(0,0,0,0.9);
 
 .section-content .content-right .content-info-list{
     float:left;
-    width:300px;
+    width:230px;
+    height:150px;
+}
+
+.section-content .content-right .content-info-settings{
+    float:left;
+    width:230px;
+    height:110px;
 }
 
 .section-content .content-right .description{
@@ -363,24 +373,21 @@ $main-menu-background: rgba(0,0,0,0.9);
     left: 0;
     width:100%;
     height:1px;
-    background-color:#fff;
-    @include transition((transform 0.5s 0s $transition-effect, opacity 0.5s 0s $transition-effect));
+    background-color:transparent;
 }
 
-
-.init-loading-screen.hide .init-loading-bar{
-    transform: translateX(100%);
-    opacity:1;
-}
 
 .init-loading-progress{
     width:0%;
     margin:auto;
-    float: left;
     height:1px;
     background-color:red;
-
     @include transition(width 2s $transition-effect);
+}
+
+.init-loading-screen.hide .init-loading-bar .init-loading-progress{
+    width: 0% !important;
+    @include transition(width 0.5s $transition-effect);
 }
 
 
@@ -412,7 +419,7 @@ $main-menu-background: rgba(0,0,0,0.9);
 {
     @extend %absolute-center;
     @extend %intro-subtitle-font;  
-    height:50px;
+    height:20px;
     width:100%;
     opacity:0;
     color:#fff;
@@ -430,8 +437,8 @@ $main-menu-background: rgba(0,0,0,0.9);
 
 .init-intro-screen .title{
     @extend %absolute-center;
-    @extend %intro-subtitle-font;  
-    height:0px;
+    @extend %intro-title-font;  
+    height:20px;
     width:100%;
     text-align:center;
     opacity:0;
@@ -451,22 +458,21 @@ $main-menu-background: rgba(0,0,0,0.9);
 
 .model-loading-screen
 {
-    z-index:15;
+    z-index:0;
     position:absolute;
     padding-right:$menu-width;
     width:100%;
     height: 100%;
-    opacity:1;
+    opacity:0;
     background-color:$loading-model-background;
     will-change:opacity, transform;
-    @include transform(translateX(100%));
-    @include transition((opacity 1s 2s $transition-effect, transform 1s 0s $transition-effect));
+    @include transition((opacity 1s 0s $transition-effect, transform 1s 0s $transition-effect));
 }
 
 .model-loading-screen.show
 {
+    z-index:15;
     opacity:1;
-    @include transform(translateX(0));
     @include transition((opacity 1s 0s $transition-effect, transform 1s 0s $transition-effect));
 }
 
@@ -531,6 +537,11 @@ $main-menu-background: rgba(0,0,0,0.9);
     height:3px;
     background-color:$secondary-color;
     clear:both;
+}
+
+.rule.hidden
+{
+    visibility:hidden;
 }
 
 .rule.left

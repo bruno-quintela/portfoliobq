@@ -1,312 +1,68 @@
 /* generic sreen resize */
 @media only screen and (max-width : 1280px)
 {
-    .section-wrapper{
-        width:50%;
-    }
-    
-    .section-content.gallery
-    {
+    .section-content{
         height:50%;
-        padding:30px;
     }
-    .section-content.gallery.show
-    {
-        @include transform(translateX(-50%));
-    }
-    
-    .gallery-item-container
-    {
-        right:0px;
+    .section-content .content-right .content-info-list{
+        width:150px;
+        margin-bottom:30px;
     }
     
-    figure.effect-apollo h2
-    {
-        padding-right:50px;
-    }
-    
-    figure.effect-apollo p
-    {
-        right:50px;
-    }
-    
-    figure.effect-apollo figcaption::before
-    {
-        display:none;
-    }
-    
-    .site-intro{
-        display:none;
-    }
-    
-    .social__icon, [class^="social__icon"] {
-        height: 50px;
-        width: 50px;
+    .gallery-content{
+        height:250px;
     }
 }
 
 @media only screen and (max-width : 860px)
 {
-    .section-wrapper{
+    
+    .section-content{
+        height:calc(100% - 50px);
+        border-top: 1px solid rgba(255,0,0,0.3);
+    }
+    .section-content .content-right .content-info {
         width:100%;
     }
+    .section-content .content-right .content-info-list{
+        width:150px;
+        margin-bottom:30px;
+    }
+    .section-settings{
+        height:calc(100% - 100px);
+    }
+    .content-title-fake{
+        height:20px;
+    }
     
-    .section-content.gallery.show
-    {
-        display:none;
+    .gallery-content{
+        height:250px;
     }
 }
 
 @media only screen and (max-height : 800px)
 {
-    .section-content{
-        padding-top:5px;
-        padding-bottom:5px;
-        padding-left:20px;
-        padding-right:65px;
-    }
     
-    .section-info{
-        margin-top:5px;
-        margin-bottom:5px;
-    }
-    
-    .rule.left
-    {
-        margin-top:5px;
-        margin-bottom:0px;
-    }
-    
-    .contact
-    {
-                padding: 30px;
-        padding-right: 80px;
-        height:50%;
-    }
 }
 
 /* touch devices */
 
 @media only screen and (orientation : portrait) {
-    .model-settings{
-        display:none;
-    }
     
-    .gallery-item-container figure.effect-apollo figcaption
-    {
-        display:none;
-    }
 }
 
 @media only screen and (max-device-width : 1024px) and (orientation : landscape) {
-    .model-settings{
-        display:none;
-    }
     
-    .gallery-item-container figure.effect-apollo figcaption
-    {
-        display:none;
-    }
 }
 
 /* Smartphones (portrait) ----------- */
 @media only screen and (max-device-width : 320px)  and (orientation : portrait) {
-/* Styles */
-    .body-wrapper { 
-        background: url(../src/img/galleryItem1.png) #333 no-repeat center center fixed; 
-    }
-    .section-wrapper{
-        overflow-x:hidden;
-        overflow-y:auto;
-        width:100%;
-    }
-    .video-background { display: none; }
-    .section-content
-    {
-        height: 100%;
-        padding-right:30px;
-    }
-    .menu{
-        display:none;
-    }
-    
-    #sectionAbout
-    {
-        opacity:1;
-        @include transform(translateX(0));
-        height: 25%;
-        top:75%;
-        padding-top:15px;
-        padding-right:20px;
-    }
-    
-    #sectionAbout .rule.right
-    {
-        display:none;
-    }
-    
-    .section-content.sub-menu
-    {
-        padding-top:50px;
-        opacity:1;
-        @include transform(translateX(0));
-        height: 50%;
-    }
-  
-    #aboutSubmenu2
-    {
-        top:100%;
-    }
 
-    #aboutSubmenu3
-    {
-        top:150%;
-    }
-
-    #aboutSubmenu4
-    {
-        top:200%;    
-    }
-    
-    #sectionContact
-    {
-        opacity:1;
-        @include transform(translateX(0));
-        top:250% !important;
-        height:80%;
-    }
-    
-    #sectionGallery
-    {
-        display:none;
-    }
-    
-    #sectionCredits
-    {
-        display:none;
-    }
-    
-    #creditsSubmenu1
-    {
-        display:none;
-    }
-    #creditsSubmenu2
-    {
-        display:none;
-    }
-    #creditsSubmenu3
-    {
-        display:none;
-    }
-    .social__icon, [class^="social__icon"] {
-        font-size: 2.4em;
-        height: 40px;
-        width: 40px;
-    }
-    
-    .site-info{
-        display:none;
-    }
 }
 
 /* Smartphones (portrait) ----------- */
 @media only screen and (max-device-height : 320px)  and (orientation : landscape) {
-/* Styles */
-    .body-wrapper { 
-        background: url(../src/img/galleryItem1.png) #333 no-repeat center center fixed; 
-    }
-    .section-wrapper{
-        overflow-x:hidden;
-        overflow-y:auto;
-        width:100%;
-    }
-    .video-background { display: none; }
-    .section-content
-    {
-        height: 100%;
-        padding-top:50px;
-        padding-right:30px;
-    }
-    .menu{
-        display:none;
-    }
-    
-    #sectionAbout
-    {
-        opacity:1;
-        @include transform(translateX(0));
-        height: 30%;
-        top:70%;
-        padding-top:10px;
-        padding-right:20px;
-    }
-    
-    #sectionAbout .rule.right
-    {
-        display:none;
-    }
-    
-    .section-content.sub-menu
-    {
-        opacity:1;
-        @include transform(translateX(0));
-        height: 100%;
-    }
-  
-    #aboutSubmenu2
-    {
-        top:100%;
-    }
 
-    #aboutSubmenu3
-    {
-        top:200%;
-    }
-
-    #aboutSubmenu4
-    {
-        top:300%;    
-    }
-    
-    #sectionContact
-    {
-        opacity:1;
-        @include transform(translateX(0));
-        top:400% !important;
-        height:100%;
-    }
-    
-    #sectionGallery
-    {
-        display:none;
-    }
-    
-    #sectionCredits
-    {
-        display:none;
-    }
-    
-    #creditsSubmenu1
-    {
-        display:none;
-    }
-    #creditsSubmenu2
-    {
-        display:none;
-    }
-    #creditsSubmenu3
-    {
-        display:none;
-    }
-    .social__icon, [class^="social__icon"] {
-        font-size: 2.4em;
-        height: 40px;
-        width: 40px;
-    }
-    
-    .site-info{
-        display:none;
-    }
 }
 
 

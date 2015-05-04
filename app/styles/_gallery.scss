@@ -27,6 +27,17 @@
     @include transition(transform 1000ms 1000ms $transition-effect);
 }
 
+.gallery-content .content-left{
+    will-change: transform;
+    @include transform(translateY(0));
+    @include transition(transform 1000ms 500ms $transition-effect);
+}
+
+.gallery-content .content-right{
+    will-change: opacity;
+    @include transition(opacity 1000ms 1000ms $transition-effect);
+}
+
 .gallery-thumb-container
 {
     z-index:2;
@@ -39,7 +50,7 @@
     text-align:center;
     background-color:rgba(0,0,0,0.5);
     opacity:1;
-    will-change: opacity;
+    will-change: transform;
     @include transform(translateY(-100%));
     @include transition(transform 500ms 2000ms $transition-effect);
 }
