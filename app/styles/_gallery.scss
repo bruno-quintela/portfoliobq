@@ -144,6 +144,12 @@
     height:100%;
 }
 
+.view-model
+{
+    float:right;
+    clear:both;
+}
+
 .load-model-button
 {
     @extend %menu-font;

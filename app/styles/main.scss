@@ -38,7 +38,7 @@ $main-menu-background: rgba(0,0,0,0.9);
 @import 'reset';
 @import 'typography';
 @import 'gridComposer';
-//@include scrollbar(.2em, $secondary-color);
+@include scrollbar(.2em, $secondary-color);
 
 /**
 * Wrappers and Container 

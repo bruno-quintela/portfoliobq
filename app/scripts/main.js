@@ -3007,28 +3007,15 @@ ENGINE = function(renderType) {
             var menu = document.getElementById('menu');
             var initLoadingScreen = document.getElementById('initLoadingScreen');
             var initIntroScreen = document.getElementById('initIntroScreen');
-            initLoadingScreen.parentNode.removeChild(initLoadingScreen);
+            initIntroScreen.parentNode.removeChild(initIntroScreen);
+
             setTimeout(function() {
-                classie.addClass(initIntroSubtitle, 'show');
-                myPortfolio.SoundFx.backgroundMusic.play(0);
-            }, 500);
-            setTimeout(function() {
-                classie.removeClass(initIntroSubtitle, 'show');
-            }, 3000);
-            setTimeout(function() {
-                //classie.removeClass(initIntroSubtitle, 'show');
-                classie.addClass(initIntroTitle, 'show');
-            }, 6000);
-            setTimeout(function() {
-                classie.removeClass(initIntroTitle, 'show');
+                initLoadingScreen.parentNode.removeChild(initLoadingScreen);
                 classie.removeClass(menu, 'hide');
                 classie.removeClass(footerInfoSection, 'hide');
-            }, 7000);
+            }, 1000);
             //end init loading screen
-            setTimeout(function() {
-                classie.addClass(initIntroScreen, 'hide');
-                initIntroScreen.parentNode.removeChild(initIntroScreen);
-            }, 8000);
+
         } else {
             this.SoundFx.init();
             this.World.start();
