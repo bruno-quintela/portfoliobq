@@ -53,8 +53,6 @@ $main-menu-background: rgba(0,0,0,0.9);
   opacity:1;
   z-index:0;
   overflow:hidden;
-  will-change:opacity;
-  @include transition((opacity 3000ms 0ms $transition-effect));
 }
 
 .threejs-canvas
@@ -113,26 +111,12 @@ $main-menu-background: rgba(0,0,0,0.9);
     @include transition(transform 1000ms 0ms $transition-effect);
 }
 
-
-.section-content.hide .content-left{
-    @include transform(translateY(100%));
-    @include transition(transform 1000ms 500ms $transition-effect);
-}
-
-.section-content.hide .content-right{
-    opacity:0;
-    @include transition(opacity 1000ms 0ms $transition-effect);
-}
-
 .section-content .content-left{
     float:left;
     width:$section-left-width;
     height:100%;
     text-align:right;
-    padding-right:30px;
-    will-change: transform;
-    @include transform(translateY(0));
-    @include transition(transform 1000ms 1000ms $transition-effect);
+    padding-right:20px;
 }
 
 .section-content .content-right{
@@ -140,9 +124,6 @@ $main-menu-background: rgba(0,0,0,0.9);
     width:calc(100% - 300px);
     height:100%;
     text-align:left;
-    opacity:1;
-    will-change: opacity;
-    @include transition(opacity 1000ms 1500ms $transition-effect);
 }
 
 .content-title{

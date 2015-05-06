@@ -2997,6 +2997,24 @@ ENGINE = function(renderType) {
             if(settings) {
                 settings.parentNode.removeChild(settings);
             }
+            /* remove webgl models info and actions */
+            var thumbContainer = document.getElementById('thumbContainer');
+            thumbContainer.style.visibility = 'hidden';
+            
+             var settingsAnchor = document.getElementById('settingsAnchor');
+            settingsAnchor.style.display = 'none';
+            
+            var webglLoadItems = document.querySelectorAll('.load-webgl');
+            [].forEach.call(webglLoadItems, function(currentModel) {
+                currentModel.style.display = 'none';
+            });
+            
+             var assetsInfo = document.querySelectorAll('.assets-info');
+            [].forEach.call(assetsInfo, function(currentAsset) {
+                currentAsset.style.display = 'none';
+            });
+            
+            
             /// now, add sources:
             var sourceMP4 = document.createElement("source");
             sourceMP4.type = 'video/mp4';
@@ -3013,7 +3031,7 @@ ENGINE = function(renderType) {
                 initLoadingScreen.parentNode.removeChild(initLoadingScreen);
                 classie.removeClass(menu, 'hide');
                 classie.removeClass(footerInfoSection, 'hide');
-            }, 1000);
+            }, 0);
             //end init loading screen
 
         } else {
