@@ -82,8 +82,9 @@ $main-menu-background: rgba(0,0,0,0.9);
     width: auto; 
     height: auto; 
     z-index: -100;
-    background: no-repeat;
+    background: url(../src/img/backgroundScene1.jpg) no-repeat;
     background-size: cover;
+    background-position: left; 
 }
 
 @import 'landingPage';

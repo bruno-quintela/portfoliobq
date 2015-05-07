@@ -18,9 +18,8 @@ var ENGINE = ENGINE || {
     description: 'Portfolio',
     date: '2014'
 };
-ENGINE = function(renderType) {
+ENGINE = function() {
     this.system = {
-        renderType: renderType,
         isTouch: Modernizr.touch,
         supportsWEBGL: Detector.webgl,
         // init System
@@ -86,7 +85,7 @@ ENGINE = function(renderType) {
         },
         // use webgl conditions
         useWebGL: function() {
-            if(this.renderType === '3D' && this.supportsWEBGL && !this.isBrowserDeprecated() && !this.isTouch) {
+            if(this.supportsWEBGL && !this.isBrowserDeprecated() && !this.isTouch) {
                 return true;
             } else {
                 return false;
@@ -2870,6 +2869,8 @@ ENGINE = function(renderType) {
                         classie.removeClass(settingsQualityMedium, 'active');
                         classie.removeClass(settingsQualityLow, 'active');
                         myPortfolio.World.renderParams.enableFXAA = true;
+                        myPortfolio.World.renderParams.filmStrengh = 0.1;
+                        myPortfolio.World.renderParams.enableFilm = true;
                         myPortfolio.World.renderParams.enableTiltShift = true;
                         myPortfolio.World.renderParams.enableRGBShift = true;
                         myPortfolio.World.renderParams.enableVignette = true;
@@ -2884,6 +2885,8 @@ ENGINE = function(renderType) {
                         classie.toggleClass(settingsQualityMedium, 'active');
                         classie.removeClass(settingsQualityLow, 'active');
                         myPortfolio.World.renderParams.enableFXAA = false;
+                        myPortfolio.World.renderParams.enableFilm = false;
+                        myPortfolio.World.renderParams.filmStrengh = 0.2;
                         myPortfolio.World.renderParams.enableTiltShift = false;
                         myPortfolio.World.renderParams.enableRGBShift = false;
                         myPortfolio.World.renderParams.enableColorify = true;
@@ -2898,6 +2901,8 @@ ENGINE = function(renderType) {
                         classie.removeClass(settingsQualityMedium, 'active');
                         classie.toggleClass(settingsQualityLow, 'active');
                         myPortfolio.World.renderParams.enableFXAA = false;
+                        myPortfolio.World.renderParams.enableFilm = false;
+                        myPortfolio.World.renderParams.filmStrengh = 0.2;
                         myPortfolio.World.renderParams.enableTiltShift = false;
                         myPortfolio.World.renderParams.enableRGBShift = false;
                         myPortfolio.World.renderParams.enableVignette = false;
@@ -3000,40 +3005,32 @@ ENGINE = function(renderType) {
             /* remove webgl models info and actions */
             var thumbContainer = document.getElementById('thumbContainer');
             thumbContainer.style.visibility = 'hidden';
-            
-             var settingsAnchor = document.getElementById('settingsAnchor');
+            var settingsAnchor = document.getElementById('settingsAnchor');
             settingsAnchor.style.display = 'none';
-            
             var webglLoadItems = document.querySelectorAll('.load-webgl');
             [].forEach.call(webglLoadItems, function(currentModel) {
                 currentModel.style.display = 'none';
             });
-            
-             var assetsInfo = document.querySelectorAll('.assets-info');
+            var assetsInfo = document.querySelectorAll('.assets-info');
             [].forEach.call(assetsInfo, function(currentAsset) {
                 currentAsset.style.display = 'none';
             });
             
-            
-            /// now, add sources:
-            var sourceMP4 = document.createElement("source");
-            sourceMP4.type = 'video/mp4';
-            sourceMP4.src = 'http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04';
-            this.UI.videoBackground.appendChild(sourceMP4);
-            this.UI.videoBackground.play();
+            /*if(!this.system.isTouch) {
+                this.UI.videoBackground.src = 'http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04';
+                this.UI.videoBackground.play();
+            }*/
             /********************/
             var menu = document.getElementById('menu');
             var initLoadingScreen = document.getElementById('initLoadingScreen');
             var initIntroScreen = document.getElementById('initIntroScreen');
             initIntroScreen.parentNode.removeChild(initIntroScreen);
-
             setTimeout(function() {
                 initLoadingScreen.parentNode.removeChild(initLoadingScreen);
                 classie.removeClass(menu, 'hide');
                 classie.removeClass(footerInfoSection, 'hide');
             }, 0);
             //end init loading screen
-
         } else {
             this.SoundFx.init();
             this.World.start();
@@ -3048,7 +3045,7 @@ var myPortfolio = myPortfolio || {};
  * On Ready Init Page Prototype TODO
  **/
 window.addEventListener("load", function() {
-    myPortfolio = new ENGINE('3D');
+    myPortfolio = new ENGINE();
     myPortfolio.init();
     console.log('Engine started.');
 });

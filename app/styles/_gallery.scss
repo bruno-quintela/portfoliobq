@@ -17,6 +17,7 @@
 
 .gallery-content
 {
+    padding-left:50px;
     @include transform(translateX(0) translateY(0));
     @include transition(transform 1000ms 500ms $transition-effect);
 }
