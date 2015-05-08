@@ -118,7 +118,7 @@
             </div>
         </div>
 
-        <video src="" id="videoBackground" class="video-background" type='video/mp4' loop autoplay controls="false"></video>
+        <video src="" id="videoBackground" class="video-background" type='video/mp4' loop autoplay></video>
         <canvas id="threejsCanvas" class="threejs-canvas"></canvas>
 
 
@@ -130,18 +130,35 @@
                 </li>
                 <li id="aboutAnchor"><span>About</span>
                 </li>
-                <li id="galleryAnchor"><span href="#gallerySection">Gallery</span>
+                <li id="galleryAnchor"><span>Gallery</span>
                 </li>
-                <li id="contactAnchor"><span href="#contactSection">Contact</span>
+                <li id="contactAnchor"><span>Contact</span>
                 </li>
-                <li id="creditsAnchor"><span href="#creditsSection">Credits</span>
+                <li id="creditsAnchor"><span>Credits</span>
                 </li>
             </ul>
             <div id="menuItemActive" class="item-active-bottom pos1"></div>
         </nav>
 
-
-
+        <div class="burguer-container">
+            <a id="trigger-overlay" class="burger" href="#"><span></span></a>
+        </div>
+        <div class="overlay">
+            <nav>
+                <ul>
+                    <li><a id="homeBurguerItem" href="#">Home</a>
+                    </li>
+                    <li><a id="aboutBurguerItem" href="#">About</a>
+                    </li>
+                    <li><a id="galleryBurguerItem" href="#">Gallery</a>
+                    </li>
+                    <li><a id="contactBurguerItem" href="#">Contact</a>
+                    </li>
+                    <li><a id="creditsBurguerItem" href="#">Credits</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
 
 
         <section id="aboutSection" class="section-content hide">

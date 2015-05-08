@@ -2518,6 +2518,7 @@ ENGINE = function() {
                 classie.removeClass(menuItemActive, 'pos4');
                 classie.removeClass(menuItemActive, 'pos5');
             }
+            /* Burguer Menu events trigger*/
             homeAnchor.addEventListener('click', function() {
                 UI.hideAllSections();
                 UI.resetMenuItemActive();
@@ -2560,6 +2561,68 @@ ENGINE = function() {
             settingsAnchor.addEventListener('click', function() {
                 classie.toggleClass(settingsSection, 'show');
                 classie.toggleClass(settingsIcon, 'active');
+            });
+            /* Burguer Menu events trigger*/
+            var triggerBttn = document.getElementById('trigger-overlay'),
+                homeBurguerItem = document.getElementById('homeBurguerItem'),
+                aboutBurguerItem = document.getElementById('aboutBurguerItem'),
+                galleryBurguerItem = document.getElementById('galleryBurguerItem'),
+                contactBurguerItem = document.getElementById('contactBurguerItem'),
+                creditsBurguerItem = document.getElementById('creditsBurguerItem'),
+                overlay = document.querySelector('div.overlay');
+
+            function toggleMenuOverlay() {
+                if(!classie.hasClass(triggerBttn, 'open')) {
+                    UI.hideAllSections();
+                    UI.resetMenuItemActive();
+                } else {
+                    UI.hideAllSections();
+                    classie.addClass(homeAnchor, 'active');
+                    classie.removeClass(settingsSection, 'show');
+                    classie.removeClass(footerInfoSection, 'hide');
+                }
+                classie.toggleClass(overlay, 'open');
+                classie.toggleClass(triggerBttn, 'open');
+            }
+            triggerBttn.addEventListener('click', toggleMenuOverlay);
+            homeBurguerItem.addEventListener('click', function() {
+                toggleMenuOverlay();
+                UI.hideAllSections();
+                classie.addClass(homeAnchor, 'active');
+                classie.removeClass(settingsSection, 'show');
+                classie.removeClass(footerInfoSection, 'hide');
+            });
+            aboutBurguerItem.addEventListener('click', function() {
+                toggleMenuOverlay();
+                UI.hideAllSections();
+                classie.toggleClass(aboutSection, 'hide');
+                classie.addClass(aboutAnchor, 'active');
+                classie.addClass(menuItemActive, 'pos2');
+                classie.removeClass(settingsSection, 'show');
+            });
+            galleryBurguerItem.addEventListener('click', function() {
+                toggleMenuOverlay();
+                UI.hideAllSections();
+                classie.toggleClass(gallerySection, 'show');
+                classie.addClass(galleryAnchor, 'active');
+                classie.addClass(menuItemActive, 'pos3');
+                classie.removeClass(settingsSection, 'show');
+            });
+            contactBurguerItem.addEventListener('click', function() {
+                toggleMenuOverlay();
+                UI.hideAllSections();
+                classie.toggleClass(contactSection, 'hide');
+                classie.addClass(contactAnchor, 'active');
+                classie.addClass(menuItemActive, 'pos4');
+                classie.removeClass(settingsSection, 'show');
+            });
+            creditsBurguerItem.addEventListener('click', function() {
+                toggleMenuOverlay();
+                UI.hideAllSections();
+                classie.toggleClass(creditsSection, 'hide');
+                classie.addClass(creditsAnchor, 'active');
+                classie.addClass(menuItemActive, 'pos5');
+                classie.removeClass(settingsSection, 'show');
             });
             /********* GALLERY *************/
             var galleryContainer = document.getElementById("galleryContainer");
@@ -3015,7 +3078,6 @@ ENGINE = function() {
             [].forEach.call(assetsInfo, function(currentAsset) {
                 currentAsset.style.display = 'none';
             });
-            
             /*if(!this.system.isTouch) {
                 this.UI.videoBackground.src = 'http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04';
                 this.UI.videoBackground.play();

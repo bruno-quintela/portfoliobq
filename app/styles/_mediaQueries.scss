@@ -196,7 +196,16 @@
 /* Smartphones (portrait) ----------- */
 
 
-@media only screen and (max-device-width : 450px)  and (orientation : portrait) {
+@media only screen and (max-width : 450px){
+    
+    .burguer-container{
+        display: block;
+    }
+    
+    .menu{
+        display:none;
+    }
+    
     .section-content{
         overflow-y:auto;
         overflow-x: hidden;
@@ -282,7 +291,7 @@
 }
 
 /* Smartphones (landscape) ----------- */
-@media only screen and (max-device-height : 450px)  and (orientation : landscape) {
+@media only screen and (max-height : 450px){
     
     .gallery-content{
         overflow:hidden;
