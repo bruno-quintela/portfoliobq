@@ -240,9 +240,15 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: '<%= config.app %>/images',
+                    cwd: '<%= config.app %>/src',
                     src: '{,*/}*.{gif,jpeg,jpg,png}',
-                    dest: '<%= config.dist %>/images'
+                    dest: '<%= config.dist %>/assets'
+                },
+                {
+                    expand: true,
+                    cwd: '<%= config.app %>/src/textures',
+                    src: '{,*/}*.{gif,jpeg,jpg,png}',
+                    dest: '<%= config.dist %>/assets'
                 }]
             }
         },
@@ -251,9 +257,9 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: '<%= config.app %>/images',
+                    cwd: '<%= config.app %>/src/svg',
                     src: '{,*/}*.svg',
-                    dest: '<%= config.dist %>/images'
+                    dest: '<%= config.dist %>/assets/svg'
                 }]
             }
         },
@@ -317,8 +323,17 @@ module.exports = function (grunt) {
                         '*.{ico,png,txt}',
                         '.htaccess',
                         'images/{,*/}*.webp',
-                        '{,*/}*.html',
-                        'styles/fonts/{,*/}*.*'
+                        '{,*/}*.html'
+                    ]
+                },
+                {
+                    expand: true,
+                    dot: true,
+                    cwd: '<%= config.app %>/src',
+                    dest: '<%= config.dist %>/assets',
+                    src: [
+                        '{,*/}*.mp3',
+                        '{,*/}*.dae'
                     ]
                 }]
             },

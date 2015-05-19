@@ -3,11 +3,11 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Bruno Quintela 2015</title>
+    <title>Bruno Quintela | Portfolio</title>
     <meta name="description" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="shortcut icon" href="/favicon.ico">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,300,600,800,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,800' rel='stylesheet' type='text/css'>
     <link href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/vendor.css -->
@@ -26,7 +26,7 @@
 </head>
 
 <body>
-    <!--[if lt IE 10]>
+    <!-- TODO [if lt IE 10]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
@@ -38,10 +38,8 @@
     <script src="../bower_components/threejs-stats/Stats.js"></script>
     <script src="../bower_components/threex.rendererstats/threex.rendererstats.js"></script>
     <script src="../bower_components/dat-gui/build/dat.gui.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- Vendor Libs -->
-    <script src="scripts/vendor/tweenjs/tween.min.js"></script>
+    <script src="../bower_components/tweenjs/src/Tween.js"></script>
+    <script src="../bower_components/classie/classie.js"></script>
     <!-- SHADERS -->
     <script src="scripts/vendor/threejs/shaders/BleachBypassShader.js"></script>
     <script src="scripts/vendor/threejs/shaders/ColorifyShader.js"></script>
@@ -82,22 +80,21 @@
     <script src="scripts/vendor/threejs/loader/ColladaLoader.js"></script>
     <!-- IMPORT SUBDIVISION MODIFIER  -->
     <script src="scripts/vendor/threejs/modifier/subdivisionModifier.js"></script>
-    <!-- CLASSIE JS Lbrary  -->
-    <script src="scripts/vendor/classiejs/classie.js"></script>
 
     <!-- DRAGEND JS Plugin  -->
     <script src="scripts/vendor/dragendjs/dragend.min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    
 
     <div id="bodyWrapper" class="body-wrapper">
 
-
-        <!--button id="initPageButton" class="init-page-button">Enter</button-->
         <div id="initLoadingScreen" class="init-loading-screen">
             <div class="title">NOW LOADING</div>
             <div class="init-loading-bar">
                 <div id="initProgressBar" class="init-loading-progress"></div>
             </div>
-            <!--div class="tips"><span>Tip#01</span> for a better experience turn up your volume and go fullscreen mode</div-->
         </div>
 
         <div id="initIntroScreen" class="init-intro-screen">
@@ -964,7 +961,7 @@
                                             </div>
                                             <div class="rule right"></div>
                                             <div class="view-model">
-                                                <a data-model="10" data-assets="4" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                                <a data-model="10" data-assets="2" class="load-model-button load-webgl" href="#">WEBGL</a>
                                                 <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                             </div>
                                         </div>
@@ -991,7 +988,7 @@
                 <div class="settings-label">
                     settings
                 </div>
-                <img id="settingsIcon" class="settings-icon" src="http://pasqualevitiello.github.io/Tumblr-Style-Cog-Spinners/cogs/cog23.svg">
+                <img id="settingsIcon" class="settings-icon" src="../src/svg/settings.svg">
             </div>
         </footer>
 

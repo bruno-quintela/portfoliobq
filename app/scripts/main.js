@@ -16,7 +16,7 @@
 var ENGINE = ENGINE || {
     author: 'Bruno Quintela',
     description: 'Portfolio',
-    date: '2014'
+    revision: '18052015'
 };
 ENGINE = function() {
     this.system = {
@@ -100,7 +100,7 @@ ENGINE = function() {
         dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: true,
-            guiEnabled: false
+            guiEnabled: true
         },
         renderParams: {
             antialias: true,
@@ -132,9 +132,9 @@ ENGINE = function() {
             bleachOpacity: 1,
             technicolor: false,
             enableTiltShift: false,
-            tiltBlur: 2,
-            enableVignette: false,
-            vignetteStrengh: 2,
+            tiltBlur: 1.5,
+            enableVignette: true,
+            vignetteStrengh: 5,
             disableEffects: false
         },
         materialParams: {
@@ -580,6 +580,14 @@ ENGINE = function() {
                 });
                 guiRender.add(this.renderParams, 'enableTrackball');
                 guiRender.add(this.renderParams, 'enableMouseListener');
+                guiRender.add(this.renderParams, 'enableDotFilter').onChange(function(value) {
+                    if(value) {
+                        world.renderParams.enableDotFilter = true;
+                    } else {
+                        world.renderParams.enableDotFilter = false;
+                    }
+                    world.refreshPostProcessing();
+                });
                 guiRender.add(this.renderParams, 'enableGrid').onChange(function(value) {
                     //add compositing 3rd rule grid
                     if(!document.getElementById('gridContainer')) {
@@ -891,7 +899,7 @@ ENGINE = function() {
                     uniforms: {
                         tNormal: {
                             type: 't',
-                            value: THREE.ImageUtils.loadTexture(normalMap, new THREE.UVMapping(), function() {
+                            value: THREE.ImageUtils.loadTexture(normalMap, THREE.UVMapping, function() {
                                 layer.numberAssetsLoaded++;
                                 console.log(layer.numberAssetsLoaded);
                                 layer.loadProgressCallback();
@@ -899,7 +907,7 @@ ENGINE = function() {
                         },
                         tMatCap: {
                             type: 't',
-                            value: THREE.ImageUtils.loadTexture(matcap, new THREE.UVMapping(), function() {
+                            value: THREE.ImageUtils.loadTexture(matcap, THREE.UVMapping, function() {
                                 layer.numberAssetsLoaded++;
                                 console.log(layer.numberAssetsLoaded);
                                 layer.loadProgressCallback();
@@ -960,7 +968,7 @@ ENGINE = function() {
                     uniforms: {
                         tMatCap: {
                             type: 't',
-                            value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + matcap + '.png', new THREE.UVMapping(), function() {
+                            value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + matcap + '.png', THREE.UVMapping, function() {
                                 layer.numberAssetsLoaded++;
                                 console.log(layer.numberAssetsLoaded);
                                 layer.loadProgressCallback();
@@ -984,22 +992,22 @@ ENGINE = function() {
                 uniforms.enableSpecular.value = true;
                 uniforms.enableReflection.value = false;
                 uniforms.enableDisplacement.value = false;
-                uniforms.tDiffuse.value = THREE.ImageUtils.loadTexture(shaderParams.diffuseTexture, new THREE.UVMapping(), function() {
+                uniforms.tDiffuse.value = THREE.ImageUtils.loadTexture(shaderParams.diffuseTexture, THREE.UVMapping, function() {
                     layer.numberAssetsLoaded++;
                     console.log(layer.numberAssetsLoaded);
                     layer.loadProgressCallback();
                 });
-                uniforms.tSpecular.value = THREE.ImageUtils.loadTexture(shaderParams.specTexture, new THREE.UVMapping(), function() {
+                uniforms.tSpecular.value = THREE.ImageUtils.loadTexture(shaderParams.specTexture, THREE.UVMapping, function() {
                     layer.numberAssetsLoaded++;
                     console.log(layer.numberAssetsLoaded);
                     layer.loadProgressCallback();
                 });
-                uniforms.tAO.value = THREE.ImageUtils.loadTexture(shaderParams.AOTexture, new THREE.UVMapping(), function() {
+                uniforms.tAO.value = THREE.ImageUtils.loadTexture(shaderParams.AOTexture, THREE.UVMapping, function() {
                     layer.numberAssetsLoaded++;
                     console.log(layer.numberAssetsLoaded);
                     layer.loadProgressCallback();
                 });
-                uniforms.tNormal.value = THREE.ImageUtils.loadTexture(shaderParams.normalTexture, new THREE.UVMapping(), function() {
+                uniforms.tNormal.value = THREE.ImageUtils.loadTexture(shaderParams.normalTexture, THREE.UVMapping, function() {
                     layer.numberAssetsLoaded++;
                     console.log(layer.numberAssetsLoaded);
                     layer.loadProgressCallback();
@@ -1026,7 +1034,7 @@ ENGINE = function() {
             };
             this.bakedMaterial = function(layer, texturePath) {
                 var material = new THREE.MeshLambertMaterial({
-                    map: THREE.ImageUtils.loadTexture(texturePath, new THREE.UVMapping(), function() {
+                    map: THREE.ImageUtils.loadTexture(texturePath, THREE.UVMapping, function() {
                         layer.numberAssetsLoaded++;
                         console.log(layer.numberAssetsLoaded);
                         layer.loadProgressCallback();
@@ -1208,7 +1216,7 @@ ENGINE = function() {
                  * Add SkyDome Sphere
                  **/
                 var addSkyDome = function(layer, radius, texturePath) {
-                    var skydomeTexture = THREE.ImageUtils.loadTexture(texturePath, new THREE.UVMapping(), function() {
+                    var skydomeTexture = THREE.ImageUtils.loadTexture(texturePath, THREE.UVMapping, function() {
                         layer.skydome = new THREE.Mesh(new THREE.SphereGeometry(radius, 60, 40), new THREE.MeshBasicMaterial({
                             map: skydomeTexture,
                             blending: THREE.NormalBlending,
@@ -1251,7 +1259,7 @@ ENGINE = function() {
                  **/
                 var addBackgroundImage = function(layer, imagePath) {
                     // Load the background texture
-                    var texture = THREE.ImageUtils.loadTexture(imagePath, new THREE.UVMapping(), function() {
+                    var texture = THREE.ImageUtils.loadTexture(imagePath, THREE.UVMapping, function() {
                         layer.numberAssetsLoaded++;
                         console.log(layer.numberAssetsLoaded);
                         layer.loadProgressCallback();
@@ -1314,7 +1322,7 @@ ENGINE = function() {
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
                                 console.info(child.name);
-                                if(child.name.indexOf('make') != -1) {
+                                if(child.name.indexOf('makehuman_Body') != -1) {
                                     var mesh = child.children[0];
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
@@ -1554,7 +1562,7 @@ ENGINE = function() {
                                 } else if(child.name.indexOf('makehuman_Eyebrow') != -1) {
                                     var mesh = child.children[0];
                                     mesh.material = new THREE.MeshBasicMaterial({
-                                        map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/eyebrowMale2.png"),
+                                        map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/eyebrow.png"),
                                         blending: THREE.NormalBlending,
                                         depthTest: true,
                                         transparent: true
@@ -1563,7 +1571,7 @@ ENGINE = function() {
                                 } else if(child.name.indexOf('makehuman_Eyelashes') != -1) {
                                     var mesh = child.children[0];
                                     mesh.material = new THREE.MeshBasicMaterial({
-                                        map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/eyelashesMale2.png"),
+                                        map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/eyelashes.png"),
                                         blending: THREE.NormalBlending,
                                         depthTest: true,
                                         transparent: true
@@ -1724,25 +1732,7 @@ ENGINE = function() {
                                     mesh.geometry.computeTangents();
                                     mesh.material = world.materials.matcapMaterial(layer, 105);
                                     layer.lowpoly2 = mesh;
-                                } else if(child.name === 'makehuman_Hair') {
-                                    var mesh = child.children[0];
-                                    mesh.material = world.materials.matcapMaterial(layer, 12);
-                                    layer.makehumanHair = mesh;
-                                } else if(child.name.indexOf('makehuman_HighPolyEyes') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.geometry.computeTangents();
-                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/eyeball8.png', '../src/textures/normalMaps/normal1.jpg', 0, true);
-                                    layer.eyes = mesh;
-                                } else if(child.name.indexOf('makehuman_Eyelashes') != -1) {
-                                    var mesh = child.children[0];
-                                    mesh.material = new THREE.MeshBasicMaterial({
-                                        map: THREE.ImageUtils.loadTexture("../src/textures/UVmaps/male/eyelashesMale2.png"),
-                                        blending: THREE.NormalBlending,
-                                        depthTest: true,
-                                        transparent: true
-                                    });
-                                    layer.makehumanEyelashes = mesh;
-                                }
+                                } 
                             }
                         });
                         //init scene rotation
@@ -1878,14 +1868,6 @@ ENGINE = function() {
                                     mesh.receiveShadow = true;
                                     mesh.castShadow = true;
                                     mesh.geometry.computeTangents();
-                                    var shaderParams = {
-                                        shininess: 5,
-                                        normalScale: 0.8,
-                                        diffuseTexture: '../src/textures/UVmaps/model05/terrain-texture.jpg',
-                                        specTexture: '../src/textures/UVmaps/model05/terrain-texture_SPEC.png',
-                                        AOTexture: '../src/textures/UVmaps/model05/terrain-texture_AO.png',
-                                        normalTexture: '../src/textures/UVmaps/model05/terrain-texture_NORM.png'
-                                    }
                                     mesh.material = world.materials.matcapMaterial(layer, 67);
                                     layer.makehumanBody = mesh;
                                 } else if(child.name === 'Ground') {
@@ -1956,7 +1938,7 @@ ENGINE = function() {
                                     layer.lowpoly = mesh;
                                 } else if(child.name === 'Ground') {
                                     var mesh = child.children[0];
-                                    mesh.material = world.materials.bakedMaterial(layer, '../src/textures/UVmaps/model03/plane-bake.png');
+                                    mesh.material = world.materials.bakedMaterial(layer, '../src/textures/UVmaps/plane-bake.png');
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     layer.ground = mesh;
@@ -2006,51 +1988,38 @@ ENGINE = function() {
                     loader.load('../src/collada/scene10.dae', function(collada) {
                         var dae = collada.scene;
                         layer.scene.add(dae);
-                        /*add scene lights*/
-                        var fillLight = new THREE.DirectionalLight('white', world.lightsParams.fillLightIntensity);
-                        fillLight.position.set(0, 0, 20);
-                        layer.scene.add(fillLight);
-                        var keyLight = new THREE.DirectionalLight('white', world.lightsParams.keyLightIntensity / 30);
-                        keyLight.position.set(20, 10, 10);
-                        layer.scene.add(keyLight);
                         /* add scene skydome */
-                        addSkyDome(layer, 8, '../src/textures/background/background22.jpg');
+                        addSkyDome(layer, 8, '../src/textures/background/background11.jpg');
                         //layer.backgroundImage = addBackgroundImage(layer, '../src/textures/background/background22.jpg');
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
                                 console.info(child.name);
                                 if(child.name === 'head') {
                                     var mesh = child.children[0];
-                                    mesh.receiveShadow = true;
+                                    mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     mesh.geometry.computeTangents();
-                                    var shaderParams = {
-                                        shininess: 5,
-                                        normalScale: 0.8,
-                                        diffuseTexture: '../src/textures/UVmaps/male07/Head_Colour.jpg',
-                                        specTexture: '../src/textures/UVmaps/male07/Head_Colour_SPEC.png',
-                                        AOTexture: '../src/textures/UVmaps/male07/Head_Colour_AO.png',
-                                        normalTexture: '../src/textures/UVmaps/male07/normal20.jpg'
-                                    }
-                                    mesh.material = world.materials.shaderNormalMaterial(layer, shaderParams);
+                                    mesh.material = world.materials.normalMaterial(layer, '../src/textures/matcaps/matcap87.png', '../src/textures/UVmaps/male07/normal20.jpg', 1, false);
                                     layer.ten24head = mesh;
                                 }
                             }
                         });
                         //init scene rotation
-                        layer.scene.rotation.y += 90 * Math.PI / 180;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.rotationSpeed = 0.0005;
                         /**
                          * Anaglyph effect
                          **/
                         layer.render = function(rtt) {
-                            layer.ten24head.rotation.z -= layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                             if(world.renderParams.enableMouseListener) {
+                                layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05)
+                            } else {
+                                layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
+                            }
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
                             }
                             if(rtt) {
-                                //
                                 if(world.renderParams.enableAnaglyph) {
                                     this.anaglyph.render(this.scene, this.camera);
                                 } else {
@@ -2123,23 +2092,7 @@ ENGINE = function() {
                         console.error('unknow scene.')
                         break;
                 };
-                /*if(this.name === 'emptyModel') {
-                    loadScene0(this);
-                } else if(this.name === 'GalleryModel1') {
-                    loadScene1(this);
-                } else if(this.name === 'GalleryModel2') {
-                    loadFemaleModel(this);
-                } else if(this.name === 'GalleryModel3') {
-                    loadLowpolyModel(this);
-                } else if(this.name === 'GalleryModel4') {
-                    loadMaleHeadModel(this);
-                } else if(this.name === 'GalleryModel5') {
-                    loadJarModel(this);
-                } else if(this.name === 'GalleryModel6') {
-                    loadNMSModel(this);
-                } else if(this.name === 'GalleryModel7') {
-                    loadParticlesModel(this);
-                }*/
+                
                 /*******************************/
                 world.postprocess.apply(this);
                 /*this render is dummy used only until collada imports scene*/
@@ -2405,7 +2358,7 @@ ENGINE = function() {
                     // remove previous tweens if needed:TODO use same instanciated tween
                     var tweenLayerTransition = new TWEEN.Tween(current).to({
                         x: 1
-                    }, 14000).onUpdate(update);
+                    }, 13000).onUpdate(update);
                     tweenLayerTransition.start();
                     //myPortfolio.SoundFx.backgroundMusic.play(0);
                 }, 2000);
@@ -2430,7 +2383,7 @@ ENGINE = function() {
                     classie.addClass(initIntroScreen, 'hide');
                     initLoadingScreen.parentNode.removeChild(initLoadingScreen);
                     initIntroScreen.parentNode.removeChild(initIntroScreen);
-                }, 15000);
+                }, 14000);
             });
             this.transition = new this.Transition(this.NextLayer, this.CurrentLayer);
             /**/
@@ -2738,26 +2691,20 @@ ENGINE = function() {
                     classie.removeClass(myPortfolio.UI.webglCanvas, 'hide');
                     classie.removeClass(footerInfoSection, 'hide');
                     // get previous scene rotation to match during transition, only if From this form i hold series
-                    if((myPortfolio.World.CurrentLayer.name !== 'scene1' && myPortfolio.World.CurrentLayer.name !== 'scene7' && myPortfolio.World.CurrentLayer.name !== 'scene8' && myPortfolio.World.CurrentLayer.name !== 'scene9' && myPortfolio.World.CurrentLayer.name !== 'scene10') && (myPortfolio.World.NextLayer.name !== 'scene1' && myPortfolio.World.NextLayer.name !== 'scene7' && myPortfolio.World.NextLayer.name !== 'scene8' && myPortfolio.World.NextLayer.name !== 'scene9' && myPortfolio.World.NextLayer.name !== 'scene10')) {
-                        myPortfolio.World.NextLayer.scene.rotation.y = myPortfolio.World.CurrentLayer.scene.rotation.y;
-                    }
+                    myPortfolio.World.NextLayer.scene.rotation.y = myPortfolio.World.CurrentLayer.scene.rotation.y;
                     myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
-                    if((myPortfolio.World.CurrentLayer.name !== 'scene1' && myPortfolio.World.CurrentLayer.name !== 'scene7' && myPortfolio.World.CurrentLayer.name !== 'scene8' && myPortfolio.World.CurrentLayer.name !== 'scene9' && myPortfolio.World.CurrentLayer.name !== 'scene10') && (myPortfolio.World.NextLayer.name !== 'scene1' && myPortfolio.World.NextLayer.name !== 'scene7' && myPortfolio.World.NextLayer.name !== 'scene8' && myPortfolio.World.NextLayer.name !== 'scene9' && myPortfolio.World.NextLayer.name !== 'scene10')) {
-                        myPortfolio.World.transitionParams.transitionMixRatio = 1;
-                        var update = function() {
-                            myPortfolio.World.transitionParams.transitionMixRatio = current.x;
-                        };
-                        var current = {
-                            x: 1
-                        };
-                        // remove previous tweens if needed:TODO use same instanciated tween
-                        var tweenLayerTransition = new TWEEN.Tween(current).to({
-                            x: 0
-                        }, 5000).onUpdate(update);
-                        tweenLayerTransition.start();
-                    } else {
-                        myPortfolio.World.transitionParams.transitionMixRatio = 0;
-                    }
+                    myPortfolio.World.transitionParams.transitionMixRatio = 1;
+                    var update = function() {
+                        myPortfolio.World.transitionParams.transitionMixRatio = current.x;
+                    };
+                    var current = {
+                        x: 1
+                    };
+                    // remove previous tweens if needed:TODO use same instanciated tween
+                    var tweenLayerTransition = new TWEEN.Tween(current).to({
+                        x: 0
+                    }, 5000).onUpdate(update);
+                    tweenLayerTransition.start();
                     myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
                 });
             }
@@ -2805,9 +2752,6 @@ ENGINE = function() {
             var rotationBar = document.getElementById("rotationBar");
             zoomBar.addEventListener('mouseup', function() {
                 zoomScene(parseInt(this.value));
-            });
-            rotationBar.addEventListener('mouseup', function() {
-                rotateScene(parseInt(this.value));
             });
             /* event handler to hide UI when pressing key T*/
             document.body.onkeypress = khandle;
@@ -2932,8 +2876,9 @@ ENGINE = function() {
                         classie.removeClass(settingsQualityMedium, 'active');
                         classie.removeClass(settingsQualityLow, 'active');
                         myPortfolio.World.renderParams.enableFXAA = true;
-                        myPortfolio.World.renderParams.filmStrengh = 0.1;
-                        myPortfolio.World.renderParams.enableFilm = true;
+                        myPortfolio.World.renderParams.filmStrengh = 0.2;
+                        myPortfolio.World.renderParams.enableFilm = false;
+                        myPortfolio.World.renderParams.tiltBlur = 1;
                         myPortfolio.World.renderParams.enableTiltShift = true;
                         myPortfolio.World.renderParams.enableRGBShift = true;
                         myPortfolio.World.renderParams.enableVignette = true;
@@ -2953,7 +2898,7 @@ ENGINE = function() {
                         myPortfolio.World.renderParams.enableTiltShift = false;
                         myPortfolio.World.renderParams.enableRGBShift = false;
                         myPortfolio.World.renderParams.enableColorify = true;
-                        myPortfolio.World.renderParams.enableVignette = false;
+                        myPortfolio.World.renderParams.enableVignette = true;
                         myPortfolio.World.renderParams.bleach = true;
                         myPortfolio.World.refreshPostProcessing();
                     }
