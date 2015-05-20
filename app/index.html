@@ -26,11 +26,6 @@
 </head>
 
 <body>
-    <!-- TODO [if lt IE 10]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
-
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
@@ -86,10 +81,10 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-    
+
 
     <div id="bodyWrapper" class="body-wrapper">
-
+        <!-- Landing page loading screen -->
         <div id="initLoadingScreen" class="init-loading-screen">
             <div class="title">NOW LOADING</div>
             <div class="init-loading-bar">
@@ -97,6 +92,7 @@
             </div>
         </div>
 
+        <!-- Landing page intro animation -->
         <div id="initIntroScreen" class="init-intro-screen">
             <div id="initIntroSubtitle" class="subtitle">Bruno Quintela presents</div>
             <div id="initIntroTitle" class="title">
@@ -106,6 +102,7 @@
             </div>
         </div>
 
+        <!-- Scene loading screen -->
         <div id="modelLoadingScreen" class="model-loading-screen">
             <div class="loading-info-top">
                 now Loading 3D Model assets. This may take a while, please wait...
@@ -115,12 +112,12 @@
             </div>
         </div>
 
+        <!-- fullscreen background video -->
         <video src="" id="videoBackground" class="video-background" type='video/mp4' loop autoplay></video>
+        <!-- Webgl renderer canvas -->
         <canvas id="threejsCanvas" class="threejs-canvas"></canvas>
 
-
-        <!-- menu -->
-
+        <!-- main menu -->
         <nav id="menu" class="menu hide">
             <ul>
                 <li id="homeAnchor" class="active"><span>Home</span>
@@ -137,6 +134,7 @@
             <div id="menuItemActive" class="item-active-bottom pos1"></div>
         </nav>
 
+        <!-- burguer menu and fullscreen nav -->
         <div class="burguer-container">
             <a id="trigger-overlay" class="burger" href="#"><span></span></a>
         </div>
@@ -157,9 +155,8 @@
             </nav>
         </div>
 
-
+        <!-- SECTION ABOUT START-->
         <section id="aboutSection" class="section-content hide">
-
             <div class="content-left">
                 <div class="content-title">
                     <span class="">About</span>
@@ -172,7 +169,6 @@
                 <span class="item">Frontend</span>
                 <span class="item">UI&UX</span>
                 <span class="item">Designer</span>
-
             </div>
             <div class="content-right">
                 <div class="content-title"></div>
@@ -182,29 +178,24 @@
                     </div>
                     <div class="rule left"></div>
                     <span class="description">I'm a web developer who recently got into computer graphics. I love music, videogames (MMORPG and JRPG addicted), and digital art, specially lowpoly, procedural and generative.</span>
-
                 </div>
                 <div class="content-info">
                     <div class="content-subtitle">
-
                     </div>
                     <div class="rule left"></div>
                     <span class="description">My current focus isto create state of the art visuals for the web. To achieve a perfect ballance between visual delivery and performance is allways my pripority.</span>
                 </div>
                 <div class="content-info">
                     <div class="content-subtitle">
-
                     </div>
                     <div class="rule left"></div>
                     <span class="description">In the next five years we will enter into the age of Virtual Reality, and that will have a massive impact in the way you surf the web, so i expect to be in a vanguard project related to that, as a web developer or creative director.</span>
                 </div>
-
             </div>
         </section>
         <!-- SECTION ABOUT END-->
         <!-- SECTION CONTACT START -->
         <section id="contactSection" class="section-content section-contact hide">
-
             <div class="content-left">
                 <div class="content-title">
                     <span class="highlight">get in</span>
@@ -214,7 +205,6 @@
                 <div class="content-info">
                     <div class="content-title">
                         touch
-
                     </div>
                     <div class="content-subtitle">
                         @bruno_quintela
@@ -224,8 +214,6 @@
                 </div>
                 <div class="content-info">
                     <div class="content-title-fake">
-
-
                     </div>
                     <div class="content-subtitle">
                         follow
@@ -240,18 +228,16 @@
                 </div>
                 <div class="content-info">
                     <div class="content-title-fake">
-
-
                     </div>
                     <div class="content-subtitle">
                         share
                     </div>
                     <div class="rule left"></div>
                     <div class="footer-social-links">
-                        <a href="https://twitter.com/share?url=http://www.google.com&text=This is awesome!" title="Share on Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
-                        <a href="https://www.facebook.com/sharer/sharer.php?u=example.org" title="LinkedIn" target="_blank"><i class="fa fa-facebook"></i></a>
-                        <a href="https://plus.google.com/share?url=http://stackoverflow.com" title="LinkedIn" target="_blank"><i class="fa fa-google-plus"></i></a>
-                        <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://bit.ly/adaptxt-beta-android&title=http://bit.ly/adaptxt-beta-android&summary=http://bit.ly/adaptxt-beta-android&source=http://bit.ly/adaptxt-beta-android" title="LinkedIn" target="_blank"><i class="fa fa-linkedin"></i></a>
+                        <a href="https://twitter.com/share?url=http://www.google.com&text=www.brunoquintela.com" title="Share on Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=www.brunoquintela.com" title="LinkedIn" target="_blank"><i class="fa fa-facebook"></i></a>
+                        <a href="https://plus.google.com/share?url=www.brunoquintela.com" title="LinkedIn" target="_blank"><i class="fa fa-google-plus"></i></a>
+                        <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://www.brunoquintela.com&title=BrunoQuintelaPortfolio&summary=www.brunoquintela.com&source=http://www.brunoquintela.com" title="LinkedIn" target="_blank"><i class="fa fa-linkedin"></i></a>
                     </div>
                 </div>
             </div>
@@ -259,7 +245,6 @@
         <!-- SECTION CONTACT END -->
         <!--SECTION CREDITS START -->
         <section id="creditsSection" class="section-content section-credits hide">
-
             <div class="content-left">
                 <div class="content-subtitle">
                     To all contributors
@@ -283,9 +268,7 @@
                         </li>
                         <li><a class="anchor-link" target="_blank" href="http://audacity.sourceforge.net/">Audacity</a>
                         </li>
-
                     </ul>
-
                 </div>
                 <div class="content-info-list">
                     <div class="content-subtitle">
@@ -336,7 +319,6 @@
         <section id="settingsSection" class="section-content section-settings">
             <div class="border-bottom"></div>
             <div class="content-right">
-
                 <div class="content-info-settings">
                     <div class="content-subtitle">
                         Generic
@@ -351,7 +333,6 @@
                         </li>
                     </ul>
                 </div>
-
                 <div class="content-info-settings">
                     <div class="content-subtitle">
                         Postprocessing
@@ -369,7 +350,6 @@
                         </li>
                     </ul>
                 </div>
-
                 <div class="content-info-settings">
                     <div class="content-subtitle">
                         Anaglyph 3D
@@ -413,7 +393,6 @@
         <!--SECTION SETTINGS END -->
         <!--SECTION GALEERY START -->
         <section id="gallerySection" class="section-gallery">
-
             <div id="thumbContainer" class="gallery-thumb-container">
                 <div data-model="1" class="gallery-thumb active">
                 </div>
@@ -436,7 +415,6 @@
                 <div data-model="10" class="gallery-thumb">
                 </div>
             </div>
-
             <button id="galleryPrevious" class="arrow left">
                 <svg width="60px" height="80px" viewBox="0 0 50 80" xml:space="preserve">
                     <polyline fill="none" stroke="#F00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="
@@ -449,7 +427,6 @@
 	0.375,0.375 45.63,38.087 0.375,75.8 " />
                 </svg>
             </button>
-
             <div id="galleryContainer" class="gallery-item-container">
                 <ul>
                     <li class="gallery-item">
@@ -460,9 +437,7 @@
                                     <div class="content-left">
                                         <div class="content-title">
                                             Digital
-
                                         </div>
-
                                         <div class="content-subtitle">
                                             info
                                         </div>
@@ -973,8 +948,8 @@
                 </ul>
             </div>
         </section>
-        <!--SECTION GALEERY END -->
-        <!--CURRENT MODEL INFO START -->
+        <!--SECTION GALLERY END -->
+        <!--FOOTER INFO START -->
         <footer id="footerInfoSection" class="footer-section-info hide">
             <div class="current-model-title">
                 <span class="">Bruno </span>
@@ -991,11 +966,9 @@
                 <img id="settingsIcon" class="settings-icon" src="../src/svg/settings.svg">
             </div>
         </footer>
-
+        <!--FOOTER INFO END -->
     </div>
-    <!-- end sectionWrapper -->
-
-    </div>
+    <!-- BODY WRAPPER END -->
 
     <script id="sem-vs" type="x-shader/x-vertex">
         varying vec3 e;

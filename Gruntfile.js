@@ -208,8 +208,6 @@ module.exports = function (grunt) {
                     src: [
                         '<%= config.dist %>/scripts/{,*/}*.js',
                         '<%= config.dist %>/styles/{,*/}*.css',
-                        '<%= config.dist %>/images/{,*/}*.*',
-                        '<%= config.dist %>/styles/fonts/{,*/}*.*',
                         '<%= config.dist %>/*.{ico,png}'
                     ]
                 }
@@ -229,7 +227,7 @@ module.exports = function (grunt) {
         // Performs rewrites based on rev and the useminPrepare configuration
         usemin: {
             options: {
-                assetsDirs: ['<%= config.dist %>', '<%= config.dist %>/images']
+                assetsDirs: ['<%= config.dist %>', '<%= config.dist %>/src']
             },
             html: ['<%= config.dist %>/{,*/}*.html'],
             css: ['<%= config.dist %>/styles/{,*/}*.css']
@@ -242,13 +240,13 @@ module.exports = function (grunt) {
                     expand: true,
                     cwd: '<%= config.app %>/src',
                     src: '{,*/}*.{gif,jpeg,jpg,png}',
-                    dest: '<%= config.dist %>/assets'
+                    dest: '<%= config.dist %>/src'
                 },
                 {
                     expand: true,
                     cwd: '<%= config.app %>/src/textures',
                     src: '{,*/}*.{gif,jpeg,jpg,png}',
-                    dest: '<%= config.dist %>/assets'
+                    dest: '<%= config.dist %>/src'
                 }]
             }
         },
@@ -259,7 +257,7 @@ module.exports = function (grunt) {
                     expand: true,
                     cwd: '<%= config.app %>/src/svg',
                     src: '{,*/}*.svg',
-                    dest: '<%= config.dist %>/assets/svg'
+                    dest: '<%= config.dist %>/src/svg'
                 }]
             }
         },
@@ -330,7 +328,7 @@ module.exports = function (grunt) {
                     expand: true,
                     dot: true,
                     cwd: '<%= config.app %>/src',
-                    dest: '<%= config.dist %>/assets',
+                    dest: '<%= config.dist %>/src',
                     src: [
                         '{,*/}*.mp3',
                         '{,*/}*.dae'
