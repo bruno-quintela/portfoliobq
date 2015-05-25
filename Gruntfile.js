@@ -246,7 +246,7 @@ module.exports = function (grunt) {
                     expand: true,
                     cwd: '<%= config.app %>/src/textures',
                     src: '{,*/}*.{gif,jpeg,jpg,png}',
-                    dest: '<%= config.dist %>/src'
+                    dest: '<%= config.dist %>/src/textures'
                 }]
             }
         },

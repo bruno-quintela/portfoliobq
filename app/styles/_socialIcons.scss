@@ -16,11 +16,7 @@
     text-align: center;
     display: inline-block;
     color: #fff;
-    -webkit-transition: all 0.27s cubic-bezier(0.300, 0.100, 0.580, 1.000);  
-    -moz-transition: all 0.27s cubic-bezier(0.300, 0.100, 0.580, 1.000); 
-    -o-transition: all 0.27s cubic-bezier(0.300, 0.100, 0.580, 1.000);
-    -ms-transition: all 0.27s cubic-bezier(0.300, 0.100, 0.580, 1.000); 
-    transition: all 0.27s cubic-bezier(0.300, 0.100, 0.580, 1.000);
+    @include transition(all 0.3s 0s $transition-effect);
 }
 .footer-social-links a i,
 .footer-social-links a span{
@@ -37,24 +33,13 @@
     top: 0;
     left: 0;
     border: 1px solid #fff;
-    
-    
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-    
-    -webkit-transition: all 0.27s cubic-bezier(0.300, 0.100, 0.580, 1.000);  
-    -moz-transition: all 0.27s cubic-bezier(0.300, 0.100, 0.580, 1.000); 
-    -o-transition: all 0.27s cubic-bezier(0.300, 0.100, 0.580, 1.000);
-    -ms-transition: all 0.27s cubic-bezier(0.300, 0.100, 0.580, 1.000); 
-    transition: all 0.27s cubic-bezier(0.300, 0.100, 0.580, 1.000);
+    @include transform(rotate(45deg));
+    @include transition(all 0.3s 0s $transition-effect);
     
 }
 .footer-social-links a:hover{
-    color: #000;
+    color: $background-color;
 }
 .footer-social-links a:hover:before{
-    background: #fff;
+    background: $text-color;
 }

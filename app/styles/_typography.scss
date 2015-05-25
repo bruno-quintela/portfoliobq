@@ -62,24 +62,6 @@
     color:#fff;
 }
 
-%anchor-link
-{
-    @extend %main-font;
-    font-weight: 300;
-    letter-spacing: 1px;
-	font-size: 11px;
-    text-transform:uppercase;
-    clear:both;
-    color:grey;
-}
-
-
-
-
-/*****************/
-
-
-
 %menu-title-font
 {
     font-family: $primary-font-family;
@@ -198,3 +180,14 @@
     letter-spacing:5px;
 }
 
+
+%anchor-link-font
+{
+    @extend %main-font;
+    font-weight: 300;
+    letter-spacing: 1px;
+	font-size: 11px;
+    text-transform:uppercase;
+    clear:both;
+    color:grey;
+}

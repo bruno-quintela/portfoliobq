@@ -16,6 +16,16 @@
     @include transition(transform 1000ms 0ms $transition-effect);
 }
 
+.settings-label
+{
+    @extend %model-settings-font;
+    text-transform:uppercase;
+    float:right;
+    text-align:right;
+    margin-right:50px;
+    margin-top:20px;
+    
+}
 
 .section-settings .content-performance{
     float:right;

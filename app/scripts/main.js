@@ -12,14 +12,18 @@
 /*global classie:false */
 /*global Dragend:false */
 
-/*
- * Declare Namespace
- */
+/**
+ * Declare Global Namespace
+ **/
 var myPortfolio = myPortfolio || {
     author: 'Bruno Quintela',
     description: 'Portfolio',
-    revision: '18052015'
+    revision: '21052015'
 };
+
+/**
+ * Create the Engine to provide this site needs
+ **/
 var ENGINE = function() {
     this.system = {
         isTouch: Modernizr.touch,
@@ -101,7 +105,7 @@ var ENGINE = function() {
         dpr: window.devicePixelRatio,
         settings: {
             statsEnabled: true,
-            guiEnabled: true
+            guiEnabled: false
         },
         renderParams: {
             antialias: true,
@@ -2307,8 +2311,6 @@ var ENGINE = function() {
                 settingsSection = document.getElementById('settingsSection'),
                 gallerySection = document.getElementById('gallerySection');
             var footerInfoSection = document.getElementById('footerInfoSection');
-            var galleryPrevious = document.getElementById('galleryPrevious');
-            var galleryNext = document.getElementById('galleryNext');
             var menuItemActive = document.getElementById('menuItemActive');
             var settingsIcon = document.getElementById('settingsIcon');
             this.webglCanvas = document.getElementById('threejsCanvas');
@@ -2323,7 +2325,7 @@ var ENGINE = function() {
                 classie.addClass(aboutSection, 'hide');
                 classie.addClass(contactSection, 'hide');
                 classie.addClass(creditsSection, 'hide');
-                classie.addClass(footerInfoSection, 'hide');
+                //classie.addClass(footerInfoSection, 'hide');
                 classie.removeClass(gallerySection, 'show');
             };
             this.resetMenuItemActive = function() {
@@ -2353,6 +2355,7 @@ var ENGINE = function() {
                 classie.addClass(aboutAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos2');
                 classie.removeClass(settingsSection, 'show');
+                classie.removeClass(footerInfoSection, 'hide');
             });
             galleryAnchor.addEventListener('click', function() {
                 UI.hideAllSections();
@@ -2361,6 +2364,7 @@ var ENGINE = function() {
                 classie.addClass(galleryAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos3');
                 classie.removeClass(settingsSection, 'show');
+                classie.addClass(footerInfoSection, 'hide');
             });
             contactAnchor.addEventListener('click', function() {
                 UI.hideAllSections();
@@ -2369,6 +2373,7 @@ var ENGINE = function() {
                 classie.addClass(contactAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos4');
                 classie.removeClass(settingsSection, 'show');
+                classie.removeClass(footerInfoSection, 'hide');
             });
             creditsAnchor.addEventListener('click', function() {
                 UI.hideAllSections();
@@ -2377,6 +2382,7 @@ var ENGINE = function() {
                 classie.addClass(creditsAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos5');
                 classie.removeClass(settingsSection, 'show');
+                classie.removeClass(footerInfoSection, 'hide');
             });
             settingsAnchor.addEventListener('click', function() {
                 classie.toggleClass(settingsSection, 'show');
@@ -2389,7 +2395,7 @@ var ENGINE = function() {
                 galleryBurguerItem = document.getElementById('galleryBurguerItem'),
                 contactBurguerItem = document.getElementById('contactBurguerItem'),
                 creditsBurguerItem = document.getElementById('creditsBurguerItem'),
-                overlay = document.querySelector('div.overlay');
+                overlay = document.querySelector('div.burguer-overlay');
 
             function toggleMenuOverlay() {
                 if(!classie.hasClass(triggerBttn, 'open')) {
@@ -2502,28 +2508,7 @@ var ENGINE = function() {
                     classie.addClass(currentThumb, 'active');
                 });
             });
-            galleryPrevious.addEventListener('click', function() {
-                var thumIndex = 0;
-                var activeThumb = 0;
-                [].forEach.call(galleryThumbs, function(currentThumb) {
-                    if(classie.hasClass(currentThumb, 'active')) {
-                        activeThumb = thumIndex;
-                    }
-                    thumIndex++;
-                });
-                galleryThumbs[activeThumb - 1].click();
-            });
-            galleryNext.addEventListener('click', function() {
-                var thumIndex = 0;
-                var activeThumb = 0;
-                [].forEach.call(galleryThumbs, function(currentThumb) {
-                    if(classie.hasClass(currentThumb, 'active')) {
-                        activeThumb = thumIndex;
-                    }
-                    thumIndex++;
-                });
-                galleryThumbs[activeThumb + 1].click();
-            });
+           
             /** 
              * Init Model load buttons
              */
@@ -2912,8 +2897,7 @@ var ENGINE = function() {
 /**
  * On Ready Init Page Prototype TODO
  **/
-window.addEventListener('load', function() {
+
     myPortfolio = new ENGINE();
     myPortfolio.init();
     console.log('Engine started.');
-});

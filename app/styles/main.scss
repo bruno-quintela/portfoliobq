@@ -1,43 +1,25 @@
-$menu-width: 50px;
-$content-width:33%;
-$content-height:calc(100%/4);
-$content-padding:30px;
-$gallery-width:100%;
-
-$secondary-color: rgba(255,0,0,1);
-$background-color: rgba(0,0,0,1);
-$text-color: rgba(255,255,255,1);
-$text-secondary-color: #9b8579;
-
-$loading-progress-color: #fff;
-$loading-bar-color: #333;
-$loading-model-background: rgba(0,0,0,0.7);
-
-
-$sub-menu-background: rgba(0,0,0,0.9);
-
-$background-pattern: url(data:image/gif;base64,R0lGODlhKAAoAIAAABISEiIiIiH5BAAHAP8ALAAAAAAoACgAAAJzDA6Gepz4FnSzyttsxq7ruIWgh4EmGaLnpzItC5ex+JbuvNpaTeO3DuxxfERZMCdM8pDMX7I5W0p3xaeqCg1Oj6itlcrFOrNfY/mM9JJH4qra+8a2w0M6ehzXzs959H6N99clGEWoZwcIYci3mNY4iOhVAAA7) 0 0;
-
+/**
+ * Declare sass constants
+ **/
 $primary-font-family: Open Sans;
-
-$transition-effect: ease;
-
-/*****/
-
 $menu-height:50px;
 $section-content-height:250px;
-$section-left-width: 300px;
+$section-left-width: 230px;
+$text-color: rgba(255,255,255,1);
 $primary-color: rgba(0,0,0,0.9);
-$secondary-color-opaque: rgba(255,0,0,0.3);
-$main-menu-background: rgba(0,0,0,0.9);
-
+$secondary-color: rgba(255,0,0,1);
+$secondary-color-opaque: rgba(255,0,0,0.2);
+$main-menu-background: rgba(0,0,0,1);
+$footer-background: rgba(0,0,0,1);
+$loading-model-background: rgba(0,0,0,0.7);
+$background-color: rgba(0,0,0,1);
+$transition-effect: ease;
 
 
 
 @import 'mixins';
 @import 'reset';
 @import 'typography';
-@import 'gridComposer';
 @include scrollbar(.2em, $secondary-color);
 
 /**
@@ -60,7 +42,8 @@ $main-menu-background: rgba(0,0,0,0.9);
   position:absolute;
   width:100%;
   height:100%;
-  display:block; cursor: hand;
+  display:block; 
+  cursor: hand;
   cursor: -moz-grab;
   cursor: -webkit-grab;
   cursor: grab;
@@ -70,7 +53,6 @@ $main-menu-background: rgba(0,0,0,0.9);
 {
   display:none;
 }
-
 
 .video-background
 {
@@ -87,15 +69,13 @@ $main-menu-background: rgba(0,0,0,0.9);
     background-position: left; 
 }
 
-@import 'landingPage';
-
 /**
 * Sections 
 **/
 
 .section-content{
     position:absolute;
-    bottom:0;
+    top:$menu-height;
     right:0;
     width:100%;
     height:$section-content-height;
@@ -108,7 +88,7 @@ $main-menu-background: rgba(0,0,0,0.9);
 }
 
 .section-content.hide {
-    @include transform(translateY(100%));
+    @include transform(translateY(-100%));
     @include transition(transform 1000ms 0ms $transition-effect);
 }
 
@@ -129,7 +109,7 @@ $main-menu-background: rgba(0,0,0,0.9);
 
 .content-title{
     @extend %content-title-font;
-    height:70px;
+    height:60px;
 }
 
 .content-title-fake{
@@ -171,6 +151,23 @@ $main-menu-background: rgba(0,0,0,0.9);
     padding-right: 30px;
 }
 
+.section-content.settings
+{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:200px;
+    height:200px;
+    padding:20px;
+    border-right: 1px solid $secondary-color;
+    @include transform(translateX(-100%));
+}
+
+.section-content.settings.show
+{
+    @include transform(translateX(0));
+}
+
 .current-info{
     float:right;
     clear:both;
@@ -183,7 +180,7 @@ $main-menu-background: rgba(0,0,0,0.9);
 
 .anchor-link
 {
-    @extend %anchor-link;
+    @extend %anchor-link-font;
     @include transition(color 500ms $transition-effect);
 }
 
@@ -216,7 +213,7 @@ $main-menu-background: rgba(0,0,0,0.9);
     left:0;
     width:100%;
     height:$menu-height;
-    background-color:$main-menu-background;
+    background-color:$footer-background;
     padding-top:20px;
     padding-left:50px;
     will-change: transform;
@@ -229,74 +226,13 @@ $main-menu-background: rgba(0,0,0,0.9);
     @include transform(translateY(103%));
 }
 
-.current-model-title
+.footer-title
 {
     @extend %menu-font;
     color:#fff;
     float:left;
     margin-right:10px;
 }
-
-/** 
- * model controls
-**/
-
-.model-controls{
-    @extend %model-settings-font;
-    position:absolute;
-    bottom:70px;
-    left:50px;
-    text-transform:uppercase;
-    width:250px;
-}
-
-.control-field
-{
-    float:left;
-    width:200px;
-    margin-bottom:5px;
-}
-
-.control-field span
-{
-    display:inline-block;
-    width:70px;
-}
-
-.settings-label
-{
-    @extend %model-settings-font;
-    text-transform:uppercase;
-    float:right;
-    text-align:right;
-    margin-right:50px;
-    margin-top:20px;
-    
-}
-
-
-
-
-
-
-/*****************/
-.section-content.settings
-{
-    position:absolute;
-    bottom:0;
-    left:0;
-    width:200px;
-    height:200px;
-    padding:20px;
-    border-right: 1px solid $secondary-color;
-    @include transform(translateX(-100%));
-}
-
-.section-content.settings.show
-{
-    @include transform(translateX(0));
-}
-
 
 
 /**
@@ -321,7 +257,6 @@ $main-menu-background: rgba(0,0,0,0.9);
 
 .init-loading-screen.hide
 {
-    //visibility:hidden;
     opacity:0;
 }
 
@@ -334,19 +269,12 @@ $main-menu-background: rgba(0,0,0,0.9);
     width:100%;
     text-align:center;
     will-change: opacity;
-    -webkit-animation: fade-transition 0.7s infinite alternate ; /* Safari 4+ */
-    -moz-animation:    fade-transition 0.7s infinite alternate; /* Fx 5+ */
-    -o-animation:      fade-transition 0.7s infinite alternate; /* Opera 12+ */
-    animation:         fade-transition 0.7s infinite alternate ; /* IE 10+, Fx 29+ */
+    @include animation(fade-transition 0.7s infinite alternate);
 }
 
 .init-loading-screen.hide .title{
     opacity:0;
-    visibility:hidden;
-    -webkit-animation: none; /* Safari 4+ */
-    -moz-animation:    none; /* Fx 5+ */
-    -o-animation:      none; /* Opera 12+ */
-    animation:         none; /* IE 10+, Fx 29+ */
+    @include animation(none);
 }
 
 .init-loading-bar{
@@ -372,6 +300,79 @@ $main-menu-background: rgba(0,0,0,0.9);
     @include transition(width 0.5s $transition-effect);
 }
 
+/**
+ * Model Loading
+**/
+
+
+.model-loading-screen
+{
+    z-index:0;
+    position:absolute;
+    padding-right:0;
+    width:100%;
+    height: 100%;
+    opacity:0;
+    background-color:$loading-model-background;
+    will-change:opacity, transform;
+    @include transition((opacity 1s 0s $transition-effect, transform 1s 0s $transition-effect));
+}
+
+.model-loading-screen.show
+{
+    z-index:15;
+    opacity:1;
+    @include transition((opacity 1s 0s $transition-effect, transform 1s 0s $transition-effect));
+}
+
+.loading-info-top
+{
+    @extend %model-loading-font; 
+    position:absolute;
+    bottom:$section-content-height;
+    right:0;
+    width:100%;
+    height:30px;
+    text-align: center;
+    opacity:0;
+    will-change:opacity;
+    @include transition(opacity 0.5s $transition-effect);
+}
+
+
+.model-loading-screen.show .loading-info-top
+{
+    -webkit-animation: fade-transition 1s 1s infinite alternate ; /* Safari 4+ */
+    -moz-animation:    fade-transition 1s 1s infinite alternate; /* Fx 5+ */
+    -o-animation:      fade-transition 1s 1s infinite alternate; /* Opera 12+ */
+    animation:         fade-transition 1s 1s infinite alternate ; /* IE 10+, Fx 29+ */
+}
+
+.model-loading-bar{
+    position:absolute;
+    bottom:$section-content-height;
+    left: 0;
+    width:100%;
+    height:1px;
+    background-color:transparent;
+}
+
+.model-loading-progress{
+    position:absolute;
+    width:0%;
+    bottom:-3px;
+    right:0px;
+    height:3px;
+    background-color:$secondary-color;
+    will-change: width;
+    @include transition(width 2s 0s $transition-effect);
+}
+
+.model-loading-progress.reset{
+    position:absolute;
+    width:0%;
+    @include transition(width 0s 0s);
+}
 
 /**
  *  INTRO SCREEN 
@@ -433,84 +434,11 @@ $main-menu-background: rgba(0,0,0,0.9);
 }
 
 
-/**
- * Model Loading
-**/
 
-
-.model-loading-screen
-{
-    z-index:0;
-    position:absolute;
-    padding-right:$menu-width;
-    width:100%;
-    height: 100%;
-    opacity:0;
-    background-color:$loading-model-background;
-    will-change:opacity, transform;
-    @include transition((opacity 1s 0s $transition-effect, transform 1s 0s $transition-effect));
-}
-
-.model-loading-screen.show
-{
-    z-index:15;
-    opacity:1;
-    @include transition((opacity 1s 0s $transition-effect, transform 1s 0s $transition-effect));
-}
-
-.loading-info-top
-{
-    @extend %model-loading-font; 
-    position:absolute;
-    bottom:$section-content-height;
-    right:0;
-    width:100%;
-    height:30px;
-    text-align: center;
-    opacity:0;
-    will-change:opacity;
-    @include transition(opacity 0.5s $transition-effect);
-}
-
-
-.model-loading-screen.show .loading-info-top
-{
-    -webkit-animation: fade-transition 1s 1s infinite alternate ; /* Safari 4+ */
-    -moz-animation:    fade-transition 1s 1s infinite alternate; /* Fx 5+ */
-    -o-animation:      fade-transition 1s 1s infinite alternate; /* Opera 12+ */
-    animation:         fade-transition 1s 1s infinite alternate ; /* IE 10+, Fx 29+ */
-}
-
-.model-loading-bar{
-    position:absolute;
-    bottom:$section-content-height;
-    left: 0;
-    width:100%;
-    height:1px;
-    background-color:transparent;
-}
-
-.model-loading-progress{
-    position:absolute;
-    width:0%;
-    bottom:-3px;
-    right:0px;
-    height:3px;
-    background-color:$secondary-color;
-      box-shadow: 0px 0px 45px 2px $secondary-color;
-    will-change: width;
-    @include transition(width 2s 0s $transition-effect);
-}
-
-.model-loading-progress.reset{
-    position:absolute;
-    width:0%;
-    @include transition(width 0s 0s);
-}
 
 
 /**
- * Ruler
+ * Rulers
  **/
 
 .rule

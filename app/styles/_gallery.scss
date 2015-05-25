@@ -4,77 +4,123 @@
     top:0px;
     width:100%;
     height:100%;
-    will-change: transform;
-    @include transform(translateY(-100%));
-    @include transition(transform 1000ms 0ms $transition-effect);
+    will-change: opacity;
+    opacity:0;
+    //display:none;
+    @include transition(opacity 1000ms 0ms $transition-effect);
 }
 
 .section-gallery.show
 {
-    @include transform(translateY(0));
-    @include transition(transform 1000ms 1000ms $transition-effect);
+    opacity:1;
+    //display:block;
+    @include transition(opacity 1000ms 1000ms $transition-effect);
 }
 
 .gallery-content
 {
-    padding-left:50px;
+    
+    top:100px;
+    padding-top:15px;
+    border-bottom:none;
+    height:150px;
+    background: transparent;
     @include transform(translateX(0) translateY(0));
-    @include transition(transform 1000ms 500ms $transition-effect);
+    @include transition(transform 1000ms 0ms $transition-effect);
 }
 
 .gallery-content.hide
 {
-    @include transform(translateX(0) translateY(100%));
+    @include transform(translateX(0) translateY(0%));
     @include transition(transform 1000ms 1000ms $transition-effect);
+}
+
+.diagonal-overlay-up
+{
+    position:absolute;
+    bottom:0;
+    left:0;
+    margin-bottom:40px;
+    width:1080px;
+    height:100%;
+    border-width:1600px 900px 0 0;
+    border-style:solid;
+    border-color:rgba(0,0,0,0.9) transparent rgba(0,0,0,0.9) transparent;
+    //background-color:$secondary-color-opaque;
+}
+
+.diagonal-overlay-down
+{
+    position:absolute;
+    bottom:0;
+    left:0;
+    margin-bottom:40px;
+    width:100%;
+    height:100%;
+    border-width:0 0 900px 1500px;
+    border-style:solid;
+    border-color:transparent $secondary-color-opaque $secondary-color-opaque transparent;
+    //background-color:$secondary-color-opaque;
+}
+
+.diagonal-overlay-right
+{
+    position:absolute;
+    bottom:0px;
+    right:0;
+    width:100%;
+    height:100px;
+    border-width:0 0 200px 1920px;
+    border-style:solid;
+    border-color:transparent rgba(0,0,0,0.9) rgba(0,0,0,1) transparent;
+    //background-color:$secondary-color-opaque;
 }
 
 .gallery-thumb-container
 {
     z-index:2;
-    position:relative;
-    top:$menu-height;
+    position:absolute;
+    bottom:0px;
     width:100%;
-    height:32px;
-    padding-top:4px;
+    height:40px;
     margin:auto;
     text-align:center;
-    background-color:rgba(0,0,0,0.5);
+    background-color:rgba(0,0,0,1);
     opacity:1;
 }
 
 .gallery-thumb
 {
-    display:inline-block;
-    width:10px;
-    height:10px;
-    margin-right:10px;
-    //border-radius:5px;
+    
     cursor:pointer;
-    will-change:background-color;
-    background-color:rgba(255,0,0,0.3);
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-    @include transition((background-color 1000ms 0ms $transition-effect, transform 1000ms 0ms $transition-effect));
+    will-change:color;
+    color:rgba(255,255,255,1);
+    @include transition(color 1000ms 0ms $transition-effect);
 }
 
 .gallery-thumb:hover
 {
-   background-color:rgba(255,0,0,0.7);
+   //background-color:rgba(255,0,0,0.7);
+    color:red;
+    @include transition(color 300ms 0ms $transition-effect);
+}
+
+.gallery-thumb:hover:after
+{
+   //background-color:rgba(255,0,0,0.7);
+    color:#fff;
    
 }
 
 .gallery-thumb.active
 {
-    border-radius:5px;
-    background-color:red;
-     -webkit-transform: rotate(0);
-    -moz-transform: rotate(0);
-    -o-transform: rotate(0);
-    -ms-transform: rotate(0);
-    transform: rotate(0);
+    border-radius:5px; 
+	max-width: 499px;
+}
+
+.gallery-thumb.active:after
+{
+    color:#fff;
 }
 
 
@@ -95,14 +141,18 @@
 }
 
 
-.load-model-container
+.gallery-swipe-info
 {
     position:absolute;
-    top:0px;
-    right:0px;
-    //width:400px;
-    height:100%;
-    padding:50px;
+    bottom:50px;
+    right:40px;
+    height:30px;
+}
+
+.gallery-swipe-info .content-left
+{
+   width:300px;
+   text-align:right;
 }
 
 /**
@@ -120,27 +170,31 @@
 
 .model-background-img{
     position:absolute;
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
+    width: 100%;
+    height: 100%;
+    /*width: auto;
+    height: auto;*/
+    background:cover;
+}
+
+
+.content-subtitle-model{
+      background-color: rgba(255, 0, 0, 0.3);
 }
 
 .view-model
 {
-    float:right;
     clear:both;
 }
 
 .load-model-button
 {
     @extend %menu-font;
-    padding:7px 20px 7px 20px;
-    text-align:center;
+    text-align:right;
     float: right;
-    border: 1px solid red;
-    margin-top:5px;
-    margin-left:10px;
+    width:150px;
+    margin-top:10px;
+    clear:both;
     will-change: background-color;
     @include transition(background-color 200ms 0s $transition-effect);
 }
@@ -150,57 +204,63 @@
     background-color:rgba(255,0,0,0.3);
 }
 
-/* next and prev arrows */
-
-
-button {
-  -webkit-appearance: none;
-  background: transparent;
-  border: 0;
-  outline:0;
+.thumb-wrapper {
+    float:right;
+	text-align: center;
+    margin-right: 30px;
+	z-index: 10;
+	cursor: pointer;
 }
 
-svg {
-  padding: 5px;
+.thumb-wrapper > a {
+	@extend %menu-font;
+	color: white;
+	background: rgba(0,0,0,1);
+	display: inline-block;
+	padding: 0 30px 0 30px;
+	margin: 0;
+	height: 40px;
+	line-height: 40px;
+	position: relative;
+	white-space: nowrap;
+	max-width: 4px;
+	-webkit-transition: max-width ease-in-out .8s;
+	transition: max-width ease-in-out .8s;
+    transition-delay: 0ms;
+	overflow:hidden;
 }
 
-.arrow {
-  z-index:3;
-  cursor: pointer;
-  position: absolute;
-  top: 40%;
-  width: 70px;
-  height: 90px;
+
+
+/* Left inset arrow */
+.thumb-wrapper a:before, .thumb-wrapper a:after {
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-color: transparent transparent transparent white;
+	content:"/";
+	top:0;
 }
 
-.left {
-  left: 20px;
+.thumb-wrapper a:before {
+	border-left-color: white;
+	z-index: 1;
+	left: 0px;
 }
 
-.right {
-  right: 20px;
+.thumb-wrapper a:after {
+	border-left-color: rgba(0,0,0,1);
+	z-index: 2;
+	left: -1px
+}
+.thumb-wrapper i:after {
+	border-left-color: red;
+	z-index: 3;
+	margin-left: 3px;
 }
 
-.left:hover polyline,
-.left:focus polyline {
-  stroke-width: 5;
+.thumb-wrapper :first-child:before,
+.thumb-wrapper :first-child:after {
+	display: none
 }
 
-.left:active polyline {
-  stroke-width: 7;
-  transition: all 100ms $transition-effect;
-}
-
-.right:hover polyline,
-.right:focus polyline {
-  stroke-width: 5;
-}
-
-.right:active polyline {
-  stroke-width: 7;
-  transition: all 100ms $transition-effect;
-}
-
-polyline {
-  transition: all 250ms $transition-effect;
-}

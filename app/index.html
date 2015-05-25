@@ -138,7 +138,7 @@
         <div class="burguer-container">
             <a id="trigger-overlay" class="burger" href="#"><span></span></a>
         </div>
-        <div class="overlay">
+        <div class="burguer-overlay">
             <nav>
                 <ul>
                     <li><a id="homeBurguerItem" href="#">Home</a>
@@ -157,10 +157,10 @@
 
         <!-- SECTION ABOUT START-->
         <section id="aboutSection" class="section-content hide">
+
             <div class="content-left">
                 <div class="content-title">
                     <span class="">About</span>
-                    <span class="highlight">Me</span>
                 </div>
                 <div class="content-subtitle">
                     what i do
@@ -171,7 +171,8 @@
                 <span class="item">Designer</span>
             </div>
             <div class="content-right">
-                <div class="content-title"></div>
+                <div class="content-title"><span class="highlight">Me</span>
+                </div>
                 <div class="content-info">
                     <div class="content-subtitle">
                         Who am I
@@ -207,7 +208,7 @@
                         touch
                     </div>
                     <div class="content-subtitle">
-                        @bruno_quintela
+                        mail@bruno_quintela.com
                     </div>
                     <div class="rule left"></div>
                     <span class="description">My current focus isto create state of the art visuals for the web. To achieve a perfect ballance between visual delivery and performance is allways my pripority.</span>
@@ -394,143 +395,115 @@
         <!--SECTION GALEERY START -->
         <section id="gallerySection" class="section-gallery">
             <div id="thumbContainer" class="gallery-thumb-container">
-                <div data-model="1" class="gallery-thumb active">
+                <div class="thumb-wrapper">
+                    <a data-model="1" class="gallery-thumb active">1 &nbsp selected</a>
+                    <a data-model="2" class="gallery-thumb">2  &nbsp selected</a>
+                    <a data-model="3" class="gallery-thumb">3  &nbsp selected</a>
+                    <a data-model="4" class="gallery-thumb">4  &nbsp selected</a>
+                    <a data-model="5" class="gallery-thumb">5  &nbsp selected</a>
+                    <a data-model="6" class="gallery-thumb">6  &nbsp selected</a>
+                    <a data-model="7" class="gallery-thumb">7  &nbsp selected</a>
+                    <a data-model="8" class="gallery-thumb">8  &nbsp selected</a>
+                    <a data-model="9" class="gallery-thumb">9  &nbsp selected</a>
+                    <a data-model="10" class="gallery-thumb">10  &nbsp selected</a>
                 </div>
-                <div data-model="2" class="gallery-thumb">
-                </div>
-                <div data-model="3" class="gallery-thumb">
-                </div>
-                <div data-model="4" class="gallery-thumb">
-                </div>
-                <div data-model="5" class="gallery-thumb">
-                </div>
-                <div data-model="6" class="gallery-thumb">
-                </div>
-                <div data-model="7" class="gallery-thumb">
-                </div>
-                <div data-model="8" class="gallery-thumb">
-                </div>
-                <div data-model="9" class="gallery-thumb">
-                </div>
-                <div data-model="10" class="gallery-thumb">
+
+                <div class="gallery-swipe-info">
+                    <div class="content-left">
+                        <div class="content-subtitle">
+                            swipe horizontally to navigate
+                        </div>
+                        <div class="rule right"></div>
+                    </div>
                 </div>
             </div>
-            <button id="galleryPrevious" class="arrow left">
-                <svg width="60px" height="80px" viewBox="0 0 50 80" xml:space="preserve">
-                    <polyline fill="none" stroke="#F00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="
-	45.63,75.8 0.375,38.087 45.63,0.375 " />
-                </svg>
-            </button>
-            <button id="galleryNext" class="arrow right">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60px" height="80px" viewBox="0 0 50 80" xml:space="preserve">
-                    <polyline fill="none" stroke="#F00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="
-	0.375,0.375 45.63,38.087 0.375,75.8 " />
-                </svg>
-            </button>
+
             <div id="galleryContainer" class="gallery-item-container">
                 <ul>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <img src="../src/img/backgroundScene1.jpg" alt="" class="model-background-img">
+                            <div class="diagonal-overlay-up"></div>
+                            <div class="diagonal-overlay-down"></div>
+                            <div class="diagonal-overlay-right"></div>
                             <div class="section-content gallery-content">
                                 <div class="assets-info">
                                     <div class="content-left">
                                         <div class="content-title">
-                                            Digital
+                                            <span class="">Frame </span>
+                                             <span class="highlight">01</span>
+                                           
                                         </div>
-                                        <div class="content-subtitle">
-                                            info
+                                        <div class="content-subtitle content-subtitle-model">
+                                            scene info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
+                                            <span class="settings-name">Date </span><span class="settings-toggle">13.05.15</span>
                                             <span class="settings-name">Assets Size</span><span class="settings-toggle ">304Kb</span>
-                                            <span class="settings-name">Rendering</span><span class="settings-toggle">Heavy</span>
+                                            <span class="settings-name">#polygons</span><span class="settings-toggle">11.254</span>
                                         </div>
+                                        <div class="content-title">
+                                            <span class=""></span>
+                                           
+                                        </div>
+                                        <div class="content-subtitle content-subtitle-model">
+                                            view turntable
+                                        </div>
+                                        <div class="rule right"></div>
+                                        <a data-model="1" data-assets="3" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                        <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                     </div>
                                 </div>
                                 <div class="content-right">
-                                    <div class="content-title">
-                                        <span class="">Frame</span>
-                                        <span class="highlight">01</span>
-                                    </div>
-                                    <div class="content-info">
-                                        <div class="content-subtitle">
-                                            credits
-                                        </div>
-                                        <div class="rule left"></div>
-                                        <div class="description">
-                                            <div class="credits-item">Human Mesh created in Makehuman</div>
-                                            <div class="credits-item">Lowpoly Mesh created in Blender</div>
-                                        </div>
-                                    </div>
-                                    <div class="load-model-container">
-                                        <div class="content-left">
-                                            <div class="content-title">
-                                            </div>
-                                            <div class="content-subtitle">
-                                                View turntable as
-                                            </div>
-                                            <div class="rule right"></div>
-                                            <div class="view-model">
-                                                <a data-model="1" data-assets="3" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                                <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <div class="content-title">Gallery</div>
                                 </div>
                             </div>
+
                         </div>
+
                     </li>
                     <li class="gallery-item">
 
                         <div class="model-info-wrapper">
                             <img src="../src/img/backgroundScene2.jpg" alt="" class="model-background-img">
+                            <div class="diagonal-overlay-up"></div>
+                            <div class="diagonal-overlay-down"></div>
+
                             <div class="section-content gallery-content hide">
 
                                 <div class="assets-info">
                                     <div class="content-left">
                                         <div class="content-title">
-                                            Digital
-                                        </div>
-
-                                        <div class="content-subtitle">
-                                            info
-                                        </div>
-                                        <div class="rule right"></div>
-                                        <div class="current-info">
-                                            <span class="settings-name">Assets Size</span><span class="settings-toggle ">304Kb</span>
-                                            <span class="settings-name">Rendering</span><span class="settings-toggle">Heavy</span>
+                                            Gallery
                                         </div>
                                     </div>
                                 </div>
                                 <div class="content-right">
                                     <div class="content-title">
-                                        <span class="">Frame</span>
+                                        <span class="">Frame#</span>
                                         <span class="highlight">02</span>
                                     </div>
                                     <div class="content-info">
-                                        <div class="content-subtitle">
-                                            credits
-                                        </div>
+
                                         <div class="rule left"></div>
                                         <div class="description">
-                                            <div class="credits-item">Human Mesh created in Makehuman</div>
-                                            <div class="credits-item">Lowpoly Mesh created in Blender</div>
+                                            <span class="settings-name">Assets Size</span><span class="settings-toggle ">304Kb</span>
+                                            <br>
+                                            <span class="settings-name">Rendering</span><span class="settings-toggle">Heavy</span>
                                         </div>
                                     </div>
-                                    <div class="load-model-container">
-                                        <div class="content-left">
-                                            <div class="content-title">
-                                            </div>
-                                            <div class="content-subtitle">
-                                                View turntable as
-                                            </div>
-                                            <div class="rule right"></div>
-                                            <div class="view-model">
-                                                <a data-model="2" data-assets="5" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                                <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
-                                            </div>
-                                        </div>
+                                </div>
+                            </div>
+                            <div class="load-model-container">
+                                <div class="content-left">
+                                    <div class="content-subtitle">
+                                        View turntable
+                                    </div>
+                                    <div class="rule right"></div>
+                                    <div class="view-model">
+                                        <a data-model="2" data-assets="5" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                        <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                     </div>
                                 </div>
                             </div>
@@ -539,6 +512,8 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <img src="../src/img/backgroundScene3.jpg" alt="" class="model-background-img">
+                            <div class="diagonal-overlay-up"></div>
+                            <div class="diagonal-overlay-down"></div>
                             <div class="section-content gallery-content hide">
                                 <div class="assets-info">
                                     <div class="content-left">
@@ -569,18 +544,18 @@
                                             <div class="credits-item">Lowpoly Mesh created in Blender</div>
                                         </div>
                                     </div>
-                                    <div class="load-model-container">
-                                        <div class="content-left">
-                                            <div class="content-title">
-                                            </div>
-                                            <div class="content-subtitle">
-                                                View turntable as
-                                            </div>
-                                            <div class="rule right"></div>
-                                            <div class="view-model">
-                                                <a data-model="3" data-assets="6" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                                <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
-                                            </div>
+                                </div>
+                                <div class="load-model-container">
+                                    <div class="content-left">
+                                        <div class="content-title">
+                                        </div>
+                                        <div class="content-subtitle">
+                                            View turntable as
+                                        </div>
+                                        <div class="rule right"></div>
+                                        <div class="view-model">
+                                            <a data-model="3" data-assets="6" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                            <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -590,6 +565,8 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <img src="../src/img/backgroundScene4.jpg" alt="" class="model-background-img">
+                            <div class="diagonal-overlay-up"></div>
+                            <div class="diagonal-overlay-down"></div>
                             <div class="section-content gallery-content hide">
                                 <div class="assets-info">
                                     <div class="content-left">
@@ -610,31 +587,20 @@
                                 </div>
                                 <div class="content-right">
                                     <div class="content-title">This Form</div>
-                                    <div class="content-info">
-                                        <div class="content-subtitle">
-                                            credits
-                                        </div>
-                                        <div class="rule left"></div>
-                                        <div class="description">
-                                            <div class="credits-item">Human Mesh created in Makehuman</div>
-                                            <div class="credits-item">Lowpoly Mesh created in Blender</div>
-                                        </div>
+                                </div>
+                            </div>
+                            <div class="load-model-container">
+                                <div class="content-left">
+                                    <div class="content-title">
                                     </div>
-                                    <div class="load-model-container">
-                                        <div class="content-left">
-                                            <div class="content-title">
-                                            </div>
-                                            <div class="content-subtitle">
-                                                View turntable as
-                                            </div>
-                                            <div class="rule right"></div>
-                                            <div class="view-model">
-                                                <a data-model="4" data-assets="6" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                                <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
-                                            </div>
-                                        </div>
+                                    <div class="content-subtitle">
+                                        View turntable as
                                     </div>
-
+                                    <div class="rule right"></div>
+                                    <div class="view-model">
+                                        <a data-model="4" data-assets="6" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                        <a data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -951,11 +917,11 @@
         <!--SECTION GALLERY END -->
         <!--FOOTER INFO START -->
         <footer id="footerInfoSection" class="footer-section-info hide">
-            <div class="current-model-title">
+            <div class="footer-title">
                 <span class="">Bruno </span>
                 <span class="highlight">Quintela</span>
             </div>
-            <div class="current-model-title">
+            <div class="footer-title">
                 | Portfolio
             </div>
 
