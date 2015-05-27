@@ -6,33 +6,39 @@
     height:100%;
     will-change: opacity;
     opacity:0;
-    //display:none;
-    @include transition(opacity 1000ms 0ms $transition-effect);
+  
+    @include transform(translateX(100%));
+    @include transition((opacity 1000ms 0ms $transition-effect, transform 0ms 1000ms));
 }
 
 .section-gallery.show
 {
     opacity:1;
-    //display:block;
-    @include transition(opacity 1000ms 1000ms $transition-effect);
+    @include transform(translateX(0));
+    @include transition((opacity 1000ms 1000ms $transition-effect, transform 0ms 0ms));
 }
 
 .gallery-content
 {
     
-    top:100px;
-    padding-top:15px;
+    top:50px;
+    padding-top:0px;
     border-bottom:none;
-    height:150px;
+    height:450px;
     background: transparent;
     @include transform(translateX(0) translateY(0));
-    @include transition(transform 1000ms 0ms $transition-effect);
+    @include transition(transform 0ms 0ms $transition-effect);
 }
 
 .gallery-content.hide
 {
-    @include transform(translateX(0) translateY(0%));
-    @include transition(transform 1000ms 1000ms $transition-effect);
+    @include transform(translateX(0) translateY(0));
+    @include transition(transform 0ms 0ms $transition-effect);
+}
+
+.gallery-content .content-left{
+    float:right;
+    padding-right:40px;
 }
 
 .diagonal-overlay-up
@@ -40,40 +46,51 @@
     position:absolute;
     bottom:0;
     left:0;
-    margin-bottom:40px;
     width:1080px;
     height:100%;
     border-width:1600px 900px 0 0;
     border-style:solid;
-    border-color:rgba(0,0,0,0.9) transparent rgba(0,0,0,0.9) transparent;
-    //background-color:$secondary-color-opaque;
+    border-color:rgba(0,0,0,0.9) transparent transparent transparent;
 }
+
 
 .diagonal-overlay-down
 {
     position:absolute;
     bottom:0;
     left:0;
-    margin-bottom:40px;
     width:100%;
     height:100%;
     border-width:0 0 900px 1500px;
     border-style:solid;
-    border-color:transparent $secondary-color-opaque $secondary-color-opaque transparent;
-    //background-color:$secondary-color-opaque;
+    border-color:transparent transparent rgba(255,0,0,0.2) transparent;
 }
+
 
 .diagonal-overlay-right
 {
+    z-index:1;
     position:absolute;
     bottom:0px;
     right:0;
-    width:100%;
+    width:400px;
     height:100px;
-    border-width:0 0 200px 1920px;
+    border-width:0 0 200px 1250px;
     border-style:solid;
-    border-color:transparent rgba(0,0,0,0.9) rgba(0,0,0,1) transparent;
-    //background-color:$secondary-color-opaque;
+    border-color:transparent transparent rgba(0,0,0,1) transparent;
+
+}
+
+.diagonal-overlay-left
+{
+    position:absolute;
+    bottom:0;
+    right:0;
+    width:300px;
+    height:100%;
+    border-width:0px 553px 1065px 0;
+    border-style:solid;
+    border-color:transparent rgba(0, 0, 0, 0.9) transparent transparent
 }
 
 .gallery-thumb-container
@@ -85,7 +102,7 @@
     height:40px;
     margin:auto;
     text-align:center;
-    background-color:rgba(0,0,0,1);
+    background-color:transparent;
     opacity:1;
 }
 
@@ -94,35 +111,21 @@
     
     cursor:pointer;
     will-change:color;
-    color:rgba(255,255,255,1);
+    color:rgba(255,255,255,0.6);
     @include transition(color 1000ms 0ms $transition-effect);
 }
 
 .gallery-thumb:hover
 {
-   //background-color:rgba(255,0,0,0.7);
-    color:red;
+    color:rgba(255,255,255,1);
     @include transition(color 300ms 0ms $transition-effect);
-}
-
-.gallery-thumb:hover:after
-{
-   //background-color:rgba(255,0,0,0.7);
-    color:#fff;
-   
 }
 
 .gallery-thumb.active
 {
-    border-radius:5px; 
+    color:rgba(255,255,255,1);
 	max-width: 499px;
 }
-
-.gallery-thumb.active:after
-{
-    color:#fff;
-}
-
 
 .gallery-item-container
 {
@@ -140,11 +143,17 @@
   cursor: grab;
 }
 
+.assets-info
+{
+    float:right;
+    margin-top:25px;
+}
+
 
 .gallery-swipe-info
 {
     position:absolute;
-    bottom:50px;
+    bottom:70px;
     right:40px;
     height:30px;
 }
@@ -152,6 +161,7 @@
 .gallery-swipe-info .content-left
 {
    width:300px;
+   height:30px;
    text-align:right;
 }
 
@@ -172,9 +182,13 @@
     position:absolute;
     width: 100%;
     height: 100%;
-    /*width: auto;
-    height: auto;*/
     background:cover;
+    opacity:1;
+    
+}
+
+.model-background-img.hide{
+    opacity:0;
 }
 
 
@@ -214,7 +228,6 @@
 
 .thumb-wrapper > a {
 	@extend %menu-font;
-	color: white;
 	background: rgba(0,0,0,1);
 	display: inline-block;
 	padding: 0 30px 0 30px;
@@ -264,3 +277,88 @@
 	display: none
 }
 
+.assets-label
+{
+    @extend %model-settings-font;
+    float:right;
+    text-align:right;
+    width:60px;
+    display: inline-block;
+    color:#fff;
+    margin-top:5px;
+}
+
+/**
+ * Model Loading
+**/
+
+
+.model-loading-screen
+{
+    z-index:0;
+    position:absolute;
+    padding-right:0;
+    width:100%;
+    height: 100%;
+    opacity:0;
+    background-color:$loading-model-background;
+    will-change:opacity, transform;
+    @include transition((opacity 1s 0s $transition-effect, transform 1s 0s $transition-effect));
+}
+
+.model-loading-screen.show
+{
+    z-index:1;
+    opacity:1;
+    @include transition((opacity 1s 0s $transition-effect, transform 1s 0s $transition-effect));
+}
+
+.loading-info-top
+{
+    @extend %model-loading-font; 
+    position:absolute;
+    top:$menu-height;
+    right:30px;
+    width:100%;
+    height:30px;
+    margin-top:10px;
+    text-align: right;
+    opacity:1;
+    will-change:opacity;
+    @include transition(opacity 0.5s $transition-effect);
+}
+
+
+.model-loading-screen.show .loading-info-top
+{
+    -webkit-animation: fade-transition 1s 1s infinite alternate ; /* Safari 4+ */
+    -moz-animation:    fade-transition 1s 1s infinite alternate; /* Fx 5+ */
+    -o-animation:      fade-transition 1s 1s infinite alternate; /* Opera 12+ */
+    animation:         fade-transition 1s 1s infinite alternate ; /* IE 10+, Fx 29+ */
+}
+
+.model-loading-bar{
+    position:absolute;
+    top:$menu-height;
+    left: 0;
+    width:100%;
+    height:1px;
+    background-color:transparent;
+}
+
+.model-loading-progress{
+    position:absolute;
+    width:0%;
+    bottom:0;
+    right:0;
+    height:3px;
+    background-color:$secondary-color;
+    will-change: width;
+    @include transition(width 2s 0s $transition-effect);
+}
+
+.model-loading-progress.reset{
+    position:absolute;
+    width:0%;
+    @include transition(width 0s 0s);
+}

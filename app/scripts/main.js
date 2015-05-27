@@ -11,7 +11,6 @@
 /*global TWEEN:false */
 /*global classie:false */
 /*global Dragend:false */
-
 /**
  * Declare Global Namespace
  **/
@@ -20,7 +19,6 @@ var myPortfolio = myPortfolio || {
     description: 'Portfolio',
     revision: '21052015'
 };
-
 /**
  * Create the Engine to provide this site needs
  **/
@@ -465,6 +463,7 @@ var ENGINE = function() {
                 });
                 guiRender.add(this.renderParams, 'skydomeImage', this.materialParams.backgroundTexture).onChange(function(value) {
                     myPortfolio.World.CurrentLayer.skydome.material.map = THREE.ImageUtils.loadTexture('../src/textures/background/background' + value + '.jpg');
+                    //myPortfolio.World.NextLayer.skydome.material.map = THREE.ImageUtils.loadTexture('../src/textures/background/background' + value + '.jpg');
                 });
                 guiRender.add(this.renderParams, 'fog', 0, 1, 0.001).onChange(function(value) {
                     myPortfolio.World.CurrentLayer.scene.fog = new THREE.FogExp2(0x000000, value);
@@ -1102,7 +1101,22 @@ var ENGINE = function() {
                  * Add SkyDome Sphere
                  **/
                 var addSkyDome = function(layer, radius, texturePath) {
-                    var skydomeTexture = THREE.ImageUtils.loadTexture(texturePath, THREE.UVMapping, function() {
+                    layer.skydome = new THREE.Mesh(new THREE.SphereGeometry(radius, 60, 40), new THREE.MeshBasicMaterial({
+                        blending: THREE.NormalBlending,
+                        depthTest: true,
+                        transparent: true
+                    }));
+                    layer.skydome.material.map = THREE.ImageUtils.loadTexture(texturePath, THREE.UVMapping, function() {
+                        layer.numberAssetsLoaded++;
+                        console.log(layer.numberAssetsLoaded);
+                        layer.loadProgressCallback();
+                    });
+                    layer.skydome.scale.x = -1;
+                    layer.scene.add(layer.skydome);
+                };
+                /*
+                var addSkyDome = function(layer, radius, texturePath) {
+                    var skydomeTexture = THREE.ImageUtils.loadTexture(texturePath, new THREE.UVMapping(), function() {
                         layer.skydome = new THREE.Mesh(new THREE.SphereGeometry(radius, 60, 40), new THREE.MeshBasicMaterial({
                             map: skydomeTexture,
                             blending: THREE.NormalBlending,
@@ -1113,6 +1127,7 @@ var ENGINE = function() {
                         layer.scene.add(layer.skydome);
                     });
                 };
+                */
                 /**
                  * Add CubeMap
                  **/
@@ -2345,7 +2360,6 @@ var ENGINE = function() {
                 UI.hideAllSections();
                 UI.resetMenuItemActive();
                 classie.addClass(homeAnchor, 'active');
-                classie.removeClass(settingsSection, 'show');
                 classie.removeClass(footerInfoSection, 'hide');
             });
             aboutAnchor.addEventListener('click', function() {
@@ -2354,7 +2368,6 @@ var ENGINE = function() {
                 UI.resetMenuItemActive();
                 classie.addClass(aboutAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos2');
-                classie.removeClass(settingsSection, 'show');
                 classie.removeClass(footerInfoSection, 'hide');
             });
             galleryAnchor.addEventListener('click', function() {
@@ -2372,7 +2385,6 @@ var ENGINE = function() {
                 UI.resetMenuItemActive();
                 classie.addClass(contactAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos4');
-                classie.removeClass(settingsSection, 'show');
                 classie.removeClass(footerInfoSection, 'hide');
             });
             creditsAnchor.addEventListener('click', function() {
@@ -2381,7 +2393,6 @@ var ENGINE = function() {
                 UI.resetMenuItemActive();
                 classie.addClass(creditsAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos5');
-                classie.removeClass(settingsSection, 'show');
                 classie.removeClass(footerInfoSection, 'hide');
             });
             settingsAnchor.addEventListener('click', function() {
@@ -2492,13 +2503,7 @@ var ENGINE = function() {
                         classie.addClass(currentModelInfo, 'hide');
                     });
                     var selectedModel = parseInt(currentThumb.getAttribute('data-model')) - 1;
-                    //check if transition is to long to use scrollToPage
-                    if(Math.abs(UI.selectedModel - selectedModel) > 2) {
-                        gallery._jumpToPage('page', selectedModel);
-                    } else {
-                        gallery._scrollToPage('page', selectedModel);
-                    }
-                    UI.selectedModel = selectedModel;
+                    gallery._scrollToPage('page', selectedModel);
                     var nextModelInfo = document.getElementsByClassName('gallery-content')[selectedModel];
                     classie.removeClass(nextModelInfo, 'hide');
                     /* update current active thumnail */
@@ -2508,16 +2513,43 @@ var ENGINE = function() {
                     classie.addClass(currentThumb, 'active');
                 });
             });
-           
+            if(galleryContainer.addEventListener) {
+                // IE9, Chrome, Safari, Opera
+                galleryContainer.addEventListener("mousewheel", MouseWheelHandler, false);
+                // Firefox
+                galleryContainer.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
+            }
+            // IE 6/7/8
+            else galleryContainer.attachEvent("onmousewheel", MouseWheelHandler);
+
+            function MouseWheelHandler(e) {
+                // cross-browser wheel delta
+                var e = window.event || e; // old IE support
+                var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+                var thumIndex = 0;
+                var activeThumb = 0;
+                [].forEach.call(galleryThumbs, function(currentThumb) {
+                    if(classie.hasClass(currentThumb, "active")) {
+                        activeThumb = thumIndex;
+                    }
+                    thumIndex++;
+                });
+                if(delta > 0 && activeThumb > 0) {
+                    galleryThumbs[activeThumb - 1].click();
+                } else if(delta < 0 && activeThumb < (galleryThumbs.length - 1)) {
+                    galleryThumbs[activeThumb + 1].click();
+                }
+            }
             /** 
              * Init Model load buttons
              */
+            var galleryImg = document.querySelectorAll('.model-background-img');
 
             function loadWebgl(modelNumber, totalAssets) {
                 //transition layer
                 myPortfolio.World.transitionParams.transitionMixRatio = 1;
                 var modelLoadingScreen = document.getElementById('modelLoadingScreen');
-                console.log('start3D');
+                //console.log('start3D');
                 classie.addClass(modelLoadingScreen, 'show');
                 myPortfolio.World.NextLayer = new myPortfolio.World.Layer('scene' + modelNumber, totalAssets, function() {
                     var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
@@ -2556,10 +2588,15 @@ var ENGINE = function() {
                     }, 5000).onUpdate(update);
                     tweenLayerTransition.start();
                     myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
+                    /* hide background image for current selected*/
+                    [].forEach.call(galleryImg, function(currentImg) {
+                        classie.removeClass(currentImg, 'hide');
+                    });
+                    classie.addClass(galleryImg[modelNumber - 1], 'hide');
                 });
             }
 
-            function loadVideo(videoSrc) {
+            function loadVideo(modelNumber, videoSrc) {
                 myPortfolio.World.transitionParams.transitionMixRatio = -1;
                 classie.addClass(myPortfolio.UI.webglCanvas, 'hide');
                 myPortfolio.UI.hideAllSections();
@@ -2567,6 +2604,11 @@ var ENGINE = function() {
                 classie.removeClass(footerInfoSection, 'hide');
                 myPortfolio.UI.videoBackground.src = videoSrc;
                 myPortfolio.UI.videoBackground.play();
+                /* hide background image for current selected*/
+                [].forEach.call(galleryImg, function(currentImg) {
+                    classie.removeClass(currentImg, 'hide');
+                });
+                classie.addClass(galleryImg[modelNumber - 1], 'hide');
             }
             var webglLoadItems = document.querySelectorAll('.load-webgl');
             [].forEach.call(webglLoadItems, function(currentModel) {
@@ -2583,8 +2625,9 @@ var ENGINE = function() {
             var videoLoadItems = document.querySelectorAll('.load-video');
             [].forEach.call(videoLoadItems, function(currentModel) {
                 currentModel.addEventListener('click', function() {
+                    var targetModel = parseInt(currentModel.getAttribute('data-model'));
                     var targetVideo = currentModel.getAttribute('data-video');
-                    loadVideo(targetVideo);
+                    loadVideo(targetModel, targetVideo);
                     console.log('loadvideo');
                 });
             });
@@ -2603,6 +2646,7 @@ var ENGINE = function() {
                 zoomScene(parseInt(this.value));
             });
             /* event handler to hide UI when pressing key T (used to take webgl screenshots)*/
+
             function keyhandle(e) {
                 e = e || event;
                 if(e.keyCode === 84 || e.keyCode === 116) {
@@ -2611,8 +2655,6 @@ var ENGINE = function() {
                 }
             }
             document.body.onkeypress = keyhandle;
-
-            
         },
         /**
          * UI Settings event handlers
@@ -2848,7 +2890,6 @@ var ENGINE = function() {
             if(threejsCanvas) {
                 threejsCanvas.parentNode.removeChild(threejsCanvas);
             }
-            
             var modelSettings = document.getElementById('modelSettings');
             if(modelSettings) {
                 modelSettings.parentNode.removeChild(modelSettings);
@@ -2897,7 +2938,6 @@ var ENGINE = function() {
 /**
  * On Ready Init Page Prototype TODO
  **/
-
-    myPortfolio = new ENGINE();
-    myPortfolio.init();
-    console.log('Engine started.');
+myPortfolio = new ENGINE();
+myPortfolio.init();
+console.log('Engine started.');

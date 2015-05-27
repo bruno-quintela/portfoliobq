@@ -1,6 +1,7 @@
 .section-settings{
     position:absolute;
-    bottom:$menu-height;
+    top:inherit;
+    bottom:$menu-height !important;
     right:0;
     width:100%;
     height:200px;
@@ -12,6 +13,7 @@
 
 .section-settings.show{
     will-change: transform;
+    bottom:$menu-height !important;
     @include transform(translateX(0));
     @include transition(transform 1000ms 0ms $transition-effect);
 }
@@ -114,7 +116,7 @@
     color:#fff;
 }
 
-.active{
+.settings-toggle.active{
     color:red !important;
     font-weight:500;
 }

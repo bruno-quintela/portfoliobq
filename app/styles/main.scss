@@ -11,7 +11,7 @@ $secondary-color: rgba(255,0,0,1);
 $secondary-color-opaque: rgba(255,0,0,0.2);
 $main-menu-background: rgba(0,0,0,1);
 $footer-background: rgba(0,0,0,1);
-$loading-model-background: rgba(0,0,0,0.7);
+$loading-model-background: rgba(0,0,0,0.3);
 $background-color: rgba(0,0,0,1);
 $transition-effect: ease;
 
@@ -300,79 +300,6 @@ $transition-effect: ease;
     @include transition(width 0.5s $transition-effect);
 }
 
-/**
- * Model Loading
-**/
-
-
-.model-loading-screen
-{
-    z-index:0;
-    position:absolute;
-    padding-right:0;
-    width:100%;
-    height: 100%;
-    opacity:0;
-    background-color:$loading-model-background;
-    will-change:opacity, transform;
-    @include transition((opacity 1s 0s $transition-effect, transform 1s 0s $transition-effect));
-}
-
-.model-loading-screen.show
-{
-    z-index:15;
-    opacity:1;
-    @include transition((opacity 1s 0s $transition-effect, transform 1s 0s $transition-effect));
-}
-
-.loading-info-top
-{
-    @extend %model-loading-font; 
-    position:absolute;
-    bottom:$section-content-height;
-    right:0;
-    width:100%;
-    height:30px;
-    text-align: center;
-    opacity:0;
-    will-change:opacity;
-    @include transition(opacity 0.5s $transition-effect);
-}
-
-
-.model-loading-screen.show .loading-info-top
-{
-    -webkit-animation: fade-transition 1s 1s infinite alternate ; /* Safari 4+ */
-    -moz-animation:    fade-transition 1s 1s infinite alternate; /* Fx 5+ */
-    -o-animation:      fade-transition 1s 1s infinite alternate; /* Opera 12+ */
-    animation:         fade-transition 1s 1s infinite alternate ; /* IE 10+, Fx 29+ */
-}
-
-.model-loading-bar{
-    position:absolute;
-    bottom:$section-content-height;
-    left: 0;
-    width:100%;
-    height:1px;
-    background-color:transparent;
-}
-
-.model-loading-progress{
-    position:absolute;
-    width:0%;
-    bottom:-3px;
-    right:0px;
-    height:3px;
-    background-color:$secondary-color;
-    will-change: width;
-    @include transition(width 2s 0s $transition-effect);
-}
-
-.model-loading-progress.reset{
-    position:absolute;
-    width:0%;
-    @include transition(width 0s 0s);
-}
 
 /**
  *  INTRO SCREEN 
@@ -508,7 +435,9 @@ $transition-effect: ease;
   100% { opacity: 1; }
 }
 
-
+.email{
+    text-transform:none;
+}
 
 input[type="range"].zoom{
      float:left;
