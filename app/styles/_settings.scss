@@ -3,6 +3,7 @@
     top:inherit;
     bottom:$menu-height !important;
     right:0;
+    padding-top:50px;
     width:100%;
     height:200px;
     background-color:$primary-color;
@@ -140,4 +141,9 @@
 .settings-quality:hover
 {
     color:#fff;
+}
+
+.settings-quality.active{
+    color:red !important;
+    font-weight:500;
 }

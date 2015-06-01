@@ -3,7 +3,7 @@
  **/
 $primary-font-family: Open Sans;
 $menu-height:50px;
-$section-content-height:250px;
+$section-content-height:225px;
 $section-left-width: 230px;
 $text-color: rgba(255,255,255,1);
 $primary-color: rgba(0,0,0,0.9);
@@ -79,7 +79,7 @@ $transition-effect: ease;
     right:0;
     width:100%;
     height:$section-content-height;
-    padding-top:50px;
+    padding-top:25px;
     background-color:$primary-color;
     will-change: transform;
     @include transform(translateY(0));
@@ -181,12 +181,13 @@ $transition-effect: ease;
 .anchor-link
 {
     @extend %anchor-link-font;
+    color:rgba(255,255,255,0.6);
     @include transition(color 500ms $transition-effect);
 }
 
 .anchor-link:hover
 {
-    color:$secondary-color;
+    color:#fff;
 }
 
 .border-bottom{
@@ -353,7 +354,7 @@ $transition-effect: ease;
     text-align:center;
     opacity:0;
     will-change: opacity;
-    @include transition((opacity 3.0s 0s $transition-effect));
+    @include transition(opacity 3.0s 0s $transition-effect);
 }
 
 .init-intro-screen .title.show{
