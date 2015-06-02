@@ -88,7 +88,7 @@ $transition-effect: ease;
 }
 
 .section-content.hide {
-    @include transform(translateY(-100%));
+    @include transform(translateY(-130%));
     @include transition(transform 1000ms 0ms $transition-effect);
 }
 
@@ -440,7 +440,7 @@ $transition-effect: ease;
     text-transform:none;
 }
 
-input[type="range"].zoom{
+/*input[type="range"].zoom{
      float:left;
 }
 
@@ -473,7 +473,7 @@ input[type="range"]::-webkit-slider-thumb{
   cursor: -webkit-grab;
   cursor: grab;
 }
-
+*/
 
 @import 'settings';
 @import 'menuOverlay';

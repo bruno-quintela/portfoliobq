@@ -27,6 +27,12 @@
 
 <body>
 
+    <!--[if lt IE 9]>
+    <script>
+    document.createElement('video');
+    document.createElement('picture');
+    </script>
+    <![endif]-->
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <script src="../bower_components/threejs/build/three.js"></script>
@@ -105,7 +111,7 @@
         <!-- Scene loading screen -->
         <div id="modelLoadingScreen" class="model-loading-screen">
             <div class="loading-info-top">
-                now loading 3D Model assets, please wait
+                now loading 3D Model assets, please wait...
             </div>
             <div class="model-loading-bar">
                 <div id="progressBar" class="model-loading-progress"></div>
@@ -168,7 +174,7 @@
                 <div class="rule right"></div>
                 <span class="item">Frontend</span>
                 <span class="item">UI&UX</span>
-                <span class="item">Designer</span>
+                <span class="item">Design</span>
             </div>
             <div class="content-right">
                 <div class="content-title"><span class="highlight">Me</span>
@@ -402,16 +408,15 @@
             <div class="diagonal-overlay-right"></div>
             <div id="thumbContainer" class="gallery-thumb-container">
                 <div class="thumb-wrapper">
-                    <a data-model="1" class="gallery-thumb active">1 &nbsp <span class="assets-label">13.05.15</span></a>
-                    <a data-model="2" class="gallery-thumb">2  &nbsp <span class="assets-label">13.05.15</span></a>
-                    <a data-model="3" class="gallery-thumb">3  &nbsp selected</a>
-                    <a data-model="4" class="gallery-thumb">4  &nbsp selected</a>
-                    <a data-model="5" class="gallery-thumb">5  &nbsp selected</a>
-                    <a data-model="6" class="gallery-thumb">6  &nbsp selected</a>
-                    <a data-model="7" class="gallery-thumb">7  &nbsp selected</a>
-                    <a data-model="8" class="gallery-thumb">8  &nbsp selected</a>
-                    <a data-model="9" class="gallery-thumb">9  &nbsp selected</a>
-                    <a data-model="10" class="gallery-thumb">10  &nbsp selected</a>
+                    <a data-model="1" class="gallery-thumb active">1 &nbsp [selected]</a>
+                    <a data-model="2" class="gallery-thumb">2  &nbsp [selected]</a>
+                    <a data-model="3" class="gallery-thumb">3  &nbsp [selected]</a>
+                    <a data-model="4" class="gallery-thumb">4  &nbsp [selected]</a>
+                    <a data-model="5" class="gallery-thumb">5  &nbsp [selected]</a>
+                    <a data-model="6" class="gallery-thumb">6  &nbsp [selected]</a>
+                    <a data-model="7" class="gallery-thumb">7  &nbsp [selected]</a>
+                    <a data-model="8" class="gallery-thumb">8  &nbsp [selected]</a>
+                    <a data-model="9" class="gallery-thumb">9  &nbsp [selected]</a>
                 </div>
 
                 <div class="gallery-swipe-info">
@@ -429,14 +434,19 @@
                 <ul>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
-                            <img src="../src/img/backgroundScene1.jpg" alt="" class="model-background-img hide">
+                            <picture class="model-background-img hide">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene1HD.jpg">
+                                <source srcset="../src/img/backgroundScene1Mobile.jpg">
+                                <img src="../src/img/backgroundScene1HD.jpg" class="model-background-img" alt="">
+                            </picture>
+                            
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
                             <div class="section-content gallery-content">
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">Gallery </span>
+                                        <span class="">Frame</span>
                                         <span class="highlight">01</span>
                                     </div>
                                     <div class="assets-info">
@@ -445,9 +455,9 @@
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
-
-                                            <span class="settings-name">Assets Size</span><span class="assets-label">304Kb</span>
-                                            <span class="settings-name">#polygons</span><span class="assets-label">11.254</span>
+                                            <span class="settings-name">Date </span><span class="assets-label">20.02.15</span>
+                                            <span class="settings-name">Assets Size</span><span class="assets-label">1.6Mb</span>
+                                            <span class="settings-name">#polygons</span><span class="assets-label">2.926</span>
                                         </div>
                                     </div>
                                     <div class="assets-info">
@@ -457,7 +467,7 @@
 
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="1" data-assets="3" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                            <a data-model="1" data-assets="4" class="load-model-button load-webgl" href="#">WEBGL</a>
                                             <a data-model="1" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
@@ -468,7 +478,11 @@
                     </li>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
-                            <img src="../src/img/backgroundScene2.jpg" alt="" class="model-background-img">
+                             <picture class="model-background-img">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene2HD.jpg">
+                                <source srcset="../src/img/backgroundScene2Mobile.jpg">
+                                <img src="../src/img/backgroundScene2HD.jpg" class="model-background-img" alt="">
+                            </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
                             <div class="section-content gallery-content">
@@ -484,9 +498,9 @@
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">13.05.15</span>
-                                            <span class="settings-name">Assets Size</span><span class="assets-label">304Kb</span>
-                                            <span class="settings-name">#polygons</span><span class="assets-label">11.254</span>
+                                            <span class="settings-name">Date </span><span class="assets-label">11.03.15</span>
+                                            <span class="settings-name">Assets Size</span><span class="assets-label">3.4Mb</span>
+                                            <span class="settings-name">#polygons</span><span class="assets-label">12.352</span>
                                         </div>
                                     </div>
                                     <div class="assets-info">
@@ -496,7 +510,7 @@
 
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="2" data-assets="3" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                            <a data-model="2" data-assets="5" class="load-model-button load-webgl" href="#">WEBGL</a>
                                             <a data-model="2" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
@@ -506,7 +520,11 @@
                     </li>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
-                            <img src="../src/img/backgroundScene3.jpg" alt="" class="model-background-img">
+                            <picture class="model-background-img">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene3HD.jpg">
+                                <source srcset="../src/img/backgroundScene3Mobile.jpg">
+                                <img src="../src/img/backgroundScene3HD.jpg" class="model-background-img" alt="">
+                            </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
                             <div class="section-content gallery-content">
@@ -522,9 +540,9 @@
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">13.05.15</span>
-                                            <span class="settings-name">Assets Size</span><span class="assets-label">304Kb</span>
-                                            <span class="settings-name">#polygons</span><span class="assets-label">11.254</span>
+                                            <span class="settings-name">Date </span><span class="assets-label">13.03.15</span>
+                                            <span class="settings-name">Assets Size</span><span class="assets-label">3.2Mb</span>
+                                            <span class="settings-name">#polygons</span><span class="assets-label">12.790</span>
                                         </div>
                                     </div>
                                     <div class="assets-info">
@@ -545,7 +563,11 @@
                     </li>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
-                            <img src="../src/img/backgroundScene4.jpg" alt="" class="model-background-img">
+                            <picture class="model-background-img">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene4HD.jpg">
+                                <source srcset="../src/img/backgroundScene4Mobile.jpg">
+                                <img src="../src/img/backgroundScene4HD.jpg" class="model-background-img" alt="">
+                            </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
                             <div class="section-content gallery-content">
@@ -561,9 +583,9 @@
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">13.05.15</span>
-                                            <span class="settings-name">Assets Size</span><span class="assets-label">304Kb</span>
-                                            <span class="settings-name">#polygons</span><span class="assets-label">11.254</span>
+                                            <span class="settings-name">Date </span><span class="assets-label">25.04.15</span>
+                                            <span class="settings-name">Assets Size</span><span class="assets-label">1.7Mb</span>
+                                            <span class="settings-name">#polygons</span><span class="assets-label">11.853</span>
                                         </div>
                                     </div>
                                     <div class="assets-info">
@@ -583,7 +605,11 @@
                     </li>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
-                            <img src="../src/img/backgroundScene5.jpg" alt="" class="model-background-img">
+                            <picture class="model-background-img">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene5HD.jpg">
+                                <source srcset="../src/img/backgroundScene5Mobile.jpg">
+                                <img src="../src/img/backgroundScene5HD.jpg" class="model-background-img" alt="">
+                            </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
                             <div class="section-content gallery-content">
@@ -599,9 +625,9 @@
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">13.05.15</span>
-                                            <span class="settings-name">Assets Size</span><span class="assets-label">304Kb</span>
-                                            <span class="settings-name">#polygons</span><span class="assets-label">11.254</span>
+                                            <span class="settings-name">Date </span><span class="assets-label">10.04.15</span>
+                                            <span class="settings-name">Assets Size</span><span class="assets-label">2.1Mb</span>
+                                            <span class="settings-name">#polygons</span><span class="assets-label">10.769</span>
                                         </div>
                                     </div>
                                     <div class="assets-info">
@@ -621,7 +647,11 @@
                     </li>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
-                            <img src="../src/img/backgroundScene6.jpg" alt="" class="model-background-img">
+                            <picture class="model-background-img">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene6HD.jpg">
+                                <source srcset="../src/img/backgroundScene6Mobile.jpg">
+                                <img src="../src/img/backgroundScene6HD.jpg" class="model-background-img" alt="">
+                            </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
                             <div class="section-content gallery-content">
@@ -637,9 +667,9 @@
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">13.05.15</span>
-                                            <span class="settings-name">Assets Size</span><span class="assets-label">304Kb</span>
-                                            <span class="settings-name">#polygons</span><span class="assets-label">11.254</span>
+                                            <span class="settings-name">Date </span><span class="assets-label">15.04.15</span>
+                                            <span class="settings-name">Assets Size</span><span class="assets-label">2.9Mb</span>
+                                            <span class="settings-name">#polygons</span><span class="assets-label">11.932</span>
                                         </div>
                                     </div>
                                     <div class="assets-info">
@@ -649,7 +679,7 @@
 
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="6" data-assets="3" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                            <a data-model="6" data-assets="2" class="load-model-button load-webgl" href="#">WEBGL</a>
                                             <a data-model="6" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
@@ -659,7 +689,11 @@
                     </li>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
-                            <img src="../src/img/backgroundScene7.jpg" alt="" class="model-background-img">
+                           <picture class="model-background-img">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene7HD.jpg">
+                                <source srcset="../src/img/backgroundScene7Mobile.jpg">
+                                <img src="../src/img/backgroundScene7HD.jpg" class="model-background-img" alt="">
+                            </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
                             <div class="section-content gallery-content">
@@ -675,9 +709,9 @@
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">13.05.15</span>
-                                            <span class="settings-name">Assets Size</span><span class="assets-label">304Kb</span>
-                                            <span class="settings-name">#polygons</span><span class="assets-label">11.254</span>
+                                            <span class="settings-name">Date </span><span class="assets-label">20.04.15</span>
+                                            <span class="settings-name">Assets Size</span><span class="assets-label">4.7Mb</span>
+                                            <span class="settings-name">#polygons</span><span class="assets-label">23.896</span>
                                         </div>
                                     </div>
                                     <div class="assets-info">
@@ -698,7 +732,11 @@
                     </li>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
-                            <img src="../src/img/backgroundScene8.jpg" alt="" class="model-background-img">
+                            <picture class="model-background-img">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene8HD.jpg">
+                                <source srcset="../src/img/backgroundScene8Mobile.jpg">
+                                <img src="../src/img/backgroundScene8HD.jpg" class="model-background-img" alt="">
+                            </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
                             <div class="section-content gallery-content">
@@ -715,8 +753,8 @@
                                         <div class="rule right"></div>
                                         <div class="current-info">
                                             <span class="settings-name">Date </span><span class="assets-label">13.05.15</span>
-                                            <span class="settings-name">Assets Size</span><span class="assets-label">304Kb</span>
-                                            <span class="settings-name">#polygons</span><span class="assets-label">11.254</span>
+                                            <span class="settings-name">Assets Size</span><span class="assets-label">2.7Mb</span>
+                                            <span class="settings-name">#polygons</span><span class="assets-label">10.992</span>
                                         </div>
                                     </div>
                                     <div class="assets-info">
@@ -736,7 +774,11 @@
                     </li>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
-                            <img src="../src/img/backgroundScene9.jpg" alt="" class="model-background-img">
+                            <picture class="model-background-img">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene9HD.jpg">
+                                <source srcset="../src/img/backgroundScene9Mobile.jpg">
+                                <img src="../src/img/backgroundScene9HD.jpg" class="model-background-img" alt="">
+                            </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
                             <div class="section-content gallery-content">
@@ -752,9 +794,9 @@
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">13.05.15</span>
-                                            <span class="settings-name">Assets Size</span><span class="assets-label">304Kb</span>
-                                            <span class="settings-name">#polygons</span><span class="assets-label">11.254</span>
+                                            <span class="settings-name">Date </span><span class="assets-label">23.05.15</span>
+                                            <span class="settings-name">Assets Size</span><span class="assets-label">2.8Mb</span>
+                                            <span class="settings-name">#polygons</span><span class="assets-label">4.905</span>
                                         </div>
                                     </div>
                                     <div class="assets-info">
@@ -766,44 +808,6 @@
                                         <div class="current-info">
                                             <a data-model="9" data-assets="3" class="load-model-button load-webgl" href="#">WEBGL</a>
                                             <a data-model="9" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="gallery-item">
-                        <div class="model-info-wrapper">
-                            <img src="../src/img/backgroundScene10.jpg" alt="" class="model-background-img">
-                            <div class="diagonal-overlay-down"></div>
-                            <div class="diagonal-overlay-left"></div>
-                            <div class="section-content gallery-content">
-
-                                <div class="content-left">
-                                    <div class="content-title">
-                                        <span class="">Frame </span>
-                                        <span class="highlight">10</span>
-                                    </div>
-                                    <div class="assets-info">
-                                        <div class="content-subtitle content-subtitle-model">
-                                            scene info
-                                        </div>
-                                        <div class="rule right"></div>
-                                        <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">13.05.15</span>
-                                            <span class="settings-name">Assets Size</span><span class="assets-label">304Kb</span>
-                                            <span class="settings-name">#polygons</span><span class="assets-label">11.254</span>
-                                        </div>
-                                    </div>
-                                    <div class="assets-info">
-                                        <div class="content-subtitle content-subtitle-model">
-                                            view
-                                        </div>
-
-                                        <div class="rule right"></div>
-                                        <div class="current-info">
-                                            <a data-model="10" data-assets="3" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                            <a data-model="10" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
                                 </div>
