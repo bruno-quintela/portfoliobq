@@ -50,3 +50,15 @@ button {
 }
 
 video { display: block; }
+
+
+input[type="range"]{
+  -webkit-appearance:none;
+  width:100px;
+  margin-top: 7px;
+  margin-left: 10px;
+  height:10px;
+  background: $secondary-color-opaque;
+  outline:none;
+  cursor:pointer;
+}

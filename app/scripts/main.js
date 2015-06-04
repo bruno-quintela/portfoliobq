@@ -78,13 +78,14 @@ var ENGINE = function() {
             }]
         },
         isBrowserDeprecated: function() {
-            if(this.browser.name === 'Chrome' && parseInt(this.browser.version) < 40) {
+            /*if(this.browser.name === 'Chrome' && parseInt(this.browser.version) < 40) {
                 return true;
             } else if(this.browser.name === 'Firefox' && parseInt(this.browser.version) < 35) {
                 return true;
             } else {
                 return false;
-            }
+            }*/
+            return false;
         },
         // use webgl conditions
         useWebGL: function() {
@@ -665,14 +666,7 @@ var ENGINE = function() {
                     world.transition.setTextureThreshold(value);
                 });
                 guiTransition.add(this.transitionParams, 'transitionMixRatio', 0, 1, 0.01).listen();
-                /*guiTransition.add(this.transitionParams, 'toLayerA');
-                guiTransition.add(this.transitionParams, 'toLayerB');
-                guiTransition.add(this.transitionParams, 'toLayerC');*/
                 guiTransition.add(this.transitionParams, 'transitionTime', 0, 11, 0.01);
-                /*guiTransition.add(this.transitionParams, 'tweenVertices');
-                guiTransition.add(this.transitionParams, 'tweenVerticesBack');*/
-                //guiTransition.close();
-                //
                 /*
                  * Motion Gui controler
                  **/
@@ -1185,9 +1179,6 @@ var ENGINE = function() {
                     loader.load('../src/collada/scene0.dae', function(collada) {
                         var dae = collada.scene;
                         layer.scene.add(dae);
-                        /**
-                         * Anaglyph effect
-                         **/
                         layer.render = function(rtt) {
                             if(world.renderParams.enableTrackball) {
                                 layer.trackball.update();
@@ -1413,8 +1404,8 @@ var ENGINE = function() {
                         };
                     });
                 };
-                 /**
-                 * Import scene5 collada(.dae)
+                /**
+                 * Import scene4 collada(.dae)
                  **/
                 var loadScene4 = function(layer) {
                     // load collada assets
@@ -1558,6 +1549,7 @@ var ENGINE = function() {
                             }
                         });
                         //init scene rotation
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 80 * Math.PI / 180;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
@@ -1585,7 +1577,6 @@ var ENGINE = function() {
                         };
                     });
                 };
-                
                 /**
                  * Import Scene6 collada
                  **/
@@ -1692,11 +1683,12 @@ var ENGINE = function() {
                         /* add scene skydome */
                         addSkyDome(layer, 8, '../src/textures/background/background6.jpg');
                         //layer.backgroundImage = addBackgroundImage(layer, '../src/textures/background/background22.jpg');
+                        var mesh = null;
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
                                 console.info(child.name);
                                 if(child.name === 'head') {
-                                    var mesh = child.children[0];
+                                    mesh = child.children[0];
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     mesh.geometry.computeTangents();
@@ -1712,6 +1704,7 @@ var ENGINE = function() {
                             }
                         });
                         //init scene rotation
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y += 90 * Math.PI / 180;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.rotationSpeed = 0.0005;
                         layer.render = function(rtt) {
@@ -1865,6 +1858,7 @@ var ENGINE = function() {
                             }
                         });
                         //init scene rotation
+                        layer.scene.position.y -= 0.1;
                         myPortfolio.World.targetRotation = layer.scene.rotation.y;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.rotationSpeed = 0.0005;
@@ -1894,7 +1888,6 @@ var ENGINE = function() {
                         };
                     });
                 };
-                
                 if(world.renderParams.enableTrackball) {
                     this.trackball = new THREE.TrackballControls(this.camera, world.renderer.domElement);
                     this.trackball.rotateSpeed = 1.0;
@@ -1944,9 +1937,6 @@ var ENGINE = function() {
                         break;
                     case 'scene9':
                         loadScene9(this);
-                        break;
-                    case 'scene10':
-                        loadScene10(this);
                         break;
                     default:
                         console.error('ERROR: unknow scene.');
@@ -2038,6 +2028,7 @@ var ENGINE = function() {
                     // Stop Render
                     else if(world.transitionParams.transitionMixRatio === -1) {
                         world.transitionParams.CurrentLayer = NextLayer.name;
+                        CurrentLayer.render(false);
                         NextLayer.render(false);
                     }
                     // Render both scenes and transition frame buffer object
@@ -2203,21 +2194,21 @@ var ENGINE = function() {
                     classie.addClass(initLoadingScreen, 'hide');
                 }, 2000);
                 setTimeout(function() {
-                    myPortfolio.World.transitionParams.transitionMixRatio = 0;
-                    myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.NextLayer, myPortfolio.World.CurrentLayer);
+                    myPortfolio.World.transitionParams.transitionMixRatio = 1;
+                    myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer,myPortfolio.World.NextLayer);
                     myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
                     var update = function() {
                         myPortfolio.World.transitionParams.transitionMixRatio = current.x;
                     };
                     var current = {
-                        x: 0
+                        x: 1
                     };
                     // remove previous tweens if needed:TODO use same instanciated tween
-                    var tweenLayerTransition1 = new TWEEN.Tween(current).to({
-                        x: 1
-                    }, 12000).onUpdate(update);
-                    tweenLayerTransition1.start();
-                    //myPortfolio.SoundFx.backgroundMusic.play(0);
+                    var tweenLayerTransition = new TWEEN.Tween(current).to({
+                        x: 0
+                    }, 15000).onUpdate(update);
+                    tweenLayerTransition.start();
+                    myPortfolio.SoundFx.backgroundMusic.play(0);
                 }, 2000);
                 setTimeout(function() {
                     initLoadingScreen.parentNode.removeChild(initLoadingScreen);
@@ -2230,8 +2221,7 @@ var ENGINE = function() {
                 setTimeout(function() {
                     //classie.removeClass(initIntroSubtitle, 'show');
                     classie.addClass(initIntroTitle, 'show');
-                    classie.removeClass(menu, 'hide');
-                    classie.removeClass(footerInfoSection, 'hide');
+                    
                 }, 9000);
                 setTimeout(function() {
                     classie.removeClass(initIntroTitle, 'show');
@@ -2239,8 +2229,12 @@ var ENGINE = function() {
                 //end init loading screen
                 setTimeout(function() {
                     classie.addClass(initIntroScreen, 'hide');
-                    initIntroScreen.parentNode.removeChild(initIntroScreen);
+                    classie.removeClass(menu, 'hide');
+                    classie.removeClass(footerInfoSection, 'hide');
                 }, 15000);
+                setTimeout(function() {
+                    initIntroScreen.parentNode.removeChild(initIntroScreen);
+                }, 16000);
             });
             this.transition = new this.Transition(this.NextLayer, this.CurrentLayer);
             /**/
@@ -2299,7 +2293,7 @@ var ENGINE = function() {
             this.webglCanvas = document.getElementById('threejsCanvas');
             //add video as background
             this.videoBackground = document.getElementById('videoBackground');
-            //this.videoBackground.poster = '../src/img/galleryItem1.png';
+            //this.videoBackground.poster = '../src/img/backgroundScene1HD.jpg';
             this.videoBackground.preload = true;
             this.videoBackground.loop = true;
             this.videoBackground.muted = true;
@@ -2310,10 +2304,10 @@ var ENGINE = function() {
                 classie.addClass(creditsSection, 'hide');
                 //classie.addClass(footerInfoSection, 'hide');
                 classie.removeClass(gallerySection, 'show');
-                if( !! myPortfolio.World.renderParams.enableDotFilter) {
+                /*if( !! myPortfolio.World.renderParams.enableDotFilter) {
                     myPortfolio.World.renderParams.enableDotFilter = false;
                     myPortfolio.World.refreshPostProcessing();
-                }
+                }*/
             };
             this.resetMenuItemActive = function() {
                 classie.removeClass(homeAnchor, 'active');
@@ -2350,10 +2344,12 @@ var ENGINE = function() {
                 classie.addClass(menuItemActive, 'pos3');
                 classie.removeClass(settingsSection, 'show');
                 classie.addClass(footerInfoSection, 'hide');
-                setTimeout(function() {
-                    myPortfolio.World.renderParams.enableDotFilter = true;
-                    myPortfolio.World.refreshPostProcessing();
-                }, 1000);
+                /*if(myPortfolio.System.useWebGL()) {
+                    setTimeout(function() {
+                        myPortfolio.World.renderParams.enableDotFilter = true;
+                        myPortfolio.World.refreshPostProcessing();
+                    }, 1000);
+                }*/
             });
             contactAnchor.addEventListener('click', function() {
                 UI.hideAllSections();
@@ -2481,9 +2477,9 @@ var ENGINE = function() {
                     var selectedModel = parseInt(currentThumb.getAttribute('data-model')) - 1;
                     //check if transition is to long to use scrollToPage
                     if(Math.abs(UI.selectedModel - selectedModel) > 2) {
-                        gallery._jumpToPage("page", selectedModel);
+                        gallery._jumpToPage('page', selectedModel);
                     } else {
-                        gallery._scrollToPage("page", selectedModel);
+                        gallery._scrollToPage('page', selectedModel);
                     }
                     UI.selectedModel = selectedModel;
                     var nextModelInfo = document.getElementsByClassName('gallery-content')[selectedModel];
@@ -2495,23 +2491,16 @@ var ENGINE = function() {
                     classie.addClass(currentThumb, 'active');
                 });
             });
-            if(galleryContainer.addEventListener) {
-                // IE9, Chrome, Safari, Opera
-                galleryContainer.addEventListener("mousewheel", MouseWheelHandler, false);
-                // Firefox
-                galleryContainer.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
-            }
-            // IE 6/7/8
-            else galleryContainer.attachEvent("onmousewheel", MouseWheelHandler);
+            // chnage gallery frame with mouse wheel
 
             function MouseWheelHandler(e) {
                 // cross-browser wheel delta
-                var e = window.event || e; // old IE support
+                e = window.event || e; // old IE support
                 var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
                 var thumIndex = 0;
                 var activeThumb = 0;
                 [].forEach.call(galleryThumbs, function(currentThumb) {
-                    if(classie.hasClass(currentThumb, "active")) {
+                    if(classie.hasClass(currentThumb, 'active')) {
                         activeThumb = thumIndex;
                     }
                     thumIndex++;
@@ -2521,6 +2510,16 @@ var ENGINE = function() {
                 } else if(delta < 0 && activeThumb < (galleryThumbs.length - 1)) {
                     galleryThumbs[activeThumb + 1].click();
                 }
+            }
+            if(galleryContainer.addEventListener) {
+                // IE9, Chrome, Safari, Opera
+                galleryContainer.addEventListener('mousewheel', MouseWheelHandler, false);
+                // Firefox
+                galleryContainer.addEventListener('DOMMouseScroll', MouseWheelHandler, false);
+            }
+            // IE 6/7/8
+            else {
+                galleryContainer.attachEvent('onmousewheel', MouseWheelHandler);
             }
             /** 
              * Init Model load buttons
@@ -2534,6 +2533,7 @@ var ENGINE = function() {
                     classie.removeClass(footerInfoSection, 'hide');
                     myPortfolio.UI.hideAllSections();
                     myPortfolio.UI.resetMenuItemActive();
+                    myPortfolio.World.transitionParams.transitionMixRatio = 0;
                     return;
                 }
                 console.log(myPortfolio.World.CurrentLayer.name);
@@ -2583,8 +2583,8 @@ var ENGINE = function() {
                         classie.removeClass(currentImg, 'hide');
                     });
                     classie.addClass(galleryImg[modelNumber - 1], 'hide');
-                    myPortfolio.World.renderParams.enableDotFilter = false;
-                    myPortfolio.World.refreshPostProcessing();
+                    //myPortfolio.World.renderParams.enableDotFilter = false;
+                    //myPortfolio.World.refreshPostProcessing();
                 });
             }
 
@@ -2761,6 +2761,7 @@ var ENGINE = function() {
                         myPortfolio.World.renderParams.enableFilm = false;
                         myPortfolio.World.renderParams.tiltBlur = 3;
                         myPortfolio.World.renderParams.enableTiltShift = true;
+                        myPortfolio.World.renderParams.rgbValue = 0.0005;
                         myPortfolio.World.renderParams.enableRGBShift = true;
                         myPortfolio.World.renderParams.enableVignette = true;
                         myPortfolio.World.renderParams.bleach = true;
@@ -2777,6 +2778,7 @@ var ENGINE = function() {
                         myPortfolio.World.renderParams.enableFilm = false;
                         myPortfolio.World.renderParams.filmStrengh = 0.2;
                         myPortfolio.World.renderParams.enableTiltShift = false;
+                        myPortfolio.World.renderParams.rgbValue = 0.0005;
                         myPortfolio.World.renderParams.enableRGBShift = false;
                         myPortfolio.World.renderParams.enableColorify = true;
                         myPortfolio.World.renderParams.enableVignette = true;
@@ -2793,6 +2795,7 @@ var ENGINE = function() {
                         myPortfolio.World.renderParams.enableFilm = false;
                         myPortfolio.World.renderParams.filmStrengh = 0.2;
                         myPortfolio.World.renderParams.enableTiltShift = false;
+                        myPortfolio.World.renderParams.rgbValue = 0.0005;
                         myPortfolio.World.renderParams.enableRGBShift = false;
                         myPortfolio.World.renderParams.enableVignette = false;
                         myPortfolio.World.renderParams.enableColorify = false;
@@ -2899,10 +2902,10 @@ var ENGINE = function() {
             [].forEach.call(webglLoadItems, function(currentModel) {
                 currentModel.style.display = 'none';
             });
-            var assetsInfo = document.querySelectorAll('.assets-info');
+            /*var assetsInfo = document.querySelectorAll('.assets-info');
             [].forEach.call(assetsInfo, function(currentAsset) {
                 currentAsset.style.display = 'none';
-            });
+            });*/
             /*if(!this.system.isTouch) {
                 this.UI.videoBackground.src = 'http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04';
                 this.UI.videoBackground.play();
@@ -2920,6 +2923,10 @@ var ENGINE = function() {
             }, 0);
             //end init loading screen
         } else {
+            /*var videoLoadItems = document.querySelectorAll('.load-video');
+            [].forEach.call(videoLoadItems, function(currentModel) {
+                currentModel.style.display = 'none';
+            });*/
             this.SoundFx.init();
             this.World.start();
             this.UI.start();

@@ -64,7 +64,7 @@ $transition-effect: ease;
     width: auto; 
     height: auto; 
     z-index: -100;
-    background: url(../src/img/backgroundScene1.jpg) no-repeat;
+    //background: url(../src/img/backgroundScene1.jpg) no-repeat;
     background-size: cover;
     background-position: left; 
 }
@@ -329,7 +329,10 @@ $transition-effect: ease;
 .init-intro-screen .subtitle
 {
     @extend %absolute-center;
-    @extend %intro-subtitle-font;  
+    @extend %intro-subtitle-font;
+    letter-spacing:10px;
+    font-size:8px;
+    color:grey;
     height:20px;
     width:100%;
     opacity:0;
@@ -359,6 +362,33 @@ $transition-effect: ease;
 
 .init-intro-screen .title.show{
     opacity:1;
+}
+
+.intro-info
+{
+    letter-spacing:5px;
+    font-size:8px;
+    color:grey;
+}
+
+.title-left{
+    margin-left:30px;
+}
+
+.bar-top{
+    position:absolute;
+    top:0;
+    width:100%;
+    height:50px;
+    background-color:#000;
+}
+
+.bar-bottom{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:50px;
+    background-color:#000;
 }
 
 
@@ -440,40 +470,7 @@ $transition-effect: ease;
     text-transform:none;
 }
 
-/*input[type="range"].zoom{
-     float:left;
-}
 
-input[type="range"].rotation{
-     float:left;
-}
-
-input[type="range"]{
-  -webkit-appearance:none;
-  width:100px;
-  margin-top: 7px;
-  margin-left: 10px;
-  height:10px;
-  background: $secondary-color-opaque;
-  background-position:center;
-  background-repeat:no-repeat;
-  outline:none;
-  cursor:pointer;
-}
-
-input[type="range"]::-webkit-slider-thumb{
-  -webkit-appearance:none;
-  width:10px;
-  height:10px;
-  background: $secondary-color;
-  position:relative;
-  z-index:3;
-  cursor: hand;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
-  cursor: grab;
-}
-*/
 
 @import 'settings';
 @import 'menuOverlay';

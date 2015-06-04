@@ -147,6 +147,7 @@
 {
     float:right;
     margin-top:25px;
+    clear:both;
 }
 
 
@@ -204,11 +205,14 @@
 .load-model-button
 {
     @extend %menu-font;
-    text-align:right;
+    text-align: center;
     float: right;
-    width:100px;
-    margin-top:10px;
-    clear:both;
+    width: 156px;
+    border: 1px solid red;
+    margin-top: 10px;
+    clear: both;
+    padding:2px;
+    background-color:rgba(0,0,0,0.8);
     will-change: background-color;
     @include transition(background-color 200ms 0s $transition-effect);
 }

@@ -174,7 +174,13 @@
     right:0px;
 	width:100%;
 	height: $menu-height;
-    background-color:$main-menu-background;
+    background-color:rgba(0,0,0,0.7);
+}
+
+.burguer-title{
+    float: left;
+    padding-left: 10px;
+    padding-top: 15px;
 }
 
 $fill: #FFF;

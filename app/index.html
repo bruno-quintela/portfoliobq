@@ -100,11 +100,16 @@
 
         <!-- Landing page intro animation -->
         <div id="initIntroScreen" class="init-intro-screen">
+            <div class="bar-top"></div>
+            <div class="bar-bottom"></div>
             <div id="initIntroSubtitle" class="subtitle">Bruno Quintela presents</div>
             <div id="initIntroTitle" class="title">
-                <span class="">this</span>
+                <span class="title-left">this</span>
                 <span class="highlight"><b>form</b></span>
                 <span class=""> i hold</span>
+                <br>
+                <br>
+                <span class="intro-info">A real time rendered webgl experience</span>
             </div>
         </div>
 
@@ -142,6 +147,9 @@
 
         <!-- burguer menu and fullscreen nav -->
         <div class="burguer-container">
+            <div class="burguer-title">
+
+            </div>
             <a id="trigger-overlay" class="burger" href="#"><span></span></a>
         </div>
         <div class="burguer-overlay">
@@ -184,21 +192,22 @@
                         Who am I
                     </div>
                     <div class="rule left"></div>
-                    <span class="description">I'm a web developer who recently got into computer graphics. I love music, videogames (MMORPG and JRPG addicted), and digital art, specially lowpoly, procedural and generative.</span>
+                    <span class="description">I'm a web developer who recently got addicted to computer graphics, so i decided to give it a shot and started to learn more about it. In the last months i've put what i've learned in practice and this website is the result of that.</span>
                 </div>
                 <div class="content-info">
                     <div class="content-subtitle">
                     </div>
                     <div class="rule left"></div>
-                    <span class="description">My current focus isto create state of the art visuals for the web. To achieve a perfect ballance between visual delivery and performance is allways my pripority.</span>
+                    <span class="description">To achieve perfect ballance between visual delivery and performance is allways my priority. My current focus is to create state of the art experiences and visuals for the web, pushing the current technology to its limits. </span>
                 </div>
                 <div class="content-info">
                     <div class="content-subtitle">
                     </div>
                     <div class="rule left"></div>
-                    <span class="description">In the next five years we will enter into the age of Virtual Reality, and that will have a massive impact in the way you surf the web, so i expect to be in a vanguard project related to that, as a web developer or creative director.</span>
+                    <span class="description">In the next five years mankind will enter into the age of VR, and for the first time in the past decades we will have the oportunity to change the way you surf the web, so my wishes are to be in a project related to that, as a web developer or creative director.</span>
                 </div>
             </div>
+            <br>
         </section>
         <!-- SECTION ABOUT END-->
         <!-- SECTION CONTACT START -->
@@ -214,7 +223,7 @@
                         touch
                     </div>
                     <div class="rule left"></div>
-                    <span class="description">If you have something to share with me, job related stuff or not, feel free to send me a message by email, or through one of the following social networks. I'll try to reply as soon as i can.</span>
+                    <span class="description">If you want to hire my services, or have something to share with me, feel free to send me a message, by email, or through one of the following social networks. I'll try to reply as soon as i can.</span>
                 </div>
                 <div class="content-info content-social">
                     <div class="content-title-fake">
@@ -244,6 +253,7 @@
                     </div>
                 </div>
             </div>
+            <br>
         </section>
         <!-- SECTION CONTACT END -->
         <!--SECTION CREDITS START -->
@@ -323,7 +333,6 @@
                     <br>
                     <span class="description">For making the world a better place to webgl developers.</span>
                 </div>
-
             </div>
         </section>
         <!--SECTION CREDITS END -->
@@ -435,11 +444,10 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img hide">
-                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene1HD.jpg">
-                                <source srcset="../src/img/backgroundScene1Mobile.jpg">
-                                <img src="../src/img/backgroundScene1HD.jpg" class="model-background-img" alt="">
+                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene1HD.jpg">
+                                    <source srcset="../src/img/backgroundScene1Mobile.jpg">
+                                        <img src="../src/img/backgroundScene1HD.jpg" class="model-background-img" alt="">
                             </picture>
-                            
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
                             <div class="section-content gallery-content">
@@ -451,7 +459,7 @@
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            scene info
+                                            model info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -464,10 +472,9 @@
                                         <div class="content-subtitle content-subtitle-model">
                                             view
                                         </div>
-
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="1" data-assets="4" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                            <a data-model="1" data-assets="4" class="load-model-button load-webgl" href="#">webgl</a>
                                             <a data-model="1" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
@@ -478,10 +485,10 @@
                     </li>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
-                             <picture class="model-background-img">
-                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene2HD.jpg">
-                                <source srcset="../src/img/backgroundScene2Mobile.jpg">
-                                <img src="../src/img/backgroundScene2HD.jpg" class="model-background-img" alt="">
+                            <picture class="model-background-img">
+                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene2HD.jpg">
+                                    <source srcset="../src/img/backgroundScene2Mobile.jpg">
+                                        <img src="../src/img/backgroundScene2HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
@@ -489,12 +496,12 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">Frame </span>
+                                        <span class="">#</span>
                                         <span class="highlight">02</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            scene info
+                                            model info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -510,7 +517,7 @@
 
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="2" data-assets="5" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                            <a data-model="2" data-assets="6" class="load-model-button load-webgl" href="#">WEBGL</a>
                                             <a data-model="2" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
@@ -521,9 +528,9 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
-                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene3HD.jpg">
-                                <source srcset="../src/img/backgroundScene3Mobile.jpg">
-                                <img src="../src/img/backgroundScene3HD.jpg" class="model-background-img" alt="">
+                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene3HD.jpg">
+                                    <source srcset="../src/img/backgroundScene3Mobile.jpg">
+                                        <img src="../src/img/backgroundScene3HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
@@ -531,12 +538,12 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">Frame </span>
+                                        <span class="">#</span>
                                         <span class="highlight">03</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            scene info
+                                            model info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -552,7 +559,7 @@
 
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="3" data-assets="3" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                            <a data-model="3" data-assets="6" class="load-model-button load-webgl" href="#">WEBGL</a>
                                             <a data-model="3" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
@@ -564,9 +571,9 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
-                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene4HD.jpg">
-                                <source srcset="../src/img/backgroundScene4Mobile.jpg">
-                                <img src="../src/img/backgroundScene4HD.jpg" class="model-background-img" alt="">
+                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene4HD.jpg">
+                                    <source srcset="../src/img/backgroundScene4Mobile.jpg">
+                                        <img src="../src/img/backgroundScene4HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
@@ -574,12 +581,12 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">Frame </span>
+                                        <span class="">#</span>
                                         <span class="highlight">04</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            scene info
+                                            model info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -595,7 +602,7 @@
 
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="4" data-assets="3" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                            <a data-model="4" data-assets="21" class="load-model-button load-webgl" href="#">WEBGL</a>
                                             <a data-model="4" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
@@ -606,9 +613,9 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
-                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene5HD.jpg">
-                                <source srcset="../src/img/backgroundScene5Mobile.jpg">
-                                <img src="../src/img/backgroundScene5HD.jpg" class="model-background-img" alt="">
+                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene5HD.jpg">
+                                    <source srcset="../src/img/backgroundScene5Mobile.jpg">
+                                        <img src="../src/img/backgroundScene5HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
@@ -616,12 +623,12 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">Frame </span>
+                                        <span class="">#</span>
                                         <span class="highlight">05</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            scene info
+                                            model info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -637,7 +644,7 @@
 
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="5" data-assets="3" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                            <a data-model="5" data-assets="7" class="load-model-button load-webgl" href="#">WEBGL</a>
                                             <a data-model="5" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
@@ -648,9 +655,9 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
-                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene6HD.jpg">
-                                <source srcset="../src/img/backgroundScene6Mobile.jpg">
-                                <img src="../src/img/backgroundScene6HD.jpg" class="model-background-img" alt="">
+                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene6HD.jpg">
+                                    <source srcset="../src/img/backgroundScene6Mobile.jpg">
+                                        <img src="../src/img/backgroundScene6HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
@@ -658,12 +665,12 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">Frame </span>
+                                        <span class="">#</span>
                                         <span class="highlight">06</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            scene info
+                                            model info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -679,7 +686,7 @@
 
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="6" data-assets="2" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                            <a data-model="6" data-assets="7" class="load-model-button load-webgl" href="#">WEBGL</a>
                                             <a data-model="6" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
@@ -689,10 +696,10 @@
                     </li>
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
-                           <picture class="model-background-img">
-                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene7HD.jpg">
-                                <source srcset="../src/img/backgroundScene7Mobile.jpg">
-                                <img src="../src/img/backgroundScene7HD.jpg" class="model-background-img" alt="">
+                            <picture class="model-background-img">
+                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene7HD.jpg">
+                                    <source srcset="../src/img/backgroundScene7Mobile.jpg">
+                                        <img src="../src/img/backgroundScene7HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
@@ -700,12 +707,12 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">Frame </span>
+                                        <span class="">#</span>
                                         <span class="highlight">07</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            scene info
+                                            model info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -721,7 +728,7 @@
 
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="7" data-assets="3" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                            <a data-model="7" data-assets="4" class="load-model-button load-webgl" href="#">WEBGL</a>
                                             <a data-model="7" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
@@ -733,9 +740,9 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
-                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene8HD.jpg">
-                                <source srcset="../src/img/backgroundScene8Mobile.jpg">
-                                <img src="../src/img/backgroundScene8HD.jpg" class="model-background-img" alt="">
+                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene8HD.jpg">
+                                    <source srcset="../src/img/backgroundScene8Mobile.jpg">
+                                        <img src="../src/img/backgroundScene8HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
@@ -743,12 +750,12 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">Frame </span>
+                                        <span class="">#</span>
                                         <span class="highlight">08</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            scene info
+                                            model info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -775,9 +782,9 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
-                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene9HD.jpg">
-                                <source srcset="../src/img/backgroundScene9Mobile.jpg">
-                                <img src="../src/img/backgroundScene9HD.jpg" class="model-background-img" alt="">
+                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene9HD.jpg">
+                                    <source srcset="../src/img/backgroundScene9Mobile.jpg">
+                                        <img src="../src/img/backgroundScene9HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
                             <div class="diagonal-overlay-left"></div>
@@ -785,12 +792,12 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">Frame </span>
+                                        <span class="">#</span>
                                         <span class="highlight">09</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            scene info
+                                            model info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -839,6 +846,11 @@
     </div>
     <!-- BODY WRAPPER END -->
 
+    <!-- SHADERS -->
+    <!-- 
+         The following shaders are courtesy of Jaume Sanchez 
+         http://www.clicktorelease.com/blog/creating-spherical-environment-mapping-shader
+    -->
     <script id="sem-vs" type="x-shader/x-vertex">
         varying vec3 e;
         varying vec3 n;
@@ -955,20 +967,20 @@
             gl_FragColor = vec4(base, 1.);
         }
     </script>
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <!-- Google Analytics -->
     <script>
-        (function(b, o, i, l, e, r) {
-            b.GoogleAnalyticsObject = l;
-            b[l] || (b[l] = function() {
-                (b[l].q = b[l].q || []).push(arguments)
-            });
-            b[l].l = +new Date;
-            e = o.createElement(i);
-            r = o.getElementsByTagName(i)[0];
-            e.src = '//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e, r)
-        }(window, document, 'script', 'ga'));
-        ga('create', 'UA-XXXXX-X');
+        < script > (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-63735905-1', 'auto');
         ga('send', 'pageview');
     </script>
     <!-- build:js({app,.tmp}) scripts/main.js -->
