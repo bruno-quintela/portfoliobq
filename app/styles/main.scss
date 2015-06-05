@@ -9,8 +9,8 @@ $text-color: rgba(255,255,255,1);
 $primary-color: rgba(0,0,0,0.9);
 $secondary-color: rgba(255,0,0,1);
 $secondary-color-opaque: rgba(255,0,0,0.2);
-$main-menu-background: rgba(0,0,0,1);
-$footer-background: rgba(0,0,0,1);
+$main-menu-background: rgba(0,0,0,0.9);
+$footer-background: rgba(0,0,0,0.9);
 $loading-model-background: rgba(0,0,0,0.3);
 $background-color: rgba(0,0,0,1);
 $transition-effect: ease;
@@ -64,9 +64,19 @@ $transition-effect: ease;
     width: auto; 
     height: auto; 
     z-index: -100;
-    //background: url(../src/img/backgroundScene1.jpg) no-repeat;
-    background-size: cover;
-    background-position: left; 
+    //background: url('../src/img/streamingVideo.jpg') no-repeat 0 0; 
+   -webkit-background-size:cover; 
+   -moz-background-size:cover; 
+   -o-background-size:cover; 
+   background-size:cover; 
+}
+
+.video-overlay
+{
+   position:absolute;
+   width:100%;
+   height:100%;
+   background: url(../src/img/dotOverlay.png);
 }
 
 /**
@@ -81,6 +91,7 @@ $transition-effect: ease;
     height:$section-content-height;
     padding-top:25px;
     background-color:$primary-color;
+    border-top:1px solid rgba(255, 0, 0, 0.3);
     will-change: transform;
     @include transform(translateY(0));
     @include transition(transform 1000ms 1000ms $transition-effect);
@@ -209,6 +220,7 @@ $transition-effect: ease;
 
 .footer-section-info
 {
+    z-index:2;
     position:absolute;
     bottom:0;
     left:0;
@@ -242,7 +254,7 @@ $transition-effect: ease;
 
 .init-loading-screen
 {
-    z-index:20;
+    z-index:1;
     display: inline-block;
     position:absolute;
     width:100%;
@@ -265,7 +277,6 @@ $transition-effect: ease;
 	@extend %absolute-center;
     @extend %submenu-title-font;
     color:#fff;
-    font-weight:300;
     height:70px;
     width:100%;
     text-align:center;
@@ -308,7 +319,7 @@ $transition-effect: ease;
 
 .init-intro-screen
 {
-    z-index:2;
+    z-index:1;
     position:absolute;
     left:0;
     top:0;
@@ -331,7 +342,7 @@ $transition-effect: ease;
     @extend %absolute-center;
     @extend %intro-subtitle-font;
     letter-spacing:10px;
-    font-size:8px;
+    font-size:10px;
     color:grey;
     height:20px;
     width:100%;
@@ -376,6 +387,7 @@ $transition-effect: ease;
 }
 
 .bar-top{
+    z-index:0;
     position:absolute;
     top:0;
     width:100%;
@@ -384,6 +396,7 @@ $transition-effect: ease;
 }
 
 .bar-bottom{
+    z-index:0;
     position:absolute;
     bottom:0;
     width:100%;
@@ -431,7 +444,7 @@ $transition-effect: ease;
 .highlight
 {
     color: $secondary-color;
-    font-weight:600;
+    font-weight:400;
 }
 
 

@@ -21,7 +21,7 @@
 %content-title-font
 {
     @extend %main-font;
-    font-weight: 300;
+    font-weight: 400;
     letter-spacing: 0px;
     font-size: 40px;
     text-transform:uppercase;
@@ -32,7 +32,7 @@
 %content-subtitle-font
 {
     @extend %main-font;
-    font-weight: 300;
+    font-weight: 400;
     letter-spacing: 3px;
 	font-size: 11px;
     text-transform:uppercase;
@@ -43,7 +43,7 @@
 %content-item
 {
     @extend %main-font;
-    font-weight: 300;
+    font-weight: 400;
     letter-spacing: 1px;
 	font-size: 11px;
     text-transform:uppercase;
@@ -54,7 +54,7 @@
 %content-description
 {
     @extend %main-font;
-    font-weight: 300;
+    font-weight: 400;
     letter-spacing: 1px;
 	font-size: 11px;
     text-transform:none;
@@ -67,7 +67,7 @@
     font-family: $primary-font-family;
   	text-rendering: optimizeLegibility;
     color:$text-color;
-    font-weight: 300;
+    font-weight: 400;
     font-size: 6vh; 
     letter-spacing: 5px;
     text-transform: uppercase;
@@ -79,7 +79,7 @@
     font-family: $primary-font-family;
   	text-rendering: optimizeLegibility;
     text-transform: uppercase;
-    font-weight: 100;
+    font-weight: 400;
     font-size: 11px;
     letter-spacing: 5px;
 }
@@ -88,7 +88,7 @@
 {
     font-family: $primary-font-family;
   	text-rendering: optimizeLegibility;
-    font-weight: 100;
+    font-weight: 400;
     font-size: 11px;
     letter-spacing: 0px;
     text-transform: none;
@@ -154,7 +154,7 @@
     font-family: $primary-font-family;
   	text-rendering: optimizeLegibility;
     text-transform:uppercase;
-    font-weight: 300;
+    font-weight: 400;
     font-size: 11px;
     letter-spacing: 5px;
 }
@@ -184,7 +184,7 @@
 %anchor-link-font
 {
     @extend %main-font;
-    font-weight: 300;
+    font-weight: 400;
     letter-spacing: 1px;
 	font-size: 11px;
     text-transform:uppercase;

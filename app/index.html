@@ -1,13 +1,21 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html class="no-js" lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>Bruno Quintela | Portfolio</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="shortcut icon" href="/favicon.ico">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,800' rel='stylesheet' type='text/css'>
+    <meta name="title" content="Bruno Quintela | Portfolio">
+    <meta name="description" content="Realtime rendered webgl Gallery">
+    <meta name="type" content="website">
+    <meta name="url" content="http://www.brunoquintela.com">
+    <meta name="image" content="http://www.brunoquintela.com/src/img/backgroundScene1HD.jpg">
+    <meta name="keywords" content="webgl,threejs,brunoquintela"/>
+    <meta name="date" content="2015"/>
+    <title>Bruno Quintela | Portfolio</title>
+    <link rel="icon" href="favicon.ico">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400' rel='stylesheet' type='text/css'>
     <link href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/vendor.css -->
@@ -106,10 +114,10 @@
             <div id="initIntroTitle" class="title">
                 <span class="title-left">this</span>
                 <span class="highlight"><b>form</b></span>
-                <span class=""> i hold</span>
+                <span class=""> i hold now</span>
                 <br>
                 <br>
-                <span class="intro-info">A real time rendered webgl experience</span>
+                <span class="intro-info">- A real time rendered webgl gallery -</span>
             </div>
         </div>
 
@@ -125,6 +133,7 @@
 
         <!-- fullscreen background video -->
         <video src="" id="videoBackground" class="video-background" type='video/mp4' loop autoplay></video>
+        <div class="video-overlay"></div>
         <!-- Webgl renderer canvas -->
         <canvas id="threejsCanvas" class="threejs-canvas"></canvas>
 
@@ -146,9 +155,8 @@
         </nav>
 
         <!-- burguer menu and fullscreen nav -->
-        <div class="burguer-container">
+        <div id="burguerMenu" class="burguer-container hide">
             <div class="burguer-title">
-
             </div>
             <a id="trigger-overlay" class="burger" href="#"><span></span></a>
         </div>
@@ -198,13 +206,13 @@
                     <div class="content-subtitle">
                     </div>
                     <div class="rule left"></div>
-                    <span class="description">To achieve perfect ballance between visual delivery and performance is allways my priority. My current focus is to create state of the art experiences and visuals for the web, pushing the current technology to its limits. </span>
+                    <span class="description">My current focus is to create state of the art visual experiences for the web, pushing the current technology to its limits. To achieve perfect ballance between visual delivery and performance is allways my priority. </span>
                 </div>
                 <div class="content-info">
                     <div class="content-subtitle">
                     </div>
                     <div class="rule left"></div>
-                    <span class="description">In the next five years mankind will enter into the age of VR, and for the first time in the past decades we will have the oportunity to change the way you surf the web, so my wishes are to be in a project related to that, as a web developer or creative director.</span>
+                    <span class="description">In the next five years mankind will enter into the age of VR, and for the first time in the past decades we will have the oportunity to change the way you surf the web, so my wishes are to be in a project related to that, as a web or game developer.</span>
                 </div>
             </div>
             <br>
@@ -229,7 +237,7 @@
                     <div class="content-title-fake">
                     </div>
                     <div class="content-subtitle">
-                        follow
+                        social
                     </div>
                     <div class="rule left"></div>
                     <div class="footer-social-links">
@@ -397,7 +405,7 @@
                         </li>
                         <li>
                             <span class="settings-name">Rotation</span>
-                            <input id="rotationBar" class="rotation" type='range' min="-1" max="1" value="0.5" step='0.1' />
+                            <input id="rotationBar" class="rotation" type='range' min="-2" max="2" value="0.5" step='0.1' />
                         </li>
                     </ul>
                 </div>
@@ -439,6 +447,12 @@
                 </div>
             </div>
 
+            <div id="touchSwipeInfo" class="touch-swipe-info">
+                <div class="content-subtitle">
+                    <- swipe to navigate ->
+                </div>
+            </div>
+
             <div id="galleryContainer" class="gallery-item-container">
                 <ul>
                     <li class="gallery-item">
@@ -455,7 +469,7 @@
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Frame</span>
-                                        <span class="highlight">01</span>
+                                        <span class="highlight">1</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
@@ -475,7 +489,7 @@
                                         <div class="rule right"></div>
                                         <div class="current-info">
                                             <a data-model="1" data-assets="4" class="load-model-button load-webgl" href="#">webgl</a>
-                                            <a data-model="1" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="1" data-video="../src/videos/scene1HD-SD.mp4" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -496,8 +510,8 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">#</span>
-                                        <span class="highlight">02</span>
+                                        <span class="">Frame</span>
+                                        <span class="highlight">2</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
@@ -518,7 +532,7 @@
                                         <div class="rule right"></div>
                                         <div class="current-info">
                                             <a data-model="2" data-assets="6" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                            <a data-model="2" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="2" data-video="../src/videos/scene2HD-SD.mp4" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -538,8 +552,8 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">#</span>
-                                        <span class="highlight">03</span>
+                                        <span class="">Frame</span>
+                                        <span class="highlight">3</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
@@ -560,7 +574,7 @@
                                         <div class="rule right"></div>
                                         <div class="current-info">
                                             <a data-model="3" data-assets="6" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                            <a data-model="3" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="3" data-video="../src/videos/scene3HD-SD.mp4" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -581,8 +595,8 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">#</span>
-                                        <span class="highlight">04</span>
+                                        <span class="">Frame</span>
+                                        <span class="highlight">4</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
@@ -603,7 +617,7 @@
                                         <div class="rule right"></div>
                                         <div class="current-info">
                                             <a data-model="4" data-assets="21" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                            <a data-model="4" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="4" data-video="../src/videos/scene4HD-SD.mp4" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -623,8 +637,8 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">#</span>
-                                        <span class="highlight">05</span>
+                                        <span class="">Frame</span>
+                                        <span class="highlight">5</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
@@ -645,7 +659,7 @@
                                         <div class="rule right"></div>
                                         <div class="current-info">
                                             <a data-model="5" data-assets="7" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                            <a data-model="5" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="5" data-video="../src/videos/scene5HD-SD.mp4" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -665,8 +679,8 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">#</span>
-                                        <span class="highlight">06</span>
+                                        <span class="">Frame</span>
+                                        <span class="highlight">6</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
@@ -687,7 +701,7 @@
                                         <div class="rule right"></div>
                                         <div class="current-info">
                                             <a data-model="6" data-assets="7" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                            <a data-model="6" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="6" data-video="../src/videos/scene6HD-SD.mp4" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -707,8 +721,8 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">#</span>
-                                        <span class="highlight">07</span>
+                                        <span class="">Frame</span>
+                                        <span class="highlight">7</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
@@ -729,7 +743,7 @@
                                         <div class="rule right"></div>
                                         <div class="current-info">
                                             <a data-model="7" data-assets="4" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                            <a data-model="7" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="7" data-video="../src/videos/scene7HD-SD.mp4" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -750,8 +764,8 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">#</span>
-                                        <span class="highlight">08</span>
+                                        <span class="">Frame</span>
+                                        <span class="highlight">8</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
@@ -792,8 +806,8 @@
 
                                 <div class="content-left">
                                     <div class="content-title">
-                                        <span class="">#</span>
-                                        <span class="highlight">09</span>
+                                        <span class="">Frame</span>
+                                        <span class="highlight">9</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
@@ -969,7 +983,7 @@
     </script>
     <!-- Google Analytics -->
     <script>
-        < script > (function(i, s, o, g, r, a, m) {
+        (function(i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r;
             i[r] = i[r] || function() {
                 (i[r].q = i[r].q || []).push(arguments)

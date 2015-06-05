@@ -9,6 +9,7 @@
 	width:100%;
 	height: $menu-height;
     background-color:$main-menu-background;
+    will-change:transform;
     @include transform(translateY(0));
     @include transition(transform 1000ms 0ms $transition-effect);
 }
@@ -104,7 +105,7 @@
     z-index:3;
 	position: fixed;
 	width: 100%;
-	height: calc(100% - 50px);
+	height: 100%;
 	bottom: 0;
 	left: 0;
 	background: rgba(0,0,0,0.7);
@@ -117,7 +118,7 @@
     z-index:4;
     width:100%;
     height:100%;
-    padding-top: 30px;
+    padding-top: 60px;
     text-align: center;
 }
 
@@ -174,9 +175,16 @@
     right:0px;
 	width:100%;
 	height: $menu-height;
-    background-color:rgba(0,0,0,0.7);
+    background-color:rgba(0, 0, 0, 0.7);    
+    will-change:transform;
+    @include transform(translateY(0));
+    @include transition(transform 1000ms 0ms $transition-effect);
 }
 
+.burguer-container.hide
+{
+    @include transform(translateY(-100%));
+}
 .burguer-title{
     float: left;
     padding-left: 10px;

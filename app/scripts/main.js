@@ -673,7 +673,6 @@ var ENGINE = function() {
                 var guiMotion = new dat.GUI();
                 guiMotion.add(this.motionParams, 'reverseTime').onChange(function(value) {
                     world.motionParams.reverseFactor = !! value ? -1 : 1;
-                    console.info(world.motionParams.reverseFactor);
                 });
                 guiMotion.add(this.motionParams, 'autoPanX');
                 guiMotion.add(this.motionParams, 'autoPanY');
@@ -974,13 +973,11 @@ var ENGINE = function() {
                 threejsCanvas.addEventListener('mouseout', onDocumentMouseOut, false);
                 mouseXOnMouseDown = event.clientX - windowHalfX;
                 targetRotationOnMouseDown = world.targetRotation + (mouseX - mouseXOnMouseDown) * 0.001;
-                console.log('mouseDown');
             }
 
             function onDocumentMouseMove(event) {
                 mouseX = event.clientX - windowHalfX;
                 world.targetRotation = targetRotationOnMouseDown + (mouseX - mouseXOnMouseDown) * 0.001;
-                console.log(world.targetRotation);
             }
 
             function onDocumentMouseUp() {
@@ -990,7 +987,6 @@ var ENGINE = function() {
                 setTimeout(function() {
                     world.renderParams.enableMouseListener = false;
                 }, 300);
-                console.log('mouseUp');
             }
 
             function onDocumentMouseOut() {
@@ -1000,7 +996,6 @@ var ENGINE = function() {
                 setTimeout(function() {
                     world.renderParams.enableMouseListener = false;
                 }, 300);
-                console.log('mouseOut');
             }
 
             function onDocumentTouchStart(event) {
@@ -1213,7 +1208,7 @@ var ENGINE = function() {
                         addSkyDome(layer, 8, '../src/textures/background/background6.jpg');
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
+                                //console.info(child.name);
                                 var mesh = null;
                                 if(child.name.indexOf('makehuman_Body') !== -1) {
                                     mesh = child.children[0];
@@ -1276,7 +1271,7 @@ var ENGINE = function() {
                         addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
+                                //console.info(child.name);
                                 var mesh = null;
                                 if(child.name.indexOf('makehuman_Body') !== -1) {
                                     mesh = child.children[0];
@@ -1301,7 +1296,7 @@ var ENGINE = function() {
                             }
                         });
                         //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 0 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y += 0 * Math.PI / 180;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
@@ -1344,7 +1339,7 @@ var ENGINE = function() {
                         addSkyDome(layer, 10, '../src/textures/background/background6.jpg');
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
+                                //console.info(child.name);
                                 var mesh = null;
                                 if(child.name.indexOf('makehuman_Body') !== -1) {
                                     mesh = child.children[0];
@@ -1418,7 +1413,7 @@ var ENGINE = function() {
                         addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
+                                //console.info(child.name);
                                 var mesh = null;
                                 if(child.name.indexOf('makehuman_Body') !== -1) {
                                     mesh = child.children[0];
@@ -1503,7 +1498,7 @@ var ENGINE = function() {
                         addSkyDome(layer, 10, '../src/textures/background/background11.jpg');
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
+                                //console.info(child.name);
                                 var mesh = null;
                                 if(child.name.indexOf('makehuman_Body') !== -1) {
                                     mesh = child.children[0];
@@ -1549,7 +1544,7 @@ var ENGINE = function() {
                             }
                         });
                         //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 80 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 0 * Math.PI / 180;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
@@ -1590,7 +1585,7 @@ var ENGINE = function() {
                         addSkyDome(layer, 10, '../src/textures/background/background6.jpg');
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
+                                //console.info(child.name);
                                 var mesh = null;
                                 if(child.name.indexOf('makehuman_Body') !== -1) {
                                     mesh = child.children[0];
@@ -1641,7 +1636,7 @@ var ENGINE = function() {
                             }
                         });
                         //init scene rotation
-                        layer.scene.rotation.y += 180 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 70 * Math.PI / 180;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.rotationSpeed = 0.0005;
                         layer.render = function(rtt) {
@@ -1686,7 +1681,7 @@ var ENGINE = function() {
                         var mesh = null;
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
+                                //console.info(child.name);
                                 if(child.name === 'head') {
                                     mesh = child.children[0];
                                     mesh.receiveShadow = false;
@@ -1746,7 +1741,7 @@ var ENGINE = function() {
                         addSkyDome(layer, 8, '../src/textures/background/background6.jpg');
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
+                                //console.info(child.name);
                                 var mesh = null;
                                 if(child.name.indexOf('makehuman') !== -1) {
                                     mesh = child.children[0];
@@ -1838,7 +1833,7 @@ var ENGINE = function() {
                         //layer.backgroundImage = addBackgroundImage(layer, '../src/textures/background/background22.jpg');
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
-                                console.info(child.name);
+                                //console.info(child.name);
                                 var mesh = null;
                                 if(child.name === 'lowpoly') {
                                     mesh = child.children[0];
@@ -2126,7 +2121,7 @@ var ENGINE = function() {
              * refresh postpross when gui is changed
              **/
             this.refreshPostProcessing = function() {
-                console.log('postprocessing refreshed');
+                //console.log('postprocessing refreshed');
                 this.postprocess.apply(this.CurrentLayer);
                 //this.postprocess.apply(this.transition);
             };
@@ -2153,9 +2148,9 @@ var ENGINE = function() {
                     maxWidth = window.screen.width,
                     curHeight = window.outerHeight,
                     curWidth = window.outerWidth;
-                console.log('resized' + maxWidth + '==' + curWidth + '&&' + maxHeight + '==' + curHeight);
+                //console.log('resized' + maxWidth + '==' + curWidth + '&&' + maxHeight + '==' + curHeight);
                 if(maxWidth === curWidth && maxHeight === curHeight) {
-                    console.log('fulscreen changed');
+                    //console.log('fulscreen changed');
                     classie.toggleClass(settingsFullscreenOn, 'active');
                     classie.toggleClass(settingsFullscreenOff, 'active');
                 } else {
@@ -2175,14 +2170,13 @@ var ENGINE = function() {
             this.NextLayer = new myPortfolio.World.Layer('scene1', 4, function() {
                 var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
                 document.getElementById('initProgressBar').style.width = loadProgression + '%';
-                console.log(loadProgression + ':' + this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
+                //console.log(loadProgression + ':' + this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
                 if(this.numberAssetsLoaded === this.totalAssetsToLoad) {
                     this.onLoadedCallback();
                 }
-                console.info(loadProgression);
+                //console.info(loadProgression);
             }, function() {
-                console.log('MainModel Loaded!');
-                //landingPage.parentNode.removeChild(landingPage);
+
                 var menu = document.getElementById('menu');
                 var initLoadingScreen = document.getElementById('initLoadingScreen');
                 var initIntroScreen = document.getElementById('initIntroScreen');
@@ -2195,7 +2189,7 @@ var ENGINE = function() {
                 }, 2000);
                 setTimeout(function() {
                     myPortfolio.World.transitionParams.transitionMixRatio = 1;
-                    myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer,myPortfolio.World.NextLayer);
+                    myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
                     myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
                     var update = function() {
                         myPortfolio.World.transitionParams.transitionMixRatio = current.x;
@@ -2213,24 +2207,23 @@ var ENGINE = function() {
                 setTimeout(function() {
                     initLoadingScreen.parentNode.removeChild(initLoadingScreen);
                     classie.addClass(initIntroSubtitle, 'show');
-                    //myPortfolio.SoundFx.backgroundMusic.play(0);
                 }, 3500);
                 setTimeout(function() {
                     classie.removeClass(initIntroSubtitle, 'show');
                 }, 6000);
                 setTimeout(function() {
-                    //classie.removeClass(initIntroSubtitle, 'show');
                     classie.addClass(initIntroTitle, 'show');
-                    
                 }, 9000);
                 setTimeout(function() {
                     classie.removeClass(initIntroTitle, 'show');
                 }, 13000);
+                setTimeout(function() {
+                    classie.removeClass(menu, 'hide');
+                    classie.removeClass(footerInfoSection, 'hide');
+                }, 14000);
                 //end init loading screen
                 setTimeout(function() {
                     classie.addClass(initIntroScreen, 'hide');
-                    classie.removeClass(menu, 'hide');
-                    classie.removeClass(footerInfoSection, 'hide');
                 }, 15000);
                 setTimeout(function() {
                     initIntroScreen.parentNode.removeChild(initIntroScreen);
@@ -2293,7 +2286,7 @@ var ENGINE = function() {
             this.webglCanvas = document.getElementById('threejsCanvas');
             //add video as background
             this.videoBackground = document.getElementById('videoBackground');
-            //this.videoBackground.poster = '../src/img/backgroundScene1HD.jpg';
+            //this.videoBackground.poster = '';
             this.videoBackground.preload = true;
             this.videoBackground.loop = true;
             this.videoBackground.muted = true;
@@ -2384,6 +2377,7 @@ var ENGINE = function() {
                 if(!classie.hasClass(triggerBttn, 'open')) {
                     UI.hideAllSections();
                     UI.resetMenuItemActive();
+                    classie.addClass(footerInfoSection, 'hide');
                 } else {
                     UI.hideAllSections();
                     classie.addClass(homeAnchor, 'active');
@@ -2392,6 +2386,7 @@ var ENGINE = function() {
                 }
                 classie.toggleClass(overlay, 'open');
                 classie.toggleClass(triggerBttn, 'open');
+                
             }
             triggerBttn.addEventListener('click', toggleMenuOverlay);
             homeBurguerItem.addEventListener('click', function() {
@@ -2408,10 +2403,12 @@ var ENGINE = function() {
                 classie.addClass(aboutAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos2');
                 classie.removeClass(settingsSection, 'show');
+                classie.addClass(footerInfoSection, 'hide');
             });
             galleryBurguerItem.addEventListener('click', function() {
                 toggleMenuOverlay();
                 UI.hideAllSections();
+                classie.addClass(footerInfoSection, 'hide');
                 classie.toggleClass(gallerySection, 'show');
                 classie.addClass(galleryAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos3');
@@ -2424,6 +2421,7 @@ var ENGINE = function() {
                 classie.addClass(contactAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos4');
                 classie.removeClass(settingsSection, 'show');
+                classie.addClass(footerInfoSection, 'hide');
             });
             creditsBurguerItem.addEventListener('click', function() {
                 toggleMenuOverlay();
@@ -2432,6 +2430,7 @@ var ENGINE = function() {
                 classie.addClass(creditsAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos5');
                 classie.removeClass(settingsSection, 'show');
+                classie.addClass(footerInfoSection, 'hide');
             });
             /********* GALLERY *************/
             var galleryContainer = document.getElementById('galleryContainer');
@@ -2442,19 +2441,15 @@ var ENGINE = function() {
                 direction: 'horizontal',
                 afterInitialize: function() {
                     galleryContainer.style.visibility = 'visible';
-                    console.log('galeery');
                 },
                 onDrag: function() {
-                    console.log('onDrag');
                 },
                 onDragEnd: function() {
-                    console.log('dragEnd');
                 },
                 onSwipeStart: function() {
                     var page = this.page;
                     var currentModelInfo = this.activeElement.getElementsByClassName('gallery-content')[0];
                     classie.addClass(currentModelInfo, 'hide');
-                    console.log('onSwipeStart,page:' + page);
                 },
                 onSwipeEnd: function() {
                     var currentThumbIndex = parseInt(this.page);
@@ -2465,7 +2460,6 @@ var ENGINE = function() {
                         classie.removeClass(thumbnail, 'active');
                     });
                     classie.addClass(currentThumb, 'active');
-                    console.log('onSwipeEnd,currentThumbIndex:' + currentThumbIndex);
                 }
             });
             [].forEach.call(galleryThumbs, function(currentThumb) {
@@ -2536,11 +2530,11 @@ var ENGINE = function() {
                     myPortfolio.World.transitionParams.transitionMixRatio = 0;
                     return;
                 }
-                console.log(myPortfolio.World.CurrentLayer.name);
+                //console.log(myPortfolio.World.CurrentLayer.name);
                 myPortfolio.World.transitionParams.transitionMixRatio = 1;
                 var modelLoadingScreen = document.getElementById('modelLoadingScreen');
-                //console.log('start3D');
                 classie.addClass(modelLoadingScreen, 'show');
+                myPortfolio.World.CurrentLayer = new myPortfolio.World.Layer('scene0', 1, function() {}, function() {});
                 myPortfolio.World.NextLayer = new myPortfolio.World.Layer('scene' + modelNumber, totalAssets, function() {
                     var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
                     document.getElementById('progressBar').style.width = loadProgression + '%';
@@ -2557,15 +2551,15 @@ var ENGINE = function() {
                             layer.loadReset();
                         }, 4000);
                     }
-                    console.info(loadProgression);
                 }, function() {
-                    console.log('newSceneLoaded');
+                    
                     classie.removeClass(myPortfolio.UI.webglCanvas, 'hide');
                     classie.removeClass(footerInfoSection, 'hide');
                     // get previous scene rotation to match during transition, only if From this form i hold series
                     //myPortfolio.World.NextLayer.scene.rotation.y = myPortfolio.World.CurrentLayer.scene.rotation.y;
                     myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
                     myPortfolio.World.transitionParams.transitionMixRatio = 1;
+                    var transitionTime = myPortfolio.World.renderParams.enableAnaglyph ? 0 : 4000;
                     var update = function() {
                         myPortfolio.World.transitionParams.transitionMixRatio = current.x;
                     };
@@ -2575,7 +2569,7 @@ var ENGINE = function() {
                     // remove previous tweens if needed:TODO use same instanciated tween
                     var tweenLayerTransition = new TWEEN.Tween(current).to({
                         x: 0
-                    }, 2000).onUpdate(update);
+                    }, transitionTime).onUpdate(update);
                     tweenLayerTransition.start();
                     myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
                     /* hide background image for current selected*/
@@ -2605,13 +2599,11 @@ var ENGINE = function() {
             var webglLoadItems = document.querySelectorAll('.load-webgl');
             [].forEach.call(webglLoadItems, function(currentModel) {
                 classie.removeClass(threejsCanvas, 'hide');
-                console.log(currentModel.getAttribute('data-model'));
                 currentModel.addEventListener('click', function() {
                     myPortfolio.UI.videoBackground.src = '';
                     var targetModel = parseInt(currentModel.getAttribute('data-model'));
                     var targetTotalAssets = parseInt(currentModel.getAttribute('data-assets'));
                     loadWebgl(targetModel, targetTotalAssets);
-                    console.log('loadwebgl');
                 });
             });
             var videoLoadItems = document.querySelectorAll('.load-video');
@@ -2620,7 +2612,6 @@ var ENGINE = function() {
                     var targetModel = parseInt(currentModel.getAttribute('data-model'));
                     var targetVideo = currentModel.getAttribute('data-video');
                     loadVideo(targetModel, targetVideo);
-                    console.log('loadvideo');
                 });
             });
 
@@ -2663,7 +2654,6 @@ var ENGINE = function() {
                 settingsQualityLow = document.getElementById('settingsQualityLow');
 
             function launchIntoFullscreen(element) {
-                console.log('launchFullscreen');
                 if(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled) {
                     if(element.requestFullscreen) {
                         element.requestFullscreen();
@@ -2678,7 +2668,6 @@ var ENGINE = function() {
             }
 
             function exitFullscreen() {
-                console.log('exitFullscreen');
                 if(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled) {
                     if(document.exitFullscreen) {
                         document.exitFullscreen();
@@ -2757,9 +2746,9 @@ var ENGINE = function() {
                         classie.removeClass(settingsQualityMedium, 'active');
                         classie.removeClass(settingsQualityLow, 'active');
                         myPortfolio.World.renderParams.enableFXAA = true;
-                        myPortfolio.World.renderParams.filmStrengh = 0.2;
+                        myPortfolio.World.renderParams.filmStrengh = 0.15;
                         myPortfolio.World.renderParams.enableFilm = false;
-                        myPortfolio.World.renderParams.tiltBlur = 3;
+                        myPortfolio.World.renderParams.tiltBlur = 1.5;
                         myPortfolio.World.renderParams.enableTiltShift = true;
                         myPortfolio.World.renderParams.rgbValue = 0.0005;
                         myPortfolio.World.renderParams.enableRGBShift = true;
@@ -2867,7 +2856,6 @@ var ENGINE = function() {
             this.backgroundMusic.addEventListener('loadeddata', function() {
                 myPortfolio.World.CurrentLayer.numberAssetsLoaded++;
                 myPortfolio.World.CurrentLayer.loadProgressCallback();
-                console.info('music loaded');
             }, false);
             this.backgroundMusic.addEventListener('error', function() {
                 console.error('error loading audio');
@@ -2895,32 +2883,47 @@ var ENGINE = function() {
             }
             /* remove webgl models info and actions */
             var thumbContainer = document.getElementById('thumbContainer');
-            thumbContainer.style.visibility = 'hidden';
+            thumbContainer.parentNode.removeChild(thumbContainer);
+            var touchSwipeInfo = document.getElementById('touchSwipeInfo');
+            touchSwipeInfo.style.display = 'block';
             var settingsAnchor = document.getElementById('settingsAnchor');
             settingsAnchor.style.display = 'none';
             var webglLoadItems = document.querySelectorAll('.load-webgl');
             [].forEach.call(webglLoadItems, function(currentModel) {
                 currentModel.style.display = 'none';
             });
+            var galleryOverlayItems = document.querySelectorAll('.diagonal-overlay-right');
+            [].forEach.call(galleryOverlayItems, function(currentItem) {
+                currentItem.style.display = 'none';
+            });
+            
             /*var assetsInfo = document.querySelectorAll('.assets-info');
             [].forEach.call(assetsInfo, function(currentAsset) {
                 currentAsset.style.display = 'none';
             });*/
-            /*if(!this.system.isTouch) {
-                this.UI.videoBackground.src = 'http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04';
+            if(!this.System.isTouch) {
+                this.UI.videoBackground.src = '../src/videos/scene1HD-SD.mp4';
                 this.UI.videoBackground.play();
-            }*/
+            } else {
+                this.UI.videoBackground.poster = '../src/img/backgroundScene1Mobile.jpg'
+            }
             /********************/
+            var burguerMenu = document.getElementById('burguerMenu');
             var menu = document.getElementById('menu');
             var footerInfoSection = document.getElementById('footerInfoSection');
             var initLoadingScreen = document.getElementById('initLoadingScreen');
             var initIntroScreen = document.getElementById('initIntroScreen');
             initIntroScreen.parentNode.removeChild(initIntroScreen);
+            document.getElementById('initProgressBar').style.width = '100%';
             setTimeout(function() {
-                initLoadingScreen.parentNode.removeChild(initLoadingScreen);
+                classie.addClass(initLoadingScreen, 'hide');
+                classie.removeClass(burguerMenu, 'hide');
                 classie.removeClass(menu, 'hide');
                 classie.removeClass(footerInfoSection, 'hide');
-            }, 0);
+            }, 2000);
+            setTimeout(function() {
+                initLoadingScreen.parentNode.removeChild(initLoadingScreen);
+            }, 3000);
             //end init loading screen
         } else {
             /*var videoLoadItems = document.querySelectorAll('.load-video');
