@@ -31,7 +31,7 @@
         width:100%;
     }
     .section-content .content-right .content-info-list{
-        width:250px;
+        width:220px;
         margin-bottom:30px;
     }
     .section-settings{
@@ -42,11 +42,16 @@
     }
     
     .content-left{
-        width:250px !important;
+        width:210px !important;
     }
     
     .content-right{
-        width:calc(100% - 250px) !important;
+        width:calc(100% - 210px) !important;
+    }
+    
+        
+    .diagonal-overlay-down {
+      bottom: -500px;
     }
 }
 
@@ -65,10 +70,6 @@
         padding-top:50px;
     }
     
-    .load-model-container{
-        padding-right:20px;
-    }
-    
     .diagonal-overlay-right
     {
         display:none;
@@ -85,34 +86,37 @@
 
 @media only screen and (max-height : 650px)
 {
-    
-    .section-content{
-        padding-top:20px;
-    }
-    
-    .load-model-container{
-        padding-top:20px;
-    }
-    
+
     .diagonal-overlay-right
     {
         display:none;
     }
- 
+    
+     .gallery-thumb-container{
+        display:none;
+    }
+    
+   
+    .gallery-content .content-left .content-title{
+        font-size:25px;
+        height:20px;
+        margin-top:20px;
+    }
 }
 
-/* Smartphones (portrait) ----------- */
+/* Smartphones (portrait)  with burguer menu */
 
 
-@media only screen and (max-width : 450px){
+@media only screen and (max-width : 500px){
     
     .burguer-container{
         display: block;
+        @include transform(translateY(0));
+        @include transition(transform 1000ms 0ms $transition-effect);
     }
     
-    .burguer-container.hide
-    {
-        @include transform(translateY(0));
+    .burguer-overlay{
+        display:block;
     }
     
     .menu{
@@ -122,19 +126,14 @@
     .section-content{
         overflow-y:auto;
         overflow-x: hidden;
-        padding-top:50px;
-        height:100%;
-        top:0px;
+        height:calc(100% - 50px);
+        top:50px;
+        padding-top:20px;
+        border-top:none;
         @include transition(transform 1000ms 0ms $transition-effect);
     }
     
-    .gallery-content{
-        overflow:hidden;
-        padding-top:0px;
-        height:100%;
-        top:50px;
-    }
-    
+    /* generic css */
     .content-left{
         width:100% !important;
         height:85px !important;
@@ -145,11 +144,20 @@
         height:calc(100% - 250px) !important;
     }
     .content-info-list{
-        width:100% !important;
+        width:50% !important;
     }
     
     .footer-section-info{
        padding-left:10px;
+    }
+    
+    /** about fix **/
+    .section-about .content-left .content-title{
+        display:none;
+    }
+    
+    .section-about .content-right .content-title{
+        display:none;
     }
     
     /*contact fix*/
@@ -166,34 +174,29 @@
         display:none;
     }
    
+    
+    /* gallery fix */
+    .gallery-content{
+        overflow:hidden;
+        padding-top:0px;
+        height:100%;
+        top:50px;
+    }
+    
+    .section-gallery.show
+    {
+        @include transition((opacity 1000ms 0ms $transition-effect, transform 0ms 0ms));
+    }
+    
     .gallery-content .content-left{
         padding-right:20px;
     }
     
     .gallery-content .content-left .content-title{
-        display:none;
+        text-align:left;
     }
     
-    .load-model-container
-    {
-        left:0;
-        padding:0px;
-        padding-top:75px;
-        width:100%;
-    }
-    
-    .load-model-container .content-left .content-title {
-        display:none;
-    }
-    
-    .load-model-container .content-left .content-subtitle {
-        display:block;
-    }
-    
-    .load-model-container .content-left .rule {
-        display:block;
-    }
-    
+      
     .diagonal-overlay-right
     {
         display:none;
@@ -201,41 +204,43 @@
 }
 
 /* Smartphones (landscape) ----------- */
-@media only screen and (max-height : 450px){
+@media only screen and (max-height : 500px){
     
-    .gallery-content{
-        overflow:hidden;
-        padding-top:20px;
-        height:100%;
-        top:50px;
-    }
    
-    .gallery-content .content-left .content-subtitle {
+    .gallery-content .content-left .content-title{
         display:none;
     }
 
-    .load-model-container
-    {
-        left:0;
-        padding:0px;
-        width:100%;
+    .burguer-overlay nav {
+        padding-top: 20px;
     }
     
-    .load-model-container .content-left .content-title {
+    .burguer-overlay ul li {
+        display: block;
+        height: calc(100%/5);
+        padding-top:5px;
+    }
+     .footer-section-info{
+       display:none;
+    }
+}
+
+@media only screen and (max-height : 350px){
+    
+    .gallery-content {
+        padding-top: 20px;
+    }
+
+    
+ 
+    .gallery-content .content-left .content-title{
         display:none;
-    }
-    
-    .load-model-container .content-left .content-subtitle {
-        display:block;
-    }
-    
-    .load-model-container .content-left .rule {
-        display:block;
     }
     
     .assets-info{
         margin-top:10px;
     }
+    
 }
 
 

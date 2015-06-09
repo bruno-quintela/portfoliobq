@@ -20,9 +20,9 @@ var myPortfolio = myPortfolio || {
     revision: '21052015'
 };
 /**
- * Create the Engine to provide this site needs
+ * Create the API to handle WEBGL & UI
  **/
-var ENGINE = function() {
+var API = function() {
     this.System = {
         isTouch: Modernizr.touch,
         supportsWEBGL: Detector.webgl,
@@ -78,14 +78,12 @@ var ENGINE = function() {
             }]
         },
         isBrowserDeprecated: function() {
-            /*if(this.browser.name === 'Chrome' && parseInt(this.browser.version) < 40) {
-                return true;
-            } else if(this.browser.name === 'Firefox' && parseInt(this.browser.version) < 35) {
+            console.log(this.browser.name);
+            if(this.browser.name === 'Explorer') {
                 return true;
             } else {
                 return false;
-            }*/
-            return false;
+            }
         },
         // use webgl conditions
         useWebGL: function() {
@@ -1227,7 +1225,7 @@ var ENGINE = function() {
                             }
                         });
                         //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y += 40 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y += 50 * Math.PI / 180;
                         layer.scene.position.x += 1;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
@@ -1296,7 +1294,7 @@ var ENGINE = function() {
                             }
                         });
                         //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y += 0 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 100 * Math.PI / 180;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
@@ -1450,16 +1448,10 @@ var ENGINE = function() {
                             }
                         });
                         //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 30 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 120 * Math.PI / 180;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
-                            for(var i = 0; i < layer.fragments.length; i++) {
-                                //rotation
-                                layer.fragments[i].rotation.x += layer.rotationSpeed * 2;
-                                layer.fragments[i].rotation.y += layer.rotationSpeed;
-                                layer.fragments[i].rotation.z += layer.rotationSpeed * 2;
-                            }
                             if(world.renderParams.enableMouseListener) {
                                 layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05);
                             } else {
@@ -1540,6 +1532,12 @@ var ENGINE = function() {
                                         transparent: true
                                     });
                                     layer.makehumanEyelashes = mesh;
+                                } else if(child.name.indexOf('cell') !== -1) {
+                                    mesh = child.children[0];
+                                    mesh.material = world.materials.matcapMaterial(layer, 1);
+                                    mesh.receiveShadow = false;
+                                    mesh.castShadow = false;
+                                    layer.fragments.push(mesh);
                                 }
                             }
                         });
@@ -1548,6 +1546,13 @@ var ENGINE = function() {
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
+                            for(var i = 0; i < layer.fragments.length; i++) {
+                                //rotation
+                                layer.fragments[i].rotation.x += layer.rotationSpeed * 2;
+                                layer.fragments[i].rotation.y += layer.rotationSpeed * 2;
+                                layer.fragments[i].rotation.z += layer.rotationSpeed * 2;
+                                layer.fragments[i].position.y += 0.0003;
+                            }
                             if(world.renderParams.enableMouseListener) {
                                 layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05);
                             } else {
@@ -1699,7 +1704,7 @@ var ENGINE = function() {
                             }
                         });
                         //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y += 90 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y += 80 * Math.PI / 180;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.rotationSpeed = 0.0005;
                         layer.render = function(rtt) {
@@ -1778,7 +1783,7 @@ var ENGINE = function() {
                             }
                         });
                         //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 30 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 20 * Math.PI / 180;
                         layer.scene.position.y += 0.6;
                         layer.scene.position.x -= 2;
                         layer.rotationSpeed = 0.0005;
@@ -1854,7 +1859,7 @@ var ENGINE = function() {
                         });
                         //init scene rotation
                         layer.scene.position.y -= 0.1;
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 120 * Math.PI / 180;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.rotationSpeed = 0.0005;
                         layer.render = function(rtt) {
@@ -2160,7 +2165,7 @@ var ENGINE = function() {
             };
         },
         /**
-         * Everything is instantiated, lets start de engine!!!
+         * Everything is instantiated, lets start de API!!!
          **/
         start: function() {
             var world = this;
@@ -2176,8 +2181,8 @@ var ENGINE = function() {
                 }
                 //console.info(loadProgression);
             }, function() {
-
                 var menu = document.getElementById('menu');
+                var burguerMenu = document.getElementById('burguerMenu');
                 var initLoadingScreen = document.getElementById('initLoadingScreen');
                 var initIntroScreen = document.getElementById('initIntroScreen');
                 var initIntroTitle = document.getElementById('initIntroTitle');
@@ -2202,7 +2207,7 @@ var ENGINE = function() {
                         x: 0
                     }, 15000).onUpdate(update);
                     tweenLayerTransition.start();
-                    myPortfolio.SoundFx.backgroundMusic.play(0);
+                    //myPortfolio.SoundFx.backgroundMusic.play(0);
                 }, 2000);
                 setTimeout(function() {
                     initLoadingScreen.parentNode.removeChild(initLoadingScreen);
@@ -2217,13 +2222,12 @@ var ENGINE = function() {
                 setTimeout(function() {
                     classie.removeClass(initIntroTitle, 'show');
                 }, 13000);
-                setTimeout(function() {
-                    classie.removeClass(menu, 'hide');
-                    classie.removeClass(footerInfoSection, 'hide');
-                }, 14000);
                 //end init loading screen
                 setTimeout(function() {
                     classie.addClass(initIntroScreen, 'hide');
+                    classie.removeClass(menu, 'hide');
+                    classie.removeClass(burguerMenu, 'hide');
+                    classie.removeClass(footerInfoSection, 'hide');
                 }, 15000);
                 setTimeout(function() {
                     initIntroScreen.parentNode.removeChild(initIntroScreen);
@@ -2256,7 +2260,7 @@ var ENGINE = function() {
         }
     };
     /**
-     * UI Engine events handler
+     * UI API events handler
      **/
     this.UI = {
         /**
@@ -2283,6 +2287,8 @@ var ENGINE = function() {
             var footerInfoSection = document.getElementById('footerInfoSection');
             var menuItemActive = document.getElementById('menuItemActive');
             var settingsIcon = document.getElementById('settingsIcon');
+            var modelLoadingScreen = document.getElementById('modelLoadingScreen');
+            var progressBar = document.getElementById('progressBar');
             this.webglCanvas = document.getElementById('threejsCanvas');
             //add video as background
             this.videoBackground = document.getElementById('videoBackground');
@@ -2290,6 +2296,10 @@ var ENGINE = function() {
             this.videoBackground.preload = true;
             this.videoBackground.loop = true;
             this.videoBackground.muted = true;
+            if(myPortfolio.System.browser.name === 'Other') {
+                document.getElementById('fullscreenSettings').style.display = 'none';
+                document.getElementById('modelSettings').style.display = 'none';
+            }
             /* menu navigation handler*/
             this.hideAllSections = function() {
                 classie.addClass(aboutSection, 'hide');
@@ -2322,43 +2332,53 @@ var ENGINE = function() {
                 classie.removeClass(footerInfoSection, 'hide');
             });
             aboutAnchor.addEventListener('click', function() {
-                UI.hideAllSections();
-                classie.toggleClass(aboutSection, 'hide');
-                UI.resetMenuItemActive();
-                classie.addClass(aboutAnchor, 'active');
-                classie.addClass(menuItemActive, 'pos2');
-                classie.removeClass(footerInfoSection, 'hide');
+                if(!classie.hasClass(aboutSection, 'hide')) {
+                    homeAnchor.click();
+                } else {
+                    UI.hideAllSections();
+                    classie.toggleClass(aboutSection, 'hide');
+                    UI.resetMenuItemActive();
+                    classie.addClass(aboutAnchor, 'active');
+                    classie.addClass(menuItemActive, 'pos2');
+                    classie.removeClass(footerInfoSection, 'hide');
+                }
             });
             galleryAnchor.addEventListener('click', function() {
-                UI.hideAllSections();
-                classie.toggleClass(gallerySection, 'show');
-                UI.resetMenuItemActive();
-                classie.addClass(galleryAnchor, 'active');
-                classie.addClass(menuItemActive, 'pos3');
-                classie.removeClass(settingsSection, 'show');
-                classie.addClass(footerInfoSection, 'hide');
-                /*if(myPortfolio.System.useWebGL()) {
-                    setTimeout(function() {
-                        myPortfolio.World.renderParams.enableDotFilter = true;
-                        myPortfolio.World.refreshPostProcessing();
-                    }, 1000);
-                }*/
+                if(classie.hasClass(gallerySection, 'show')) {
+                    homeAnchor.click();
+                } else {
+                    UI.hideAllSections();
+                    classie.toggleClass(gallerySection, 'show');
+                    UI.resetMenuItemActive();
+                    classie.addClass(galleryAnchor, 'active');
+                    classie.addClass(menuItemActive, 'pos3');
+                    classie.removeClass(settingsSection, 'show');
+                    classie.addClass(footerInfoSection, 'hide');
+                }
             });
             contactAnchor.addEventListener('click', function() {
-                UI.hideAllSections();
-                classie.toggleClass(contactSection, 'hide');
-                UI.resetMenuItemActive();
-                classie.addClass(contactAnchor, 'active');
-                classie.addClass(menuItemActive, 'pos4');
-                classie.removeClass(footerInfoSection, 'hide');
+                if(!classie.hasClass(contactSection, 'hide')) {
+                    homeAnchor.click();
+                } else {
+                    UI.hideAllSections();
+                    classie.toggleClass(contactSection, 'hide');
+                    UI.resetMenuItemActive();
+                    classie.addClass(contactAnchor, 'active');
+                    classie.addClass(menuItemActive, 'pos4');
+                    classie.removeClass(footerInfoSection, 'hide');
+                }
             });
             creditsAnchor.addEventListener('click', function() {
-                UI.hideAllSections();
-                classie.toggleClass(creditsSection, 'hide');
-                UI.resetMenuItemActive();
-                classie.addClass(creditsAnchor, 'active');
-                classie.addClass(menuItemActive, 'pos5');
-                classie.removeClass(footerInfoSection, 'hide');
+                if(!classie.hasClass(creditsSection, 'hide')) {
+                    homeAnchor.click();
+                } else {
+                    UI.hideAllSections();
+                    classie.toggleClass(creditsSection, 'hide');
+                    UI.resetMenuItemActive();
+                    classie.addClass(creditsAnchor, 'active');
+                    classie.addClass(menuItemActive, 'pos5');
+                    classie.removeClass(footerInfoSection, 'hide');
+                }
             });
             settingsAnchor.addEventListener('click', function() {
                 classie.toggleClass(settingsSection, 'show');
@@ -2366,36 +2386,38 @@ var ENGINE = function() {
             });
             /* Burguer Menu events trigger*/
             var triggerBttn = document.getElementById('trigger-overlay'),
-                homeBurguerItem = document.getElementById('homeBurguerItem'),
                 aboutBurguerItem = document.getElementById('aboutBurguerItem'),
                 galleryBurguerItem = document.getElementById('galleryBurguerItem'),
                 contactBurguerItem = document.getElementById('contactBurguerItem'),
                 creditsBurguerItem = document.getElementById('creditsBurguerItem'),
-                overlay = document.querySelector('div.burguer-overlay');
+                burguerTitle = document.getElementById('burguerTitle'),
+                overlay = document.querySelector('.burguer-overlay');
+
+            function changeBurguerTile(newTitle) {
+                classie.addClass(burguerTitle, 'hide');
+                setTimeout(function() {
+                    burguerTitle.innerHTML = newTitle;
+                    classie.removeClass(burguerTitle, 'hide');
+                }, 500);
+            }
 
             function toggleMenuOverlay() {
                 if(!classie.hasClass(triggerBttn, 'open')) {
                     UI.hideAllSections();
                     UI.resetMenuItemActive();
                     classie.addClass(footerInfoSection, 'hide');
+                    changeBurguerTile('::menu');
                 } else {
                     UI.hideAllSections();
                     classie.addClass(homeAnchor, 'active');
                     classie.removeClass(settingsSection, 'show');
                     classie.removeClass(footerInfoSection, 'hide');
+                    changeBurguerTile('::home');
                 }
                 classie.toggleClass(overlay, 'open');
                 classie.toggleClass(triggerBttn, 'open');
-                
             }
             triggerBttn.addEventListener('click', toggleMenuOverlay);
-            homeBurguerItem.addEventListener('click', function() {
-                toggleMenuOverlay();
-                UI.hideAllSections();
-                classie.addClass(homeAnchor, 'active');
-                classie.removeClass(settingsSection, 'show');
-                classie.removeClass(footerInfoSection, 'hide');
-            });
             aboutBurguerItem.addEventListener('click', function() {
                 toggleMenuOverlay();
                 UI.hideAllSections();
@@ -2404,6 +2426,7 @@ var ENGINE = function() {
                 classie.addClass(menuItemActive, 'pos2');
                 classie.removeClass(settingsSection, 'show');
                 classie.addClass(footerInfoSection, 'hide');
+                changeBurguerTile('::about');
             });
             galleryBurguerItem.addEventListener('click', function() {
                 toggleMenuOverlay();
@@ -2413,6 +2436,7 @@ var ENGINE = function() {
                 classie.addClass(galleryAnchor, 'active');
                 classie.addClass(menuItemActive, 'pos3');
                 classie.removeClass(settingsSection, 'show');
+                changeBurguerTile('::gallery');
             });
             contactBurguerItem.addEventListener('click', function() {
                 toggleMenuOverlay();
@@ -2422,6 +2446,7 @@ var ENGINE = function() {
                 classie.addClass(menuItemActive, 'pos4');
                 classie.removeClass(settingsSection, 'show');
                 classie.addClass(footerInfoSection, 'hide');
+                changeBurguerTile('::contact');
             });
             creditsBurguerItem.addEventListener('click', function() {
                 toggleMenuOverlay();
@@ -2431,6 +2456,7 @@ var ENGINE = function() {
                 classie.addClass(menuItemActive, 'pos5');
                 classie.removeClass(settingsSection, 'show');
                 classie.addClass(footerInfoSection, 'hide');
+                changeBurguerTile('::credits');
             });
             /********* GALLERY *************/
             var galleryContainer = document.getElementById('galleryContainer');
@@ -2442,12 +2468,9 @@ var ENGINE = function() {
                 afterInitialize: function() {
                     galleryContainer.style.visibility = 'visible';
                 },
-                onDrag: function() {
-                },
-                onDragEnd: function() {
-                },
+                onDrag: function() {},
+                onDragEnd: function() {},
                 onSwipeStart: function() {
-                    var page = this.page;
                     var currentModelInfo = this.activeElement.getElementsByClassName('gallery-content')[0];
                     classie.addClass(currentModelInfo, 'hide');
                 },
@@ -2532,12 +2555,11 @@ var ENGINE = function() {
                 }
                 //console.log(myPortfolio.World.CurrentLayer.name);
                 myPortfolio.World.transitionParams.transitionMixRatio = 1;
-                var modelLoadingScreen = document.getElementById('modelLoadingScreen');
                 classie.addClass(modelLoadingScreen, 'show');
                 myPortfolio.World.CurrentLayer = new myPortfolio.World.Layer('scene0', 1, function() {}, function() {});
                 myPortfolio.World.NextLayer = new myPortfolio.World.Layer('scene' + modelNumber, totalAssets, function() {
                     var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
-                    document.getElementById('progressBar').style.width = loadProgression + '%';
+                    progressBar.style.width = loadProgression + '%';
                     console.log(this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
                     if(this.numberAssetsLoaded === this.totalAssetsToLoad) {
                         var layer = this;
@@ -2552,25 +2574,12 @@ var ENGINE = function() {
                         }, 4000);
                     }
                 }, function() {
-                    
                     classie.removeClass(myPortfolio.UI.webglCanvas, 'hide');
                     classie.removeClass(footerInfoSection, 'hide');
                     // get previous scene rotation to match during transition, only if From this form i hold series
                     //myPortfolio.World.NextLayer.scene.rotation.y = myPortfolio.World.CurrentLayer.scene.rotation.y;
                     myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
-                    myPortfolio.World.transitionParams.transitionMixRatio = 1;
-                    var transitionTime = myPortfolio.World.renderParams.enableAnaglyph ? 0 : 4000;
-                    var update = function() {
-                        myPortfolio.World.transitionParams.transitionMixRatio = current.x;
-                    };
-                    var current = {
-                        x: 1
-                    };
-                    // remove previous tweens if needed:TODO use same instanciated tween
-                    var tweenLayerTransition = new TWEEN.Tween(current).to({
-                        x: 0
-                    }, transitionTime).onUpdate(update);
-                    tweenLayerTransition.start();
+                    myPortfolio.World.transitionParams.transitionMixRatio = 0;
                     myPortfolio.World.CurrentLayer = myPortfolio.World.NextLayer;
                     /* hide background image for current selected*/
                     [].forEach.call(galleryImg, function(currentImg) {
@@ -2584,17 +2593,39 @@ var ENGINE = function() {
 
             function loadVideo(modelNumber, videoSrc) {
                 myPortfolio.World.transitionParams.transitionMixRatio = -1;
-                classie.addClass(myPortfolio.UI.webglCanvas, 'hide');
-                myPortfolio.UI.hideAllSections();
-                myPortfolio.UI.resetMenuItemActive();
-                classie.removeClass(footerInfoSection, 'hide');
+                //classie.addClass(myPortfolio.UI.webglCanvas, 'hide');
+                if(myPortfolio.UI.videoBackground.modelNumber === modelNumber) {
+                    myPortfolio.UI.hideAllSections();
+                    myPortfolio.UI.resetMenuItemActive();
+                    changeBurguerTile('::HOME');
+                    classie.removeClass(footerInfoSection, 'hide');
+                    return;
+                }
+                classie.addClass(myPortfolio.UI.videoBackground, 'hide');
+                myPortfolio.UI.videoBackground.modelNumber = modelNumber;
                 myPortfolio.UI.videoBackground.src = videoSrc;
                 myPortfolio.UI.videoBackground.play();
                 /* hide background image for current selected*/
-                [].forEach.call(galleryImg, function(currentImg) {
-                    classie.removeClass(currentImg, 'hide');
-                });
-                classie.addClass(galleryImg[modelNumber - 1], 'hide');
+                classie.addClass(modelLoadingScreen, 'show');
+                progressBar.style.width = '100%';
+                setTimeout(function() {
+                    classie.removeClass(modelLoadingScreen, 'show');
+                    myPortfolio.UI.hideAllSections();
+                    myPortfolio.UI.resetMenuItemActive();
+                    [].forEach.call(galleryImg, function(currentImg) {
+                        classie.removeClass(currentImg, 'hide');
+                    });
+                    // load reset
+                    classie.addClass(progressBar, 'reset');
+                    progressBar.style.width = '0%';
+                    setTimeout(function() {
+                        classie.removeClass(progressBar, 'reset');
+                        changeBurguerTile('::HOME');
+                        classie.removeClass(footerInfoSection, 'hide');
+                        classie.removeClass(myPortfolio.UI.videoBackground, 'hide');
+                        classie.addClass(galleryImg[modelNumber - 1], 'hide');
+                    }, 1000);
+                }, 3000);
             }
             var webglLoadItems = document.querySelectorAll('.load-webgl');
             [].forEach.call(webglLoadItems, function(currentModel) {
@@ -2662,6 +2693,7 @@ var ENGINE = function() {
                     } else if(element.webkitRequestFullscreen) {
                         element.webkitRequestFullscreen();
                     } else if(element.msRequestFullscreen) {
+                        console.log('IEFS');
                         element.msRequestFullscreen();
                     }
                 }
@@ -2676,6 +2708,7 @@ var ENGINE = function() {
                     } else if(document.mozCancelFullScreen) {
                         document.mozCancelFullScreen();
                     } else if(document.msExitFullscreen) {
+                        console.log('IEFS');
                         document.msExitFullscreen();
                     }
                 }
@@ -2685,9 +2718,10 @@ var ENGINE = function() {
                 /* AUDIO */
                 settingsAudioOn.addEventListener('click', function() {
                     if(!classie.hasClass(settingsAudioOn, 'active')) {
+                        myPortfolio.SoundFx.backgroundMusic.play();
                         var fadeIn = new TWEEN.Tween(myPortfolio.SoundFx.backgroundMusic).to({
                             volume: 1
-                        }, 300);
+                        }, 500);
                         fadeIn.easing(TWEEN.Easing.Quadratic.Out).start();
                         classie.toggleClass(settingsAudioOn, 'active');
                         classie.toggleClass(settingsAudioOff, 'active');
@@ -2697,8 +2731,11 @@ var ENGINE = function() {
                     if(!classie.hasClass(settingsAudioOff, 'active')) {
                         var fadeIn = new TWEEN.Tween(myPortfolio.SoundFx.backgroundMusic).to({
                             volume: 0
-                        }, 300);
+                        }, 500);
                         fadeIn.easing(TWEEN.Easing.Quadratic.Out).start();
+                        setTimeout(function() {
+                            myPortfolio.SoundFx.backgroundMusic.pause();
+                        }, 600);
                         classie.toggleClass(settingsAudioOn, 'active');
                         classie.toggleClass(settingsAudioOff, 'active');
                     }
@@ -2860,12 +2897,14 @@ var ENGINE = function() {
             this.backgroundMusic.addEventListener('error', function() {
                 console.error('error loading audio');
             }, false);
+            this.backgroundMusic.type = 'audio/mpeg';
             this.backgroundMusic.src = this.backgroundAudioFile;
             this.backgroundMusic.loop = true;
         }
     };
     this.init = function() {
         this.System.init();
+        console.log(this.System.useWebGL());
         if(!this.System.useWebGL()) {
             this.UI.start();
             // remove Threejs canvas
@@ -2896,7 +2935,6 @@ var ENGINE = function() {
             [].forEach.call(galleryOverlayItems, function(currentItem) {
                 currentItem.style.display = 'none';
             });
-            
             /*var assetsInfo = document.querySelectorAll('.assets-info');
             [].forEach.call(assetsInfo, function(currentAsset) {
                 currentAsset.style.display = 'none';
@@ -2905,31 +2943,33 @@ var ENGINE = function() {
                 this.UI.videoBackground.src = '../src/videos/scene1HD-SD.mp4';
                 this.UI.videoBackground.play();
             } else {
-                this.UI.videoBackground.poster = '../src/img/backgroundScene1Mobile.jpg'
+                this.UI.videoBackground.poster = '../src/img/backgroundScene1Mobile.jpg';
             }
+            classie.removeClass(this.UI.videoBackground, 'hide');
             /********************/
             var burguerMenu = document.getElementById('burguerMenu');
             var menu = document.getElementById('menu');
             var footerInfoSection = document.getElementById('footerInfoSection');
             var initLoadingScreen = document.getElementById('initLoadingScreen');
             var initIntroScreen = document.getElementById('initIntroScreen');
+            var loadingInfoTop = document.getElementById('loadingInfoTop');
             initIntroScreen.parentNode.removeChild(initIntroScreen);
-            document.getElementById('initProgressBar').style.width = '100%';
+            loadingInfoTop.parentNode.removeChild(loadingInfoTop);
             setTimeout(function() {
                 classie.addClass(initLoadingScreen, 'hide');
-                classie.removeClass(burguerMenu, 'hide');
-                classie.removeClass(menu, 'hide');
-                classie.removeClass(footerInfoSection, 'hide');
             }, 2000);
             setTimeout(function() {
                 initLoadingScreen.parentNode.removeChild(initLoadingScreen);
+                classie.removeClass(burguerMenu, 'hide');
+                classie.removeClass(menu, 'hide');
+                classie.removeClass(footerInfoSection, 'hide');
             }, 3000);
             //end init loading screen
         } else {
-            /*var videoLoadItems = document.querySelectorAll('.load-video');
+            var videoLoadItems = document.querySelectorAll('.load-video');
             [].forEach.call(videoLoadItems, function(currentModel) {
                 currentModel.style.display = 'none';
-            });*/
+            });
             this.SoundFx.init();
             this.World.start();
             this.UI.start();
@@ -2940,6 +2980,6 @@ var ENGINE = function() {
 /**
  * On Ready Init Page Prototype TODO
  **/
-myPortfolio = new ENGINE();
+myPortfolio = new API();
 myPortfolio.init();
-console.log('Engine started.');
+console.log('API started.');

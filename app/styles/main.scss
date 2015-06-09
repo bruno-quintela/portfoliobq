@@ -6,11 +6,11 @@ $menu-height:50px;
 $section-content-height:225px;
 $section-left-width: 230px;
 $text-color: rgba(255,255,255,1);
-$primary-color: rgba(0,0,0,0.9);
+$primary-color: rgba(0,0,0,0.7);
 $secondary-color: rgba(255,0,0,1);
 $secondary-color-opaque: rgba(255,0,0,0.2);
-$main-menu-background: rgba(0,0,0,0.9);
-$footer-background: rgba(0,0,0,0.9);
+$main-menu-background: rgba(0,0,0,1);
+$footer-background: rgba(0,0,0,1);
 $loading-model-background: rgba(0,0,0,0.3);
 $background-color: rgba(0,0,0,1);
 $transition-effect: ease;
@@ -64,11 +64,18 @@ $transition-effect: ease;
     width: auto; 
     height: auto; 
     z-index: -100;
+    opacity:1;
     //background: url('../src/img/streamingVideo.jpg') no-repeat 0 0; 
-   -webkit-background-size:cover; 
-   -moz-background-size:cover; 
-   -o-background-size:cover; 
-   background-size:cover; 
+    -webkit-background-size:cover; 
+    -moz-background-size:cover; 
+    -o-background-size:cover; 
+    background-size:cover;
+    will-change:opacity;
+    @include transition(opacity 1000ms 0ms $transition-effect);
+}
+
+.video-background.hide{
+    opacity:0;
 }
 
 .video-overlay
@@ -91,6 +98,7 @@ $transition-effect: ease;
     height:$section-content-height;
     padding-top:25px;
     background-color:$primary-color;
+    background-image: url(../src/img/dotOverlay.png);
     border-top:1px solid rgba(255, 0, 0, 0.3);
     will-change: transform;
     @include transform(translateY(0));
@@ -245,6 +253,12 @@ $transition-effect: ease;
     color:#fff;
     float:left;
     margin-right:10px;
+}
+
+.footer-title .surname
+{
+    color:red;
+    font-weight:600;
 }
 
 

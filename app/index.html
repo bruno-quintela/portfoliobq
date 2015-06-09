@@ -13,9 +13,9 @@
     <meta name="image" content="http://www.brunoquintela.com/src/img/backgroundScene1HD.jpg">
     <meta name="keywords" content="webgl,threejs,brunoquintela"/>
     <meta name="date" content="2015"/>
-    <title>Bruno Quintela | Portfolio</title>
+    <title>Bruno Quintela::Portfolio</title>
     <link rel="icon" href="favicon.ico">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
     <link href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/vendor.css -->
@@ -123,7 +123,7 @@
 
         <!-- Scene loading screen -->
         <div id="modelLoadingScreen" class="model-loading-screen">
-            <div class="loading-info-top">
+            <div id="loadingInfoTop" class="loading-info-top">
                 now loading 3D Model assets, please wait...
             </div>
             <div class="model-loading-bar">
@@ -132,7 +132,7 @@
         </div>
 
         <!-- fullscreen background video -->
-        <video src="" id="videoBackground" class="video-background" type='video/mp4' loop autoplay></video>
+        <video src="" id="videoBackground" class="video-background hide" type='video/mp4' poster="../src/img/backgroundScene1Mobile.jpg" loop autoplay></video>
         <div class="video-overlay"></div>
         <!-- Webgl renderer canvas -->
         <canvas id="threejsCanvas" class="threejs-canvas"></canvas>
@@ -156,15 +156,14 @@
 
         <!-- burguer menu and fullscreen nav -->
         <div id="burguerMenu" class="burguer-container hide">
-            <div class="burguer-title">
+            <div id="burguerTitle" class="burguer-title">
+                ::Home
             </div>
             <a id="trigger-overlay" class="burger" href="#"><span></span></a>
         </div>
         <div class="burguer-overlay">
             <nav>
                 <ul>
-                    <li><a id="homeBurguerItem" href="#">Home</a>
-                    </li>
                     <li><a id="aboutBurguerItem" href="#">About</a>
                     </li>
                     <li><a id="galleryBurguerItem" href="#">Gallery</a>
@@ -175,10 +174,11 @@
                     </li>
                 </ul>
             </nav>
+            
         </div>
 
         <!-- SECTION ABOUT START-->
-        <section id="aboutSection" class="section-content hide">
+        <section id="aboutSection" class="section-content section-about hide">
 
             <div class="content-left">
                 <div class="content-title">
@@ -215,7 +215,6 @@
                     <span class="description">In the next five years mankind will enter into the age of VR, and for the first time in the past decades we will have the oportunity to change the way you surf the web, so my wishes are to be in a project related to that, as a web or game developer.</span>
                 </div>
             </div>
-            <br>
         </section>
         <!-- SECTION ABOUT END-->
         <!-- SECTION CONTACT START -->
@@ -315,14 +314,15 @@
                     </div>
                     <div class="rule left"></div>
                     <ul class="credits-list">
-                        <li><a class="anchor-link" target="_blank" href="http://blendernation.com/">BlenderNation</a>
-                        </li>
-                        <li><a class="anchor-link" target="_blank" href="http://cgcookie.com/">CGcookie</a>
-                        </li>
                         <li><a class="anchor-link" target="_blank" href="http://codepen.io/">Codepen</a>
                         </li>
                         <li><a class="anchor-link" target="_blank" href="http://tympanus.net/codrops/">Codrops</a>
                         </li>
+                        <li><a class="anchor-link" target="_blank" href="http://blendernation.com/">BlenderNation</a>
+                        </li>
+                        <li><a class="anchor-link" target="_blank" href="http://cgcookie.com/">CGcookie</a>
+                        </li>
+
                     </ul>
                 </div>
                 <div class="content-info-list">
@@ -357,7 +357,7 @@
                         <li>
                             <span class="settings-name">Audio</span><span id="settingsAudioOn" class="settings-toggle active">on</span><span id="settingsAudioOff" class="settings-toggle">off</span>
                         </li>
-                        <li>
+                        <li id="fullscreenSettings">
                             <span class="settings-name">Fullscreen</span><span id="settingsFullscreenOn" class="settings-toggle ">on</span><span id="settingsFullscreenOff" class="settings-toggle active">off</span>
                         </li>
                     </ul>
@@ -393,7 +393,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="content-info-settings">
+                <div id="modelSettings" class="content-info-settings">
                     <div class="content-subtitle">
                         Model
                     </div>
@@ -401,7 +401,7 @@
                     <ul class="credits-list">
                         <li>
                             <span class="settings-name">Zoom</span>
-                            <input id="zoomBar" class="zoom" type='range' min="-2" max="5" value="0" step='0.1' />
+                            <input id="zoomBar" class="zoom" type='range' min="-2" max="2" value="0" step='0.1' />
                         </li>
                         <li>
                             <span class="settings-name">Rotation</span>
@@ -449,7 +449,7 @@
 
             <div id="touchSwipeInfo" class="touch-swipe-info">
                 <div class="content-subtitle">
-                    <- swipe to navigate ->
+                    swipe to navigate::
                 </div>
             </div>
 
@@ -647,8 +647,8 @@
                                         <div class="rule right"></div>
                                         <div class="current-info">
                                             <span class="settings-name">Date </span><span class="assets-label">10.04.15</span>
-                                            <span class="settings-name">Assets Size</span><span class="assets-label">2.1Mb</span>
-                                            <span class="settings-name">#polygons</span><span class="assets-label">10.769</span>
+                                            <span class="settings-name">Assets Size</span><span class="assets-label">2.3Mb</span>
+                                            <span class="settings-name">#polygons</span><span class="assets-label">11.631</span>
                                         </div>
                                     </div>
                                     <div class="assets-info">
@@ -658,7 +658,7 @@
 
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="5" data-assets="7" class="load-model-button load-webgl" href="#">WEBGL</a>
+                                            <a data-model="5" data-assets="62" class="load-model-button load-webgl" href="#">WEBGL</a>
                                             <a data-model="5" data-video="../src/videos/scene5HD-SD.mp4" class="load-model-button load-video" href="#">VIDEO</a> 
                                         </div>
                                     </div>
@@ -843,10 +843,10 @@
         <footer id="footerInfoSection" class="footer-section-info hide">
             <div class="footer-title">
                 <span class="">Bruno </span>
-                <span class="highlight">Quintela</span>
+                <span class="surname">Quintela</span>
             </div>
             <div class="footer-title">
-                | Portfolio
+                :: Portfolio
             </div>
 
             <div id="settingsAnchor" class="menu-settings">

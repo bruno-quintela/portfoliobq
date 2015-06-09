@@ -43,6 +43,7 @@
 
 .gallery-content .content-left .content-title{
     font-weight:300;
+    margin-top:20px;
 }
 
 .diagonal-overlay-up
@@ -177,15 +178,16 @@
     position: absolute;
     bottom: 0px;
     padding: 5px;
-    text-align: center;
+    padding-right: 10px;
+    text-align: right;
     height: 25px;
-    background-color: rgba(0,0,0,0.7);
-    border-top:rgba(255,0,0,0.7);
+    background-color: transparent;
     display: none;
 }
 
 .touch-swipe-info .content-subtitle{
-    text-transform:none;
+    font-size:9px;
+    font-weight:300;
 }
 /**
 * Current model Info
