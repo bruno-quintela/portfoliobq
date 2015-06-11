@@ -66,10 +66,13 @@ $transition-effect: ease;
     z-index: -100;
     opacity:1;
     //background: url('../src/img/streamingVideo.jpg') no-repeat 0 0; 
-    -webkit-background-size:cover; 
+    /*-webkit-background-size:cover; 
     -moz-background-size:cover; 
     -o-background-size:cover; 
-    background-size:cover;
+    background-size:cover;*/
+    background:transparent no-repeat url('../src/img/backgroundPoster.jpg');
+    background-position:center bottom;
+    //background-size:100%;
     will-change:opacity;
     @include transition(opacity 1000ms 0ms $transition-effect);
 }

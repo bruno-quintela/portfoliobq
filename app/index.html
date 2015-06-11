@@ -11,13 +11,14 @@
     <meta name="type" content="website">
     <meta name="url" content="http://www.brunoquintela.com">
     <meta name="image" content="http://www.brunoquintela.com/src/img/backgroundScene1HD.jpg">
-    <meta name="keywords" content="webgl,threejs,brunoquintela"/>
-    <meta name="date" content="2015"/>
+    <meta name="keywords" content="webgl,threejs,brunoquintela" />
+    <meta name="date" content="2015" />
     <title>Bruno Quintela::Portfolio</title>
     <link rel="icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
     <link href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="../bower_components/normalize-css/normalize.css" />
@@ -132,7 +133,8 @@
         </div>
 
         <!-- fullscreen background video -->
-        <video src="" id="videoBackground" class="video-background hide" type='video/mp4' poster="../src/img/backgroundScene1Mobile.jpg" loop autoplay></video>
+        <video id="videoBackground" class="video-background hide" loop autoplay></video>
+
         <div class="video-overlay"></div>
         <!-- Webgl renderer canvas -->
         <canvas id="threejsCanvas" class="threejs-canvas"></canvas>
@@ -174,7 +176,7 @@
                     </li>
                 </ul>
             </nav>
-            
+
         </div>
 
         <!-- SECTION ABOUT START-->
@@ -458,7 +460,7 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img hide">
-                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene1HD.jpg">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene1HD.jpg">
                                     <source srcset="../src/img/backgroundScene1Mobile.jpg">
                                         <img src="../src/img/backgroundScene1HD.jpg" class="model-background-img" alt="">
                             </picture>
@@ -500,7 +502,7 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
-                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene2HD.jpg">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene2HD.jpg">
                                     <source srcset="../src/img/backgroundScene2Mobile.jpg">
                                         <img src="../src/img/backgroundScene2HD.jpg" class="model-background-img" alt="">
                             </picture>
@@ -542,7 +544,7 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
-                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene3HD.jpg">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene3HD.jpg">
                                     <source srcset="../src/img/backgroundScene3Mobile.jpg">
                                         <img src="../src/img/backgroundScene3HD.jpg" class="model-background-img" alt="">
                             </picture>
@@ -585,7 +587,7 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
-                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene4HD.jpg">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene4HD.jpg">
                                     <source srcset="../src/img/backgroundScene4Mobile.jpg">
                                         <img src="../src/img/backgroundScene4HD.jpg" class="model-background-img" alt="">
                             </picture>
@@ -627,7 +629,7 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
-                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene5HD.jpg">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene5HD.jpg">
                                     <source srcset="../src/img/backgroundScene5Mobile.jpg">
                                         <img src="../src/img/backgroundScene5HD.jpg" class="model-background-img" alt="">
                             </picture>
@@ -669,7 +671,7 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
-                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene6HD.jpg">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene6HD.jpg">
                                     <source srcset="../src/img/backgroundScene6Mobile.jpg">
                                         <img src="../src/img/backgroundScene6HD.jpg" class="model-background-img" alt="">
                             </picture>
@@ -711,7 +713,7 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
-                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene7HD.jpg">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene7HD.jpg">
                                     <source srcset="../src/img/backgroundScene7Mobile.jpg">
                                         <img src="../src/img/backgroundScene7HD.jpg" class="model-background-img" alt="">
                             </picture>
@@ -754,7 +756,7 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
-                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene8HD.jpg">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene8HD.jpg">
                                     <source srcset="../src/img/backgroundScene8Mobile.jpg">
                                         <img src="../src/img/backgroundScene8HD.jpg" class="model-background-img" alt="">
                             </picture>
@@ -796,7 +798,7 @@
                     <li class="gallery-item">
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
-                                <source media="(min-width: 700px)" srcset="../src/img/backgroundScene9HD.jpg">
+                                <source media="(min-width: 500px)" srcset="../src/img/backgroundScene9HD.jpg">
                                     <source srcset="../src/img/backgroundScene9Mobile.jpg">
                                         <img src="../src/img/backgroundScene9HD.jpg" class="model-background-img" alt="">
                             </picture>
@@ -846,7 +848,7 @@
                 <span class="surname">Quintela</span>
             </div>
             <div class="footer-title">
-                :: Portfolio
+                &nbsp;::&nbsp;Portfolio
             </div>
 
             <div id="settingsAnchor" class="menu-settings">

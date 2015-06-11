@@ -2289,6 +2289,7 @@ var API = function() {
             var settingsIcon = document.getElementById('settingsIcon');
             var modelLoadingScreen = document.getElementById('modelLoadingScreen');
             var progressBar = document.getElementById('progressBar');
+            var videoBackground = document.getElementById('videoBackground');
             this.webglCanvas = document.getElementById('threejsCanvas');
             //add video as background
             this.videoBackground = document.getElementById('videoBackground');
@@ -2591,7 +2592,27 @@ var API = function() {
                 });
             }
 
-            function loadVideo(modelNumber, videoSrc) {
+            this.changeBackgroundVideo = function(modelNumber) {
+                var sources = videoBackground.getElementsByTagName('source');
+                if(window.innerWidth < 500) {
+                    if(Modernizr.video && Modernizr.video.h264) {
+                        videoBackground.setAttribute("src", '../src/videos/scene' + modelNumber + 'xMobile.mp4');
+                    } else if(Modernizr.video && Modernizr.video.webm) {
+                        videoBackground.setAttribute("src", '../src/videos/scene' + modelNumber + 'xMobile.webm');
+                    }
+                } else {
+                    if(Modernizr.video && Modernizr.video.h264) {
+                        videoBackground.setAttribute("src", '../src/videos/scene' + modelNumber + 'xSD.mp4');
+                    } else if(Modernizr.video && Modernizr.video.webm) {
+                        videoBackground.setAttribute("src", '../src/videos/scene' + modelNumber + 'xSD.webm');
+                    }
+                }
+                videoBackground.load();
+                //video.play();
+                console.log('videoLoaded');
+            };
+
+            function loadVideo(modelNumber) {
                 myPortfolio.World.transitionParams.transitionMixRatio = -1;
                 //classie.addClass(myPortfolio.UI.webglCanvas, 'hide');
                 if(myPortfolio.UI.videoBackground.modelNumber === modelNumber) {
@@ -2603,8 +2624,9 @@ var API = function() {
                 }
                 classie.addClass(myPortfolio.UI.videoBackground, 'hide');
                 myPortfolio.UI.videoBackground.modelNumber = modelNumber;
-                myPortfolio.UI.videoBackground.src = videoSrc;
-                myPortfolio.UI.videoBackground.play();
+                myPortfolio.UI.changeBackgroundVideo(modelNumber);
+                //myPortfolio.UI.videoBackground.src = videoSrc;
+                //myPortfolio.UI.videoBackground.play();
                 /* hide background image for current selected*/
                 classie.addClass(modelLoadingScreen, 'show');
                 progressBar.style.width = '100%';
@@ -2935,15 +2957,13 @@ var API = function() {
             [].forEach.call(galleryOverlayItems, function(currentItem) {
                 currentItem.style.display = 'none';
             });
-            /*var assetsInfo = document.querySelectorAll('.assets-info');
-            [].forEach.call(assetsInfo, function(currentAsset) {
-                currentAsset.style.display = 'none';
-            });*/
+
             if(!this.System.isTouch) {
-                this.UI.videoBackground.src = '../src/videos/scene1HD-SD.mp4';
-                this.UI.videoBackground.play();
-            } else {
-                this.UI.videoBackground.poster = '../src/img/backgroundScene1Mobile.jpg';
+                this.UI.changeBackgroundVideo(1);
+            }
+            else{
+                var firstBackgroundImage = document.querySelectorAll('.model-background-img.hide')[0];
+                classie.removeClass(firstBackgroundImage, 'hide');
             }
             classie.removeClass(this.UI.videoBackground, 'hide');
             /********************/
