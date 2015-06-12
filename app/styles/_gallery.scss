@@ -39,11 +39,15 @@
 .gallery-content .content-left{
     float:right;
     padding-right:40px;
+    padding-top: 20px;
+    width:350px;
 }
 
 .gallery-content .content-left .content-title{
-    font-weight:300;
-    margin-top:20px;
+    font-weight:100;
+    margin-top:0px;
+    margin-bottom:40px;
+    letter-spacing:15px;
 }
 
 .diagonal-overlay-up
@@ -151,7 +155,7 @@
 .assets-info
 {
     float:right;
-    margin-top:25px;
+    //margin-top:25px;
     clear:both;
 }
 
@@ -171,6 +175,13 @@
    text-align:right;
 }
 
+.gallery-swipe-info .content-left .content-subtitle
+{
+   text-transform:none;
+   color:grey;
+   letter-spacing: 6px;
+}
+
 .touch-swipe-info
 {
     z-index: 1;
@@ -178,7 +189,7 @@
     position: absolute;
     bottom: 0px;
     padding: 5px;
-    padding-right: 10px;
+    padding-right: 30px;
     text-align: right;
     height: 25px;
     background-color: transparent;
@@ -217,7 +228,7 @@
 
 
 .content-subtitle-model{
-      background-color: rgba(255, 0, 0, 0.3);
+      //color:red;
 }
 
 .view-model
@@ -232,7 +243,7 @@
     float: right;
     width: 100px;
     border: 1px solid red;
-    margin-top: 10px;
+    margin-top: 20px;
     clear: both;
     padding:2px;
     background-color:rgba(0,0,0,0.8);
@@ -388,4 +399,10 @@
     position:absolute;
     width:0%;
     @include transition(width 0s 0s);
+}
+
+.frame-number{
+    font-weight:400;
+    font-size:70px;
+    letter-spacing:0px;
 }

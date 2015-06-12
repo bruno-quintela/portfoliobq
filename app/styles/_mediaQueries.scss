@@ -45,6 +45,10 @@
         width:210px !important;
     }
     
+    .gallery-content .content-left{
+        width:350px !important;
+    }
+    
     .content-right{
         width:calc(100% - 210px) !important;
     }
@@ -82,26 +86,6 @@
     .menu-settings{
         display:none;
     }
-}
-
-@media only screen and (max-height : 650px)
-{
-
-    /*.diagonal-overlay-right
-    {
-        display:none;
-    }
-    
-     .gallery-thumb-container{
-        display:none;
-    }
-    
-   
-    .gallery-content .content-left .content-title{
-        font-size:25px;
-        height:20px;
-        margin-top:20px;
-    }*/
 }
 
 /* Smartphones (portrait)  with burguer menu */
@@ -153,7 +137,6 @@
     
     .footer-title
     {
-        margin:0px;
         letter-spacing:3px;
     }
     
@@ -202,6 +185,7 @@
     
     .gallery-content .content-left{
         padding-right:20px;
+        padding-top: 20px;
     }
     
     /*.gallery-content .content-left .content-title{
@@ -209,7 +193,17 @@
     }*/
     
 
+    .diagonal-overlay-left
+    {
+        border-color: transparent rgba(0, 0, 0, 0.7) ;
+    }
+    
     .diagonal-overlay-right
+    {
+        display:none;
+    }
+    
+    .diagonal-overlay-down
     {
         display:none;
     }
@@ -220,14 +214,17 @@
     
    
     .gallery-content .content-left .content-title{
-        font-size:25px;
-        height:20px;
-        margin-top:20px;
+        display:none;
     }
     
     .loading-info-top
     {
         display:none;
+    }
+    
+    .touch-swipe-info
+    {
+        padding-right:10px;
     }
 }
 
@@ -235,6 +232,9 @@
 @media only screen and (max-height : 500px){
     
    
+    .gallery-content .content-left{
+        padding-top:0px;
+    }
     .gallery-content .content-left .content-title{
         display:none;
     }

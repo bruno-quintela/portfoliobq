@@ -18,7 +18,7 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
     <link href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
-    
+
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="../bower_components/normalize-css/normalize.css" />
@@ -35,12 +35,10 @@
 </head>
 
 <body>
-
-    <!--[if lt IE 9]>
-    <script>
-    document.createElement('video');
-    document.createElement('picture');
-    </script>
+    <!--[if lt IE 10]>
+        <script>
+            window.location.href = "browserdeprecated.html"
+        </script>
     <![endif]-->
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
@@ -441,8 +439,7 @@
                 <div class="gallery-swipe-info">
                     <div class="content-left">
                         <div class="content-subtitle">
-                            Use mouse wheel
-                            <br>or swipe to navigate
+                            Use mouse wheel or swipe to navigate
                         </div>
                     </div>
                     <div class="rule right"></div>
@@ -461,7 +458,7 @@
                         <div class="model-info-wrapper">
                             <picture class="model-background-img hide">
                                 <source media="(min-width: 500px)" srcset="../src/img/backgroundScene1HD.jpg">
-                                    <source srcset="../src/img/backgroundScene1Mobile.jpg">
+                                    <source srcset="../src/img/backgroundScene1SD.jpg">
                                         <img src="../src/img/backgroundScene1HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
@@ -471,11 +468,11 @@
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Frame</span>
-                                        <span class="highlight">1</span>
+                                        <span class="frame-number highlight">1</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            model info
+                                            info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -485,13 +482,10 @@
                                         </div>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="content-subtitle content-subtitle-model">
-                                            view
-                                        </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="1" data-assets="4" class="load-model-button load-webgl" href="#">webgl</a>
-                                            <a data-model="1" data-video="../src/videos/scene1HD-SD.mp4" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="1" data-assets="4" class="load-model-button load-webgl" href="#">View</a>
+                                            <a data-model="1" class="load-model-button load-video" href="#">View</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -503,7 +497,7 @@
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
                                 <source media="(min-width: 500px)" srcset="../src/img/backgroundScene2HD.jpg">
-                                    <source srcset="../src/img/backgroundScene2Mobile.jpg">
+                                    <source srcset="../src/img/backgroundScene2SD.jpg">
                                         <img src="../src/img/backgroundScene2HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
@@ -513,11 +507,11 @@
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Frame</span>
-                                        <span class="highlight">2</span>
+                                        <span class="frame-number highlight">2</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            model info
+                                            info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -527,14 +521,10 @@
                                         </div>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="content-subtitle content-subtitle-model">
-                                            view
-                                        </div>
-
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="2" data-assets="6" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                            <a data-model="2" data-video="../src/videos/scene2HD-SD.mp4" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="2" data-assets="6" class="load-model-button load-webgl" href="#">View</a>
+                                            <a data-model="2" class="load-model-button load-video" href="#">View</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -545,7 +535,7 @@
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
                                 <source media="(min-width: 500px)" srcset="../src/img/backgroundScene3HD.jpg">
-                                    <source srcset="../src/img/backgroundScene3Mobile.jpg">
+                                    <source srcset="../src/img/backgroundScene3SD.jpg">
                                         <img src="../src/img/backgroundScene3HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
@@ -555,11 +545,11 @@
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Frame</span>
-                                        <span class="highlight">3</span>
+                                        <span class="frame-number highlight">3</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            model info
+                                            info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -569,14 +559,10 @@
                                         </div>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="content-subtitle content-subtitle-model">
-                                            view
-                                        </div>
-
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="3" data-assets="6" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                            <a data-model="3" data-video="../src/videos/scene3HD-SD.mp4" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="3" data-assets="6" class="load-model-button load-webgl" href="#">View</a>
+                                            <a data-model="3" class="load-model-button load-video" href="#">View</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -588,7 +574,7 @@
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
                                 <source media="(min-width: 500px)" srcset="../src/img/backgroundScene4HD.jpg">
-                                    <source srcset="../src/img/backgroundScene4Mobile.jpg">
+                                    <source srcset="../src/img/backgroundScene4SD.jpg">
                                         <img src="../src/img/backgroundScene4HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
@@ -598,11 +584,11 @@
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Frame</span>
-                                        <span class="highlight">4</span>
+                                        <span class="frame-number highlight">4</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            model info
+                                            info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -612,14 +598,10 @@
                                         </div>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="content-subtitle content-subtitle-model">
-                                            view
-                                        </div>
-
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="4" data-assets="21" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                            <a data-model="4" data-video="../src/videos/scene4HD-SD.mp4" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="4" data-assets="21" class="load-model-button load-webgl" href="#">View</a>
+                                            <a data-model="4" class="load-model-button load-video" href="#">View</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -630,7 +612,7 @@
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
                                 <source media="(min-width: 500px)" srcset="../src/img/backgroundScene5HD.jpg">
-                                    <source srcset="../src/img/backgroundScene5Mobile.jpg">
+                                    <source srcset="../src/img/backgroundScene5SD.jpg">
                                         <img src="../src/img/backgroundScene5HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
@@ -640,11 +622,11 @@
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Frame</span>
-                                        <span class="highlight">5</span>
+                                        <span class="frame-number highlight">5</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            model info
+                                            info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -654,14 +636,10 @@
                                         </div>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="content-subtitle content-subtitle-model">
-                                            view
-                                        </div>
-
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="5" data-assets="62" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                            <a data-model="5" data-video="../src/videos/scene5HD-SD.mp4" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="5" data-assets="62" class="load-model-button load-webgl" href="#">View</a>
+                                            <a data-model="5" class="load-model-button load-video" href="#">View</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -672,7 +650,7 @@
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
                                 <source media="(min-width: 500px)" srcset="../src/img/backgroundScene6HD.jpg">
-                                    <source srcset="../src/img/backgroundScene6Mobile.jpg">
+                                    <source srcset="../src/img/backgroundScene6SD.jpg">
                                         <img src="../src/img/backgroundScene6HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
@@ -682,11 +660,11 @@
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Frame</span>
-                                        <span class="highlight">6</span>
+                                        <span class="frame-number highlight">6</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            model info
+                                            info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -696,14 +674,10 @@
                                         </div>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="content-subtitle content-subtitle-model">
-                                            view
-                                        </div>
-
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="6" data-assets="7" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                            <a data-model="6" data-video="../src/videos/scene6HD-SD.mp4" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="6" data-assets="7" class="load-model-button load-webgl" href="#">View</a>
+                                            <a data-model="6" class="load-model-button load-video" href="#">View</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -714,7 +688,7 @@
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
                                 <source media="(min-width: 500px)" srcset="../src/img/backgroundScene7HD.jpg">
-                                    <source srcset="../src/img/backgroundScene7Mobile.jpg">
+                                    <source srcset="../src/img/backgroundScene7SD.jpg">
                                         <img src="../src/img/backgroundScene7HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
@@ -724,11 +698,11 @@
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Frame</span>
-                                        <span class="highlight">7</span>
+                                        <span class="frame-number highlight">7</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            model info
+                                            info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -738,14 +712,10 @@
                                         </div>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="content-subtitle content-subtitle-model">
-                                            view
-                                        </div>
-
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="7" data-assets="4" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                            <a data-model="7" data-video="../src/videos/scene7HD-SD.mp4" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="7" data-assets="4" class="load-model-button load-webgl" href="#">View</a>
+                                            <a data-model="7" class="load-model-button load-video" href="#">View</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -757,7 +727,7 @@
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
                                 <source media="(min-width: 500px)" srcset="../src/img/backgroundScene8HD.jpg">
-                                    <source srcset="../src/img/backgroundScene8Mobile.jpg">
+                                    <source srcset="../src/img/backgroundScene8SD.jpg">
                                         <img src="../src/img/backgroundScene8HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
@@ -767,11 +737,11 @@
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Frame</span>
-                                        <span class="highlight">8</span>
+                                        <span class="frame-number highlight">8</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            model info
+                                            info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -781,14 +751,10 @@
                                         </div>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="content-subtitle content-subtitle-model">
-                                            view
-                                        </div>
-
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="8" data-assets="3" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                            <a data-model="8" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="8" data-assets="3" class="load-model-button load-webgl" href="#">View</a>
+                                            <a data-model="8" class="load-model-button load-video" href="#">View</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -799,7 +765,7 @@
                         <div class="model-info-wrapper">
                             <picture class="model-background-img">
                                 <source media="(min-width: 500px)" srcset="../src/img/backgroundScene9HD.jpg">
-                                    <source srcset="../src/img/backgroundScene9Mobile.jpg">
+                                    <source srcset="../src/img/backgroundScene9SD.jpg">
                                         <img src="../src/img/backgroundScene9HD.jpg" class="model-background-img" alt="">
                             </picture>
                             <div class="diagonal-overlay-down"></div>
@@ -809,11 +775,11 @@
                                 <div class="content-left">
                                     <div class="content-title">
                                         <span class="">Frame</span>
-                                        <span class="highlight">9</span>
+                                        <span class="frame-number highlight">9</span>
                                     </div>
                                     <div class="assets-info">
                                         <div class="content-subtitle content-subtitle-model">
-                                            model info
+                                            info
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
@@ -823,14 +789,10 @@
                                         </div>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="content-subtitle content-subtitle-model">
-                                            view
-                                        </div>
-
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="9" data-assets="3" class="load-model-button load-webgl" href="#">WEBGL</a>
-                                            <a data-model="9" data-video="http://player.vimeo.com/external/118310608.sd.mp4?s=16baa73f581d93200fbfc4ffb15c1f04" class="load-model-button load-video" href="#">VIDEO</a> 
+                                            <a data-model="9" data-assets="3" class="load-model-button load-webgl" href="#">View</a>
+                                            <a data-model="9" class="load-model-button load-video" href="#">View</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -848,7 +810,7 @@
                 <span class="surname">Quintela</span>
             </div>
             <div class="footer-title">
-                &nbsp;::&nbsp;Portfolio
+                ::&nbsp;Portfolio
             </div>
 
             <div id="settingsAnchor" class="menu-settings">

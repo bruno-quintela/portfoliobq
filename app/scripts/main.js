@@ -79,6 +79,7 @@ var API = function() {
         },
         isBrowserDeprecated: function() {
             console.log(this.browser.name);
+            console.log(this.supportsWEBGL);
             if(this.browser.name === 'Explorer') {
                 return true;
             } else {
@@ -134,7 +135,7 @@ var API = function() {
             bleachOpacity: 1,
             technicolor: false,
             enableTiltShift: false,
-            tiltBlur: 3.5,
+            tiltBlur: 2.5,
             enableVignette: true,
             vignetteStrengh: 5,
             disableEffects: false
@@ -779,7 +780,7 @@ var API = function() {
                             type: 't',
                             value: THREE.ImageUtils.loadTexture(normalMap, THREE.UVMapping, function() {
                                 layer.numberAssetsLoaded++;
-                                console.log(layer.numberAssetsLoaded);
+                                //console.log(layer.numberAssetsLoaded);
                                 layer.loadProgressCallback();
                             })
                         },
@@ -787,7 +788,7 @@ var API = function() {
                             type: 't',
                             value: THREE.ImageUtils.loadTexture(matcap, THREE.UVMapping, function() {
                                 layer.numberAssetsLoaded++;
-                                console.log(layer.numberAssetsLoaded);
+                                //console.log(layer.numberAssetsLoaded);
                                 layer.loadProgressCallback();
                             })
                         },
@@ -848,7 +849,7 @@ var API = function() {
                             type: 't',
                             value: THREE.ImageUtils.loadTexture('../src/textures/matcaps/matcap' + matcap + '.png', THREE.UVMapping, function() {
                                 layer.numberAssetsLoaded++;
-                                console.log(layer.numberAssetsLoaded);
+                                //console.log(layer.numberAssetsLoaded);
                                 layer.loadProgressCallback();
                             })
                         },
@@ -872,22 +873,22 @@ var API = function() {
                 uniforms.enableDisplacement.value = false;
                 uniforms.tDiffuse.value = THREE.ImageUtils.loadTexture(shaderParams.diffuseTexture, THREE.UVMapping, function() {
                     layer.numberAssetsLoaded++;
-                    console.log(layer.numberAssetsLoaded);
+                    //console.log(layer.numberAssetsLoaded);
                     layer.loadProgressCallback();
                 });
                 uniforms.tSpecular.value = THREE.ImageUtils.loadTexture(shaderParams.specTexture, THREE.UVMapping, function() {
                     layer.numberAssetsLoaded++;
-                    console.log(layer.numberAssetsLoaded);
+                    //console.log(layer.numberAssetsLoaded);
                     layer.loadProgressCallback();
                 });
                 uniforms.tAO.value = THREE.ImageUtils.loadTexture(shaderParams.AOTexture, THREE.UVMapping, function() {
                     layer.numberAssetsLoaded++;
-                    console.log(layer.numberAssetsLoaded);
+                    //console.log(layer.numberAssetsLoaded);
                     layer.loadProgressCallback();
                 });
                 uniforms.tNormal.value = THREE.ImageUtils.loadTexture(shaderParams.normalTexture, THREE.UVMapping, function() {
                     layer.numberAssetsLoaded++;
-                    console.log(layer.numberAssetsLoaded);
+                    //console.log(layer.numberAssetsLoaded);
                     layer.loadProgressCallback();
                 });
                 //uniforms["tDisplacement"].value = THREE.ImageUtils.loadTexture("../src/textures/UVmaps/face_DISP.png");
@@ -914,7 +915,7 @@ var API = function() {
                 var material = new THREE.MeshLambertMaterial({
                     map: THREE.ImageUtils.loadTexture(texturePath, THREE.UVMapping, function() {
                         layer.numberAssetsLoaded++;
-                        console.log(layer.numberAssetsLoaded);
+                        //console.log(layer.numberAssetsLoaded);
                         layer.loadProgressCallback();
                     })
                 });
@@ -1095,7 +1096,7 @@ var API = function() {
                     }));
                     layer.skydome.material.map = THREE.ImageUtils.loadTexture(texturePath, THREE.UVMapping, function() {
                         layer.numberAssetsLoaded++;
-                        console.log(layer.numberAssetsLoaded);
+                        //console.log(layer.numberAssetsLoaded);
                         layer.loadProgressCallback();
                     });
                     layer.skydome.scale.x = -1;
@@ -1294,7 +1295,7 @@ var API = function() {
                             }
                         });
                         //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 100 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 20 * Math.PI / 180;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
@@ -1448,7 +1449,7 @@ var API = function() {
                             }
                         });
                         //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 120 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 105 * Math.PI / 180;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
                         layer.render = function(rtt) {
@@ -1783,7 +1784,7 @@ var API = function() {
                             }
                         });
                         //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 20 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y -= 30 * Math.PI / 180;
                         layer.scene.position.y += 0.6;
                         layer.scene.position.x -= 2;
                         layer.rotationSpeed = 0.0005;
@@ -2207,7 +2208,7 @@ var API = function() {
                         x: 0
                     }, 15000).onUpdate(update);
                     tweenLayerTransition.start();
-                    //myPortfolio.SoundFx.backgroundMusic.play(0);
+                    myPortfolio.SoundFx.backgroundMusic.play(0);
                 }, 2000);
                 setTimeout(function() {
                     initLoadingScreen.parentNode.removeChild(initLoadingScreen);
@@ -2292,11 +2293,7 @@ var API = function() {
             var videoBackground = document.getElementById('videoBackground');
             this.webglCanvas = document.getElementById('threejsCanvas');
             //add video as background
-            this.videoBackground = document.getElementById('videoBackground');
-            //this.videoBackground.poster = '';
-            this.videoBackground.preload = true;
-            this.videoBackground.loop = true;
-            this.videoBackground.muted = true;
+            
             if(myPortfolio.System.browser.name === 'Other') {
                 document.getElementById('fullscreenSettings').style.display = 'none';
                 document.getElementById('modelSettings').style.display = 'none';
@@ -2479,6 +2476,9 @@ var API = function() {
                     var currentThumbIndex = parseInt(this.page);
                     var currentThumb = galleryThumbs[currentThumbIndex];
                     var currentModelInfo = this.activeElement.getElementsByClassName('gallery-content')[0];
+                    if(myPortfolio.System.isTouch) {
+                        changeBurguerTile('::Gallery:<span class="highlight">Frame</span>#'+ parseInt(currentThumbIndex + 1));
+                    }
                     classie.removeClass(currentModelInfo, 'hide');
                     [].forEach.call(galleryThumbs, function(thumbnail) {
                         classie.removeClass(thumbnail, 'active');
@@ -2494,15 +2494,16 @@ var API = function() {
                     });
                     var selectedModel = parseInt(currentThumb.getAttribute('data-model')) - 1;
                     //check if transition is to long to use scrollToPage
-                    if(Math.abs(UI.selectedModel - selectedModel) > 2) {
+                    if(Math.abs(UI.selectedModel - selectedModel) > 3) {
                         gallery._jumpToPage('page', selectedModel);
                     } else {
                         gallery._scrollToPage('page', selectedModel);
                     }
+                    
                     UI.selectedModel = selectedModel;
                     var nextModelInfo = document.getElementsByClassName('gallery-content')[selectedModel];
                     classie.removeClass(nextModelInfo, 'hide');
-                    /* update current active thumnail */
+                    //update current active thumnail
                     [].forEach.call(galleryThumbs, function(thumbnail) {
                         classie.removeClass(thumbnail, 'active');
                     });
@@ -2561,7 +2562,7 @@ var API = function() {
                 myPortfolio.World.NextLayer = new myPortfolio.World.Layer('scene' + modelNumber, totalAssets, function() {
                     var loadProgression = (this.numberAssetsLoaded / this.totalAssetsToLoad) * 100;
                     progressBar.style.width = loadProgression + '%';
-                    console.log(this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
+                    //console.log(this.numberAssetsLoaded + '==' + this.totalAssetsToLoad);
                     if(this.numberAssetsLoaded === this.totalAssetsToLoad) {
                         var layer = this;
                         setTimeout(function() {
@@ -2591,7 +2592,6 @@ var API = function() {
                     //myPortfolio.World.refreshPostProcessing();
                 });
             }
-
             this.changeBackgroundVideo = function(modelNumber) {
                 var sources = videoBackground.getElementsByTagName('source');
                 if(window.innerWidth < 500) {
@@ -2609,7 +2609,7 @@ var API = function() {
                 }
                 videoBackground.load();
                 //video.play();
-                console.log('videoLoaded');
+                //console.log('videoLoaded');
             };
 
             function loadVideo(modelNumber) {
@@ -2618,7 +2618,7 @@ var API = function() {
                 if(myPortfolio.UI.videoBackground.modelNumber === modelNumber) {
                     myPortfolio.UI.hideAllSections();
                     myPortfolio.UI.resetMenuItemActive();
-                    changeBurguerTile('::HOME');
+                    //changeBurguerTile('::HOME');
                     classie.removeClass(footerInfoSection, 'hide');
                     return;
                 }
@@ -2642,7 +2642,7 @@ var API = function() {
                     progressBar.style.width = '0%';
                     setTimeout(function() {
                         classie.removeClass(progressBar, 'reset');
-                        changeBurguerTile('::HOME');
+                        //changeBurguerTile('::HOME');
                         classie.removeClass(footerInfoSection, 'hide');
                         classie.removeClass(myPortfolio.UI.videoBackground, 'hide');
                         classie.addClass(galleryImg[modelNumber - 1], 'hide');
@@ -2653,7 +2653,6 @@ var API = function() {
             [].forEach.call(webglLoadItems, function(currentModel) {
                 classie.removeClass(threejsCanvas, 'hide');
                 currentModel.addEventListener('click', function() {
-                    myPortfolio.UI.videoBackground.src = '';
                     var targetModel = parseInt(currentModel.getAttribute('data-model'));
                     var targetTotalAssets = parseInt(currentModel.getAttribute('data-assets'));
                     loadWebgl(targetModel, targetTotalAssets);
@@ -2663,8 +2662,7 @@ var API = function() {
             [].forEach.call(videoLoadItems, function(currentModel) {
                 currentModel.addEventListener('click', function() {
                     var targetModel = parseInt(currentModel.getAttribute('data-model'));
-                    var targetVideo = currentModel.getAttribute('data-video');
-                    loadVideo(targetModel, targetVideo);
+                    loadVideo(targetModel);
                 });
             });
 
@@ -2715,7 +2713,6 @@ var API = function() {
                     } else if(element.webkitRequestFullscreen) {
                         element.webkitRequestFullscreen();
                     } else if(element.msRequestFullscreen) {
-                        console.log('IEFS');
                         element.msRequestFullscreen();
                     }
                 }
@@ -2730,7 +2727,6 @@ var API = function() {
                     } else if(document.mozCancelFullScreen) {
                         document.mozCancelFullScreen();
                     } else if(document.msExitFullscreen) {
-                        console.log('IEFS');
                         document.msExitFullscreen();
                     }
                 }
@@ -2807,7 +2803,7 @@ var API = function() {
                         myPortfolio.World.renderParams.enableFXAA = true;
                         myPortfolio.World.renderParams.filmStrengh = 0.15;
                         myPortfolio.World.renderParams.enableFilm = false;
-                        myPortfolio.World.renderParams.tiltBlur = 1.5;
+                        myPortfolio.World.renderParams.tiltBlur = 2.5;
                         myPortfolio.World.renderParams.enableTiltShift = true;
                         myPortfolio.World.renderParams.rgbValue = 0.0005;
                         myPortfolio.World.renderParams.enableRGBShift = true;
@@ -2926,9 +2922,14 @@ var API = function() {
     };
     this.init = function() {
         this.System.init();
-        console.log(this.System.useWebGL());
+        
         if(!this.System.useWebGL()) {
+            this.UI.videoBackground = document.getElementById('videoBackground');
+            //this.videoBackground.poster = '';
             this.UI.start();
+            this.UI.videoBackground.preload = true;
+            this.UI.videoBackground.loop = true;
+            this.UI.videoBackground.muted = true;
             // remove Threejs canvas
             var threejsCanvas = document.getElementById('threejsCanvas');
             if(threejsCanvas) {
@@ -2958,13 +2959,9 @@ var API = function() {
                 currentItem.style.display = 'none';
             });
 
-            if(!this.System.isTouch) {
-                this.UI.changeBackgroundVideo(1);
-            }
-            else{
-                var firstBackgroundImage = document.querySelectorAll('.model-background-img.hide')[0];
-                classie.removeClass(firstBackgroundImage, 'hide');
-            }
+            var firstBackgroundImage = document.querySelectorAll('.model-background-img.hide')[0];
+            classie.removeClass(firstBackgroundImage, 'hide');
+
             classie.removeClass(this.UI.videoBackground, 'hide');
             /********************/
             var burguerMenu = document.getElementById('burguerMenu');
@@ -2994,7 +2991,7 @@ var API = function() {
             this.World.start();
             this.UI.start();
         }
-        console.log('Page init completed');
+        //console.log('Page init completed');
     };
 };
 /**

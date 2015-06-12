@@ -122,6 +122,7 @@ ErrorDocument 404 /404.html
 <IfModule mod_mime.c>
 
   # Audio
+    AddType audio/mpeg                                  mp3
     AddType audio/mp4                                   m4a f4a f4b
     AddType audio/ogg                                   oga ogg opus
 
