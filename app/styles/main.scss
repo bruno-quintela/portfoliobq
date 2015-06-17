@@ -217,7 +217,7 @@ $transition-effect: ease;
     width:100%;
     height:2px;
     bottom:0px;
-    background-color:rgba(255,0,0,0.3);
+    background-color: rgba(255, 0, 0, 0.3);
 }
 .border-top{
     position:absolute;
@@ -247,7 +247,7 @@ $transition-effect: ease;
 
 .footer-section-info.hide
 {
-    @include transform(translateY(103%));
+    @include transform(translateY(100%));
 }
 
 .footer-title
@@ -358,9 +358,7 @@ $transition-effect: ease;
 {
     @extend %absolute-center;
     @extend %intro-subtitle-font;
-    letter-spacing:10px;
-    font-size:10px;
-    color:grey;
+    font-size:9px;
     height:20px;
     width:100%;
     opacity:0;
@@ -397,6 +395,7 @@ $transition-effect: ease;
     letter-spacing:5px;
     font-size:8px;
     color:grey;
+    text-transform:none;
 }
 
 .title-left{
@@ -421,6 +420,33 @@ $transition-effect: ease;
     background-color:#000;
 }
 
+
+.drag-model-info
+{
+    z-index: 1;
+    width: 100%;
+    position: absolute;
+    bottom: 60px;
+    padding: 5px;
+    padding-right: 77px;
+    text-align: right;
+    height: 25px;
+    opacity:1;
+    background-color: transparent;
+    will-change:opacity;
+    @include transition(opacity 500ms 1s $transition-effect);
+}
+
+.drag-model-info .content-subtitle{
+    font-size:9px;
+    font-weight:300;
+}
+
+.footer-section-info.hide .drag-model-info
+{
+    opacity:0;
+     @include transition(opacity 500ms 0s $transition-effect);
+}
 
 
 

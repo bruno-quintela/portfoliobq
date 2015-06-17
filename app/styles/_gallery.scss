@@ -46,7 +46,7 @@
 .gallery-content .content-left .content-title{
     font-weight:100;
     margin-top:0px;
-    margin-bottom:40px;
+    margin-bottom:30px;
     letter-spacing:15px;
 }
 
@@ -163,7 +163,7 @@
 .gallery-swipe-info
 {
     position:absolute;
-    bottom:70px;
+    bottom:45px;
     right:40px;
     height:30px;
 }
@@ -171,15 +171,14 @@
 .gallery-swipe-info .content-left
 {
    width:300px;
-   height:30px;
+   height:15px;
    text-align:right;
 }
 
 .gallery-swipe-info .content-left .content-subtitle
 {
-   text-transform:none;
-   color:grey;
-   letter-spacing: 6px;
+    letter-spacing: 3px;
+    font-size: 9px;
 }
 
 .touch-swipe-info
@@ -390,7 +389,7 @@
     bottom:0;
     right:0;
     height:3px;
-    background-color:rgba(255,0,0,0.5);
+    background-color:rgba(255,0,0,0.7);
     will-change: width;
     @include transition(width 2s 0s $transition-effect);
 }
@@ -403,6 +402,7 @@
 
 .frame-number{
     font-weight:400;
-    font-size:70px;
+    font-size:40px;
     letter-spacing:0px;
+    color:red;
 }

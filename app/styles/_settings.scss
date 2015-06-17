@@ -6,18 +6,18 @@
     padding-top:50px;
     width:100%;
     height:200px;
-    border-top:none;
+    border:none;
     background-color:$primary-color;
     will-change: transform;
-    @include transform(translateX(100%));
+    @include transform(translateY(125%));
     @include transition(transform 1000ms 0ms $transition-effect);
 }
 
 .section-settings.show{
     will-change: transform;
     bottom:$menu-height !important;
-    @include transform(translateX(0));
-    @include transition(transform 1000ms 0ms $transition-effect);
+    @include transform(translateY(0));
+    @include transition(transform 1000ms 300ms $transition-effect);
 }
 
 .settings-label
@@ -64,7 +64,7 @@
 
 .settings-icon.active
 {
-    @include transform(rotateZ(-180deg));
+    @include transform(rotateZ(180deg));
     opacity:1;
 }
 

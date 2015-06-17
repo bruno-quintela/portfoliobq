@@ -330,6 +330,8 @@ module.exports = function (grunt) {
                     cwd: '<%= config.app %>/src',
                     dest: '<%= config.dist %>/src',
                     src: [
+                        '{,*/}*.webm',
+                        '{,*/}*.mp4',
                         '{,*/}*.mp3',
                         '{,*/}*.dae'
                     ]
