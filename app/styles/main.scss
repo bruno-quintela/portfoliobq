@@ -146,7 +146,6 @@ $transition-effect: ease;
 .section-content .content-left .item{
     @extend %content-item;
     float:right;
-    margin-bottom:3px;
 }
 
 
@@ -426,28 +425,30 @@ $transition-effect: ease;
     z-index: 1;
     width: 100%;
     position: absolute;
-    bottom: 60px;
+    top: 60px;
+    left:0px;
     padding: 5px;
-    padding-right: 77px;
-    text-align: right;
+    width:200px;
+    text-align: left;
     height: 25px;
-    opacity:1;
+    opacity:0;
     background-color: transparent;
-    will-change:opacity;
-    @include transition(opacity 500ms 1s $transition-effect);
+    will-change:opacity,transform;
+    @include transform(translateX(-100%));
+    @include transition((opacity 0ms 1s $transition-effect,transform 1000ms 0s $transition-effect));
+}
+
+.drag-model-info.show
+{
+    opacity:1;
+    @include transform(translateX(0));
+    @include transition((opacity 0ms 1s $transition-effect,transform 1000ms 1s $transition-effect));
 }
 
 .drag-model-info .content-subtitle{
     font-size:9px;
     font-weight:300;
 }
-
-.footer-section-info.hide .drag-model-info
-{
-    opacity:0;
-     @include transition(opacity 500ms 0s $transition-effect);
-}
-
 
 
 
@@ -490,7 +491,19 @@ $transition-effect: ease;
     font-weight:400;
 }
 
+.resume
+{
+    color:grey;
+    text-transform:none;
+    will-change:color;
+    @include transition(color 0.5s);
+}
 
+
+.resume:hover
+{
+    color:#fff;
+}
 /** 
  * Lists
 **/

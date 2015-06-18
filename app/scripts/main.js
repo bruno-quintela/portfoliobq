@@ -29,7 +29,7 @@ var API = function() {
         // init System
         init: function() {
             this.browser.init();
-            console.log(this.browser.name + '/' + this.browser.version + ' isTouch:' + this.isTouch);
+            console.log(this.browser.name + '/' + this.browser.version + ' isTouch:' + this.isTouch + ' SupportsWebgl:'+ this.supportsWEBGL);
         },
         browser: {
             name: null,
@@ -78,8 +78,6 @@ var API = function() {
             }]
         },
         isBrowserDeprecated: function() {
-            console.log(this.browser.name);
-            console.log(this.supportsWEBGL);
             if(this.browser.name === 'Explorer') {
                 return true;
             } else {
@@ -2227,14 +2225,14 @@ var API = function() {
                     classie.removeClass(menu, 'hide');
                     classie.removeClass(burguerMenu, 'hide');
                     classie.removeClass(footerInfoSection, 'hide');
-                }, 14500);
+                }, 15500);
                 //end init loading screen
                 setTimeout(function() {
                     classie.addClass(initIntroScreen, 'hide');
-                }, 15000);
+                }, 16500);
                 setTimeout(function() {
                     initIntroScreen.parentNode.removeChild(initIntroScreen);
-                }, 16000);
+                }, 17000);
             });
             this.transition = new this.Transition(this.NextLayer, this.CurrentLayer);
             /**/
@@ -2293,6 +2291,7 @@ var API = function() {
             var modelLoadingScreen = document.getElementById('modelLoadingScreen');
             var progressBar = document.getElementById('progressBar');
             var videoBackground = document.getElementById('videoBackground');
+            var dragModelInfo = document.getElementById('dragModelInfo');
             this.webglCanvas = document.getElementById('threejsCanvas');
             //add video as background
             if(myPortfolio.System.browser.name === 'Other') {
@@ -2306,6 +2305,7 @@ var API = function() {
                 classie.addClass(creditsSection, 'hide');
                 //classie.addClass(footerInfoSection, 'hide');
                 classie.removeClass(gallerySection, 'show');
+                classie.removeClass(dragModelInfo, 'show');
                 /*if( !! myPortfolio.World.renderParams.enableDotFilter) {
                     myPortfolio.World.renderParams.enableDotFilter = false;
                     myPortfolio.World.refreshPostProcessing();
@@ -2329,6 +2329,7 @@ var API = function() {
                 UI.resetMenuItemActive();
                 classie.addClass(homeAnchor, 'active');
                 classie.removeClass(footerInfoSection, 'hide');
+                classie.addClass(dragModelInfo, 'show');
             });
             aboutAnchor.addEventListener('click', function() {
                 if(!classie.hasClass(aboutSection, 'hide')) {
@@ -2578,6 +2579,7 @@ var API = function() {
                 }, function() {
                     classie.removeClass(myPortfolio.UI.webglCanvas, 'hide');
                     classie.removeClass(footerInfoSection, 'hide');
+                    classie.addClass(dragModelInfo, 'show');
                     // get previous scene rotation to match during transition, only if From this form i hold series
                     //myPortfolio.World.NextLayer.scene.rotation.y = myPortfolio.World.CurrentLayer.scene.rotation.y;
                     myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
@@ -2993,6 +2995,7 @@ var API = function() {
 /**
  * On Ready Init Page Prototype TODO
  **/
+
 myPortfolio = new API();
 myPortfolio.init();
 console.log('API started.');

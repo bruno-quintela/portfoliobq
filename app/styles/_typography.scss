@@ -9,6 +9,7 @@
 
 @font-face {
 	font-family: 'Open Sans', sans-serif;
+    font-family: 'Oswald', sans-serif;
 }
 
 %main-font
@@ -167,7 +168,8 @@
     text-transform:uppercase;
     font-size:11px;
     color:$text-color;
-    letter-spacing:15px;
+    letter-spacing:25px;
+    font-weight:400;
 }
 
 %intro-subtitle-font

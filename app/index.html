@@ -7,7 +7,7 @@
     <meta name="description" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="title" content="Bruno Quintela | Portfolio">
-    <meta name="description" content="Realtime rendered webgl Gallery">
+    <meta name="description" content="Realtime rendered webgl showcase">
     <meta name="type" content="website">
     <meta name="url" content="http://www.brunoquintela.com">
     <meta name="image" content="http://www.brunoquintela.com/src/img/backgroundScene1HD.jpg">
@@ -28,73 +28,10 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
 
-    <!-- build:js scripts/vendor/modernizr.js -->
-    <script src="../bower_components/modernizr/modernizr.js"></script>
-    <!-- endbuild -->
 
 </head>
 
 <body>
-    <!--[if lt IE 10]>
-        <script>
-            window.location.href = "browserdeprecated.html"
-        </script>
-    <![endif]-->
-    <!-- build:js scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="../bower_components/threejs/build/three.js"></script>
-    <script src="../bower_components/threejs-stats/Stats.js"></script>
-    <script src="../bower_components/threex.rendererstats/threex.rendererstats.js"></script>
-    <script src="../bower_components/dat-gui/build/dat.gui.js"></script>
-    <script src="../bower_components/tweenjs/src/Tween.js"></script>
-    <script src="../bower_components/classie/classie.js"></script>
-    <!-- SHADERS -->
-    <script src="scripts/vendor/threejs/shaders/BleachBypassShader.js"></script>
-    <script src="scripts/vendor/threejs/shaders/ColorifyShader.js"></script>
-    <script src="scripts/vendor/threejs/shaders/ConvolutionShader.js"></script>
-    <script src="scripts/vendor/threejs/shaders/CopyShader.js"></script>
-    <script src="scripts/vendor/threejs/shaders/DotScreenShader.js"></script>
-    <script src="scripts/vendor/threejs/shaders/FilmShader.js"></script>
-    <script src="scripts/vendor/threejs/shaders/HorizontalBlurShader.js"></script>
-    <script src="scripts/vendor/threejs/shaders/SepiaShader.js"></script>
-    <script src="scripts/vendor/threejs/shaders/VerticalBlurShader.js"></script>
-    <script src="scripts/vendor/threejs/shaders/VignetteShader.js"></script>
-    <script src="scripts/vendor/threejs/shaders/RGBShiftShader.js"></script>
-    <script src="scripts/vendor/threejs/shaders/FXAAShader.js"></script>
-    <script src="scripts/vendor/threejs/shaders/Technicolor3Shader.js"></script>
-    <script src="scripts/vendor/threejs/shaders/ShaderGodRays.js"></script>
-    <script src="scripts/vendor/threejs/shaders/HorizontalTiltShiftShader.js"></script>
-    <script src="scripts/vendor/threejs/shaders/VerticalTiltShiftShader.js"></script>
-    <script src="scripts/vendor/threejs/shaders/DigitalGlitch.js"></script>
-    <!-- ThreeJS supports Webgl Detector -->
-    <script src="scripts/vendor/threejs/Detector.js"></script>
-
-    <!-- RENDER PASSES -->
-    <script src="scripts/vendor/threejs/postprocessing/EffectComposer.js"></script>
-    <script src="scripts/vendor/threejs/postprocessing/AnaglyphEffect.js"></script>
-    <script src="scripts/vendor/threejs/postprocessing/pass/RenderPass.js"></script>
-    <script src="scripts/vendor/threejs/postprocessing/pass/BloomPass.js"></script>
-    <script src="scripts/vendor/threejs/postprocessing/pass/FilmPass.js"></script>
-    <script src="scripts/vendor/threejs/postprocessing/pass/DotScreenPass.js"></script>
-    <script src="scripts/vendor/threejs/postprocessing/pass/TexturePass.js"></script>
-    <script src="scripts/vendor/threejs/postprocessing/pass/ShaderPass.js"></script>
-    <script src="scripts/vendor/threejs/postprocessing/pass/MaskPass.js"></script>
-    <script src="scripts/vendor/threejs/postprocessing/pass/GlitchPass.js"></script>
-
-    <!-- SCENE CONTROLS -->
-    <script src="scripts/vendor/threejs/controls/TrackballControls.js"></script>
-
-    <!-- IMPORT COLLADA INTO THREEJS -->
-    <script src="scripts/vendor/threejs/loader/ColladaLoader.js"></script>
-    <!-- IMPORT SUBDIVISION MODIFIER  -->
-    <script src="scripts/vendor/threejs/modifier/subdivisionModifier.js"></script>
-
-    <!-- DRAGEND JS Plugin  -->
-    <script src="scripts/vendor/dragendjs/dragend.min.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
-
-
 
     <div id="bodyWrapper" class="body-wrapper">
         <!-- Landing page loading screen -->
@@ -116,7 +53,7 @@
                 <span class=""> i hold now</span>
                 <br>
                 <br>
-                <span class="intro-info">A Real Time Rendered WebGL Experience</span>
+                <span class="intro-info">A Real Time Rendered WebGL Experiment</span>
             </div>
         </div>
 
@@ -130,7 +67,15 @@
             </div>
         </div>
 
-
+        <!-- Drag model info -->
+        <div id="dragModelInfo" class="drag-model-info">
+            <div class="content-subtitle">
+                ::Frame <span class="highlight">1</span>
+            </div>
+            <div class="content-subtitle">
+                ::drag your mouse to &nbsp;&nbsp;rotate the model
+            </div>
+        </div>
 
         <!-- fullscreen background video -->
         <video id="videoBackground" class="video-background hide" loop autoplay></video>
@@ -187,12 +132,12 @@
                     <span class="">About</span>
                 </div>
                 <div class="content-subtitle">
-                    what i do
+                    <span class="item">Skills</span>
                 </div>
                 <div class="rule right"></div>
                 <span class="item">Frontend</span>
                 <span class="item">UI&UX</span>
-                <span class="item">Design</span>
+                <span class="item">Designer</span>
             </div>
             <div class="content-right">
                 <div class="content-title"><span class="highlight">Me</span>
@@ -202,19 +147,21 @@
                         Who am I
                     </div>
                     <div class="rule left"></div>
-                    <span class="description">I'm a Web Developer and a Computer Graphics enthusiast. In the past months i've decided to put together my passion for CG with my current developer skills, and this website is the result of that.</span>
+                    <span class="description">I'm a Web Developer and Computer Graphics enthusiast. In the past months i've decided to put together my passion for CG with my current developer skills. This website is the result of that.</span>
                 </div>
                 <div class="content-info">
                     <div class="content-subtitle">
+                        What I Do
                     </div>
                     <div class="rule left"></div>
-                    <span class="description">My current focus is to create state of the art visuals and experiences for the web. To achieve perfect balance between visual delivery and performance is always my main goal. </span>
+                    <span class="description">My current focus is to create state of the art visuals and experiences for the web. To achieve perfect balance between visual delivery and performance is always a goal, but this website is targeting medium-high end specs.</span>
                 </div>
                 <div class="content-info">
                     <div class="content-subtitle">
+                        What's Next
                     </div>
                     <div class="rule left"></div>
-                    <span class="description">VR is coming and i'm really looking forward to it! For the first time in the past decades we will have the opportunity to change the way we surf the web. So my future wishes are to be in a project related to that, as a web developer or creative director.</span>
+                    <span class="description">VR is coming and i'm looking forward to it! For the first time in the past decades we will have the opportunity to change the way we surf the web. So my future wishes are to be in a project related to that, as a web developer or creative director.</span>
                 </div>
             </div>
         </section>
@@ -233,6 +180,10 @@
                     </div>
                     <div class="rule left"></div>
                     <span class="description">If you have something to share with me, work related or not, feel free to leave a message. I'll try to reply as soon as i can.</span>
+                    <div class="rule left"></div>
+                    <div class="content-subtitle">
+                        <a href="../src/pdf/brunoquintela_resume.pdf" class="resume" title="download resume" target="_blank">download resume</a>
+                    </div>
                 </div>
                 <div class="content-info content-social">
                     <div class="content-title-fake">
@@ -246,6 +197,7 @@
                         <a href="https://www.behance.net/bruno_quintela" title="Behance" target="_blank"><i class="fa fa-behance"></i></a>
                         <a href="https://pt.linkedin.com/pub/bruno-quintela/85/750/614/" title="LinkedIn" target="_blank"><i class="fa fa-linkedin"></i></a>
                         <a href="https://soundcloud.com/bruno-quintela" title="Soundcloud" target="_blank"><i class="fa fa-soundcloud"></i></a>
+                        <a href="https://vimeo.com/user40758660" title="Vimeo" target="_blank"><i class="fa fa-vimeo-square"></i></a>
                     </div>
                 </div>
                 <div class="content-info">
@@ -261,6 +213,7 @@
                         </a>
                     </div>
                 </div>
+
             </div>
             <br>
         </section>
@@ -483,8 +436,8 @@
                                     <div class="assets-info">
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="1" data-assets="4" class="load-model-button load-webgl" href="#">View</a>
-                                            <a data-model="1" class="load-model-button load-video" href="#">View</a> 
+                                            <button data-model="1" data-assets="4" class="load-model-button load-webgl" href="#">View</button>
+                                            <button data-model="1" class="load-model-button load-video" href="#">View</button>
                                         </div>
                                     </div>
                                 </div>
@@ -522,8 +475,8 @@
                                     <div class="assets-info">
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="2" data-assets="6" class="load-model-button load-webgl" href="#">View</a>
-                                            <a data-model="2" class="load-model-button load-video" href="#">View</a> 
+                                            <button data-model="2" data-assets="6" class="load-model-button load-webgl">View</button>
+                                            <button data-model="2" class="load-model-button load-video">View</button>
                                         </div>
                                     </div>
                                 </div>
@@ -560,8 +513,8 @@
                                     <div class="assets-info">
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="3" data-assets="6" class="load-model-button load-webgl" href="#">View</a>
-                                            <a data-model="3" class="load-model-button load-video" href="#">View</a> 
+                                            <button data-model="3" data-assets="6" class="load-model-button load-webgl">View</button>
+                                            <button data-model="3" class="load-model-button load-video">View</button>
                                         </div>
                                     </div>
                                 </div>
@@ -599,8 +552,8 @@
                                     <div class="assets-info">
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="4" data-assets="21" class="load-model-button load-webgl" href="#">View</a>
-                                            <a data-model="4" class="load-model-button load-video" href="#">View</a> 
+                                            <button data-model="4" data-assets="21" class="load-model-button load-webgl">View</button>
+                                            <button data-model="4" class="load-model-button load-video">View</button>
                                         </div>
                                     </div>
                                 </div>
@@ -637,8 +590,8 @@
                                     <div class="assets-info">
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="5" data-assets="62" class="load-model-button load-webgl" href="#">View</a>
-                                            <a data-model="5" class="load-model-button load-video" href="#">View</a> 
+                                            <button data-model="5" data-assets="62" class="load-model-button load-webgl">View</button>
+                                            <button data-model="5" class="load-model-button load-video">View</button>
                                         </div>
                                     </div>
                                 </div>
@@ -675,8 +628,8 @@
                                     <div class="assets-info">
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="6" data-assets="7" class="load-model-button load-webgl" href="#">View</a>
-                                            <a data-model="6" class="load-model-button load-video" href="#">View</a> 
+                                            <button data-model="6" data-assets="7" class="load-model-button load-webgl">View</button>
+                                            <button data-model="6" class="load-model-button load-video">View</button>
                                         </div>
                                     </div>
                                 </div>
@@ -713,8 +666,8 @@
                                     <div class="assets-info">
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="7" data-assets="4" class="load-model-button load-webgl" href="#">View</a>
-                                            <a data-model="7" class="load-model-button load-video" href="#">View</a> 
+                                            <button data-model="7" data-assets="4" class="load-model-button load-webgl">View</button>
+                                            <button data-model="7" class="load-model-button load-video">View</button>
                                         </div>
                                     </div>
                                 </div>
@@ -752,8 +705,8 @@
                                     <div class="assets-info">
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="8" data-assets="3" class="load-model-button load-webgl" href="#">View</a>
-                                            <a data-model="8" class="load-model-button load-video" href="#">View</a> 
+                                            <button data-model="8" data-assets="3" class="load-model-button load-webgl">View</button>
+                                            <button data-model="8" class="load-model-button load-video">View</button>
                                         </div>
                                     </div>
                                 </div>
@@ -790,8 +743,8 @@
                                     <div class="assets-info">
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <a data-model="9" data-assets="3" class="load-model-button load-webgl" href="#">View</a>
-                                            <a data-model="9" class="load-model-button load-video" href="#">View</a> 
+                                            <button data-model="9" data-assets="3" class="load-model-button load-webgl">View</button>
+                                            <button data-model="9" class="load-model-button load-video">View</button>
                                         </div>
                                     </div>
                                 </div>
@@ -809,7 +762,7 @@
                 <span class="surname">Quintela</span>
             </div>
             <div class="footer-title">
-                ::&nbsp;Portfolio
+                ::&nbsp;2015
             </div>
 
             <div id="settingsAnchor" class="menu-settings">
@@ -817,13 +770,6 @@
                     settings
                 </div>
                 <img id="settingsIcon" class="settings-icon" src="../src/svg/settings.svg">
-            </div>
-
-            <!-- Drag model info -->
-            <div id="dragModelInfo" class="drag-model-info">
-                <div class="content-subtitle">
-                    drag your mouse to rotate::
-                </div>
             </div>
         </footer>
         <!--FOOTER INFO END -->
@@ -951,6 +897,71 @@
             gl_FragColor = vec4(base, 1.);
         }
     </script>
+
+    <!-- build:js scripts/vendor/modernizr.js -->
+    <script src="../bower_components/modernizr/modernizr.js"></script>
+    <!-- endbuild -->
+    <!--[if lt IE 10]>
+        <script>
+            window.location.href = "browserdeprecated.html"
+        </script>
+    <![endif]-->
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="../bower_components/threejs/build/three.js"></script>
+    <script src="../bower_components/threejs-stats/Stats.js"></script>
+    <script src="../bower_components/threex.rendererstats/threex.rendererstats.js"></script>
+    <script src="../bower_components/dat-gui/build/dat.gui.js"></script>
+    <script src="../bower_components/tweenjs/src/Tween.js"></script>
+    <script src="../bower_components/classie/classie.js"></script>
+    <!-- SHADERS -->
+    <script src="scripts/vendor/threejs/shaders/BleachBypassShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/ColorifyShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/ConvolutionShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/CopyShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/DotScreenShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/FilmShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/HorizontalBlurShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/SepiaShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/VerticalBlurShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/VignetteShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/RGBShiftShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/FXAAShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/Technicolor3Shader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/ShaderGodRays.js"></script>
+    <script src="scripts/vendor/threejs/shaders/HorizontalTiltShiftShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/VerticalTiltShiftShader.js"></script>
+    <script src="scripts/vendor/threejs/shaders/DigitalGlitch.js"></script>
+    <!-- ThreeJS supports Webgl Detector -->
+    <script src="scripts/vendor/threejs/Detector.js"></script>
+
+    <!-- RENDER PASSES -->
+    <script src="scripts/vendor/threejs/postprocessing/EffectComposer.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/AnaglyphEffect.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/RenderPass.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/BloomPass.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/FilmPass.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/DotScreenPass.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/TexturePass.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/ShaderPass.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/MaskPass.js"></script>
+    <script src="scripts/vendor/threejs/postprocessing/pass/GlitchPass.js"></script>
+
+    <!-- SCENE CONTROLS -->
+    <script src="scripts/vendor/threejs/controls/TrackballControls.js"></script>
+
+    <!-- IMPORT COLLADA INTO THREEJS -->
+    <script src="scripts/vendor/threejs/loader/ColladaLoader.js"></script>
+    <!-- IMPORT SUBDIVISION MODIFIER  -->
+    <script src="scripts/vendor/threejs/modifier/subdivisionModifier.js"></script>
+
+    <!-- DRAGEND JS Plugin  -->
+    <script src="scripts/vendor/dragendjs/dragend.min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:js({app,.tmp}) scripts/main.js -->
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
     <!-- Google Analytics -->
     <script>
         (function(i, s, o, g, r, a, m) {
@@ -967,9 +978,6 @@
         ga('create', 'UA-63735905-1', 'auto');
         ga('send', 'pageview');
     </script>
-    <!-- build:js({app,.tmp}) scripts/main.js -->
-    <script src="scripts/main.js"></script>
-    <!-- endbuild -->
 </body>
 
 </html>

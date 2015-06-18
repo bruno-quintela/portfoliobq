@@ -245,6 +245,7 @@
     margin-top: 20px;
     clear: both;
     padding:2px;
+    color:#FFF;
     background-color:rgba(0,0,0,0.8);
     will-change: background-color;
     @include transition(background-color 200ms 0s $transition-effect);
