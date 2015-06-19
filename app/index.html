@@ -32,7 +32,11 @@
 </head>
 
 <body>
-
+    <!--[if lt IE 10]>
+        <script>
+            window.location.href = "browserdeprecated.html";
+        </script>
+    <![endif]-->
     <div id="bodyWrapper" class="body-wrapper">
         <!-- Landing page loading screen -->
         <div id="initLoadingScreen" class="init-loading-screen">
@@ -68,12 +72,28 @@
         </div>
 
         <!-- Drag model info -->
-        <div id="dragModelInfo" class="drag-model-info">
-            <div class="content-subtitle">
-                ::Frame <span class="highlight">1</span>
+        <div id="currentModelInfo" class="current-model-info">
+            <div id="homeFrameNumber" class="content-subtitle">
+                :: Frame 1
             </div>
-            <div class="content-subtitle">
-                ::drag your mouse to &nbsp;&nbsp;rotate the model
+
+            <div class="rule left"></div>
+
+            <span class="settings-name small-case">Date </span><span id="homeFrameDate" class="assets-label">20.02.15</span>
+            <span class="settings-name small-case">Assets Size</span><span id="homeFrameSize" class="assets-label">1.6Mb</span>
+            <span class="settings-name small-case">#polygons</span><span id="homeFramePolygons" class="assets-label">2.926</span>
+            <div class="rule left"></div>
+            <div id="contentPerformance" class="content-performance">
+                <div class="content-subtitle">
+                    :: performance
+                </div>
+                <div id="statsContainer" class="content-subtitle">
+                </div>
+                <!--div class="rule left"></div-->
+            </div>
+            
+            <div class="content-subtitle small-case">
+                Info :: Drag the mouse to rotate scene
             </div>
         </div>
 
@@ -161,7 +181,7 @@
                         What's Next
                     </div>
                     <div class="rule left"></div>
-                    <span class="description">VR is coming and i'm looking forward to it! For the first time in the past decades we will have the opportunity to change the way we surf the web. So my future wishes are to be in a project related to that, as a web developer or creative director.</span>
+                    <span class="description">VR is coming and i'm looking forward to it! For the first time in the past decades we will have the opportunity to change how we surf the web. So my future wishes are to be in a project related to that, as a web developer or creative director.</span>
                 </div>
             </div>
         </section>
@@ -347,7 +367,7 @@
                 </div>
                 <div id="modelSettings" class="content-info-settings">
                     <div class="content-subtitle">
-                        Model
+                        Scene
                     </div>
                     <div class="rule left"></div>
                     <ul class="credits-list">
@@ -361,15 +381,11 @@
                         </li>
                     </ul>
                 </div>
-            </div>
-            <div class="content-performance">
-                <div class="content-subtitle">
-                    performance
-                </div>
-                <div class="rule right"></div>
-                <div id="statsContainer" class="content-subtitle">
+                <div class="content-subtitle low-performance-info small-case">
+                    If your browser is performing slow, change postprocessing quality to <a id="settingsQualityLowShortcut" class="hover-anchor">low</a> or <a id="noWebglLaunch" class="hover-anchor">click here</a> for a static version of this website.
                 </div>
             </div>
+
         </section>
         <!--SECTION SETTINGS END -->
         <!--SECTION GALEERY START -->
@@ -544,7 +560,7 @@
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">25.04.15</span>
+                                            <span class="settings-name">Date </span><span class="assets-label">10.04.15</span>
                                             <span class="settings-name">Assets Size</span><span class="assets-label">1.7Mb</span>
                                             <span class="settings-name">#polygons</span><span class="assets-label">11.853</span>
                                         </div>
@@ -582,7 +598,7 @@
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">10.04.15</span>
+                                            <span class="settings-name">Date </span><span class="assets-label">25.04.15</span>
                                             <span class="settings-name">Assets Size</span><span class="assets-label">2.3Mb</span>
                                             <span class="settings-name">#polygons</span><span class="assets-label">11.631</span>
                                         </div>
@@ -620,7 +636,7 @@
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">15.04.15</span>
+                                            <span class="settings-name">Date </span><span class="assets-label">30.04.15</span>
                                             <span class="settings-name">Assets Size</span><span class="assets-label">2.9Mb</span>
                                             <span class="settings-name">#polygons</span><span class="assets-label">11.932</span>
                                         </div>
@@ -658,7 +674,7 @@
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">20.04.15</span>
+                                            <span class="settings-name">Date </span><span class="assets-label">01.05.15</span>
                                             <span class="settings-name">Assets Size</span><span class="assets-label">4.7Mb</span>
                                             <span class="settings-name">#polygons</span><span class="assets-label">23.896</span>
                                         </div>
@@ -697,7 +713,7 @@
                                         </div>
                                         <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">13.05.15</span>
+                                            <span class="settings-name">Date </span><span class="assets-label">08.05.15</span>
                                             <span class="settings-name">Assets Size</span><span class="assets-label">2.7Mb</span>
                                             <span class="settings-name">#polygons</span><span class="assets-label">10.992</span>
                                         </div>
@@ -901,11 +917,7 @@
     <!-- build:js scripts/vendor/modernizr.js -->
     <script src="../bower_components/modernizr/modernizr.js"></script>
     <!-- endbuild -->
-    <!--[if lt IE 10]>
-        <script>
-            window.location.href = "browserdeprecated.html"
-        </script>
-    <![endif]-->
+    
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <script src="../bower_components/threejs/build/three.js"></script>

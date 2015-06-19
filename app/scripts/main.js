@@ -22,14 +22,14 @@ var myPortfolio = myPortfolio || {
 /**
  * Create the API to handle WEBGL & UI
  **/
-var API = function() {
+var API = function(useWebgl) {
     this.System = {
         isTouch: Modernizr.touch,
-        supportsWEBGL: Detector.webgl,
+        supportsWEBGL: Detector.webgl && useWebgl,
         // init System
         init: function() {
             this.browser.init();
-            console.log(this.browser.name + '/' + this.browser.version + ' isTouch:' + this.isTouch + ' SupportsWebgl:'+ this.supportsWEBGL);
+            console.log(this.browser.name + '/' + this.browser.version + ' isTouch:' + this.isTouch + ' SupportsWebgl:' + this.supportsWEBGL);
         },
         browser: {
             name: null,
@@ -732,7 +732,7 @@ var API = function() {
                 //add setting stats FPS
                 this.fpsStats = new Stats();
                 this.fpsStats.setMode(0); // 0: fps, 1: ms
-                this.fpsStats.domElement.style.float = 'right';
+                this.fpsStats.domElement.style.float = 'left';
                 this.fpsStats.domElement.style.clear = 'both';
                 /*this.fpsStats.domElement.style.top = '20px';*/
                 this.fpsStats.domElement.style.width = '150px';
@@ -740,7 +740,7 @@ var API = function() {
                 document.getElementById('fps').style.background = 'transparent';
                 document.getElementById('fpsText').style.color = '#fff';
                 document.getElementById('fpsText').style.fontWeight = '300';
-                document.getElementById('fpsText').style.textAlign = 'right';
+                document.getElementById('fpsText').style.textAlign = 'left';
                 document.getElementById('fpsText').style.fontFamily = 'Open Sans';
                 document.getElementById('fpsGraph').style.display = 'none';
                 //add threex.renderstats WEBGL render
@@ -2291,7 +2291,7 @@ var API = function() {
             var modelLoadingScreen = document.getElementById('modelLoadingScreen');
             var progressBar = document.getElementById('progressBar');
             var videoBackground = document.getElementById('videoBackground');
-            var dragModelInfo = document.getElementById('dragModelInfo');
+            var currentModelInfo = document.getElementById('currentModelInfo');
             this.webglCanvas = document.getElementById('threejsCanvas');
             //add video as background
             if(myPortfolio.System.browser.name === 'Other') {
@@ -2305,7 +2305,7 @@ var API = function() {
                 classie.addClass(creditsSection, 'hide');
                 //classie.addClass(footerInfoSection, 'hide');
                 classie.removeClass(gallerySection, 'show');
-                classie.removeClass(dragModelInfo, 'show');
+                classie.removeClass(currentModelInfo, 'show');
                 /*if( !! myPortfolio.World.renderParams.enableDotFilter) {
                     myPortfolio.World.renderParams.enableDotFilter = false;
                     myPortfolio.World.refreshPostProcessing();
@@ -2329,7 +2329,7 @@ var API = function() {
                 UI.resetMenuItemActive();
                 classie.addClass(homeAnchor, 'active');
                 classie.removeClass(footerInfoSection, 'hide');
-                classie.addClass(dragModelInfo, 'show');
+                classie.addClass(currentModelInfo, 'show');
             });
             aboutAnchor.addEventListener('click', function() {
                 if(!classie.hasClass(aboutSection, 'hide')) {
@@ -2542,8 +2542,57 @@ var API = function() {
                 galleryContainer.attachEvent('onmousewheel', MouseWheelHandler);
             }
             /** 
-             * Init Model load buttons
+             * Change Home Current Frame Info
              */
+            var homeFrameNumber = document.getElementById('homeFrameNumber');
+            var homeFrameDate = document.getElementById('homeFrameDate');
+            var homeFrameSize = document.getElementById('homeFrameSize');
+            var homeFramePolygons = document.getElementById('homeFramePolygons');
+            var homeInfo = [{
+                date: '20.02.15',
+                size: '1.6Mb',
+                polygons: '2.926'
+            }, {
+                date: '11.03.15',
+                size: '3.4Mb',
+                polygons: '12.352'
+            }, {
+                date: '13.03.15',
+                size: '3.2Mb',
+                polygons: '12.790'
+            }, {
+                date: '10.04.15',
+                size: '1.7Mb',
+                polygons: '11.853'
+            }, {
+                date: '25.04.15',
+                size: '2.3Mb',
+                polygons: '11.631'
+            }, {
+                date: '30.04.15',
+                size: '2.9Mb',
+                polygons: '11.932'
+            }, {
+                date: '01.05.15',
+                size: '4.7Mb',
+                polygons: '23.896'
+            }, {
+                date: '08.05.15',
+                size: '2.7Mb',
+                polygons: '10.992'
+            }, {
+                date: '23.05.15',
+                size: '2.8Mb',
+                polygons: '4.905'
+            }];
+
+            function changeHomeInfo(modelNumber) {
+                var currentModelInfo = homeInfo[modelNumber - 1];
+                homeFrameNumber.innerHTML = ':: Frame ' + modelNumber;
+                homeFrameDate.innerHTML = currentModelInfo.date;
+                homeFrameSize.innerHTML = currentModelInfo.size;
+                homeFramePolygons.innerHTML = currentModelInfo.polygons;
+            }
             var galleryImg = document.querySelectorAll('picture.model-background-img');
 
             function loadWebgl(modelNumber, totalAssets) {
@@ -2579,7 +2628,7 @@ var API = function() {
                 }, function() {
                     classie.removeClass(myPortfolio.UI.webglCanvas, 'hide');
                     classie.removeClass(footerInfoSection, 'hide');
-                    classie.addClass(dragModelInfo, 'show');
+                    classie.addClass(currentModelInfo, 'show');
                     // get previous scene rotation to match during transition, only if From this form i hold series
                     //myPortfolio.World.NextLayer.scene.rotation.y = myPortfolio.World.CurrentLayer.scene.rotation.y;
                     myPortfolio.World.transition = new myPortfolio.World.Transition(myPortfolio.World.CurrentLayer, myPortfolio.World.NextLayer);
@@ -2590,6 +2639,7 @@ var API = function() {
                         classie.removeClass(currentImg, 'hide');
                     });
                     classie.addClass(galleryImg[modelNumber - 1], 'hide');
+                    changeHomeInfo(modelNumber);
                     //myPortfolio.World.renderParams.enableDotFilter = false;
                     //myPortfolio.World.refreshPostProcessing();
                 });
@@ -2699,7 +2749,9 @@ var API = function() {
                 settingsStereoscopicOff = document.getElementById('settingsStereoscopicOff'),
                 settingsQualityHigh = document.getElementById('settingsQualityHigh'),
                 settingsQualityMedium = document.getElementById('settingsQualityMedium'),
-                settingsQualityLow = document.getElementById('settingsQualityLow');
+                settingsQualityLow = document.getElementById('settingsQualityLow'),
+                settingsQualityLowShortcut = document.getElementById('settingsQualityLowShortcut'),
+                noWebglLaunch = document.getElementById('noWebglLaunch');
 
             function launchIntoFullscreen(element) {
                 if(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled) {
@@ -2730,6 +2782,10 @@ var API = function() {
             }
             /** settings event handlers */
             if(myPortfolio.System.useWebGL()) {
+                /* NO WEBGL VERSION FALLBACK */
+                noWebglLaunch.addEventListener('click', function() {
+                    window.location.href = "?nowebgl";
+                });
                 /* AUDIO */
                 settingsAudioOn.addEventListener('click', function() {
                     if(!classie.hasClass(settingsAudioOn, 'active')) {
@@ -2828,6 +2884,23 @@ var API = function() {
                     }
                 });
                 settingsQualityLow.addEventListener('click', function() {
+                    if(!classie.hasClass(settingsQualityLow, 'active')) {
+                        classie.removeClass(settingsQualityHigh, 'active');
+                        classie.removeClass(settingsQualityMedium, 'active');
+                        classie.toggleClass(settingsQualityLow, 'active');
+                        myPortfolio.World.renderParams.enableFXAA = false;
+                        myPortfolio.World.renderParams.enableFilm = false;
+                        myPortfolio.World.renderParams.filmStrengh = 0.2;
+                        myPortfolio.World.renderParams.enableTiltShift = false;
+                        myPortfolio.World.renderParams.rgbValue = 0.0005;
+                        myPortfolio.World.renderParams.enableRGBShift = false;
+                        myPortfolio.World.renderParams.enableVignette = false;
+                        myPortfolio.World.renderParams.enableColorify = false;
+                        myPortfolio.World.renderParams.bleach = false;
+                        myPortfolio.World.refreshPostProcessing();
+                    }
+                });
+                settingsQualityLowShortcut.addEventListener('click', function() {
                     if(!classie.hasClass(settingsQualityLow, 'active')) {
                         classie.removeClass(settingsQualityHigh, 'active');
                         classie.removeClass(settingsQualityMedium, 'active');
@@ -2944,6 +3017,8 @@ var API = function() {
                 dragModelInfo.parentNode.removeChild(dragModelInfo);
             }
             /* remove webgl models info and actions */
+            var currentModelInfo = document.getElementById('currentModelInfo');
+            currentModelInfo.parentNode.removeChild(currentModelInfo);
             var thumbContainer = document.getElementById('thumbContainer');
             thumbContainer.parentNode.removeChild(thumbContainer);
             var touchSwipeInfo = document.getElementById('touchSwipeInfo');
@@ -2992,10 +3067,13 @@ var API = function() {
         //console.log('Page init completed');
     };
 };
+
 /**
- * On Ready Init Page Prototype TODO
+ * Start the engine
  **/
 
-myPortfolio = new API();
+var useWebgl = location.search.indexOf('nowebgl') === -1;
+myPortfolio = new API(useWebgl);
 myPortfolio.init();
+console.log('UseWebGL:'+ useWebgl);
 console.log('API started.');

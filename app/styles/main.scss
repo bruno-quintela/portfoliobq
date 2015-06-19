@@ -71,7 +71,7 @@ $transition-effect: ease;
     -o-background-size:cover; 
     background-size:cover;*/
     background:transparent no-repeat url('../src/img/backgroundPoster.jpg');
-    background-position:center bottom;
+    background-position:left bottom;
     //background-size:100%;
     will-change:opacity;
     @include transition(opacity 1000ms 0ms $transition-effect);
@@ -420,13 +420,13 @@ $transition-effect: ease;
 }
 
 
-.drag-model-info
+.current-model-info
 {
     z-index: 1;
     width: 100%;
     position: absolute;
     top: 60px;
-    left:0px;
+    left:30px;
     padding: 5px;
     width:200px;
     text-align: left;
@@ -434,22 +434,48 @@ $transition-effect: ease;
     opacity:0;
     background-color: transparent;
     will-change:opacity,transform;
-    @include transform(translateX(-100%));
+    @include transform(translateX(-130%));
     @include transition((opacity 0ms 1s $transition-effect,transform 1000ms 0s $transition-effect));
 }
 
-.drag-model-info.show
+.current-model-info.show
 {
     opacity:1;
     @include transform(translateX(0));
     @include transition((opacity 0ms 1s $transition-effect,transform 1000ms 1s $transition-effect));
 }
 
-.drag-model-info .content-subtitle{
+.current-model-info .content-subtitle{
     font-size:9px;
+    font-weight:400;
+}
+
+.content-performance{
+    margin-top:20px;
+    float:left;
+    height:60px;
+    text-align:left;
+    width:100%;
+}
+
+.low-performance-info{
+    width:70%;
+    font-size:9px;
+    padding-top:10px;
     font-weight:300;
 }
 
+.hover-anchor{
+    color:grey;
+    font-weight:400;
+    cursor:pointer;
+    will-change:color;
+    @include transition(color 500ms 0s $transition-effect);
+}
+
+.hover-anchor:hover{
+    color:red;
+}
 
 
 /**
