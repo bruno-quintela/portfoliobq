@@ -412,7 +412,7 @@ var API = function(useWebgl) {
         transitionParams: {
             clock: new THREE.Clock(false),
             transitionMixRatio: 0,
-            texture: 2,
+            texture: 10,
             textureThreshold: 0.01,
             CurrentLayer: 'A',
             transitionTime: 1
@@ -739,10 +739,12 @@ var API = function(useWebgl) {
                 document.getElementById('statsContainer').appendChild(this.fpsStats.domElement);
                 document.getElementById('fps').style.background = 'transparent';
                 document.getElementById('fpsText').style.color = '#fff';
-                document.getElementById('fpsText').style.fontWeight = '300';
+                document.getElementById('fpsText').style.fontWeight = '400';
                 document.getElementById('fpsText').style.textAlign = 'left';
                 document.getElementById('fpsText').style.fontFamily = 'Open Sans';
+                document.getElementById('fpsText').style.paddingTop = '5px';
                 document.getElementById('fpsGraph').style.display = 'none';
+                
                 //add threex.renderstats WEBGL render
                 /*this.gpuStats = new THREEx.RendererStats();
                 this.gpuStats.domElement.id = 'gpuStats';
@@ -1224,7 +1226,7 @@ var API = function(useWebgl) {
                             }
                         });
                         //init scene rotation
-                        myPortfolio.World.targetRotation = layer.scene.rotation.y += 70 * Math.PI / 180;
+                        myPortfolio.World.targetRotation = layer.scene.rotation.y += 60 * Math.PI / 180;
                         layer.scene.position.x += 1;
                         layer.rotationSpeed = 0.0005;
                         layer.rotationFactor = document.getElementById('rotationBar');
@@ -1962,7 +1964,7 @@ var API = function(useWebgl) {
             this.Transition = function(CurrentLayer, NextLayer) {
                 this.scene = new THREE.Scene();
                 this.camera = new THREE.OrthographicCamera(world.width / -2, world.width / 2, world.height / 2, world.height / -2, -10, 10);
-                this.texture = new THREE.ImageUtils.loadTexture('../src/textures/transitions/transition' + world.transitionParams.texture + '.png', THREE.UVMapping);
+                this.texture = new THREE.ImageUtils.loadTexture('../src/textures/transitions/transition' + world.transitionParams.texture + '.jpg', THREE.UVMapping);
                 this.quadmaterial = new THREE.ShaderMaterial({
                     uniforms: {
                         tDiffuse1: {

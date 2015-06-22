@@ -73,25 +73,26 @@
 
         <!-- Drag model info -->
         <div id="currentModelInfo" class="current-model-info">
-            <div id="homeFrameNumber" class="content-subtitle">
+            
+            <div id="homeFrameNumber" class="content-subtitle background-highlight">
                 :: Frame 1
             </div>
-
-            <div class="rule left"></div>
-
-            <span class="settings-name small-case">Date </span><span id="homeFrameDate" class="assets-label">20.02.15</span>
-            <span class="settings-name small-case">Assets Size</span><span id="homeFrameSize" class="assets-label">1.6Mb</span>
-            <span class="settings-name small-case">#polygons</span><span id="homeFramePolygons" class="assets-label">2.926</span>
-            <div class="rule left"></div>
+            <div class="current-frame-info">
+                <span class="settings-name small-case">Date </span><span id="homeFrameDate" class="assets-label">20.02.15</span>
+                <span class="settings-name small-case">Assets Size</span><span id="homeFrameSize" class="assets-label">1.6Mb</span>
+                <span class="settings-name small-case">#polygons</span><span id="homeFramePolygons" class="assets-label">2.926</span>
+            </div>
             <div id="contentPerformance" class="content-performance">
-                <div class="content-subtitle">
+                <div class="content-subtitle background-highlight">
                     :: performance
                 </div>
                 <div id="statsContainer" class="content-subtitle">
                 </div>
-                <!--div class="rule left"></div-->
+
             </div>
-            
+            <div class="rule left"></div>
+
+
             <div class="content-subtitle small-case">
                 Info :: Drag the mouse to rotate scene
             </div>
@@ -167,7 +168,7 @@
                         Who am I
                     </div>
                     <div class="rule left"></div>
-                    <span class="description">I'm a Web Developer and Computer Graphics enthusiast. In the past months i've decided to put together my passion for CG with my current developer skills. This website is the result of that.</span>
+                    <span class="description">I'm a Web Developer and Computer Graphics enthusiast. In the past months i've decided to put together my passion for CG with my current developer skills and this website is the result of that.</span>
                 </div>
                 <div class="content-info">
                     <div class="content-subtitle">
@@ -217,7 +218,7 @@
                         <a href="https://www.behance.net/bruno_quintela" title="Behance" target="_blank"><i class="fa fa-behance"></i></a>
                         <a href="https://pt.linkedin.com/pub/bruno-quintela/85/750/614/" title="LinkedIn" target="_blank"><i class="fa fa-linkedin"></i></a>
                         <a href="https://soundcloud.com/bruno-quintela" title="Soundcloud" target="_blank"><i class="fa fa-soundcloud"></i></a>
-                        <a href="https://vimeo.com/user40758660" title="Vimeo" target="_blank"><i class="fa fa-vimeo-square"></i></a>
+                        <!--a href="https://vimeo.com/user40758660" title="Vimeo" target="_blank"><i class="fa fa-vimeo-square"></i></a-->
                     </div>
                 </div>
                 <div class="content-info">
@@ -678,6 +679,10 @@
                                             <span class="settings-name">Assets Size</span><span class="assets-label">4.7Mb</span>
                                             <span class="settings-name">#polygons</span><span class="assets-label">23.896</span>
                                         </div>
+                                        <div class="rule right"></div>
+                                        <div class="credits-subtitle">
+                                            Head mesh and texture are courtesy of <a class="hover-anchor" href="http://www.ten24.info/" target="_blank">Ten24</a>.
+                                        </div>
                                     </div>
                                     <div class="assets-info">
                                         <div class="rule right"></div>
@@ -917,7 +922,7 @@
     <!-- build:js scripts/vendor/modernizr.js -->
     <script src="../bower_components/modernizr/modernizr.js"></script>
     <!-- endbuild -->
-    
+
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <script src="../bower_components/threejs/build/three.js"></script>
