@@ -23,9 +23,10 @@
 .settings-label
 {
     @extend %model-settings-font;
-    text-transform:uppercase;
+    width:200px;
+    text-transform:none;
     float:right;
-    text-align:right;
+    text-align:left;
     margin-right:50px;
     margin-top:20px;
     
@@ -46,7 +47,7 @@
 .settings-icon
 {
     @extend %absolute-center;
-    width:25px;
+    width:20px;
     height:25px;
     cursor:pointer; 
     will-change: opacity, transform;

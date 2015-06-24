@@ -448,10 +448,11 @@ $transition-effect: ease;
 .current-model-info .content-subtitle{
     font-size:9px;
     font-weight:400;
+    margin-bottom: 5px;
 }
 
 .current-frame-info{
-    height:80px;
+    height:60px;
 }
 
 .content-performance{
@@ -536,7 +537,7 @@ $transition-effect: ease;
 }
 
 .background-highlight{
-    background-color:rgba(255,0,0,0.3);
+    background-color:rgba(0,0,0,0.5);
     padding-left:5px;
 }
 /** 

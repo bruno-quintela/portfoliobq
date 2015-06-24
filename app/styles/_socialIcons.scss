@@ -45,3 +45,13 @@
 .footer-social-links a:hover:before{
     background: $text-color;
 }
+
+.share-button{
+    color: grey;
+    font-size:11px;
+    @include transition(all 0.5s 0s $transition-effect);
+}
+
+.share-button:hover{
+    color: #fff;
+}

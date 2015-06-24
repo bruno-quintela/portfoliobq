@@ -412,7 +412,7 @@ var API = function(useWebgl) {
         transitionParams: {
             clock: new THREE.Clock(false),
             transitionMixRatio: 0,
-            texture: 10,
+            texture: 11,
             textureThreshold: 0.01,
             CurrentLayer: 'A',
             transitionTime: 1
@@ -2206,35 +2206,35 @@ var API = function(useWebgl) {
                     // remove previous tweens if needed:TODO use same instanciated tween
                     var tweenLayerTransition = new TWEEN.Tween(current).to({
                         x: 0
-                    }, 14000).onUpdate(update);
+                    }, 14000,TWEEN.Easing.Exponential.In).onUpdate(update);
                     tweenLayerTransition.start();
                     myPortfolio.SoundFx.backgroundMusic.play(0);
-                }, 2000);
+                }, 2500);
                 setTimeout(function() {
                     initLoadingScreen.parentNode.removeChild(initLoadingScreen);
                     classie.addClass(initIntroSubtitle, 'show');
                 }, 3500);
                 setTimeout(function() {
                     classie.removeClass(initIntroSubtitle, 'show');
-                }, 6000);
+                }, 7000);
                 setTimeout(function() {
                     classie.addClass(initIntroTitle, 'show');
-                }, 9000);
+                }, 10500);
                 setTimeout(function() {
                     classie.removeClass(initIntroTitle, 'show');
-                }, 13000);
+                }, 15500);
                 setTimeout(function() {
                     classie.removeClass(menu, 'hide');
                     classie.removeClass(burguerMenu, 'hide');
                     classie.removeClass(footerInfoSection, 'hide');
-                }, 15500);
+                }, 18000);
                 //end init loading screen
                 setTimeout(function() {
                     classie.addClass(initIntroScreen, 'hide');
-                }, 16500);
+                }, 19500);
                 setTimeout(function() {
                     initIntroScreen.parentNode.removeChild(initIntroScreen);
-                }, 17000);
+                }, 20000);
             });
             this.transition = new this.Transition(this.NextLayer, this.CurrentLayer);
             /**/
@@ -2281,7 +2281,7 @@ var API = function(useWebgl) {
                 galleryAnchor = document.getElementById('galleryAnchor'),
                 contactAnchor = document.getElementById('contactAnchor'),
                 creditsAnchor = document.getElementById('creditsAnchor'),
-                settingsAnchor = document.getElementById('settingsAnchor'),
+                settingsIcon = document.getElementById('settingsIcon'),
                 aboutSection = document.getElementById('aboutSection'),
                 contactSection = document.getElementById('contactSection'),
                 creditsSection = document.getElementById('creditsSection'),
@@ -2382,7 +2382,7 @@ var API = function(useWebgl) {
                     classie.removeClass(footerInfoSection, 'hide');
                 }
             });
-            settingsAnchor.addEventListener('click', function() {
+            settingsIcon.addEventListener('click', function() {
                 classie.toggleClass(settingsSection, 'show');
                 classie.toggleClass(settingsIcon, 'active');
             });
@@ -2547,7 +2547,7 @@ var API = function(useWebgl) {
              * Change Home Current Frame Info
              */
             var homeFrameNumber = document.getElementById('homeFrameNumber');
-            var homeFrameDate = document.getElementById('homeFrameDate');
+            //var homeFrameDate = document.getElementById('homeFrameDate');
             var homeFrameSize = document.getElementById('homeFrameSize');
             var homeFramePolygons = document.getElementById('homeFramePolygons');
             var homeInfo = [{
@@ -2591,7 +2591,7 @@ var API = function(useWebgl) {
             function changeHomeInfo(modelNumber) {
                 var currentModelInfo = homeInfo[modelNumber - 1];
                 homeFrameNumber.innerHTML = ':: Frame ' + modelNumber;
-                homeFrameDate.innerHTML = currentModelInfo.date;
+                //homeFrameDate.innerHTML = currentModelInfo.date;
                 homeFrameSize.innerHTML = currentModelInfo.size;
                 homeFramePolygons.innerHTML = currentModelInfo.polygons;
             }
@@ -2786,7 +2786,7 @@ var API = function(useWebgl) {
             if(myPortfolio.System.useWebGL()) {
                 /* NO WEBGL VERSION FALLBACK */
                 noWebglLaunch.addEventListener('click', function() {
-                    window.location.href = "?nowebgl";
+                    window.location.href = '?nowebgl';
                 });
                 /* AUDIO */
                 settingsAudioOn.addEventListener('click', function() {
@@ -2977,12 +2977,13 @@ var API = function(useWebgl) {
      * WEB AUDIO API
      **/
     this.SoundFx = {
-        backgroundAudioFile: '../src/audio/soundBackground.mp3',
+        backgroundAudioFile: '../src/audio/IAO.mp3',
         init: function() {
             this.backgroundMusic = new Audio();
+            this.backgroundMusic.preload = 'auto';
             this.backgroundMusic.addEventListener('loadeddata', function() {
-                myPortfolio.World.CurrentLayer.numberAssetsLoaded++;
-                myPortfolio.World.CurrentLayer.loadProgressCallback();
+                //myPortfolio.World.CurrentLayer.numberAssetsLoaded++;
+                //myPortfolio.World.CurrentLayer.loadProgressCallback();
             }, false);
             this.backgroundMusic.addEventListener('error', function() {
                 console.error('error loading audio');
