@@ -49,6 +49,7 @@
 .share-button{
     color: grey;
     font-size:11px;
+    padding:4px;
     @include transition(all 0.5s 0s $transition-effect);
 }
 

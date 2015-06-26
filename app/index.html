@@ -58,7 +58,7 @@
                 <span class=""> i hold now</span>
                 <br>
                 <br>
-                <span class="intro-info">A Real Time Rendered WebGL Experiment</span>
+                <span class="intro-info">A Realtime Rendered WebGL Experiment</span>
             </div>
         </div>
 
@@ -74,14 +74,6 @@
 
         <!-- Drag model info -->
         <div id="currentModelInfo" class="current-model-info">
-            
-            <div id="homeFrameNumber" class="content-subtitle background-highlight">
-                :: Frame 1
-            </div>
-            <div class="current-frame-info">
-                <span class="settings-name small-case">Assets Size</span><span id="homeFrameSize" class="assets-label">1.6Mb</span>
-                <span class="settings-name small-case">#polygons</span><span id="homeFramePolygons" class="assets-label">2.926</span>
-            </div>
             <div id="contentPerformance" class="content-performance">
                 <div class="content-subtitle background-highlight">
                     :: performance
@@ -90,12 +82,17 @@
                 </div>
 
             </div>
-            <div class="rule left"></div>
-
-
-            <div class="content-subtitle small-case">
-                Tip :: Drag the mouse to rotate scene
+            <div id="homeFrameNumber" class="content-subtitle background-highlight">
+                :: Frame 1
             </div>
+            <div class="current-frame-info">
+                <span class="settings-name small-case">Date</span><span id="homeFrameDate" class="assets-label">20.02.15</span>
+                <span class="settings-name small-case">Assets Size</span><span id="homeFrameSize" class="assets-label">1.6Mb</span>
+                <span class="settings-name small-case">#polygons</span><span id="homeFramePolygons" class="assets-label">2.926</span>
+            </div>
+
+
+
         </div>
 
         <!-- fullscreen background video -->
@@ -108,18 +105,29 @@
         <!-- main menu -->
         <nav id="menu" class="menu hide">
             <ul>
-                <li id="homeAnchor" class="active"><span>Home</span>
+
+
+                <li id="creditsAnchor"><span>Credits</span>
+                </li>
+                <li id="contactAnchor"><span>Contact</span>
                 </li>
                 <li id="aboutAnchor"><span>About</span>
                 </li>
                 <li id="galleryAnchor"><span>Gallery</span>
                 </li>
-                <li id="contactAnchor"><span>Contact</span>
+                <li><span></span>
                 </li>
-                <li id="creditsAnchor"><span>Credits</span>
+                <li><span></span>
+                </li>
+                <li><span></span>
+                </li>
+                <li id="homeAnchor" class="active"><span><b>BQ</b>2015</span>
                 </li>
             </ul>
-            <div id="menuItemActive" class="item-active-bottom pos1"></div>
+            <div id="menuItemActive" class="item-active-bottom">
+                <div class="menu-handler left"></div>
+                <!--div class="menu-handler right"></div-->
+            </div>
         </nav>
 
         <!-- burguer menu and fullscreen nav -->
@@ -153,7 +161,7 @@
                     <span class="">About</span>
                 </div>
                 <div class="content-subtitle">
-                    <span class="item">Skills</span>
+                    Skills
                 </div>
                 <div class="rule right"></div>
                 <span class="item">Frontend</span>
@@ -175,7 +183,7 @@
                         What I Do
                     </div>
                     <div class="rule left"></div>
-                    <span class="description">My current focus is to create state of the art visuals and experiences for the web. To achieve perfect balance between visual delivery and performance is always a goal, but this website is targeting medium-high end specs.</span>
+                    <span class="description">My current focus is to create immersive visual experiences for the web. To achieve perfect balance between visual delivery and performance is always a goal, but this website is targeting medium-high end specs.</span>
                 </div>
                 <div class="content-info">
                     <div class="content-subtitle">
@@ -319,7 +327,6 @@
         <!--SECTION CREDITS END -->
         <!-- SECTION SETTINGS START -->
         <section id="settingsSection" class="section-content section-settings">
-            <div class="border-bottom"></div>
             <div class="content-right">
                 <div class="content-info-settings">
                     <div class="content-subtitle">
@@ -373,12 +380,12 @@
                     <div class="rule left"></div>
                     <ul class="credits-list">
                         <li>
-                            <span class="settings-name">Zoom</span>
-                            <input id="zoomBar" class="zoom" type='range' min="-2" max="2" value="0" step='0.1' />
+                            <span class="settings-name small-case">Zoom</span>
+                            <input id="zoomBar" class="" type='range' min="-2" max="2" value="0" step='0.1' />
                         </li>
                         <li>
-                            <span class="settings-name">Rotation</span>
-                            <input id="rotationBar" class="rotation" type='range' min="-2" max="2" value="0.5" step='0.1' />
+                            <span class="settings-name small-case">Auto rotation</span>
+                            <input id="rotationBar" class="" type='range' min="-2" max="2" value="0.5" step='0.1' />
                         </li>
                     </ul>
                 </div>
@@ -394,24 +401,23 @@
             <div class="diagonal-overlay-right"></div>
             <div id="thumbContainer" class="gallery-thumb-container">
                 <div class="thumb-wrapper">
-                    <a data-model="1" class="gallery-thumb active">1 &nbsp [selected]</a>
-                    <a data-model="2" class="gallery-thumb">2  &nbsp [selected]</a>
-                    <a data-model="3" class="gallery-thumb">3  &nbsp [selected]</a>
-                    <a data-model="4" class="gallery-thumb">4  &nbsp [selected]</a>
-                    <a data-model="5" class="gallery-thumb">5  &nbsp [selected]</a>
-                    <a data-model="6" class="gallery-thumb">6  &nbsp [selected]</a>
-                    <a data-model="7" class="gallery-thumb">7  &nbsp [selected]</a>
-                    <a data-model="8" class="gallery-thumb">8  &nbsp [selected]</a>
-                    <a data-model="9" class="gallery-thumb">9  &nbsp [selected]</a>
+                    <a data-model="1" class="gallery-thumb active">1 > <span class="thumb-date">20.02.15</span> ></a>
+                    <a data-model="2" class="gallery-thumb">2 > <span class="thumb-date">11.03.15</span> ></a>
+                    <a data-model="3" class="gallery-thumb">3 > <span class="thumb-date">13.03.15</span> ></a>
+                    <a data-model="4" class="gallery-thumb">4 > <span class="thumb-date">10.04.15</span> ></a>
+                    <a data-model="5" class="gallery-thumb">5 > <span class="thumb-date">25.04.15</span> ></a>
+                    <a data-model="6" class="gallery-thumb">6 > <span class="thumb-date">30.04.15</span> ></a>
+                    <a data-model="7" class="gallery-thumb">7 > <span class="thumb-date">02.05.15</span> ></a>
+                    <a data-model="8" class="gallery-thumb">8 > <span class="thumb-date">08.05.15</span> ></a>
+                    <a data-model="9" class="gallery-thumb">9 &nbsp <span class="thumb-date">23.05.15</span> </a>
                 </div>
 
                 <div class="gallery-swipe-info">
                     <div class="content-left">
                         <div class="content-subtitle">
-                            Use mouse wheel or swipe to navigate
+                            # Use the mouse wheel or swipe screen to navigate
                         </div>
                     </div>
-                    <div class="rule right"></div>
                 </div>
             </div>
 
@@ -440,9 +446,7 @@
                                         <span class="frame-number highlight">1</span>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">20.02.15</span>
                                             <span class="settings-name">Assets Size</span><span class="assets-label">1.6Mb</span>
                                             <span class="settings-name">#polygons</span><span class="assets-label">2.926</span>
                                         </div>
@@ -476,9 +480,7 @@
                                         <span class="frame-number highlight">2</span>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">11.03.15</span>
                                             <span class="settings-name">Assets Size</span><span class="assets-label">3.4Mb</span>
                                             <span class="settings-name">#polygons</span><span class="assets-label">12.352</span>
                                         </div>
@@ -511,9 +513,7 @@
                                         <span class="frame-number highlight">3</span>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">13.03.15</span>
                                             <span class="settings-name">Assets Size</span><span class="assets-label">3.2Mb</span>
                                             <span class="settings-name">#polygons</span><span class="assets-label">12.790</span>
                                         </div>
@@ -547,9 +547,7 @@
                                         <span class="frame-number highlight">4</span>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">10.04.15</span>
                                             <span class="settings-name">Assets Size</span><span class="assets-label">1.7Mb</span>
                                             <span class="settings-name">#polygons</span><span class="assets-label">11.853</span>
                                         </div>
@@ -582,9 +580,7 @@
                                         <span class="frame-number highlight">5</span>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">25.04.15</span>
                                             <span class="settings-name">Assets Size</span><span class="assets-label">2.3Mb</span>
                                             <span class="settings-name">#polygons</span><span class="assets-label">11.631</span>
                                         </div>
@@ -617,9 +613,7 @@
                                         <span class="frame-number highlight">6</span>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">30.04.15</span>
                                             <span class="settings-name">Assets Size</span><span class="assets-label">2.9Mb</span>
                                             <span class="settings-name">#polygons</span><span class="assets-label">11.932</span>
                                         </div>
@@ -652,9 +646,7 @@
                                         <span class="frame-number highlight">7</span>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">01.05.15</span>
                                             <span class="settings-name">Assets Size</span><span class="assets-label">4.7Mb</span>
                                             <span class="settings-name">#polygons</span><span class="assets-label">23.896</span>
                                         </div>
@@ -692,9 +684,7 @@
                                         <span class="frame-number highlight">8</span>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">08.05.15</span>
                                             <span class="settings-name">Assets Size</span><span class="assets-label">2.7Mb</span>
                                             <span class="settings-name">#polygons</span><span class="assets-label">10.992</span>
                                         </div>
@@ -727,9 +717,7 @@
                                         <span class="frame-number highlight">9</span>
                                     </div>
                                     <div class="assets-info">
-                                        <div class="rule right"></div>
                                         <div class="current-info">
-                                            <span class="settings-name">Date </span><span class="assets-label">23.05.15</span>
                                             <span class="settings-name">Assets Size</span><span class="assets-label">2.8Mb</span>
                                             <span class="settings-name">#polygons</span><span class="assets-label">4.905</span>
                                         </div>
@@ -752,17 +740,12 @@
         <!--FOOTER INFO START -->
         <footer id="footerInfoSection" class="footer-section-info hide">
             <div class="footer-title">
-                <span class="">Bruno </span>
-                <span class="surname">Quintela</span>
+                # Drag the mouse to rotate scene
             </div>
-            <div class="footer-title">
-                ::&nbsp;2015
-            </div>
-
             <div id="settingsAnchor" class="menu-settings">
                 <div class="settings-label">
                     share :: <a class="share-button" href="https://twitter.com/share?url=http://www.brunoquintela.com&text=A realtime rendered WebGL Experiment" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
-                        <a class="share-button" href="https://www.facebook.com/sharer/sharer.php?u=http://www.brunoquintela.com" title="facebook" target="_blank"><i class="fa fa-facebook"></i></a>
+                    <a class="share-button" href="https://www.facebook.com/sharer/sharer.php?u=http://www.brunoquintela.com" title="facebook" target="_blank"><i class="fa fa-facebook"></i></a>
                     <a class="share-button" href="https://plus.google.com/share?url='http://www.brunoquintela.com/'" title="googlePlus" target="_blank"><i class="fa fa-google-plus"></i></a>
                     <a class="share-button" href="http://www.linkedin.com/shareArticle?mini=true&url=http://www.brunoquintela.com&title=http://www.brunoquintela.com&summary=A realtime rendered Webgl Experiment&source=http://www.brunoquintela.com" title="LinkedIn" target="_blank"><i class="fa fa-linkedin"></i></a>
                     | settings

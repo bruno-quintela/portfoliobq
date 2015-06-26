@@ -47,7 +47,7 @@
     font-weight:100;
     margin-top:0px;
     //margin-bottom:30px;
-    letter-spacing:15px;
+    letter-spacing:23px;
 }
 
 .diagonal-overlay-up
@@ -133,7 +133,7 @@
 .gallery-thumb.active
 {
     color:rgba(255,255,255,1);
-	max-width: 499px;
+	max-width: 150px;
 }
 
 .gallery-item-container
@@ -163,22 +163,24 @@
 .gallery-swipe-info
 {
     position:absolute;
-    bottom:45px;
-    right:40px;
-    height:30px;
+    bottom:5px;
+    left:30px;
+    height:20px;
 }
 
 .gallery-swipe-info .content-left
 {
-   width:300px;
+   width:500px;
    height:15px;
-   text-align:right;
+   text-align:left;
+
 }
 
 .gallery-swipe-info .content-left .content-subtitle
 {
     letter-spacing: 3px;
     font-size: 9px;
+    //text-transform:none;
 }
 
 .touch-swipe-info
@@ -268,7 +270,7 @@
 	@extend %menu-font;
 	background: rgba(0,0,0,1);
 	display: inline-block;
-	padding: 0 30px 0 30px;
+	padding: 0 30px 0 10px;
 	margin: 0;
 	height: 40px;
 	line-height: 40px;
@@ -284,12 +286,12 @@
 
 
 /* Left inset arrow */
-.thumb-wrapper a:before, .thumb-wrapper a:after {
+/*.thumb-wrapper a:before, .thumb-wrapper a:after {
 	position: absolute;
 	width: 0;
 	height: 0;
 	border-color: transparent transparent transparent white;
-	content:"/";
+	content:"::";
 	top:0;
 }
 
@@ -308,11 +310,16 @@
 	border-left-color: red;
 	z-index: 3;
 	margin-left: 3px;
-}
+}*/
 
 .thumb-wrapper :first-child:before,
 .thumb-wrapper :first-child:after {
 	display: none
+}
+
+.thumb-date{
+    font-size:9px;
+    color:grey;
 }
 
 .assets-label

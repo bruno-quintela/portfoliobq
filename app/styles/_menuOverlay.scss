@@ -31,24 +31,22 @@
 }
 
 .menu ul li {
-    cursor:pointer;
-	width: calc(100%/5);
+	width: calc(100%/8);
     position: relative;
-    float:left;
+    float:right;
     height:100%;
     background-color:transparent;
-    will-change: background-color;
-    @include transition(background-color 1000ms 00s $transition-effect);
 }
 
-.menu ul li.active{
-    background-color:rgba(255,0,0,0.3);
+/*.menu ul li:last-child span{
+    color:#000;
+}*/
+
+.menu ul li.active span{
+    color:rgba(255,255,255,1);
 }
 
 
-.menu ul li:hover {
-    background-color:rgba(255,0,0,0.3);
-}
 
 .menu ul li span {
     @extend %menu-font;
@@ -56,44 +54,61 @@
     width:100%;
     text-align:center;
     margin-top:20px;
-    color:$text-color;
+    color:rgba(255,255,255,0.7);
+    cursor:pointer;
+    will-change: color;
+    @include transition(color 300ms 0s $transition-effect);
 }
+
+.menu ul li span:hover {
+    color:rgba(255,255,255,1);
+}
+
 
 .menu .item-active-bottom{
     position:absolute;
-    top:0px;
-    left:0;
-    width: calc(100%/5);
-    height:4px;
-    background-color:$secondary-color;
+    top:27px;
+    right:0;
+    width: calc(100%/8);
+    height:1px;
+    background-color:transparent;
     will-change: transform;
-    @include transform(translateX(600%));
+    @include transform(translateX(-800%));
     @include transition(transform 1000ms 0ms $transition-effect);
 }
 
 .menu .item-active-bottom.pos1{
     will-change: transform;
-    @include transform(translateX(0%));
+    @include transform(translateX(-700%));
 }
 
 .menu .item-active-bottom.pos2{
     will-change: transform;
-    @include transform(translateX(100%));
+    @include transform(translateX(-200%));
 }
 
 .menu .item-active-bottom.pos3{
     will-change: transform;
-    @include transform(translateX(200%));
+    @include transform(translateX(-300%));
 }
 
 .menu .item-active-bottom.pos4{
     will-change: transform;
-    @include transform(translateX(300%));
+    @include transform(translateX(-100%));
 }
 
 .menu .item-active-bottom.pos5{
     will-change: transform;
-    @include transform(translateX(400%));
+    @include transform(translateX(0%));
+}
+
+.menu-handler
+{
+    
+    width:100px;
+    height:1px;
+    margin:auto;
+    background-color:$secondary-color;
 }
 
 

@@ -194,6 +194,17 @@
     color:grey;
 }
 
+%footer-font{
+    font-family: $primary-font-family;
+  	text-rendering: optimizeLegibility;
+    font-size:9px;
+    color:#fff;
+    float:left;
+    text-transform:none;
+    letter-spacing:3px;
+    font-weight:300;
+}
+
 .small-case{
     text-transform:none !important;
 }

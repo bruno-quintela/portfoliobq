@@ -6,7 +6,7 @@ $menu-height:50px;
 $section-content-height:225px;
 $section-left-width: 230px;
 $text-color: rgba(255,255,255,1);
-$primary-color: rgba(0,0,0,0.7);
+$primary-color: rgba(0,0,0,0.6);
 $secondary-color: rgba(255,0,0,1);
 $secondary-color-opaque: rgba(255,0,0,0.2);
 $main-menu-background: rgba(0,0,0,1);
@@ -102,7 +102,7 @@ $transition-effect: ease;
     padding-top:25px;
     background-color:$primary-color;
     background-image: url(../src/img/dotOverlay.png);
-    border-top:1px solid rgba(255, 0, 0, 0.3);
+    //border-top:1px solid rgba(255, 0, 0, 0.3);
     will-change: transform;
     @include transform(translateY(0));
     @include transition(transform 1000ms 1000ms $transition-effect);
@@ -110,7 +110,7 @@ $transition-effect: ease;
 }
 
 .section-content.hide {
-    @include transform(translateY(-130%));
+    @include transform(translateY(-100%));
     @include transition(transform 1000ms 0ms $transition-effect);
 }
 
@@ -144,7 +144,14 @@ $transition-effect: ease;
 }
 
 .section-content .content-left .item{
-    @extend %content-item;
+    font-weight: 400;
+    letter-spacing: 3px;
+    font-size: 9px;
+    padding: 1px;
+    text-transform: uppercase;
+    clear: both;
+    color: white;
+    background-color: rgba(255,0,0,0.3);
     float:right;
 }
 
@@ -238,7 +245,7 @@ $transition-effect: ease;
     height:$menu-height;
     background-color:$footer-background;
     padding-top:20px;
-    padding-left:50px;
+    padding-left:30px;
     will-change: transform;
     @include transform(translateY(0));
     @include transition(transform 1000ms 0ms $transition-effect);
@@ -251,16 +258,7 @@ $transition-effect: ease;
 
 .footer-title
 {
-    @extend %menu-font;
-    color:#fff;
-    float:left;
-    margin-right:10px;
-}
-
-.footer-title .surname
-{
-    color:red;
-    font-weight:600;
+    @extend %footer-font;
 }
 
 
@@ -425,8 +423,8 @@ $transition-effect: ease;
     z-index: 1;
     width: 100%;
     position: absolute;
-    top: 80px;
-    left:30px;
+    top: 70px;
+    left:50px;
     padding: 5px;
     width:200px;
     text-align: left;
@@ -448,7 +446,7 @@ $transition-effect: ease;
 .current-model-info .content-subtitle{
     font-size:9px;
     font-weight:400;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 
 .current-frame-info{
@@ -458,7 +456,7 @@ $transition-effect: ease;
 .content-performance{
     //margin-top:20px;
     float:left;
-    height:50px;
+    height:55px;
     text-align:left;
     width:100%;
 }
@@ -491,7 +489,7 @@ $transition-effect: ease;
 {
 
     height:3px;
-    background-color:$secondary-color;
+    background-color:rgba(255,0,0,0.7);
     clear:both;
 }
 

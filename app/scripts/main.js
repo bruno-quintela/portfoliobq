@@ -744,7 +744,6 @@ var API = function(useWebgl) {
                 document.getElementById('fpsText').style.fontFamily = 'Open Sans';
                 document.getElementById('fpsText').style.paddingTop = '5px';
                 document.getElementById('fpsGraph').style.display = 'none';
-                
                 //add threex.renderstats WEBGL render
                 /*this.gpuStats = new THREEx.RendererStats();
                 this.gpuStats.domElement.id = 'gpuStats';
@@ -2170,6 +2169,14 @@ var API = function(useWebgl) {
          **/
         start: function() {
             var world = this;
+            var menu = document.getElementById('menu');
+            var burguerMenu = document.getElementById('burguerMenu');
+            var initLoadingScreen = document.getElementById('initLoadingScreen');
+            var initIntroScreen = document.getElementById('initIntroScreen');
+            var initIntroTitle = document.getElementById('initIntroTitle');
+            var initIntroSubtitle = document.getElementById('initIntroSubtitle');
+            var footerInfoSection = document.getElementById('footerInfoSection');
+            var menuItemActive = document.getElementById('menuItemActive');
             this.init();
             this.transitionParams.clock.elapsedTime = 0;
             this.CurrentLayer = new this.Layer('scene0', 1, function() {}, function() {});
@@ -2182,13 +2189,6 @@ var API = function(useWebgl) {
                 }
                 //console.info(loadProgression);
             }, function() {
-                var menu = document.getElementById('menu');
-                var burguerMenu = document.getElementById('burguerMenu');
-                var initLoadingScreen = document.getElementById('initLoadingScreen');
-                var initIntroScreen = document.getElementById('initIntroScreen');
-                var initIntroTitle = document.getElementById('initIntroTitle');
-                var initIntroSubtitle = document.getElementById('initIntroSubtitle');
-                var footerInfoSection = document.getElementById('footerInfoSection');
                 //hide init loading screen
                 setTimeout(function() {
                     classie.addClass(initLoadingScreen, 'hide');
@@ -2206,10 +2206,10 @@ var API = function(useWebgl) {
                     // remove previous tweens if needed:TODO use same instanciated tween
                     var tweenLayerTransition = new TWEEN.Tween(current).to({
                         x: 0
-                    }, 14000,TWEEN.Easing.Exponential.In).onUpdate(update);
+                    }, 14000, TWEEN.Easing.Exponential.In).onUpdate(update);
                     tweenLayerTransition.start();
                     myPortfolio.SoundFx.backgroundMusic.play(0);
-                }, 2500);
+                }, 2000);
                 setTimeout(function() {
                     initLoadingScreen.parentNode.removeChild(initLoadingScreen);
                     classie.addClass(initIntroSubtitle, 'show');
@@ -2224,17 +2224,18 @@ var API = function(useWebgl) {
                     classie.removeClass(initIntroTitle, 'show');
                 }, 15500);
                 setTimeout(function() {
+                    classie.removeClass(footerInfoSection, 'hide');
                     classie.removeClass(menu, 'hide');
                     classie.removeClass(burguerMenu, 'hide');
-                    classie.removeClass(footerInfoSection, 'hide');
                 }, 18000);
                 //end init loading screen
                 setTimeout(function() {
+                    classie.addClass(menuItemActive, 'pos1');
                     classie.addClass(initIntroScreen, 'hide');
                 }, 19500);
                 setTimeout(function() {
                     initIntroScreen.parentNode.removeChild(initIntroScreen);
-                }, 20000);
+                }, 20500);
             });
             this.transition = new this.Transition(this.NextLayer, this.CurrentLayer);
             /**/
@@ -2289,7 +2290,6 @@ var API = function(useWebgl) {
                 gallerySection = document.getElementById('gallerySection');
             var footerInfoSection = document.getElementById('footerInfoSection');
             var menuItemActive = document.getElementById('menuItemActive');
-            var settingsIcon = document.getElementById('settingsIcon');
             var modelLoadingScreen = document.getElementById('modelLoadingScreen');
             var progressBar = document.getElementById('progressBar');
             var videoBackground = document.getElementById('videoBackground');
@@ -2547,7 +2547,7 @@ var API = function(useWebgl) {
              * Change Home Current Frame Info
              */
             var homeFrameNumber = document.getElementById('homeFrameNumber');
-            //var homeFrameDate = document.getElementById('homeFrameDate');
+            var homeFrameDate = document.getElementById('homeFrameDate');
             var homeFrameSize = document.getElementById('homeFrameSize');
             var homeFramePolygons = document.getElementById('homeFramePolygons');
             var homeInfo = [{
@@ -2591,7 +2591,7 @@ var API = function(useWebgl) {
             function changeHomeInfo(modelNumber) {
                 var currentModelInfo = homeInfo[modelNumber - 1];
                 homeFrameNumber.innerHTML = ':: Frame ' + modelNumber;
-                //homeFrameDate.innerHTML = currentModelInfo.date;
+                homeFrameDate.innerHTML = currentModelInfo.date;
                 homeFrameSize.innerHTML = currentModelInfo.size;
                 homeFramePolygons.innerHTML = currentModelInfo.polygons;
             }
@@ -2642,6 +2642,7 @@ var API = function(useWebgl) {
                     });
                     classie.addClass(galleryImg[modelNumber - 1], 'hide');
                     changeHomeInfo(modelNumber);
+                    classie.addClass(homeAnchor, 'active');
                     //myPortfolio.World.renderParams.enableDotFilter = false;
                     //myPortfolio.World.refreshPostProcessing();
                 });
@@ -3070,13 +3071,11 @@ var API = function(useWebgl) {
         //console.log('Page init completed');
     };
 };
-
 /**
  * Start the engine
  **/
-
 var useWebgl = location.search.indexOf('nowebgl') === -1;
 myPortfolio = new API(useWebgl);
 myPortfolio.init();
-console.log('UseWebGL:'+ useWebgl);
+console.log('UseWebGL:' + useWebgl);
 console.log('API started.');
