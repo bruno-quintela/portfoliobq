@@ -46,6 +46,15 @@
     background: $text-color;
 }
 
+
+.share-section{
+    color:#fff;
+    @extend %model-settings-font;
+    width:290px;
+    text-transform:none;
+    float:right;
+}
+
 .share-button{
     color: grey;
     font-size:11px;

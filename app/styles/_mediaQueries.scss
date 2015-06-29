@@ -100,7 +100,7 @@
 /* Smartphones (portrait)  with burguer menu */
 
 
-@media only screen and (max-width : 500px){
+@media only screen and (max-width : 800px){
     
     .burguer-container{
         display: block;
@@ -237,6 +237,7 @@
     
     .touch-swipe-info
     {
+        display:block;
         padding-right:10px;
     }
 }

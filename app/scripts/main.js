@@ -1679,6 +1679,7 @@ var API = function(useWebgl) {
                     loader.options.convertUpAxis = false;
                     loader.load('../src/collada/scene7.dae', function(collada) {
                         var dae = collada.scene;
+                        layer.fragments = [];
                         layer.scene.add(dae);
                         /* add scene skydome */
                         addSkyDome(layer, 8, '../src/textures/background/background6.jpg');
@@ -1686,7 +1687,7 @@ var API = function(useWebgl) {
                         var mesh = null;
                         collada.scene.traverse(function(child) {
                             if(child instanceof THREE.Object3D) {
-                                //console.info(child.name);
+                                console.info(child.name);
                                 if(child.name === 'head') {
                                     mesh = child.children[0];
                                     mesh.receiveShadow = false;
@@ -1741,7 +1742,6 @@ var API = function(useWebgl) {
                     loader.options.convertUpAxis = false;
                     loader.load('../src/collada/scene8.dae', function(collada) {
                         var dae = collada.scene;
-                        layer.fragments = [];
                         layer.scene.add(dae);
                         addSkyDome(layer, 8, '../src/textures/background/background6.jpg');
                         collada.scene.traverse(function(child) {
@@ -1773,12 +1773,6 @@ var API = function(useWebgl) {
                                     mesh.receiveShadow = false;
                                     mesh.castShadow = false;
                                     layer.lowpoly3 = mesh;
-                                } else if(child.name.indexOf('cell') !== -1) {
-                                    mesh = child.children[0];
-                                    mesh.material = world.materials.matcapMaterial(layer, 76);
-                                    mesh.receiveShadow = false;
-                                    mesh.castShadow = false;
-                                    layer.fragments.push(mesh);
                                 }
                             }
                         });
@@ -1796,16 +1790,6 @@ var API = function(useWebgl) {
                                 layer.scene.rotation.y += ((world.targetRotation - layer.scene.rotation.y) * 0.05);
                             } else {
                                 myPortfolio.World.targetRotation = layer.scene.rotation.y += layer.rotationSpeed * parseFloat(layer.rotationFactor.value);
-                            }
-                            if(world.motionParams.animateFragments) {
-                                for(var i = 0; i < layer.fragments.length; i++) {
-                                    //rotation
-                                    layer.fragments[i].rotation.x += layer.rotationSpeed.y * 2;
-                                    layer.fragments[i].rotation.y += layer.rotationSpeed.y * 2;
-                                    layer.fragments[i].rotation.z += layer.rotationSpeed.y * 2;
-                                    //position
-                                    //layer.fragments[i].position.x += layer.rotationSpeed.y * 0.5;
-                                }
                             }
                             if(rtt) {
                                 if(world.renderParams.enableAnaglyph) {
@@ -2209,7 +2193,7 @@ var API = function(useWebgl) {
                     }, 14000, TWEEN.Easing.Exponential.In).onUpdate(update);
                     tweenLayerTransition.start();
                     myPortfolio.SoundFx.backgroundMusic.play(0);
-                }, 2000);
+                }, 2500);
                 setTimeout(function() {
                     initLoadingScreen.parentNode.removeChild(initLoadingScreen);
                     classie.addClass(initIntroSubtitle, 'show');
@@ -2287,13 +2271,13 @@ var API = function(useWebgl) {
                 contactSection = document.getElementById('contactSection'),
                 creditsSection = document.getElementById('creditsSection'),
                 settingsSection = document.getElementById('settingsSection'),
-                gallerySection = document.getElementById('gallerySection');
-            var footerInfoSection = document.getElementById('footerInfoSection');
-            var menuItemActive = document.getElementById('menuItemActive');
-            var modelLoadingScreen = document.getElementById('modelLoadingScreen');
-            var progressBar = document.getElementById('progressBar');
-            var videoBackground = document.getElementById('videoBackground');
-            var currentModelInfo = document.getElementById('currentModelInfo');
+                gallerySection = document.getElementById('gallerySection'),
+                footerInfoSection = document.getElementById('footerInfoSection'),
+                menuItemActive = document.getElementById('menuItemActive'),
+                modelLoadingScreen = document.getElementById('modelLoadingScreen'),
+                progressBar = document.getElementById('progressBar'),
+                videoBackground = document.getElementById('videoBackground'),
+                currentModelInfo = document.getElementById('currentModelInfo');
             this.webglCanvas = document.getElementById('threejsCanvas');
             //add video as background
             if(myPortfolio.System.browser.name === 'Other') {
@@ -3023,20 +3007,18 @@ var API = function(useWebgl) {
             /* remove webgl models info and actions */
             var currentModelInfo = document.getElementById('currentModelInfo');
             currentModelInfo.parentNode.removeChild(currentModelInfo);
-            var thumbContainer = document.getElementById('thumbContainer');
-            thumbContainer.parentNode.removeChild(thumbContainer);
-            var touchSwipeInfo = document.getElementById('touchSwipeInfo');
-            touchSwipeInfo.style.display = 'block';
+            //var thumbContainer = document.getElementById('thumbContainer');
+            //thumbContainer.parentNode.removeChild(thumbContainer);
             var settingsAnchor = document.getElementById('settingsAnchor');
             settingsAnchor.style.display = 'none';
             var webglLoadItems = document.querySelectorAll('.load-webgl');
             [].forEach.call(webglLoadItems, function(currentModel) {
                 currentModel.style.display = 'none';
             });
-            var galleryOverlayItems = document.querySelectorAll('.diagonal-overlay-right');
+            /*var galleryOverlayItems = document.querySelectorAll('.diagonal-overlay-right');
             [].forEach.call(galleryOverlayItems, function(currentItem) {
                 currentItem.style.display = 'none';
-            });
+            });*/
             var firstBackgroundImage = document.querySelectorAll('.model-background-img.hide')[0];
             classie.removeClass(firstBackgroundImage, 'hide');
             classie.removeClass(this.UI.videoBackground, 'hide');
@@ -3047,6 +3029,12 @@ var API = function(useWebgl) {
             var initLoadingScreen = document.getElementById('initLoadingScreen');
             var initIntroScreen = document.getElementById('initIntroScreen');
             var loadingInfoTop = document.getElementById('loadingInfoTop');
+            var footerTitle = document.getElementById('footerTitle');
+            var shareSection = document.getElementById('shareSection');
+            
+            
+            footerTitle.style.display = 'none';
+            shareSection.style.width = '170px';
             initIntroScreen.parentNode.removeChild(initIntroScreen);
             loadingInfoTop.parentNode.removeChild(loadingInfoTop);
             setTimeout(function() {
